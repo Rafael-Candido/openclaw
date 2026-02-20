@@ -138,7 +138,7 @@
       "name": "Diretor Pessoal - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771552173203,
-      "updatedAtMs": 1771622099320,
+      "updatedAtMs": 1771619022976,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -155,20 +155,20 @@
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1771622593984,
-        "lastRunAtMs": 1771622087469,
+        "nextRunAtMs": 1771620793984,
+        "lastRunAtMs": 1771618994002,
         "lastStatus": "ok",
-        "lastDurationMs": 11851,
+        "lastDurationMs": 28974,
         "consecutiveErrors": 0
       }
     },
     {
       "id": "b3c678e4-15ea-41e3-a96d-da661c9c27c0",
       "agentId": "main",
-      "name": "Mail-Pro especialista - execução 10min [LEGACY OFF]",
-      "enabled": false,
+      "name": "Mail-Pro especialista - execução 10min",
+      "enabled": true,
       "createdAtMs": 1771552403736,
-      "updatedAtMs": 1771622033758,
+      "updatedAtMs": 1771620712646,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -186,6 +186,7 @@
         "mode": "none"
       },
       "state": {
+        "nextRunAtMs": 1771621033984,
         "lastRunAtMs": 1771620696995,
         "lastStatus": "ok",
         "lastDurationMs": 1696,
@@ -275,7 +276,7 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771623913984,
+        "nextRunAtMs": 1771622113984,
         "lastRunAtMs": 1771620314011,
         "lastStatus": "ok",
         "lastDurationMs": 10589,
@@ -314,10 +315,10 @@
     {
       "id": "590b6ee6-07b2-4fb6-b38f-cdfab81f403e",
       "agentId": "main",
-      "name": "Mail-Person especialista - execução 10min [LEGACY OFF]",
-      "enabled": false,
+      "name": "Mail-Person especialista - execução 10min",
+      "enabled": true,
       "createdAtMs": 1771595593984,
-      "updatedAtMs": 1771622033758,
+      "updatedAtMs": 1771620713460,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -339,7 +340,8 @@
         "lastRunAtMs": 1771620324600,
         "lastStatus": "ok",
         "lastDurationMs": 15117,
-        "consecutiveErrors": 0
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1771620913984
       }
     },
     {
@@ -348,7 +350,7 @@
       "name": "Governança - health check 10min",
       "enabled": true,
       "createdAtMs": 1771595607790,
-      "updatedAtMs": 1771622413066,
+      "updatedAtMs": 1771618423027,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -367,11 +369,11 @@
         "channel": "last"
       },
       "state": {
-        "lastRunAtMs": 1771622099321,
+        "lastRunAtMs": 1771618153994,
         "lastStatus": "ok",
-        "lastDurationMs": 313745,
+        "lastDurationMs": 1226,
         "consecutiveErrors": 0,
-        "nextRunAtMs": 1771622953984
+        "nextRunAtMs": 1771621153984
       }
     },
     {
@@ -404,61 +406,6 @@
         "lastStatus": "error",
         "lastDurationMs": 378474,
         "consecutiveErrors": 1
-      }
-    },
-    {
-      "id": "ae4a0347-2e03-46ad-8595-6b9476c45d79",
-      "agentId": "main",
-      "name": "Mail-Pro especialista - execução 10min",
-      "enabled": true,
-      "createdAtMs": 1771622033758,
-      "updatedAtMs": 1771622033758,
-      "schedule": {
-        "kind": "every",
-        "everyMs": 600000,
-        "anchorMs": 1771622093758
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Atue como especialista Mail-Pro com execução completa de e-mail + relatório padronizado detalhado. Contexto: caixa profissional rafael.pereira@smartenvios.com. Objetivo obrigatório em cada run com card Priorizado: (1) ler até 100 não lidos com histórico de thread, (2) triar por relevância usando workflow.sh, (3) aplicar/reusar labels Mail-Pro-Aguardando / Mail-Pro-BaixoValor / Mail-Pro-Importante, (4) arquivar processados, (5) criar rascunhos contextualizados para importantes (score >= 50). IMPORTANTE: Usar /var/www/openclaw/workspace/scripts/gmail/workflow.sh pro 100 para análise inteligente completa. Regras: - Se houver cards Mail-Pro em Em andamento >10 min, recuperar e finalizar com comentário de recuperação. - Para cada card Priorizado: mover para Em andamento, executar tarefas Gmail, registrar resultado no corpo E em comentário nativo, mover para Concluído no final. - Filtrar auto-replies e notificações automáticas (não processar). - Priorizar emails com menção direta ao rafael.pereira@smartenvios.com. - Criar rascunhos com contexto da thread (usar thread.context). - Não usar message.send. Não escrever em memory/*.md. - Só declarar bloqueio de credencial após teste real de Gmail API no run. Formato obrigatório do comentário nativo (padronizado): ## Resultado executivo - Status: Sucesso | Sucesso parcial | Falha - Caixa analisada: rafael.pereira@smartenvios.com - Janela/consulta usada: [query Gmail usada] ## Métricas - Não lidos encontrados: N - E-mails lidos com histórico: N - Triados: N (Importante=X, Aguardando=Y, BaixoValor=Z) - Labels reaproveitadas: [lista] - Labels criadas: [lista] - Arquivados: N - Rascunhos criados: N ## Evidências (IDs/assuntos) - [messageId/subject 1] - [messageId/subject 2] ## Decisões e próximos passos - [critérios aplicados] - [pendências] Se não houver não lidos, ainda assim preencher métricas com zero e evidenciar a consulta executada.",
-        "timeoutSeconds": 600,
-        "model": "xai/grok-3-mini"
-      },
-      "delivery": {
-        "mode": "none"
-      },
-      "state": {
-        "nextRunAtMs": 1771622693758
-      }
-    },
-    {
-      "id": "27f27813-12d5-4c2d-a66b-7a50d75b2e98",
-      "agentId": "main",
-      "name": "Mail-Person especialista - execução 10min",
-      "enabled": true,
-      "createdAtMs": 1771622033758,
-      "updatedAtMs": 1771622033758,
-      "schedule": {
-        "kind": "every",
-        "everyMs": 600000,
-        "anchorMs": 1771622213758
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "REGRA DE COMENTÁRIOS PROGRESSIVOS NO NOTION — OBRIGATÓRIO:\n- Ao captar o card: comentário de início (max 300 chars) com o que vai fazer.\n- A cada etapa relevante: comentário curto (max 300 chars) com progresso e próximo passo.\n- Se encontrar erro/bloqueio: comentário imediato explicando o que aconteceu.\n- Ao concluir: comentário final estruturado com resultado completo.\nFormato: [HH:MM] emoji Etapa X/N: resumo. Próximo: ação.\nExemplo: [08:15] 📧 Etapa 1/4: 47 não lidos encontrados. Triando por relevância...\nIsso garante visibilidade da jornada e ajuda a governança detectar travamentos.\n\nREGRA DE DEDUPLICAÇÃO — chave dupla (Assunto + Agente):\n- Antes de captar um card de Priorizado, consultar Status='Em andamento'.\n- Se já existir card em Em andamento com MESMO título E MESMO Agente:\n  - Se NÃO houver processo ativo: FORÇAR EXECUÇÃO.\n  - Se HOUVER processo ativo: ESPERAR o próximo ciclo.\n- Se não existir card em Em andamento, captar de Priorizado e mover normalmente.\n\nAtue como especialista Mail-Person com execução completa de e-mail pessoal. Contexto: caixa pessoal rafael.silva.pereira10@gmail.com. Usar /var/www/openclaw/workspace/scripts/gmail/workflow.sh personal 100. Regras: recuperar cards Em andamento, mover Priorizado para Em andamento, executar Gmail, registrar resultado em comentário nativo, mover para Concluído. Não usar message.send. Não escrever em memory/*.md.",
-        "timeoutSeconds": 600,
-        "model": "xai/grok-3-mini"
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "last"
-      },
-      "state": {
-        "nextRunAtMs": 1771622813758
       }
     }
   ]
