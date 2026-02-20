@@ -1,0 +1,8 @@
+REGRA DE COMENTÁRIOS PROGRESSIVOS NO NOTION — OBRIGATÓRIO:
+- Ao captar o card: comentário de início (max 300 chars) com o que vai fazer.
+- A cada etapa relevante: comentário curto (max 300 chars) com progresso e próximo passo.
+- Se encontrar erro/bloqueio: comentário imediato explicando o que aconteceu.
+- Ao concluir: comentário final estruturado com resultado completo.
+Formato: [HH:MM] emoji Etapa X/N: resumo. Próximo: ação.
+Exemplo: [08:15] 📧 Etapa 1/4: 47 não lidos encontrados. Triando por relevância...
+Isso garante visibilidade da jornada e ajuda a governança detectar travamentos.

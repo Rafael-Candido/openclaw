@@ -1,0 +1,332 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.2.17",
+    "lastTouchedAt": "2026-02-20T13:55:42.437Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-02-20T04:36:12.105Z",
+    "lastRunVersion": "2026.2.17",
+    "lastRunCommand": "doctor",
+    "lastRunMode": "local"
+  },
+  "diagnostics": {
+    "flags": [
+      "gateway.*",
+      "whatsapp.*",
+      "notion.*",
+      "agent.*",
+      "session.*",
+      "skill.*",
+      "channel.*",
+      "ws.*"
+    ]
+  },
+  "logging": {
+    "level": "debug",
+    "file": "/var/www/openclaw/logs/gateway.log",
+    "consoleLevel": "debug",
+    "consoleStyle": "pretty"
+  },
+  "browser": {
+    "attachOnly": true
+  },
+  "auth": {
+    "profiles": {
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "api_key"
+      },
+      "openai-codex:default": {
+        "provider": "openai-codex",
+        "mode": "oauth"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "anthropic/claude-sonnet-4-5",
+        "fallbacks": [
+          "openai/gpt-4-turbo",
+          "anthropic/claude-sonnet-4-5",
+          "anthropic/claude-opus-4-6"
+        ]
+      },
+      "models": {
+        "openai/gpt-5.1-codex": {
+          "alias": "GPT"
+        },
+        "openai/gpt-4-turbo": {
+          "alias": "GPT-4 Turbo"
+        },
+        "openai/gpt-4": {
+          "alias": "GPT-4"
+        },
+        "anthropic/claude-sonnet-4-5": {
+          "alias": "Claude Sonnet 4.5",
+          "params": {
+            "cacheRetention": "short"
+          }
+        },
+        "anthropic/claude-opus-4-6": {
+          "alias": "Claude Opus 4.6",
+          "params": {
+            "cacheRetention": "short"
+          }
+        },
+        "google/gemini-1.5-flash": {},
+        "google/gemini-1.5-pro": {},
+        "xai/grok-2": {},
+        "xai/grok-beta": {}
+      },
+      "workspace": "/var/www/openclaw/workspace",
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "1h"
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "heartbeat": {
+        "every": "30m"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "name": "Main",
+        "workspace": "/var/www/openclaw/workspace",
+        "model": {
+          "primary": "openai/gpt-5.1-codex",
+          "fallbacks": [
+            "openai/gpt-4-turbo",
+            "anthropic/claude-sonnet-4-5",
+            "anthropic/claude-opus-4-6"
+          ]
+        }
+      },
+      {
+        "id": "backend-engineer",
+        "name": "Engenheiro Backend",
+        "workspace": "/var/www/openclaw/workspace/agents/backend-engineer",
+        "model": {
+          "primary": "openai/gpt-5.1-codex",
+          "fallbacks": [
+            "openai/gpt-4-turbo",
+            "anthropic/claude-sonnet-4-5",
+            "anthropic/claude-opus-4-6"
+          ]
+        },
+        "identity": {
+          "name": "Engenheiro Backend",
+          "theme": "API/MCP Improvement Specialist",
+          "emoji": "🛠️"
+        }
+      },
+      {
+        "id": "einstein",
+        "name": "Einstein (SmartEnvios)",
+        "workspace": "/var/www/openclaw/workspace/agents/einstein",
+        "model": {
+          "primary": "openai/gpt-5.1-codex",
+          "fallbacks": [
+            "openai/gpt-4-turbo",
+            "anthropic/claude-sonnet-4-5",
+            "anthropic/claude-opus-4-6"
+          ]
+        },
+        "identity": {
+          "name": "Einstein",
+          "theme": "SmartEnvios Support Specialist",
+          "emoji": "🧠"
+        },
+        "groupChat": {
+          "mentionPatterns": [
+            "<@1439351480514646087>",
+            "1439351480514646087",
+            "@einstein",
+            "einstein"
+          ]
+        },
+        "sandbox": {
+          "mode": "all",
+          "workspaceAccess": "ro"
+        },
+        "tools": {
+          "profile": "minimal",
+          "allow": [
+            "read",
+            "web_search",
+            "web_fetch",
+            "message",
+            "exec"
+          ],
+          "deny": [
+            "gateway",
+            "sessions_send",
+            "sessions_spawn",
+            "sessions_list",
+            "sessions_history",
+            "subagents",
+            "cron",
+            "write",
+            "edit",
+            "process",
+            "nodes",
+            "browser",
+            "canvas"
+          ]
+        },
+        "skills": {
+          "notion": true
+        }
+      }
+    ]
+  },
+  "tools": {
+    "web": {
+      "search": {
+        "enabled": true,
+        "apiKey": "BSArTXVqj_LkdvPZU50fLC5dAXjK5DB"
+      },
+      "fetch": {
+        "enabled": true
+      }
+    }
+  },
+  "bindings": [
+    {
+      "agentId": "einstein",
+      "match": {
+        "channel": "discord"
+      }
+    }
+  ],
+  "messages": {
+    "groupChat": {
+      "historyLimit": 30
+    },
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto"
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "boot-md": {
+          "enabled": true
+        },
+        "bootstrap-extra-files": {
+          "enabled": true
+        },
+        "command-logger": {
+          "enabled": true
+        },
+        "session-memory": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "channels": {
+    "whatsapp": {
+      "dmPolicy": "allowlist",
+      "selfChatMode": true,
+      "allowFrom": [
+        "+5516992793422"
+      ],
+      "groupPolicy": "allowlist",
+      "debounceMs": 0,
+      "mediaMaxMb": 50
+    },
+    "discord": {
+      "allowBots": true,
+      "groupPolicy": "open",
+      "historyLimit": 40,
+      "dmHistoryLimit": 25,
+      "actions": {
+        "reactions": true,
+        "stickers": true,
+        "emojiUploads": true,
+        "stickerUploads": true,
+        "polls": true,
+        "permissions": true,
+        "messages": true,
+        "threads": true,
+        "pins": true,
+        "search": true,
+        "memberInfo": true,
+        "roleInfo": true,
+        "roles": true,
+        "channelInfo": true,
+        "voiceStatus": true,
+        "events": true,
+        "moderation": true,
+        "channels": true,
+        "presence": true
+      }
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "97fb8d9c326a7d30f9b888d825c68d45f7cc3fad919ca763"
+    },
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "nodes": {
+      "denyCommands": [
+        "camera.snap",
+        "camera.clip",
+        "screen.record",
+        "calendar.add",
+        "contacts.add",
+        "reminders.add"
+      ]
+    }
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "npm"
+    },
+    "entries": {
+      "nano-banana-pro": {
+        "apiKey": "${GEMINI_API_KEY}"
+      },
+      "notion": {
+        "apiKey": "${NOTION_SMARTENVIOS_API_KEY}"
+      },
+      "notion-personal": {
+        "apiKey": "${NOTION_PERSONAL_API_KEY}"
+      },
+      "notion-canper": {
+        "apiKey": "${NOTION_CANPER_API_KEY}"
+      },
+      "sag": {
+        "apiKey": "${SAG_API_KEY}"
+      }
+    }
+  },
+  "plugins": {
+    "entries": {
+      "whatsapp": {
+        "enabled": true
+      },
+      "discord": {
+        "enabled": true
+      }
+    }
+  }
+}

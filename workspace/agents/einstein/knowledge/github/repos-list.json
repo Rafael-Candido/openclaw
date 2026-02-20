@@ -1,0 +1,52 @@
+[
+  {
+    "name": "openclaw",
+    "url": "https://github.com/Rafael-Candido/openclaw",
+    "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞 "
+  },
+  {
+    "name": "openclaw-docker",
+    "url": "https://github.com/Rafael-Candido/openclaw-docker",
+    "description": ""
+  },
+  {
+    "name": "mp3",
+    "url": "https://github.com/Rafael-Candido/mp3",
+    "description": ""
+  },
+  {
+    "name": "uappi-freight",
+    "url": "https://github.com/Rafael-Candido/uappi-freight",
+    "description": ""
+  },
+  {
+    "name": "cancredi-hub",
+    "url": "https://github.com/Rafael-Candido/cancredi-hub",
+    "description": ""
+  },
+  {
+    "name": "imobiliaria-hub-conectar",
+    "url": "https://github.com/Rafael-Candido/imobiliaria-hub-conectar",
+    "description": ""
+  },
+  {
+    "name": "route-revel-travel",
+    "url": "https://github.com/Rafael-Candido/route-revel-travel",
+    "description": ""
+  },
+  {
+    "name": "jira-for-notion",
+    "url": "https://github.com/Rafael-Candido/jira-for-notion",
+    "description": ""
+  },
+  {
+    "name": "jira-for-notion-py",
+    "url": "https://github.com/Rafael-Candido/jira-for-notion-py",
+    "description": ""
+  },
+  {
+    "name": "Hacktoberfest",
+    "url": "https://github.com/Rafael-Candido/Hacktoberfest",
+    "description": "Teste Hacktoberfest"
+  }
+]

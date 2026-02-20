@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Claw avatar">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="octo" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="256" height="256" rx="52" fill="url(#bg)"/>
+
+  <circle cx="128" cy="112" r="56" fill="url(#octo)"/>
+  <circle cx="106" cy="104" r="12" fill="#ffffff"/>
+  <circle cx="150" cy="104" r="12" fill="#ffffff"/>
+  <circle cx="106" cy="104" r="5" fill="#0f172a"/>
+  <circle cx="150" cy="104" r="5" fill="#0f172a"/>
+  <path d="M108 132c8 10 32 10 40 0" stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+  <path d="M68 172c12 0 12-16 24-16s12 16 24 16 12-16 24-16 12 16 24 16 12-16 24-16" fill="none" stroke="#a855f7" stroke-width="12" stroke-linecap="round"/>
+  <path d="M56 196c10 0 10-12 20-12s10 12 20 12 10-12 20-12 10 12 20 12 10-12 20-12 10 12 20 12 10-12 20-12" fill="none" stroke="#9333ea" stroke-width="10" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,56 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# OpenClaw specific
+.openclaw/
+backups/
+credentials/
+sandbox/
+sandboxes/
+delivery-queue/
+media/
+memory/
+exec-approvals.json
+openclaw.json.bak*
+update-check.json
+
+# Agent authentication and sessions (contain secrets)
+agents/*/agent/auth*.json
+agents/*/agent/auth-profiles.json
+agents/*/sessions/*.jsonl
+agents/*/sessions/sessions.json
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
