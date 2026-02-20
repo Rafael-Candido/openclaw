@@ -181,9 +181,26 @@ Especialistas DEVEM postar comentários no card do Notion ao longo da execução
 - O Presidente e diretores podem acompanhar execuções em tempo real.
 - A governança usa o `last_edited_time` do card para detectar travamento — comentários progressivos mantêm esse timestamp atualizado.
 
-## Especialistas nomeados: Mail-Pro e Mail-Person
+## Especialistas nomeados
 
-Dois agentes especialistas que executam a **rotina de especialista** descrita acima. Cada um capta apenas os cards em **Priorizado** em que a propriedade **Agente** está no **seu nome**, lê a descrição do card e executa o que está descrito.
+Cada especialista capta apenas cards em **Priorizado** onde a propriedade **Agente** está no **seu nome**.
+
+### Engenheiro SmartEnvios
+- **Agente:** propriedade do card = **Engenheiro SmartEnvios**
+- **Diretor:** Tech
+- **Escopo:** bugs, features, melhorias em todos os repos SmartEnvios (`/var/www/ms.*`, `/var/www/mcp`, `/var/www/lgc.core`, etc.)
+- **GitHub:** https://github.com/SmartEnvios
+- **Acesso:** fullstack, git, exec, todos os repos em /var/www/
+
+### Engenheiro de Prompt
+- **Agente:** propriedade do card = **Engenheiro de Prompt**
+- **Diretor:** Pessoal
+- **Escopo:** manutenção e evolução da estrutura OpenClaw — agentes, prompts, documentação, KNOWLEDGE, SETUP_COMPLETO, versionamento
+- **GitHub:** https://github.com/Rafael-Candido (repo `openclaw`)
+- **Parceiros:** Otimizador e Governança criam cards para ele evoluir a estrutura
+- **Acesso:** workspace OpenClaw completo, git, exec
+
+### Mail-Pro e Mail-Person
 
 ### Mail-Pro
 - **Agente:** propriedade do card = **Mail-Pro**.
@@ -341,22 +358,34 @@ Commits: [hash1], [hash2]
 
 ## 4) Agente de Governança
 
-Agente dedicado a garantir continuidade operacional de todos os crons e agentes.
+Agente dedicado a garantir continuidade operacional e escalonamento correto de todos os crons e agentes.
 
-- **Cron:** `Governança - health check 5min` (ID: `6b70fa44-66ac-4665-bad3-00d6122f9da1`)
-- **Frequência:** a cada 5 minutos
+- **Cron:** `Governança - health check 10min` (ID: `e5bb7978-cd99-4e8d-924a-b4d42a140c1e`)
+- **Frequência:** a cada 10 minutos
 - **Script:** `scripts/governance-check.sh`
 
 ### O que faz:
 
 1. **Health check do gateway** — se DOWN, reinicia automaticamente.
 2. **Detecta crons com erros consecutivos** (>= 2) — reseta sessão e re-habilita.
-3. **Detecta crons travados** (running > 20min) — registra alerta.
-4. **Verifica cards em `Em andamento` há muito tempo** (>20min sem atividade):
-   - `Agente=Mail-Pro` → força execução do cron `b3c678e4`
-   - `Agente=Mail-Person` → força execução do cron `568c5ad9`
+3. **Detecta crons travados** (running > 20min) — reseta sessão.
+4. **Escalonamento automático de crons** — verifica se há colisão entre crons (gap < 2min entre execuções próximas). Se detectar sobreposição, ajusta os anchors automaticamente para garantir separação mínima de 2 minutos. Isso escala com novos agentes/crons sem intervenção manual.
+5. **Verifica cards em `Em andamento` há muito tempo** (>20min sem atividade):
+   - `Agente=Mail-Pro` → força execução do cron Mail-Pro
+   - `Agente=Mail-Person` → força execução do cron Mail-Person
    - Outros agentes (>30min) → registra alerta para intervenção manual
-5. **Registra incidentes** em `memory/YYYY-MM-DD.md`.
+6. **Registra incidentes** em `memory/YYYY-MM-DD.md`.
+
+### Escalonamento automático — como funciona:
+
+A governança calcula o `nextRun` de cada cron habilitado, ordena por proximidade, e verifica se há gap < 2min entre consecutivos. Se houver, desloca o anchor do cron mais tardio para manter separação mínima.
+
+Isso significa que ao **adicionar novos agentes e crons**, a governança redistribui automaticamente — basta aumentar a periodicidade conforme o número de crons cresce para manter folga no rate limit.
+
+**Regra prática de periodicidade:**
+- Até 10 crons: intervalos de 10min (especialistas) e 30min (diretores) são suficientes
+- 10-15 crons: considerar intervalos de 15min e 45min
+- 15+ crons: considerar intervalos de 20min e 1h, ou reduzir `maxConcurrent` para 1
 
 ### O que NÃO faz:
 

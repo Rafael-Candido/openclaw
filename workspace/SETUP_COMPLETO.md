@@ -2,7 +2,38 @@
 
 **Documento único de referência** consolidando todo o setup, arquitetura, fluxos operacionais e implementações do ambiente OpenClaw.
 
-**Última atualização:** 2026-02-20
+**Última atualização:** 2026-02-20 (atualizado com modelos DeepSeek/Gemini/Grok, reforço de governança anti-cooldown, e validações de runtime)
+
+---
+
+## 0. Patch Operacional (2026-02-20)
+
+Esta seção sobrescreve pontos antigos deste documento quando houver divergência.
+
+### 0.1. Modelos e providers validados
+
+- **DeepSeek (novo):**
+  - Provider custom em `openclaw.json > models.providers.deepseek`
+  - `deepseek/deepseek-chat`
+  - `deepseek/deepseek-reasoner`
+  - Credencial: `DEEP_API_KEY`
+
+- **Google Gemini:**
+  - Modelo atualizado para `google/gemini-3-pro-preview` (alias `Google Gemini 3 Pro`)
+  - Validação direta de API com sucesso em `gemini-2.5-flash` (`generateContent`)
+  - Observação: referências a Gemini `1.5` neste documento são históricas e podem falhar com 404
+
+- **xAI/Grok:**
+  - Variável obrigatória no runtime: `XAI_API_KEY`
+  - `GROK_API_KEY` pode existir por compatibilidade, mas não substitui `XAI_API_KEY`
+  - Endpoint oficial `POST /v1/responses` validado com `grok-4-1-fast-reasoning`
+
+### 0.2. Governança reforçada
+
+`scripts/governance-check.sh` passou a incluir:
+- limpeza de locks de sessão obsoletos (`*.lock`)
+- detecção de pressão de modelos no log (`rate limit`, `cooldown`, `session file locked`)
+- reinício preventivo do gateway em saturação recorrente
 
 ---
 
@@ -181,9 +212,13 @@ OPENCLAW_WORKSPACE_DIR=/var/www/openclaw/workspace
    - Atribuir card ao diretor correto para esse especialista
 3. Escrever descrição **funcional** no card (sem detalhamento técnico)
 
-**Regra de profundidade da descrição:**
+**Regra de profundidade da descrição (CRÍTICO):**
+- O Presidente deve escrever descrição **funcional e clara**, mas **sem detalhamento técnico**
+- Os diretores agora operam com cron **generalista** — captam qualquer card `Aguardando` do domínio deles
+- Por isso, a descrição funcional do Presidente é a **única fonte de contexto** para o diretor entender, rotear e detalhar tecnicamente
 - **DEVE incluir:** demanda funcional, domínio/área, objetivo em 1-2 frases, critérios de conclusão funcionais, contexto relevante
-- **NÃO deve incluir:** passos técnicos, arquitetura, scripts/comandos, instruções de código
+- **NÃO deve incluir:** passos técnicos, arquitetura, scripts/comandos, instruções de código, nome de ferramentas internas ou paths de scripts
+- **Quem detalha tecnicamente é o Diretor** ao captar o card e mover para `Priorizado`
 
 **Revisão contínua:** Ler cards `Tipo OpenClaw` em `Concluído`, comparar com esperado, juntar feedback e melhorar instruções/templates/KNOWLEDGE/fluxos.
 
@@ -222,7 +257,22 @@ OPENCLAW_WORKSPACE_DIR=/var/www/openclaw/workspace
   - Preenche descrição com objetivo claro da tarefa (especialmente para atividade recorrente de gestão de e-mail)
 
 **Diretor de Negócios:**
-- Enquanto especialistas dedicados não existem, normaliza cards para `Priorizado` com `Agente` = especialista de negócios alvo (quando existir) ou `Tech` para execução técnica temporária
+- **Função padrão (Notion):** Enquanto especialistas dedicados não existem:
+  1. Captar demandas de negócio e normalizar o card para `Priorizado` com `Tipo: OpenClaw`, `Solicitante: Rafael Pereira`
+  2. Atribuir `Agente` = especialista de negócios alvo (quando existir) ou `Tech` para execução técnica temporária
+  3. Escrever descrição técnica/funcional acionável para execução
+  4. Registrar no card qual especialista de negócios será o responsável definitivo assim que for criado
+- Quando os especialistas de Negócios forem criados: substituir o `Agente` temporário pelo especialista correto, mantendo o mesmo padrão de lifecycle (`Priorizado` → `Em andamento` → `Concluído`)
+
+**Roteamento recomendado (Diretor → Especialista):**
+
+| Tipo de tarefa | Diretor | Especialista (Agente) |
+|----------------|---------|------------------------|
+| Backend/API/MCP | `Tech` | `Engenheiro Backend` |
+| E-mail profissional | `Tech` | `Mail-Pro` |
+| E-mail pessoal | `Diretor Pessoal` | `Mail-Person` |
+| Negócios (antes dos especialistas) | `Diretor Negócios` | `Tech` (temporário) |
+| Negócios (após criação dos especialistas) | `Diretor Negócios` | `[Especialista de Negócios]` |
 
 ### 5.3. Especialistas
 
@@ -336,6 +386,27 @@ Commits: [hash1], [hash2]
 - Manter restrições de segurança
 - Registrar aprendizados em KNOWLEDGE/base do agente
 
+**Ferramentas Operacionais (agents/einstein/AGENTS.md):**
+
+**SmartEnvios MCP (USAR SEMPRE QUE POSSÍVEL):**
+- Acesso ao MCP SmartEnvios via exec para: cotações de frete (`smartenvios_quote_freight`), consulta de CEP (`cep_lookup`), qualquer operação que o MCP suporte
+- Script: `/var/www/openclaw/workspace/scripts/smartenvios-mcp.sh`
+- **Regra:** se alguém pedir cotação ou operação SmartEnvios, **execute via MCP** em vez de apenas orientar como fazer manualmente
+
+**Escalonamento para Notion (quando não conseguir resolver):**
+Quando Einstein não conseguir resolver algo (falta de acesso, limitação técnica, precisa de implementação):
+1. Criar card no Notion SmartEnvios com `Status: Aguardando`, `Tipo: OpenClaw`, `Solicitante: Rafael Pereira`, `Agente: Tech`
+2. Descrição funcional no card: o que foi pedido, por que não conseguiu resolver, o que precisa ser feito para resolver
+3. Informar o solicitante que criou a atividade e que o Diretor Tech vai priorizar
+- Database Notion SmartEnvios: `adec12e735dc41a3bb7c274b287f3a10`
+- API Key: usar skill `notion` ou `$NOTION_SMARTENVIOS_API_KEY`
+
+**Comportamento em Group Chats:**
+- **Know When to Speak:** responder quando mencionado diretamente, quando pode adicionar valor genuíno, quando algo engraçado se encaixa naturalmente, quando corrigindo desinformação importante, quando resumindo quando pedido
+- **Stay silent (HEARTBEAT_OK):** quando é apenas conversa casual entre humanos, quando alguém já respondeu, quando a resposta seria apenas "yeah" ou "nice", quando a conversa está fluindo bem sem você
+- **React Like a Human:** usar reações emoji naturalmente (👍, ❤️, 🙌, 😂, 💀, 🤔, 💡, ✅, 👀) — uma reação por mensagem máximo
+- **Evitar triple-tap:** não responder múltiplas vezes à mesma mensagem com reações diferentes
+
 **Fontes de informação SmartEnvios:**
 - Notion SmartEnvios (via `NOTION_SMARTENVIOS_API_KEY`)
 - Base pública: `https://smartenvios.zendesk.com/hc/pt-br`
@@ -365,75 +436,124 @@ Commits: [hash1], [hash2]
 - Para outros utilizadores, se o Presidente identificar intenção de tirar dúvida sem prefixo, deve orientar: **use `Dúvida: {{texto}}`**
 
 **Esteira Einstein → Diretor Tech → Engenheiro Backend:**
-Quando Einstein não conseguir responder por limitação técnica:
+Quando Einstein não conseguir responder uma dúvida SmartEnvios por limitação técnica:
 1. Criar card em `Aguardando` com `Tipo: OpenClaw`, `Solicitante: Rafael Pereira`, `Agente: Tech`
 2. Diretor Tech detalha solução/plano técnico e muda para `Priorizado` com `Agente: Engenheiro Backend`
 3. Engenheiro Backend executa melhoria no repositório MCP/API, documenta evidências e conclui
 
+### 5.5.1. Engenheiro Backend
+
+**Agente:** propriedade do card = `Engenheiro Backend` (ou `Backend Engineer`)
+
+**Workspace:** `/var/www/openclaw/workspace/agents/backend-engineer`
+
+**Papel:** Especialista em melhorias técnicas de backend para o ecossistema OpenClaw/SmartEnvios
+
+**Foco principal:**
+- MCP SmartEnvios
+- Zendesk via MCP/API
+- Automações API-first do fluxo Notion
+
+**Fluxo de trabalho:**
+1. Recebe card em `Priorizado` com `Agente = Engenheiro Backend`
+2. Executa melhoria técnica no(s) repositório(s) alvo
+3. Registra evidências no card (o que foi alterado, testes, impacto)
+4. Move para `Concluído`
+
+**Regras:**
+- Priorizar acesso por API/MCP (API-first)
+- Evitar fluxo manual/painel quando existir endpoint/tool disponível
+- Documentar mudanças em `KNOWLEDGE.md` e evidências no card
+- Nunca expor credenciais em logs/comentários
+
+**Entrada esperada:**
+- Cards em `Priorizado` com `Tipo = OpenClaw`, `Agente = Engenheiro Backend`
+- Descrição técnica detalhada pelo Diretor Tech
+
+**Saída obrigatória:**
+- Atualização técnica implementada
+- Evidências no card
+- Status final em `Concluído`
+
 ### 5.6. Agente de Governança
 
-**Papel:** Garantir continuidade operacional de todos os crons e agentes
+**Papel:** Garantir continuidade operacional e escalonamento correto de todos os crons e agentes
 
-**Cron:** `Governança - health check 5min` (ID: `6b70fa44-66ac-4665-bad3-00d6122f9da1`)
+**Cron:** `Governança - health check 10min` (ID: `e5bb7978-cd99-4e8d-924a-b4d42a140c1e`)
 
-**Frequência:** a cada 5 minutos
+**Frequência:** a cada 10 minutos
 
 **Script:** `scripts/governance-check.sh`
 
 **O que faz:**
 1. **Health check do gateway** — se DOWN, reinicia automaticamente
 2. **Detecta crons com erros consecutivos** (>= 2) — reseta sessão e re-habilita
-3. **Detecta crons travados** (running > 20min) — registra alerta
-4. **Verifica cards em `Em andamento` há muito tempo** (>20min sem atividade):
-   - `Agente=Mail-Pro` → força execução do cron `b3c678e4`
-   - `Agente=Mail-Person` → força execução do cron `568c5ad9`
+3. **Detecta crons travados** (running > 20min) — reseta sessão
+4. **Escalonamento automático de crons** — verifica se há colisão entre crons (gap < 2min entre execuções próximas). Se detectar sobreposição, ajusta os anchors automaticamente para garantir separação mínima de 2 minutos. Isso escala com novos agentes/crons sem intervenção manual
+5. **Verifica cards em `Em andamento` há muito tempo** (>20min sem atividade):
+   - `Agente=Mail-Pro` → força execução do cron Mail-Pro
+   - `Agente=Mail-Person` → força execução do cron Mail-Person
    - Outros agentes (>30min) → registra alerta para intervenção manual
-5. **Registra incidentes** em `memory/YYYY-MM-DD.md`
+6. **Registra incidentes** em `memory/YYYY-MM-DD.md`
+
+**Escalonamento automático — como funciona:**
+- A governança calcula o `nextRun` de cada cron habilitado, ordena por proximidade, e verifica se há gap < 2min entre consecutivos
+- Se houver, desloca o anchor do cron mais tardio para manter separação mínima
+- Isso significa que ao **adicionar novos agentes e crons**, a governança redistribui automaticamente — basta aumentar a periodicidade conforme o número de crons cresce para manter folga no rate limit
+
+**Regra prática de periodicidade:**
+- Até 10 crons: intervalos de 10min (especialistas) e 30min (diretores) são suficientes
+- 10-15 crons: considerar intervalos de 15min e 45min
+- 15+ crons: considerar intervalos de 20min e 1h, ou reduzir `maxConcurrent` para 1
 
 **O que NÃO faz:**
 - Não cria cards no Notion
 - Não move cards de status
 - Não interfere na lógica de negócio dos agentes
 
-**Responsabilidades (planejadas):**
-- Verificar saúde constantemente (gateway, agentes, crons, conectividade)
-- Garantir conclusão de execuções (cards travados, crons não executados)
-- Contingência para evitar crashes (detectar falhas antes de causar interrupção)
-- Evitar ficar descoberto (lacunas operacionais)
-
 ### 5.7. Agente de Otimização e Performance
 
-**Papel:** Análise e melhoria contínua
+**Papel:** Análise e melhoria contínua — trabalha em parceria com a Governança
 
-**Cron sugerido:** diariamente (após fim do dia ou início do dia seguinte)
+**Cron:** `Otimizador - análise diária 7h` (ID: `9cb7163f-2e4e-48ed-9035-8148c77c5968`)
 
-**Responsabilidades:**
-1. **Análise diária de logs:**
-   - Processar logs do dia anterior (gateway, agentes, crons, operações)
-   - Identificar padrões: erros recorrentes, operações lentas, timeouts, falhas de conectividade
-   - Mapear gargalos técnicos por agente, operação ou fluxo
+**Frequência:** diário às 7h (America/Sao_Paulo)
 
-2. **Análise de fluxo e instruções:**
-   - Revisar descrições de cards, templates, instruções em FLUXO_AGENTES, AGENTS.md, KNOWLEDGE.md
-   - Identificar sobreposições (instruções contraditórias ou redundantes)
-   - Identificar incoerências (instruções que conflitam entre documentos ou versões)
-   - Propor simplificações e melhorias de clareza
-
-3. **Otimizações propostas/implementadas:**
-   - Ajustar instruções em documentos para eliminar ambiguidade
-   - Sugerir melhorias em templates de descrição de cards
-   - Otimizar lógica de decisão (ex.: quando Mail-Pro deve criar rascunho vs apenas arquivar)
-   - Documentar aprendizados e padrões otimizados
-
-4. **Integração com Governança:**
-   - Ler relatórios/incidentes documentados pela Governança
-   - Focar otimizações nos pontos que mais causaram trabalho para a Governança
-   - Objetivo: reduzir progressivamente a carga de trabalho da Governança através de otimizações preventivas
+**Prompt:** `scripts/optimizer-prompt.txt`
 
 **Parceria com Governança:**
-- **Governança:** garante que o processo seja executado independente do erro (reativo)
-- **Otimizador:** pega os gargalos que fizeram a Governança ter trabalho e otimiza para que não aconteçam novamente (preventivo)
-- **Objetivo de longo prazo:** com o tempo, fluxos mais antigos devem dar menos trabalho para a Governança garantir
+- **Governança:** é o **bombeiro** (garante execução em tempo real)
+- **Otimizador:** é o **engenheiro** (elimina a causa raiz para que a governança tenha cada vez menos trabalho)
+
+**Fases de execução:**
+1. **O que deu trabalho para a governança?**
+   - Lê logs, memory, cron list → identifica erros, sessões inchadas, crons lentos, cards travados, gateway restarts
+   - Para cada incidente, identifica a **causa raiz** (não apenas o sintoma)
+
+2. **Eliminar a causa raiz:**
+   - Sessão inchada → reset + análise se prompt pode ser enxuto
+   - Cron lento → simplifica prompt
+   - Gateway instável → aplica stagger entre crons
+   - Card travado → melhora instruções do especialista
+   - Instruções conflitantes → corrige documentos e prompts dos crons
+   - Regras duplicadas → consolida em local único
+
+3. **Documentar para não repetir:**
+   - `KNOWLEDGE.md` → padrões definitivos com causa + fix
+   - `memory/YYYY-MM-DD.md` → resumo do dia + tendência
+
+**Objetivo de longo prazo:**
+- Fluxos maduros devem gerar **zero incidentes** para a governança
+- O otimizador mede isso via tendência diária (incidentes hoje vs ontem)
+
+**O que pode fazer:**
+- Resetar sessões, ajustar stagger, simplificar prompts, corrigir documentos
+- Toda alteração registrada em KNOWLEDGE.md
+
+**O que NÃO faz:**
+- Não desabilita crons
+- Não cria/move cards no Notion
+- Não altera credenciais
 
 ---
 
@@ -447,7 +567,9 @@ Quando Einstein não conseguir responder por limitação técnica:
 
 **Propriedade chave:** `Agente`
 
-**Regra de escopo e deduplicação por agente:**
+**Regra de escopo e deduplicação por agente — OBRIGATÓRIO:**
+
+Cada agente opera em **dois status**: capta do status de entrada e checa duplicidade no status de saída.
 
 | Agente | Capta de | Checa duplicidade em | Move para |
 |--------|----------|---------------------|-----------|
@@ -653,31 +775,114 @@ Template oficial: `templates/notion-card-openclaw.md`
 - `Mail-Person-BaixoValor`
 - `Mail-Person-Importante`
 
+### 8.5. Comportamento em Group Chats (AGENTS.md)
+
+**Know When to Speak:**
+- **Responder quando:** mencionado diretamente, quando pode adicionar valor genuíno, quando algo engraçado se encaixa naturalmente, quando corrigindo desinformação importante, quando resumindo quando pedido
+- **Stay silent (HEARTBEAT_OK):** quando é apenas conversa casual entre humanos, quando alguém já respondeu, quando a resposta seria apenas "yeah" ou "nice", quando a conversa está fluindo bem sem você
+- **Regra humana:** Humanos em group chats não respondem a cada mensagem. Nem você deve. Qualidade > quantidade
+
+**React Like a Human:**
+- Usar reações emoji naturalmente (👍, ❤️, 🙌, 😂, 💀, 🤔, 💡, ✅, 👀)
+- Reagir quando: aprecia algo mas não precisa responder, algo fez rir, acha interessante, quer reconhecer sem interromper o fluxo
+- Uma reação por mensagem máximo
+
+**Evitar triple-tap:** Não responder múltiplas vezes à mesma mensagem com reações diferentes. Uma resposta pensada vence três fragmentos.
+
+### 8.6. Live Feedback (Main Session)
+
+Em chat direto com o utilizador (`agent:main:main`), evitar execuções silenciosas longas.
+
+Quando uma tarefa precisa de ferramentas ou pode levar mais de ~5-10 segundos:
+- Enviar reconhecimento rápido primeiro (o que vai verificar/fazer)
+- Enquanto ainda trabalha, postar atualizações de progresso curtas a cada ~20-40 segundos
+- Se um passo estiver bloqueado/mais lento que esperado, dizer o que aconteceu e próxima ação
+- Terminar com resultado conciso e próximo passo imediato
+
+**Para atualizações de progresso no webchat principal**, preferir tabela compacta com percentual de conclusão:
+
+| Etapa | Status | Conclusão |
+|-------|--------|-----------|
+| Diagnóstico | Em andamento | 25% |
+| Ajuste de config | Pendente | 0% |
+| Validação final | Pendente | 0% |
+
+Regras: manter curto (3-6 linhas máximo), atualizar percentuais realisticamente conforme o trabalho avança. Para Discord/WhatsApp, continuar usando bullets (sem tabelas markdown).
+
+### 8.7. Heartbeats — Ser Proativo
+
+Quando receber um heartbeat poll, não apenas responder `HEARTBEAT_OK` sempre. Usar heartbeats produtivamente!
+
+**Heartbeat vs Cron:**
+- **Usar heartbeat quando:** múltiplas verificações podem ser agrupadas (inbox + calendário + notificações em uma vez), precisa de contexto conversacional de mensagens recentes, timing pode variar ligeiramente (~30 min está ok, não exato), quer reduzir chamadas de API combinando verificações periódicas
+- **Usar cron quando:** timing exato importa ("9:00 AM sharp toda segunda"), tarefa precisa isolamento do histórico da sessão principal, quer modelo ou nível de pensamento diferente para a tarefa, lembretes one-shot ("lembrar em 20 minutos"), saída deve entregar diretamente a um canal sem envolvimento da sessão principal
+
+**Dica:** Agrupar verificações similares periódicas em `HEARTBEAT.md` em vez de criar múltiplos cron jobs. Usar cron para horários precisos e tarefas standalone.
+
+**Coisas para verificar (rotacionar entre estas, 2-4 vezes por dia):**
+- **Emails** — Alguma mensagem não lida urgente?
+- **Calendário** — Eventos próximos nas próximas 24-48h?
+- **Mentions** — Notificações Twitter/social?
+- **Weather** — Relevante se o humano pode sair?
+
+**Quando entrar em contato:**
+- Email importante chegou
+- Evento de calendário chegando (<2h)
+- Algo interessante que encontrou
+- Passou >8h desde que disse algo
+
+**Quando ficar quieto (HEARTBEAT_OK):**
+- Madrugada (23:00-08:00) a menos que urgente
+- Humano claramente ocupado
+- Nada novo desde última verificação
+- Acabou de verificar <30 minutos atrás
+
+**Trabalho proativo que pode fazer sem pedir:**
+- Ler e organizar arquivos de memória
+- Verificar projetos (git status, etc.)
+- Atualizar documentação
+- Commit e push de suas próprias mudanças
+- **Revisar e atualizar MEMORY.md** (manutenção de memória)
+
+**Memory Maintenance (Durante Heartbeats):**
+Periodicamente (a cada poucos dias), usar um heartbeat para:
+1. Ler através de arquivos recentes `memory/YYYY-MM-DD.md`
+2. Identificar eventos significativos, lições ou insights que valem manter a longo prazo
+3. Atualizar `MEMORY.md` com aprendizados destilados
+4. Remover informações desatualizadas de MEMORY.md que não são mais relevantes
+
 ---
 
 ## 9. Referências e Documentação
 
 ### 9.1. Documentos Principais
 
-- **FLUXO_AGENTES.md** — Fluxo operacional completo Notion (Presidente, Diretores, Especialistas)
-- **AGENTS.md** — Regras e padrões dos agentes, autonomia, resiliência
-- **PLANO_PROJETO.md** — Plano de projeto (logging obrigatório)
-- **TOOLS.md** — Ferramentas e skills disponíveis
-- **NOTION.md** — Workspaces Notion configurados
+- **FLUXO_AGENTES.md** — Fluxo operacional completo Notion (Presidente, Diretores, Especialistas), regras de deduplicação, templates, esteira Einstein→Tech→Backend
+- **AGENTS.md** — Regras e padrões dos agentes, autonomia, resiliência, comportamento group chats, heartbeats, live feedback
+- **PLANO_PROJETO.md** — Plano de projeto (logging obrigatório), resiliência operacional
+- **TOOLS.md** — Ferramentas e skills disponíveis, scripts Gmail, SmartEnvios MCP
+- **NOTION.md** — Workspaces Notion configurados, mapeamento diretor→skill
 - **KNOWLEDGE.md** — Conhecimento histórico e padrões
-- **SETUP_COMPLETO.md** — Este documento (referência única)
+- **SETUP_COMPLETO.md** — Este documento (referência única consolidada)
+- **agents/einstein/AGENTS.md** — Regras específicas do Einstein (ferramentas operacionais MCP, escalonamento para Notion, comportamento group chats)
 
 ### 9.2. Documentação Técnica
 
 - **docs/development/LOGGING_AND_RULES.md** — Regras técnicas de logging
+- **docs/MODEL_FALLBACK_STRATEGY.md** — Estratégia de fallback de modelos
 - **scripts/gmail/README.md** — API reference Gmail
 - **scripts/gmail/AGENT_WORKFLOW.md** — Workflow para especialistas Mail-Pro/Person
+- **scripts/gmail/UNSUBSCRIBE_GUIDE.md** — Guia de unsubscribe de emails promocionais
 - **agents/einstein/README.md** — Configuração Einstein
+- **agents/einstein/AGENTS.md** — Regras específicas Einstein (MCP, escalonamento, group chats)
 - **agents/einstein/ENRICHMENT_GUIDE.md** — Como enriquecer Einstein
+- **agents/einstein/SOURCES.md** — Fontes de informação SmartEnvios
+- **agents/backend-engineer/README.md** — Configuração Engenheiro Backend
+- **agents/backend-engineer/AGENTS.md** — Regras específicas Engenheiro Backend
 
 ### 9.3. Templates
 
-- **templates/notion-card-openclaw.md** — Template oficial para cards OpenClaw
+- **templates/notion-card-openclaw.md** — Template oficial para cards OpenClaw (propriedades padrão, roteamento recomendado, corpo padrão, comentário padrão do especialista)
 
 ### 9.4. Fontes SmartEnvios (Einstein)
 
@@ -714,16 +919,17 @@ Template oficial: `templates/notion-card-openclaw.md`
 - [ ] Diretores configurados (Tech, Pessoal, Negócios)
 - [ ] Mail-Pro configurado e testado
 - [ ] Mail-Person configurado e testado
-- [ ] Einstein configurado e testado (gatilho Discord)
-- [ ] Agente de Governança configurado (cron 5min)
-- [ ] Agente de Otimização e Performance planejado
+- [ ] Einstein configurado e testado (gatilho Discord, ferramentas MCP, escalonamento Notion)
+- [ ] Engenheiro Backend configurado (esteira Einstein→Tech→Backend)
+- [ ] Agente de Governança configurado (cron 10min, escalonamento automático)
+- [ ] Agente de Otimização e Performance implementado (cron diário 7h)
 
 ### 10.4. Crons
 
 - [ ] Cron Diretor Tech (rotinas Mail-Pro)
 - [ ] Cron Diretor Pessoal (rotinas Mail-Person)
-- [ ] Cron Governança (health check 5min)
-- [ ] Cron Otimização (diário - planejado)
+- [ ] Cron Governança (health check 10min, ID: `e5bb7978-cd99-4e8d-924a-b4d42a140c1e`)
+- [ ] Cron Otimização (diário 7h, ID: `9cb7163f-2e4e-48ed-9035-8148c77c5968`)
 
 ### 10.5. Documentação
 
@@ -740,20 +946,38 @@ Template oficial: `templates/notion-card-openclaw.md`
 ### 11.1. Monitoramento
 
 - **Logs:** `tail -f /var/www/openclaw/logs/gateway.log`
-- **Governança:** verifica saúde a cada 5 minutos
+- **Governança:** verifica saúde a cada 10 minutos
 - **Otimização:** analisa logs diariamente
 
 ### 11.2. Atualizações
 
 - Documentar mudanças em `memory/YYYY-MM-DD.md`
-- Atualizar `SETUP_COMPLETO.md` quando houver mudanças significativas
+- Atualizar `SETUP_COMPLETO.md` quando houver mudanças significativas na arquitetura, fluxos ou implementações
 - Revisar e atualizar templates quando necessário
+- Manter sincronização entre FLUXO_AGENTES.md, AGENTS.md, PLANO_PROJETO.md e SETUP_COMPLETO.md
 
 ### 11.3. Evolução Contínua
 
-- **Governança:** garante execução mesmo com erros
-- **Otimização:** elimina gargalos identificados pela Governança
+- **Governança:** garante execução mesmo com erros, escalona automaticamente crons para evitar colisões
+- **Otimização:** elimina gargalos identificados pela Governança, mede tendência diária (incidentes hoje vs ontem)
 - **Objetivo:** reduzir progressivamente a carga de trabalho da Governança através de otimizações preventivas
+- **Fluxos maduros:** devem gerar zero incidentes para a governança
+
+### 11.4. Regras Críticas de Operação
+
+**Regra de escopo e deduplicação (OBRIGATÓRIO):**
+- Cada agente opera apenas em dois status: capta do status de entrada e checa duplicidade no status de saída
+- Nunca consultar status fora do escopo do agente (ver tabela em secção 6.1)
+
+**Regra de profundidade da descrição (CRÍTICO):**
+- Presidente escreve descrição funcional (sem detalhamento técnico)
+- Diretor detalha tecnicamente ao mover para Priorizado
+- Esta separação é fundamental para o funcionamento do sistema
+
+**Comentários incrementais (OBRIGATÓRIO para especialistas):**
+- Especialistas DEVEM postar comentários no card do Notion ao longo da execução, não apenas no final
+- Máximo 300 caracteres por comentário
+- Mostrar jornada de execução: etapa atual, progresso, o que pretende fazer a seguir
 
 ---
 

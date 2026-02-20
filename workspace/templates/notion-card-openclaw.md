@@ -26,11 +26,13 @@ Ao captar o card, o diretor deve normalizar para:
 
 | Tipo de tarefa | Diretor | Especialista (Agente) |
 |---|---|---|
-| Backend/API/MCP | `Tech` | `Engenheiro Backend` |
+| Código/bugs/features SmartEnvios | `Tech` | `Engenheiro SmartEnvios` |
+| MCP (novas ferramentas, endpoints) | `Tech` | `Engenheiro SmartEnvios` |
 | E-mail profissional | `Tech` | `Mail-Pro` |
+| Manutenção OpenClaw (agentes, prompts, docs) | `Diretor Pessoal` | `Engenheiro de Prompt` |
+| Enriquecimento base Einstein | `Diretor Pessoal` | `Engenheiro de Prompt` |
 | E-mail pessoal | `Diretor Pessoal` | `Mail-Person` |
-| Negócios (antes dos especialistas) | `Diretor Negócios` | `Tech` (temporário) |
-| Negócios (após criação dos especialistas) | `Diretor Negócios` | `[Especialista de Negócios]` |
+| Negócios (temporário) | `Diretor Negócios` | `Tech` |
 
 ## Corpo padrão (copiar/colar)
 

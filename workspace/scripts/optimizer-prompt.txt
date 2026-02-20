@@ -53,10 +53,21 @@ Execução diária em 3 fases:
    - Tendência: melhorando/estável/piorando
    - Recomendações que precisam aprovação humana (se houver)
 
+## FASE 4 — Criar cards de melhoria para o Engenheiro de Prompt
+
+10. Quando identificar melhorias que precisam de implementação (simplificar prompt, corrigir incoerência, enriquecer base, etc.):
+    - Criar card no Notion do workspace PESSOAL (notion-personal, DB: bfcbe7a7a3a745489e605e0762af12a9) com:
+      - Status='Aguardando'
+      - Tipo='OpenClaw'
+      - Solicitante='Rafael Pereira'
+      - Agente='Diretor Pessoal'
+    - Descrição funcional da melhoria identificada (causa raiz, o que precisa mudar, impacto esperado)
+    - O Diretor Pessoal vai priorizar e atribuir ao Engenheiro de Prompt para execução
+
 Regras:
 - Pode resetar sessões, ajustar stagger, simplificar prompts e corrigir documentos livremente
+- Pode criar cards no Notion Personal para melhorias (Aguardando, Agente=Diretor Pessoal)
 - Toda alteração de prompt ou documento DEVE ser registrada em KNOWLEDGE.md
 - NÃO desabilitar crons
-- NÃO criar/mover cards no Notion
 - NÃO alterar credenciais ou .env
 - Prioridade: eliminar causas raiz > tratar sintomas

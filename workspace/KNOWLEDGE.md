@@ -6,11 +6,56 @@ Este arquivo documenta padrões, descobertas e soluções que funcionaram bem pa
 
 Toda vez que descobrirmos um padrão, resolvermos um problema, ou configurarmos algo novo, devemos documentar aqui para referência futura. Este é o conhecimento histórico acumulado que permite replicar soluções e evitar erros já conhecidos.
 
-## 2026-02-20 – Regra de Resiliência para Automação
+## 2026-02-20 – Regra de Resiliência para Automação (atualizada 13:23)
 
-- Sempre buscar o identificador correto via API antes de declarar bloqueio (ex.: `GET /v1/users` no Notion para achar `Solicitante`).
-- Documentar a tentativa concreta (comando/API usada) quando registrar pendência.
-- Adotar este padrão para todos os agentes (main, diretores, especialistas, Einstein).
+**Princípio fundamental: TENTAR PRIMEIRO, FALHAR DEPOIS, NUNCA ASSUMIR**
+
+### Regras obrigatórias para todos os especialistas
+
+1. **Sempre executar scripts/APIs antes de declarar bloqueio:**
+   - NUNCA assumir que credenciais estão vazias sem tentar
+   - NUNCA declarar "sem token" sem executar o comando de autenticação
+   - Se um script falhou ontem, TENTAR NOVAMENTE hoje (pode ter sido corrigido)
+
+2. **Evidência concreta de erro:**
+   - Copiar o output completo do comando que falhou
+   - Registrar no card Notion: comando executado + erro retornado
+   - Só então declarar bloqueio técnico
+
+3. **Buscar identificadores via API quando necessário:**
+   - Ex.: `GET /v1/users` no Notion para achar `Solicitante`
+   - Documentar a tentativa concreta quando registrar pendência
+
+4. **Aplicar a todos os agentes:**
+   - Main, diretores, especialistas, Einstein
+
+### Caso real: "Bloqueio de e-mail" falso (2026-02-20)
+
+**Problema:** Especialistas Mail-Pro e Mail-Person declararam "sem GMAIL_PROFESSIONAL_REFRESH_TOKEN" em múltiplos runs, movendo cards para Concluído sem execução.
+
+**Causa raiz:** Tokens EXISTIAM no .env e scripts gmail.sh FUNCIONAVAM perfeitamente, mas especialistas assumiram erro sem executar `./gmail.sh <profile> auth`.
+
+**Fix aplicado:** 
+- Prompts atualizados: "Só declarar bloqueio de credencial após teste real de Gmail API no run"
+- Documentado em KNOWLEDGE.md como padrão obrigatório
+- Regra: se script falhou antes, TENTAR DE NOVO (ambiente pode ter sido corrigido)
+
+## 2026-02-20 – Discord Gateway Instável (issue conhecido)
+
+**Sintoma:** Centenas de logs "Attempting resume with backoff" + "connection stalled: no HELLO received within 30000ms" durante horas.
+
+**Causa raiz:** Discord.js não recupera gracefully de timeouts de rede. Issue conhecido da biblioteca discord.js, não há fix fácil no OpenClaw.
+
+**Impacto:** Conexão Discord pode ficar instável por períodos longos (observado: 15h-16h em 2026-02-19), mas geralmente se recupera sozinha.
+
+**Mitigação:**
+- Se instabilidade persistir por >2h, considerar restart do gateway: `openclaw gateway restart`
+- Monitorar logs em `/Users/rafaelcanper/.openclaw/logs/gateway.log`
+- Se virar padrão diário, escalar para Rafael avaliar se vale trocar de biblioteca Discord
+
+**Status:** Tolerável por enquanto — instabilidade não impede operação principal (WhatsApp, WebChat, Notion, Gmail funcionam independentemente).
+
+---
 
 ## Como o OpenClaw Acessa Arquivos e Configurações
 
@@ -1073,6 +1118,73 @@ e **não** há nenhuma linha de nível ERROR com a exceção real (API, provider
 
 ---
 
+## 2026-02-20 — Fluxo Notion padronizado e escalonamento de crons
+
+### Padrão de propriedades de card OpenClaw
+- **Status**: Aguardando → Priorizado → Em andamento → Concluído
+- **Tipo**: OpenClaw (sempre)
+- **Solicitante**: Rafael Pereira (sempre)
+- **Agente**: responsável pela próxima etapa
+
+Template oficial: `templates/notion-card-openclaw.md`
+
+### Deduplicação por chave dupla (Assunto + Agente)
+Cada agente checa duplicidade no seu **status de saída**, não de entrada:
+- Presidente → checa Aguardando
+- Diretor → checa Priorizado
+- Especialista → checa Em andamento
+
+Se já existir card com mesmo título + mesmo Agente no status de saída, **esperar próximo ciclo**.
+
+### Escalonamento de crons para evitar rate limit
+**Problema**: Crons simultâneos esgotam rate limit de todos os providers em segundos.
+**Causa**: Cada cron que falha tenta 4 modelos em sequência (~2s cada). Múltiplos crons fazendo isso = rate limit global.
+**Solução**:
+- Distribuir anchors com gap mínimo de 2min entre crons
+- `maxConcurrent: 2` (máximo 2 crons simultâneos)
+- Governança redistribui automaticamente se detectar colisão
+- Script: `governance-check.sh` (seção escalonamento automático)
+
+### Profile "minimal" não registra tools como binding
+**Problema**: Einstein com `profile: "minimal"` via instruções no AGENTS.md mas escrevia `<function_calls>` como texto.
+**Causa**: O profile minimal não expõe tools no tool binding real do modelo.
+**Solução**: Remover `"profile": "minimal"` — usar profile padrão do sistema.
+
+### Sandbox "all" bloqueia .env e sessões
+**Problema**: Einstein com sandbox `mode: "all"` não conseguia ler `.env`, acessar sessions_history, nem executar scripts fora do workspace.
+**Solução**: `sandbox.mode: "off"` para agentes que precisam de acesso amplo.
+
+### SOUL.md é a autoridade máxima do agente
+**Problema**: Einstein tinha `exec` no allow mas SOUL.md dizia "Não executa comandos". Resultado: ele obedecia o SOUL.md e ignorava a ferramenta.
+**Solução**: SEMPRE alinhar SOUL.md com as ferramentas reais. Se o agente tem `exec`, o SOUL.md deve dizer que pode executar.
+
+### Crons systemEvent no main = poluição
+**Problema**: Crons com `systemEvent` no `target: main` geravam lembretes repetitivos que o Claw papagaiava no chat.
+**Solução**: Desabilitar lembretes genéricos. Usar crons `isolated` com `agentTurn` para cada agente específico.
+
+### Comentários progressivos dos especialistas
+Especialistas DEVEM postar comentários curtos (max 300 chars) no card Notion ao longo da execução.
+- Mantém visibilidade da jornada
+- Atualiza `last_edited_time` do card → governança detecta travamento com precisão
+- Formato: `[HH:MM] emoji Etapa X/N: resumo`
+
+### APIs disponíveis no .env (referência rápida)
+- `DISCORD_BOT_TOKEN` — API Discord para ler histórico de canais
+- `JIRA_BASE_URL` + `JIRA_EMAIL` + `JIRA_API_TOKEN` + `JIRA_PROJECT_KEY=SME` — Jira SmartEnvios
+- `SMARTENVIOS_MCP_*` — MCP SmartEnvios (cotações, CEP, etc.)
+- `GMAIL_*_REFRESH_TOKEN` — Gmail OAuth (pro + personal)
+- `NOTION_*_API_KEY` — 3 workspaces Notion
+
+### Einstein — evolução de "suporte técnico" para "agente operacional"
+Mudanças necessárias para Einstein funcionar com ferramentas:
+1. Remover `profile: "minimal"` do config
+2. Adicionar `exec`, `sessions_history` no `allow`
+3. Sandbox `mode: "off"`
+4. SOUL.md: reescrito para "agente operacional" com regra "USE SUAS FERRAMENTAS"
+5. AGENTS.md: instruções de Discord API, Jira API, MCP, escalonamento Notion
+6. TOOLS.md: comandos curl completos para cada API
+7. Deletar BOOTSTRAP.md (interfere no boot)
+
 ## Como Manter Este Arquivo Atualizado
 
 ### Quando Atualizar
@@ -1813,3 +1925,62 @@ LIMIT="${2:-100}"  # antes: 20
 - Commit: `d7d8ac4` docs: add unsubscribe scripts to TOOLS.md
 - Commit: `6705437` feat: auto-unsubscribe + increase limit to 100 emails
 - RFC 2369 - List-Unsubscribe header: https://www.ietf.org/rfc/rfc2369.txt
+
+---
+
+## Sessão 2026-02-20 - Modelos (DeepSeek/Gemini/Grok) + Governança resiliente
+
+### 1) DeepSeek integrado via provider custom
+
+**O que foi aplicado no `openclaw.json`:**
+- Provider `deepseek` em `models.providers`
+- `baseUrl`: `https://api.deepseek.com/v1`
+- `apiKey`: `${DEEP_API_KEY}`
+- Modelos expostos:
+  - `deepseek/deepseek-chat`
+  - `deepseek/deepseek-reasoner`
+
+**Lição:** para providers fora do catálogo padrão, usar `models.providers` com API OpenAI-compatível funciona bem.
+
+### 2) Grok/xAI: variável correta é `XAI_API_KEY`
+
+**Sintoma observado:**
+- `xai/grok-*` aparecia com `Auth: no` no `openclaw models list`.
+
+**Causa raiz:**
+- `.env` tinha somente `GROK_API_KEY`; o runtime do OpenClaw validou autenticação usando `XAI_API_KEY`.
+
+**Correção:**
+- Adicionar `XAI_API_KEY` (pode manter `GROK_API_KEY` por compatibilidade local).
+
+**Validação prática:**
+- Teste oficial xAI em `POST /v1/responses` com `model: grok-4-1-fast-reasoning` retornou `OK`.
+
+### 3) Gemini: modelos 1.5 legados geram 404 em rotas atuais
+
+**Sintoma observado:**
+- `models/gemini-1.5-flash:generateContent` retornando 404.
+
+**Aprendizado:**
+- Chave pode estar válida e mesmo assim o modelo estar indisponível.
+- Sempre listar modelos ativos com `GET /v1beta/models` e selecionar um modelo com `generateContent`.
+
+**Modelo validado em produção:**
+- `gemini-2.5-flash` (respondeu `OK` no teste direto).
+
+**Atualização de configuração aplicada:**
+- `google/gemini-1.5-pro` -> `google/gemini-3-pro-preview` com alias `Google Gemini 3 Pro`.
+
+### 4) Governança: reforço contra saturação de modelos
+
+**Problema recorrente:**
+- Sequência de `rate_limit/cooldown` + sessões travadas causando falhas em cascata dos crons.
+
+**Melhorias aplicadas em `scripts/governance-check.sh`:**
+- Limpeza de `*.lock` obsoletos de sessão (stale locks).
+- Detecção de pressão de modelos pelo `gateway.log` (`rate limit`, `cooldown`, `session file locked`).
+- Reinício preventivo do gateway quando o padrão de saturação é detectado.
+
+**Lição operacional:**
+- O cron de governança precisa ficar habilitado; se desabilitado, o mecanismo auto-healing para.
+- Mesmo com governança, manter fallback API-first para tarefas críticas (ex.: criação de Jira via API direta) evita bloqueio por indisponibilidade transitória de LLM.

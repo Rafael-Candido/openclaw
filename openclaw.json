@@ -1,7 +1,7 @@
 {
   "meta": {
     "lastTouchedVersion": "2026.2.17",
-    "lastTouchedAt": "2026-02-20T13:55:42.437Z"
+    "lastTouchedAt": "2026-02-20T18:12:23.343Z"
   },
   "wizard": {
     "lastRunAt": "2026-02-20T04:36:12.105Z",
@@ -45,10 +45,11 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "anthropic/claude-sonnet-4-5",
+        "primary": "anthropic/claude-sonnet-4-6",
         "fallbacks": [
           "openai/gpt-4-turbo",
-          "anthropic/claude-sonnet-4-5",
+          "deepseek/deepseek-chat",
+          "anthropic/claude-sonnet-4-6",
           "anthropic/claude-opus-4-6"
         ]
       },
@@ -62,7 +63,7 @@
         "openai/gpt-4": {
           "alias": "GPT-4"
         },
-        "anthropic/claude-sonnet-4-5": {
+        "anthropic/claude-sonnet-4-6": {
           "alias": "Claude Sonnet 4.5",
           "params": {
             "cacheRetention": "short"
@@ -74,8 +75,16 @@
             "cacheRetention": "short"
           }
         },
+        "deepseek/deepseek-chat": {
+          "alias": "DeepSeek Chat"
+        },
+        "deepseek/deepseek-reasoner": {
+          "alias": "DeepSeek Reasoner"
+        },
         "google/gemini-1.5-flash": {},
-        "google/gemini-1.5-pro": {},
+        "google/gemini-3-pro-preview": {
+          "alias": "Google Gemini 3 Pro"
+        },
         "xai/grok-2": {},
         "xai/grok-beta": {}
       },
@@ -90,9 +99,9 @@
       "heartbeat": {
         "every": "30m"
       },
-      "maxConcurrent": 4,
+      "maxConcurrent": 2,
       "subagents": {
-        "maxConcurrent": 8
+        "maxConcurrent": 4
       }
     },
     "list": [
@@ -104,27 +113,60 @@
           "primary": "openai/gpt-5.1-codex",
           "fallbacks": [
             "openai/gpt-4-turbo",
-            "anthropic/claude-sonnet-4-5",
+            "deepseek/deepseek-chat",
+            "anthropic/claude-sonnet-4-6",
             "anthropic/claude-opus-4-6"
           ]
         }
       },
       {
-        "id": "backend-engineer",
-        "name": "Engenheiro Backend",
-        "workspace": "/var/www/openclaw/workspace/agents/backend-engineer",
+        "id": "eng-smartenvios",
+        "name": "Engenheiro SmartEnvios",
+        "workspace": "/var/www/openclaw/workspace/agents/eng-smartenvios",
         "model": {
           "primary": "openai/gpt-5.1-codex",
           "fallbacks": [
             "openai/gpt-4-turbo",
-            "anthropic/claude-sonnet-4-5",
+            "deepseek/deepseek-chat",
+            "anthropic/claude-sonnet-4-6",
             "anthropic/claude-opus-4-6"
           ]
         },
+        "skills": [
+          "notion"
+        ],
         "identity": {
-          "name": "Engenheiro Backend",
-          "theme": "API/MCP Improvement Specialist",
-          "emoji": "🛠️"
+          "name": "Engenheiro SmartEnvios",
+          "theme": "Fullstack Engineer - SmartEnvios Systems",
+          "emoji": "⚙️"
+        },
+        "sandbox": {
+          "mode": "off"
+        }
+      },
+      {
+        "id": "eng-prompt",
+        "name": "Engenheiro de Prompt",
+        "workspace": "/var/www/openclaw/workspace/agents/eng-prompt",
+        "model": {
+          "primary": "openai/gpt-5.1-codex",
+          "fallbacks": [
+            "openai/gpt-4-turbo",
+            "deepseek/deepseek-chat",
+            "anthropic/claude-sonnet-4-6",
+            "anthropic/claude-opus-4-6"
+          ]
+        },
+        "skills": [
+          "notion"
+        ],
+        "identity": {
+          "name": "Engenheiro de Prompt",
+          "theme": "OpenClaw Structure & Optimization Specialist",
+          "emoji": "📐"
+        },
+        "sandbox": {
+          "mode": "off"
         }
       },
       {
@@ -135,10 +177,14 @@
           "primary": "openai/gpt-5.1-codex",
           "fallbacks": [
             "openai/gpt-4-turbo",
-            "anthropic/claude-sonnet-4-5",
+            "deepseek/deepseek-chat",
+            "anthropic/claude-sonnet-4-6",
             "anthropic/claude-opus-4-6"
           ]
         },
+        "skills": [
+          "notion"
+        ],
         "identity": {
           "name": "Einstein",
           "theme": "SmartEnvios Support Specialist",
@@ -153,36 +199,31 @@
           ]
         },
         "sandbox": {
-          "mode": "all",
-          "workspaceAccess": "ro"
+          "mode": "off"
         },
         "tools": {
-          "profile": "minimal",
           "allow": [
             "read",
+            "write",
+            "edit",
             "web_search",
             "web_fetch",
             "message",
-            "exec"
+            "exec",
+            "sessions_history"
           ],
           "deny": [
             "gateway",
             "sessions_send",
             "sessions_spawn",
             "sessions_list",
-            "sessions_history",
             "subagents",
             "cron",
-            "write",
-            "edit",
             "process",
             "nodes",
             "browser",
             "canvas"
           ]
-        },
-        "skills": {
-          "notion": true
         }
       }
     ]
@@ -271,7 +312,11 @@
         "moderation": true,
         "channels": true,
         "presence": true
-      }
+      },
+      "dmPolicy": "allowlist",
+      "allowFrom": [
+        "932709376790233088"
+      ]
     }
   },
   "gateway": {
@@ -326,6 +371,51 @@
       },
       "discord": {
         "enabled": true
+      }
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "deepseek": {
+        "baseUrl": "https://api.deepseek.com/v1",
+        "apiKey": "${DEEP_API_KEY}",
+        "auth": "api-key",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "deepseek-chat",
+            "name": "DeepSeek Chat",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 128000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "deepseek-reasoner",
+            "name": "DeepSeek Reasoner",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 128000,
+            "maxTokens": 8192
+          }
+        ]
       }
     }
   }

@@ -54,40 +54,89 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 
 ## Ferramentas Operacionais
 
+### FERRAMENTAS BLOQUEADAS — NUNCA USAR
+
+Você **NÃO tem acesso** a estas ferramentas. NUNCA tentar usá-las:
+- `sessions_send` / `sessions_spawn` / `sessions_list`
+- `mcporter` / `mcp` (comando direto)
+- `gateway` / `cron` / `write` / `edit` / `process` / `nodes` / `browser` / `canvas`
+
+Se tentar usar qualquer uma dessas, vai falhar silenciosamente.
+
+### Ferramentas DISPONÍVEIS
+
+Você tem: `read`, `exec`, `web_search`, `web_fetch`, `message`, `sessions_history`, skill `notion`.
+
 ### SmartEnvios MCP (USAR SEMPRE QUE POSSÍVEL)
 
-Você tem acesso ao MCP SmartEnvios via exec. Use para:
-- **Cotações de frete**: `smartenvios_quote_freight`
-- **Consulta de CEP**: `cep_lookup`
-- **Qualquer operação** que o MCP suporte
+Acesso a APIs SmartEnvios via **ÚNICO script**: `/var/www/openclaw/workspace/scripts/smartenvios-mcp.sh`
 
-Script: `/var/www/openclaw/workspace/scripts/smartenvios-mcp.sh`
-Ver TOOLS.md para exemplos completos de uso.
+**Fluxo obrigatório para qualquer operação:**
 
-**Regra:** se alguém pedir cotação ou operação SmartEnvios, **execute via MCP** em vez de apenas orientar como fazer manualmente.
+1. Verificar se a ferramenta existe: `./smartenvios-mcp.sh tools`
+2. Se existir: executar via `./smartenvios-mcp.sh call <ferramenta> '<args>'`
+3. Se NÃO existir: **escalonar para Notion** (ver abaixo)
+
+Ver TOOLS.md para exemplos completos e comandos.
+
+### Discord — como analisar dados de canais
+
+**Duas formas de acessar mensagens do Discord:**
+
+**1. Contexto automático (últimas 40 mensagens):**
+Quando você recebe mensagem em canal de grupo, as últimas 40 mensagens já estão no seu contexto. Analise-as diretamente.
+
+**2. API do Discord (para mais de 40 mensagens ou buscas específicas):**
+Usar via `exec` com o token do bot:
+
+```bash
+source /var/www/openclaw/.env
+# Buscar últimas 100 mensagens de um canal
+curl -sS "https://discord.com/api/v10/channels/CHANNEL_ID/messages?limit=100" \
+  -H "Authorization: Bot ${DISCORD_BOT_TOKEN}"
+
+# Buscar mensagens após uma data (use snowflake ID)
+curl -sS "https://discord.com/api/v10/channels/CHANNEL_ID/messages?limit=100&after=SNOWFLAKE_ID" \
+  -H "Authorization: Bot ${DISCORD_BOT_TOKEN}"
+```
+
+**NÃO diga "não tenho acesso ao histórico"** — você TEM via API.
+
+### Jira — criar e consultar tarefas
+
+Acesso à API do Jira SmartEnvios via `exec`:
+
+```bash
+source /var/www/openclaw/.env
+# Criar issue
+curl -sS -X POST "${JIRA_BASE_URL}rest/api/3/issue" \
+  -H "Authorization: Basic $(echo -n "${JIRA_EMAIL}:${JIRA_API_TOKEN}" | base64)" \
+  -H "Content-Type: application/json" \
+  -d '{"fields":{"project":{"key":"'${JIRA_PROJECT_KEY}'"},"summary":"TITULO","issuetype":{"name":"Task"},"priority":{"name":"Highest"},"assignee":{"accountId":"ACCOUNT_ID"},"description":{"type":"doc","version":1,"content":[{"type":"paragraph","content":[{"type":"text","text":"DESCRICAO"}]}]}}}'
+
+# Buscar usuários (para encontrar accountId do assignee)
+curl -sS "${JIRA_BASE_URL}rest/api/3/user/search?query=rodrigo" \
+  -H "Authorization: Basic $(echo -n "${JIRA_EMAIL}:${JIRA_API_TOKEN}" | base64)"
+```
+
+**Quando pedirem para criar tarefa no Jira:** usar diretamente via API, não escalonar para Notion.
 
 ### Escalonamento para Notion (quando não conseguir resolver)
 
-Quando você **não conseguir resolver** algo (falta de acesso, limitação técnica, precisa de implementação):
+Quando a ferramenta **não existir no MCP** ou você **não conseguir resolver** (limitação técnica, precisa de implementação):
 
-1. **Criar card no Notion** SmartEnvios com:
+1. **Criar card no Notion** SmartEnvios via API (usar `exec` com `curl`):
    - **Status:** `Aguardando`
    - **Tipo:** `OpenClaw`
    - **Solicitante:** `Rafael Pereira`
    - **Agente:** `Tech`
-2. **Descrição funcional** no card:
-   - O que foi pedido (em linguagem funcional)
-   - Por que você não conseguiu resolver
-   - O que precisa ser feito para resolver
-3. **Informar o solicitante** que criou a atividade e que o Diretor Tech vai priorizar.
+2. **Incluir no card TODOS os dados** que o solicitante forneceu (não perder nenhuma informação).
+3. **Explicar no card** por que você não conseguiu resolver.
+4. **Informar o solicitante** que criou a atividade no Notion e que o Diretor Tech vai priorizar.
 
-**Exemplos de quando escalonar:**
-- "Crie uma tarefa no Jira" → Einstein não tem Jira → cria card no Notion para Tech implementar acesso ou executar
-- "O tracking não atualiza" → Einstein investiga, mas se for bug técnico → cria card com evidências para Tech
-- Qualquer limitação que requer desenvolvimento/infraestrutura
+Ver TOOLS.md para o comando curl completo de criação de card.
 
 **Database Notion SmartEnvios:** `adec12e735dc41a3bb7c274b287f3a10`
-**API Key:** usar skill `notion` ou `$NOTION_SMARTENVIOS_API_KEY`
 
 ## External vs Internal
 
