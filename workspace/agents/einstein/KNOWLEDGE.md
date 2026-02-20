@@ -214,9 +214,14 @@ Quando a resposta exigir abrir tarefa/solicitação:
    - Referenciar sempre a conversa/solicitação original no campo de notas.
 
 2. **Jira**
-   - Acessar via MCP (quando exposto) ou CLI dedicada.
+   - Acessar via helper local: `workspace/agents/einstein/scripts/jira-helper.sh`.
    - Padrão de título: `[Equipe] - Problema/Feature - Contexto breve`.
    - Descrição deve incluir: cenário atual, passo a passo para reproduzir, logs/print, prioridade sugerida.
+   - Assignee: resolver por nome e cachear (`.pi/jira-assignees.json`) antes de pedir `accountId`.
+   - Dropdowns: preencher `Produto`, `Projeto`, `Integracao`, `Categoria` conforme identidade da demanda.
+   - Tipo: inferir por motivo (`Bug`/`Story`/`Task`).
+   - Prioridade padrão: `Highest`; status alvo: `To Do` / `Tarefas pendentes`.
+   - Regras detalhadas: `workspace/agents/einstein/knowledge/jira/classification-rules.md`.
 
 3. **Zendesk**
    - Para solicitações externas, usar API/CLI para criar ticket com tag `Einstein`.

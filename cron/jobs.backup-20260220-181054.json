@@ -148,7 +148,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Diretor Pessoal em modo STRICT usando o skill notion-personal.\n\nObjetivo: varredura generalista de tarefas do domínio pessoal.\n\nFunção padrão (Notion):\n- Captar cards OpenClaw em Aguardando no workspace Pessoal.\n- Normalizar cada card para Status='Priorizado', Tipo='OpenClaw', Solicitante='Rafael Pereira', Agente=especialista adequado.\n- Escrever descrição técnica/funcional completa para execução.\n\nRoteamento de especialista:\n- E-mail pessoal -> Agente='Mail-Person'\n- Manutenção OpenClaw (agentes, prompts, docs, base Einstein) -> Agente='Engenheiro de Prompt'\n- Demais escopos -> atribuir especialista correto ou manter Agente='Diretor Pessoal' temporariamente.\n\nREGRA DE DEDUPLICAÇÃO — chave dupla (Assunto + Agente):\n- Antes de mover de Aguardando para Priorizado, consultar Status='Priorizado'.\n- Se já existir card em Priorizado com MESMO título E MESMO Agente, ESPERAR próximo ciclo.\n- NÃO consultar Em andamento nem Concluído.\n\nAPI-first obrigatório.",
+        "message": "Atue como Diretor Pessoal em modo STRICT usando o skill notion-personal.\n\nObjetivo: varredura generalista de tarefas do domínio pessoal.\n\nFunção padrão (Notion):\n- Captar cards OpenClaw em Aguardando no workspace Pessoal.\n- Normalizar cada card para Status='Priorizado', Tipo='OpenClaw', Solicitante='Rafael Pereira', Agente=especialista adequado.\n- Escrever descrição técnica/funcional completa para execução.\n\nRoteamento de especialista:\n- E-mail pessoal -> Agente='Mail-Person'\n- Manutenção OpenClaw (agentes, prompts, docs, base Einstein) -> Agente='Engenheiro de Prompt'\n- Demais escopos -> atribuir especialista correto; NUNCA deixar Agente='Diretor Pessoal' após triagem. Se não houver especialista claro, atribuir Engenheiro de Prompt (ou Tech) e registrar pendência.\n\nREGRA DE DEDUPLICAÇÃO — chave dupla (Assunto + Agente):\n- Antes de mover de Aguardando para Priorizado, consultar Status='Priorizado'.\n- Se já existir card em Priorizado com MESMO título E MESMO Agente, ESPERAR próximo ciclo.\n- NÃO consultar Em andamento nem Concluído.\n\nAPI-first obrigatório.",
         "model": "deepseek/deepseek-chat"
       },
       "delivery": {
@@ -406,6 +406,33 @@
         "lastStatus": "error",
         "lastDurationMs": 378474,
         "consecutiveErrors": 1
+      }
+    },
+    {
+      "id": "6bdd82c7-081d-486b-9700-0572b9fce72e",
+      "agentId": "main",
+      "sessionKey": "agent:main:cron:engenheiro-prompt-1h",
+      "name": "Engenheiro de Prompt - varredura 1h",
+      "enabled": true,
+      "createdAtMs": 1771624901237,
+      "updatedAtMs": 1771624901237,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1771624901237
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Engenheiro de Prompt em modo STRICT usando o skill notion-personal.\n\nObjetivo: captar e executar cards no Notion Pessoal com Status='Priorizado' e Agente='Engenheiro de Prompt'.\n\nRegras de execução:\n- Database: bfcbe7a7a3a745489e605e0762af12a9 (Notion Pessoal).\n- Filtrar Status='Priorizado' AND Tipo='OpenClaw' AND Agente='Engenheiro de Prompt'.\n- Deduplicação: se já existir card em Em andamento com mesmo título + Agente, aguardar próximo ciclo.\n- Para cada card elegível: mover para Em andamento, ler descrição, executar passos, comentar progresso e resultado, mover para Concluído.\n- Comentários progressivos curtos (<=300 chars) nas etapas-chave; comentário final estruturado com resultado, métricas e pendências.\n- Se bloqueio técnico (sem acesso, falta de credencial), registrar no comentário e manter Em andamento apenas se estiver atuando; caso contrário, retornar a Priorizado com pendência registrada.\n- Não criar novos cards; somente executar os já Priorizado.\n- Não usar message.send; comunicação apenas via comentário Notion.\n- Manter Agente como 'Engenheiro de Prompt' até conclusão.\nAPI-first obrigatório."
+      },
+      "delivery": null,
+      "state": {
+        "lastRunAtMs": 0,
+        "lastStatus": "",
+        "lastDurationMs": 0,
+        "consecutiveErrors": 0
       }
     }
   ]
