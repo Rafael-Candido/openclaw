@@ -49,6 +49,7 @@
         "fallbacks": [
           "openai/gpt-4-turbo",
           "deepseek/deepseek-chat",
+          "google/gemini-2.5-flash",
           "anthropic/claude-sonnet-4-6",
           "anthropic/claude-opus-4-6"
         ]
@@ -81,9 +82,47 @@
         "deepseek/deepseek-reasoner": {
           "alias": "DeepSeek Reasoner"
         },
-        "google/gemini-1.5-flash": {},
+        "google/gemini-2.5-flash": {
+          "alias": "Gemini 2.5 Flash"
+        },
+        "google/gemini-2.5-flash-lite": {
+          "alias": "Gemini 2.5 Flash-Lite"
+        },
+        "google/gemini-2.5-pro": {
+          "alias": "Gemini 2.5 Pro"
+        },
+        "google/gemini-3-flash-preview": {
+          "alias": "Gemini 3 Flash"
+        },
         "google/gemini-3-pro-preview": {
           "alias": "Google Gemini 3 Pro"
+        },
+        "xai/grok-4-1-fast-reasoning": {
+          "alias": "Grok 4.1 Fast Reasoning"
+        },
+        "xai/grok-4-1-fast-non-reasoning": {
+          "alias": "Grok 4.1 Fast Non-Reasoning"
+        },
+        "xai/grok-code-fast-1": {
+          "alias": "Grok Code Fast 1"
+        },
+        "xai/grok-4-fast-reasoning": {
+          "alias": "Grok 4 Fast Reasoning"
+        },
+        "xai/grok-4-fast-non-reasoning": {
+          "alias": "Grok 4 Fast Non-Reasoning"
+        },
+        "xai/grok-4-0709": {
+          "alias": "Grok 4 0709"
+        },
+        "xai/grok-3-mini": {
+          "alias": "Grok 3 Mini"
+        },
+        "xai/grok-3": {
+          "alias": "Grok 3"
+        },
+        "xai/grok-2-vision-1212": {
+          "alias": "Grok 2 Vision 1212"
         },
         "xai/grok-2": {},
         "xai/grok-beta": {}
@@ -174,12 +213,15 @@
         "name": "Einstein (SmartEnvios)",
         "workspace": "/var/www/openclaw/workspace/agents/einstein",
         "model": {
-          "primary": "openai/gpt-5.1-codex",
+          "primary": "xai/grok-4-1-fast-non-reasoning",
           "fallbacks": [
-            "openai/gpt-4-turbo",
+            "xai/grok-3-mini",
+            "xai/grok-3",
             "deepseek/deepseek-chat",
+            "openai/gpt-4-turbo",
             "anthropic/claude-sonnet-4-6",
-            "anthropic/claude-opus-4-6"
+            "anthropic/claude-opus-4-6",
+            "xai/grok-beta"
           ]
         },
         "skills": [
@@ -385,7 +427,7 @@
         "models": [
           {
             "id": "deepseek-chat",
-            "name": "DeepSeek Chat",
+            "name": "DeepSeek V3.2 (Non-thinking)",
             "reasoning": false,
             "input": [
               "text"
@@ -397,11 +439,11 @@
               "cacheWrite": 0
             },
             "contextWindow": 128000,
-            "maxTokens": 8192
+            "maxTokens": 8000
           },
           {
             "id": "deepseek-reasoner",
-            "name": "DeepSeek Reasoner",
+            "name": "DeepSeek V3.2 (Thinking)",
             "reasoning": true,
             "input": [
               "text"
@@ -413,7 +455,7 @@
               "cacheWrite": 0
             },
             "contextWindow": 128000,
-            "maxTokens": 8192
+            "maxTokens": 64000
           }
         ]
       }

@@ -116,10 +116,50 @@
           "operator.pairing"
         ],
         "createdAtMs": 1771568886777,
-        "lastUsedAtMs": 1771595747410
+        "lastUsedAtMs": 1771621040254
       }
     },
     "createdAtMs": 1771568886777,
     "approvedAtMs": 1771568886777
+  },
+  "111250e151ce450852e63140831264b02cad87d6376c15a7314f6331acaec92c": {
+    "deviceId": "111250e151ce450852e63140831264b02cad87d6376c15a7314f6331acaec92c",
+    "publicKey": "gz3ljtFhezhiWzlIrPlckcEFWgVJ6cTDSjbhoZeBGS8",
+    "displayName": "Rafael’s MacBook Pro",
+    "platform": "macOS 15.7.3",
+    "clientId": "openclaw-macos",
+    "clientMode": "node",
+    "role": "node",
+    "roles": [
+      "operator",
+      "node"
+    ],
+    "scopes": [
+      "operator.admin",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "tokens": {
+      "operator": {
+        "token": "n6IsXtROSLCmylEV2aMEaIaVO5ExyN2o77FMrfi6hIk",
+        "role": "operator",
+        "scopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "createdAtMs": 1771614918191,
+        "lastUsedAtMs": 1771621038658
+      },
+      "node": {
+        "token": "vqccsbqoQX4wEbVk6TAQ5nLGYfQaH_J74DKTFtyxSzg",
+        "role": "node",
+        "scopes": [],
+        "createdAtMs": 1771614931340,
+        "lastUsedAtMs": 1771621039059
+      }
+    },
+    "createdAtMs": 1771614918191,
+    "approvedAtMs": 1771614931340
   }
 }

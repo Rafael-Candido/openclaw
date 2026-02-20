@@ -105,103 +105,101 @@
     {
       "id": "9da1331a-2c84-4191-9e7d-87552039d8f1",
       "agentId": "main",
-      "sessionKey": "agent:main:main",
       "name": "Diretor Tech - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771552173190,
-      "updatedAtMs": 1771571831365,
+      "updatedAtMs": 1771618900608,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
-        "anchorMs": 1771552173190
+        "anchorMs": 1771552273984
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Diretor Tech SmartEnvios em modo STRICT usando o skill notion.\n\nObjetivo: varredura generalista de tarefas do domínio Tech (não apenas e-mail).\n\nFunção padrão (Notion):\n- Captar cards OpenClaw em Aguardando no workspace Tech.\n- Normalizar cada card para:\n  - Status='Priorizado'\n  - Tipo='OpenClaw'\n  - Solicitante='Rafael Pereira'\n  - Agente=especialista mais adequado para o tipo de tarefa\n- Escrever descrição técnica completa para execução.\n\nRoteamento mínimo de especialista:\n- Escopo backend/API/MCP -> Agente='Engenheiro Backend'\n- Escopo e-mail profissional -> Agente='Mail-Pro'\n- Sem especialista claro -> manter Agente='Tech' temporariamente e registrar pendência no card.\n\nRegras:\n- Consolidar duplicados quando necessário (manter o mais recente e comentar nos demais).\n- API-first obrigatório: usar MCP/APIs para tudo; Zendesk por MCP/API quando aplicável."
+        "message": "Atue como Diretor Tech SmartEnvios em modo STRICT usando o skill notion.\n\nObjetivo: varredura generalista de tarefas do domínio Tech.\n\nFunção padrão (Notion):\n- Captar cards OpenClaw em Aguardando no workspace Tech.\n- Normalizar cada card para Status='Priorizado', Tipo='OpenClaw', Solicitante='Rafael Pereira', Agente=especialista adequado.\n- Escrever descrição técnica completa para execução.\n\nRoteamento de especialista:\n- Código/bugs/features/MCP SmartEnvios -> Agente='Engenheiro SmartEnvios'\n- E-mail profissional -> Agente='Mail-Pro'\n- Sem especialista claro -> manter Agente='Tech' temporariamente.\n\nREGRA DE DEDUPLICAÇÃO — chave dupla (Assunto + Agente):\n- Antes de mover de Aguardando para Priorizado, consultar Status='Priorizado'.\n- Se já existir card em Priorizado com MESMO título E MESMO Agente, ESPERAR próximo ciclo.\n- NÃO consultar Em andamento nem Concluído.\n\nAPI-first obrigatório.",
+        "model": "deepseek/deepseek-chat"
       },
       "delivery": {
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1771597173190,
-        "lastRunAtMs": 1771570239621,
+        "nextRunAtMs": 1771622473984,
+        "lastRunAtMs": 1771618873994,
         "lastStatus": "ok",
-        "lastDurationMs": 77441,
+        "lastDurationMs": 26614,
         "consecutiveErrors": 0
       }
     },
     {
       "id": "dd8959b6-0346-487f-8281-591249c8dc31",
       "agentId": "main",
-      "sessionKey": "agent:main:main",
       "name": "Diretor Pessoal - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771552173203,
-      "updatedAtMs": 1771571832252,
+      "updatedAtMs": 1771619022976,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
-        "anchorMs": 1771552173203
+        "anchorMs": 1771552393984
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Diretor Pessoal em modo STRICT usando o skill notion-personal.\n\nObjetivo: varredura generalista de tarefas do domínio pessoal (não apenas e-mail).\n\nFunção padrão (Notion):\n- Captar cards OpenClaw em Aguardando no workspace Pessoal.\n- Normalizar cada card para:\n  - Status='Priorizado'\n  - Tipo='OpenClaw'\n  - Solicitante='Rafael Pereira'\n  - Agente=especialista mais adequado para o tipo de tarefa\n- Escrever descrição técnica/funcional completa para execução.\n\nRoteamento mínimo de especialista:\n- Escopo e-mail pessoal -> Agente='Mail-Person'\n- Demais escopos pessoais com especialista definido -> atribuir especialista correto.\n- Sem especialista claro -> manter Agente='Diretor Pessoal' temporariamente e registrar pendência no card.\n\nRegras:\n- Consolidar duplicados quando necessário (manter o mais recente e comentar nos demais).\n- API-first obrigatório: usar MCP/APIs para tudo; Zendesk por MCP/API quando aplicável."
+        "message": "Atue como Diretor Pessoal em modo STRICT usando o skill notion-personal.\n\nObjetivo: varredura generalista de tarefas do domínio pessoal.\n\nFunção padrão (Notion):\n- Captar cards OpenClaw em Aguardando no workspace Pessoal.\n- Normalizar cada card para Status='Priorizado', Tipo='OpenClaw', Solicitante='Rafael Pereira', Agente=especialista adequado.\n- Escrever descrição técnica/funcional completa para execução.\n\nRoteamento de especialista:\n- E-mail pessoal -> Agente='Mail-Person'\n- Manutenção OpenClaw (agentes, prompts, docs, base Einstein) -> Agente='Engenheiro de Prompt'\n- Demais escopos -> atribuir especialista correto ou manter Agente='Diretor Pessoal' temporariamente.\n\nREGRA DE DEDUPLICAÇÃO — chave dupla (Assunto + Agente):\n- Antes de mover de Aguardando para Priorizado, consultar Status='Priorizado'.\n- Se já existir card em Priorizado com MESMO título E MESMO Agente, ESPERAR próximo ciclo.\n- NÃO consultar Em andamento nem Concluído.\n\nAPI-first obrigatório.",
+        "model": "deepseek/deepseek-chat"
       },
       "delivery": {
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1771597173203,
-        "lastRunAtMs": 1771570317062,
+        "nextRunAtMs": 1771620793984,
+        "lastRunAtMs": 1771618994002,
         "lastStatus": "ok",
-        "lastDurationMs": 39396,
+        "lastDurationMs": 28974,
         "consecutiveErrors": 0
       }
     },
     {
       "id": "b3c678e4-15ea-41e3-a96d-da661c9c27c0",
       "agentId": "main",
-      "sessionKey": "agent:main:main",
       "name": "Mail-Pro especialista - execução 10min",
       "enabled": true,
       "createdAtMs": 1771552403736,
-      "updatedAtMs": 1771595826980,
+      "updatedAtMs": 1771620712646,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
-        "anchorMs": 1771564619895
+        "anchorMs": 1771564633984
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
         "message": "Atue como especialista Mail-Pro com execução completa de e-mail + relatório padronizado detalhado. Contexto: caixa profissional rafael.pereira@smartenvios.com. Objetivo obrigatório em cada run com card Priorizado: (1) ler até 100 não lidos com histórico de thread, (2) triar por relevância usando workflow.sh, (3) aplicar/reusar labels Mail-Pro-Aguardando / Mail-Pro-BaixoValor / Mail-Pro-Importante, (4) arquivar processados, (5) criar rascunhos contextualizados para importantes (score >= 50). IMPORTANTE: Usar /var/www/openclaw/workspace/scripts/gmail/workflow.sh pro 100 para análise inteligente completa. Regras: - Se houver cards Mail-Pro em Em andamento >10 min, recuperar e finalizar com comentário de recuperação. - Para cada card Priorizado: mover para Em andamento, executar tarefas Gmail, registrar resultado no corpo E em comentário nativo, mover para Concluído no final. - Filtrar auto-replies e notificações automáticas (não processar). - Priorizar emails com menção direta ao rafael.pereira@smartenvios.com. - Criar rascunhos com contexto da thread (usar thread.context). - Não usar message.send. Não escrever em memory/*.md. - Só declarar bloqueio de credencial após teste real de Gmail API no run. Formato obrigatório do comentário nativo (padronizado): ## Resultado executivo - Status: Sucesso | Sucesso parcial | Falha - Caixa analisada: rafael.pereira@smartenvios.com - Janela/consulta usada: [query Gmail usada] ## Métricas - Não lidos encontrados: N - E-mails lidos com histórico: N - Triados: N (Importante=X, Aguardando=Y, BaixoValor=Z) - Labels reaproveitadas: [lista] - Labels criadas: [lista] - Arquivados: N - Rascunhos criados: N ## Evidências (IDs/assuntos) - [messageId/subject 1] - [messageId/subject 2] ## Decisões e próximos passos - [critérios aplicados] - [pendências] Se não houver não lidos, ainda assim preencher métricas com zero e evidenciar a consulta executada.",
-        "timeoutSeconds": 600
+        "timeoutSeconds": 600,
+        "model": "xai/grok-3-mini"
       },
       "delivery": {
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1771596419895,
-        "lastRunAtMs": 1771595819927,
-        "lastStatus": "error",
-        "lastDurationMs": 7053,
-        "consecutiveErrors": 2,
-        "lastError": "Error: All models failed (4): openai/gpt-5.1-codex: ⚠️ API rate limit reached. Please try again later. (rate_limit) | openai/gpt-4-turbo: ⚠️ API rate limit reached. Please try again later. (rate_limit) | anthropic/claude-sonnet-4-5: Provider anthropic is in cooldown (all profiles unavailable) (rate_limit) | anthropic/claude-opus-4-6: Provider anthropic is in cooldown (all profiles unavailable) (rate_limit)"
+        "nextRunAtMs": 1771621033984,
+        "lastRunAtMs": 1771620696995,
+        "lastStatus": "ok",
+        "lastDurationMs": 1696,
+        "consecutiveErrors": 0
       }
     },
     {
       "id": "702cce7b-5d44-4db7-8be8-81d75dc9e274",
       "agentId": "main",
-      "sessionKey": "agent:main:main",
       "name": "Mail-Person especialista - execução 10min",
       "enabled": false,
       "createdAtMs": 1771552403749,
-      "updatedAtMs": 1771571704754,
+      "updatedAtMs": 1771616609945,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -228,9 +226,9 @@
       "id": "16c2ad96-eac3-42b3-81c0-23fea5426957",
       "agentId": "main",
       "name": "Backup sessões main (30min)",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1771569186119,
-      "updatedAtMs": 1771596196176,
+      "updatedAtMs": 1771609344865,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -248,12 +246,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771597986119,
-        "lastRunAtMs": 1771596186139,
-        "lastStatus": "error",
-        "lastDurationMs": 10037,
-        "consecutiveErrors": 1,
-        "lastError": "Error: All models failed (4): openai/gpt-5.1-codex: ⚠️ API rate limit reached. Please try again later. (rate_limit) | openai/gpt-4-turbo: ⚠️ API rate limit reached. Please try again later. (rate_limit) | anthropic/claude-sonnet-4-5: Provider anthropic is in cooldown (all profiles unavailable) (rate_limit) | anthropic/claude-opus-4-6: Provider anthropic is in cooldown (all profiles unavailable) (rate_limit)"
+        "lastRunAtMs": 1771608786139,
+        "lastStatus": "ok",
+        "lastDurationMs": 25142,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -262,37 +258,42 @@
       "name": "Diretor Negócios - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771571597733,
-      "updatedAtMs": 1771571834229,
+      "updatedAtMs": 1771620324600,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
-        "anchorMs": 1771571597733
+        "anchorMs": 1771571713984
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Diretor de Negócios em modo STRICT usando o skill notion-canper.\n\nObjetivo: varredura generalista de tarefas do domínio Negócios.\n\nFunção padrão (Notion):\n- Captar cards OpenClaw em Aguardando no workspace Negócios.\n- Normalizar cada card para:\n  - Status='Priorizado'\n  - Tipo='OpenClaw'\n  - Solicitante='Rafael Pereira'\n  - Agente=especialista mais adequado para o tipo de tarefa\n- Escrever descrição técnica/funcional completa para execução.\n\nRoteamento mínimo de especialista:\n- Enquanto especialistas de negócios não existirem -> Agente='Tech' temporariamente e registrar no card.\n- Quando existirem -> atribuir especialista de negócios correto por tipo de tarefa.\n\nRegras:\n- Consolidar duplicados quando necessário (manter o mais recente e comentar nos demais).\n- API-first obrigatório: usar MCP/APIs para tudo; Zendesk por MCP/API quando aplicável."
+        "message": "Atue como Diretor de Negócios em modo STRICT usando o skill notion-canper.\n\nObjetivo: varredura generalista de tarefas do domínio Negócios.\n\nFunção padrão (Notion):\n- Captar cards OpenClaw em Aguardando no workspace Negócios.\n- Normalizar cada card para:\n  - Status='Priorizado'\n  - Tipo='OpenClaw'\n  - Solicitante='Rafael Pereira'\n  - Agente=especialista mais adequado para o tipo de tarefa\n- Escrever descrição técnica/funcional completa para execução.\n\nRoteamento mínimo de especialista:\n- Enquanto especialistas de negócios não existirem -> Agente='Tech' temporariamente e registrar no card.\n- Quando existirem -> atribuir especialista de negócios correto por tipo de tarefa.\n\nRegras:\n- Consolidar duplicados quando necessário (manter o mais recente e comentar nos demais).\n- API-first obrigatório: usar MCP/APIs para tudo; Zendesk por MCP/API quando aplicável.",
+        "model": "deepseek/deepseek-chat"
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771596797733
+        "nextRunAtMs": 1771622113984,
+        "lastRunAtMs": 1771620314011,
+        "lastStatus": "ok",
+        "lastDurationMs": 10589,
+        "consecutiveErrors": 0
       }
     },
     {
       "id": "8c232f9a-b4aa-485f-83c8-99d348bb3176",
       "agentId": "main",
       "name": "Presidente - criar demandas e-mail (Pro+Person)",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1771571937957,
-      "updatedAtMs": 1771572043980,
+      "updatedAtMs": 1771609344083,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
-        "anchorMs": 1771571937957
+        "anchorMs": 1771571953984
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
@@ -305,7 +306,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771597137957
+        "lastRunAtMs": 1771604341265,
+        "lastStatus": "ok",
+        "lastDurationMs": 96254,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -314,30 +318,30 @@
       "name": "Mail-Person especialista - execução 10min",
       "enabled": true,
       "createdAtMs": 1771595593984,
-      "updatedAtMs": 1771596205050,
+      "updatedAtMs": 1771620713460,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
-        "anchorMs": 1771595593984
+        "anchorMs": 1771595713984
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
         "message": "REGRA DE COMENTÁRIOS PROGRESSIVOS NO NOTION — OBRIGATÓRIO:\n- Ao captar o card: comentário de início (max 300 chars) com o que vai fazer.\n- A cada etapa relevante: comentário curto (max 300 chars) com progresso e próximo passo.\n- Se encontrar erro/bloqueio: comentário imediato explicando o que aconteceu.\n- Ao concluir: comentário final estruturado com resultado completo.\nFormato: [HH:MM] emoji Etapa X/N: resumo. Próximo: ação.\nExemplo: [08:15] 📧 Etapa 1/4: 47 não lidos encontrados. Triando por relevância...\nIsso garante visibilidade da jornada e ajuda a governança detectar travamentos.\n\nREGRA DE DEDUPLICAÇÃO — chave dupla (Assunto + Agente):\n- Antes de captar um card de Priorizado, consultar Status='Em andamento'.\n- Se já existir card em Em andamento com MESMO título E MESMO Agente:\n  - Se NÃO houver processo ativo: FORÇAR EXECUÇÃO.\n  - Se HOUVER processo ativo: ESPERAR o próximo ciclo.\n- Se não existir card em Em andamento, captar de Priorizado e mover normalmente.\n\nAtue como especialista Mail-Person com execução completa de e-mail pessoal. Contexto: caixa pessoal rafael.silva.pereira10@gmail.com. Usar /var/www/openclaw/workspace/scripts/gmail/workflow.sh personal 100. Regras: recuperar cards Em andamento, mover Priorizado para Em andamento, executar Gmail, registrar resultado em comentário nativo, mover para Concluído. Não usar message.send. Não escrever em memory/*.md.",
-        "timeoutSeconds": 600
+        "timeoutSeconds": 600,
+        "model": "xai/grok-3-mini"
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771596793984,
-        "lastRunAtMs": 1771596196191,
-        "lastStatus": "error",
-        "lastDurationMs": 8859,
-        "lastError": "Error: All models failed (4): openai/gpt-5.1-codex: ⚠️ API rate limit reached. Please try again later. (rate_limit) | openai/gpt-4-turbo: ⚠️ API rate limit reached. Please try again later. (rate_limit) | anthropic/claude-sonnet-4-5: Provider anthropic is in cooldown (all profiles unavailable) (rate_limit) | anthropic/claude-opus-4-6: Provider anthropic is in cooldown (all profiles unavailable) (rate_limit)",
-        "consecutiveErrors": 1
+        "lastRunAtMs": 1771620324600,
+        "lastStatus": "ok",
+        "lastDurationMs": 15117,
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1771620913984
       }
     },
     {
@@ -346,30 +350,30 @@
       "name": "Governança - health check 10min",
       "enabled": true,
       "createdAtMs": 1771595607790,
-      "updatedAtMs": 1771596216143,
+      "updatedAtMs": 1771618423027,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
-        "anchorMs": 1771595607790
+        "anchorMs": 1771595953984
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Agente de Governança STRICT. Executar /var/www/openclaw/workspace/scripts/governance-check.sh e analisar relatório. Se gateway DOWN, registrar em memory. Se cron com erros consecutivos, resetar sessão. Verificar Notion cards Em andamento >20min: Mail-Pro -> forçar cron b3c678e4, Mail-Person -> forçar cron 590b6ee6, outros >30min -> alerta manual. NÃO criar/mover cards. Apenas monitorar, recuperar e reportar.",
-        "timeoutSeconds": 120
+        "message": "Atue como Agente de Governança STRICT.\n\nExecução obrigatória:\n1. Executar /var/www/openclaw/workspace/scripts/governance-check.sh e analisar relatório.\n2. Se gateway DOWN, registrar em memory.\n3. Se cron com erros consecutivos, resetar sessão.\n4. Verificar Notion cards Em andamento >20min: Mail-Pro -> forçar cron b3c678e4, Mail-Person -> forçar cron 590b6ee6, outros >30min -> alerta.\n\nCriação de cards de melhoria:\nQuando identificar problemas RECORRENTES (mesmo cron travando, mesmo tipo de erro, padrão de instabilidade):\n- Criar card no Notion PESSOAL (notion-personal, DB bfcbe7a7a3a745489e605e0762af12a9) com:\n  - Status='Aguardando'\n  - Tipo='OpenClaw'\n  - Solicitante='Rafael Pereira'\n  - Agente='Diretor Pessoal'\n- Descrição: qual problema recorrente, quantas vezes aconteceu, causa provável, sugestão de fix\n- O Diretor Pessoal priorizará para o Engenheiro de Prompt implementar\n\nAtividade estratégica obrigatória (fallback por tipo de tarefa):\n- Revisar semanalmente se os crons de diretores/especialistas estão usando modelo barato para tarefas repetitivas (captar/mover/etiquetar/arquivar/desinscrever/mark read).\n- Se detectar que tarefas repetitivas ainda usam modelo caro ou sem política por etapa, criar card no Notion PESSOAL para o Diretor Pessoal com proposta de \"tiering por etapa\".\n- O card deve pedir triagem para Engenheiro de Prompt com proposta mínima:\n  1) Operações repetitivas -> modelo barato (DeepSeek/Grok)\n  2) Geração de rascunho/resposta complexa -> modelo mais inteligente\n  3) Critérios de fallback e rollback por custo/qualidade\n\nNÃO mover cards de status existentes. Pode CRIAR cards novos para melhorias.",
+        "timeoutSeconds": 120,
+        "model": "deepseek/deepseek-chat"
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771596807790,
-        "lastRunAtMs": 1771596207812,
-        "lastStatus": "error",
-        "lastDurationMs": 8331,
-        "lastError": "Error: All models failed (4): openai/gpt-5.1-codex: ⚠️ API rate limit reached. Please try again later. (rate_limit) | openai/gpt-4-turbo: ⚠️ API rate limit reached. Please try again later. (rate_limit) | anthropic/claude-sonnet-4-5: Provider anthropic is in cooldown (all profiles unavailable) (rate_limit) | anthropic/claude-opus-4-6: Provider anthropic is in cooldown (all profiles unavailable) (rate_limit)",
-        "consecutiveErrors": 1
+        "lastRunAtMs": 1771618153994,
+        "lastStatus": "ok",
+        "lastDurationMs": 1226,
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1771621153984
       }
     },
     {
@@ -378,7 +382,7 @@
       "name": "Otimizador - análise diária 7h",
       "enabled": true,
       "createdAtMs": 1771595616548,
-      "updatedAtMs": 1771595616548,
+      "updatedAtMs": 1771605000986,
       "schedule": {
         "kind": "cron",
         "expr": "0 7 * * *",
@@ -396,7 +400,12 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771668000000
+        "nextRunAtMs": 1771668000000,
+        "lastError": "Error: All models failed (4): openai/gpt-5.1-codex: ⚠️ API rate limit reached. Please try again later. (rate_limit) | openai/gpt-4-turbo: ⚠️ API rate limit reached. Please try again later. (rate_limit) | anthropic/claude-sonnet-4-5: LLM request timed out. (unknown) | anthropic/claude-opus-4-6: No available auth profile for anthropic (all in cooldown or unavailable). (rate_limit)",
+        "lastRunAtMs": 1771604622512,
+        "lastStatus": "error",
+        "lastDurationMs": 378474,
+        "consecutiveErrors": 1
       }
     }
   ]
