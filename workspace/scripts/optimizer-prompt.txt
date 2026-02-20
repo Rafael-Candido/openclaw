@@ -7,7 +7,7 @@ Execução diária em 3 fases:
 ## FASE 1 — O que deu trabalho para a governança?
 
 1. Ler memory/YYYY-MM-DD.md dos últimos 2 dias (hoje e ontem) — buscar registros de incidentes da governança.
-2. Ler logs do gateway: /Users/rafaelcanper/.openclaw/logs/gateway.log (últimas 24h) — buscar restarts, timeouts, erros.
+2. Ler logs do gateway: ${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}/logs/gateway.log (últimas 24h) — buscar restarts, timeouts, erros.
 3. Listar todos os crons (openclaw cron list --json) e identificar:
    - Crons com consecutiveErrors > 0 → por que erraram?
    - Sessões com >80k tokens → por que incharam? Prompt verboso? Muitos ciclos sem reset?

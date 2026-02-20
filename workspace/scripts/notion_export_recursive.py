@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-import os, sys, requests, textwrap
+import os
+import sys
+
+import requests
 
 API_KEY = os.environ.get('NOTION_SMARTENVIOS_API_KEY')
 if not API_KEY:

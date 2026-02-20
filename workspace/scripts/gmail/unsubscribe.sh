@@ -98,7 +98,7 @@ if [[ "$DRY_RUN" == "false" && "$CAN_UNSUB" == "true" && "$IS_PROMOTIONAL" == "t
     if [[ "$HTTP_CODE" =~ ^(200|301|302)$ ]]; then
       RESULT=$(echo "$RESULT" | jq '. + {unsubscribeExecuted: true}')
     else
-      RESULT=$(echo "$RESULT" | jq '. + {unsubscribeExecuted: false, unsubscribeError: "HTTP '$HTTP_CODE'"}')
+      RESULT=$(echo "$RESULT" | jq '. + {unsubscribeExecuted: false, unsubscribeError: "HTTP '"$HTTP_CODE"'"}')
     fi
   elif [[ "$UNSUB_METHOD" == "email" ]]; then
     # Send unsubscribe email (via Gmail draft, requires manual send)

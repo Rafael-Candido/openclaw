@@ -43,6 +43,14 @@ Ver secção **Verificação e enforcement** em [docs/development/LOGGING_AND_RU
 
 Para código já existente, ver secção **Código legado e migração** em [docs/development/LOGGING_AND_RULES.md](docs/development/LOGGING_AND_RULES.md). Regras aplicam-se em prioridade a código novo e a alterações em ficheiros existentes; melhoria incremental quando o ficheiro for modificado.
 
+## Mitigações (riscos do plano)
+
+- **Código fora do workspace:** Se o código vive noutro repositório, esse repo deve ter cópia ou link para [docs/development/LOGGING_AND_RULES.md](docs/development/LOGGING_AND_RULES.md). Documentar no README do repo qual a fonte de verdade.
+- **Falta de enforcement:** Usar checklist de PR e sugestões de lint/CI em LOGGING_AND_RULES.md; considerar script `scripts/check-logging.sh` para falhar build se `console.log` em paths de produção.
+- **Redacção manual:** Incluir helpers de redacção (ex.: `redactForLog`) e lista explícita de dados proibidos (tokens, senhas, PII) em LOGGING_AND_RULES.md — já documentado.
+- **Confusão logging operacional vs código:** Distinguir em KNOWLEDGE.md e neste plano: operacional = gateway/config; código = subsystem, logInfo/logError, requestId, redacção.
+- **Agente não acionar regras:** Em AGENTS.md, Every Session e Project standards referenciam PLANO_PROJETO e LOGGING_AND_RULES; garantir que quem altera fluxos/canais/skills leia estes antes de implementar.
+
 ## Autonomia dos agentes
 
 Os agentes devem identificar os próprios erros, corrigir a rota (sem pedir autorização para mudanças não destrutivas) e documentar as lições para não repetir. A referência operativa está em [AGENTS.md](AGENTS.md), subsecção **Autonomia – erros, correção e documentação**.

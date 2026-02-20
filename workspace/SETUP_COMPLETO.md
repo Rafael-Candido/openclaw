@@ -2,7 +2,7 @@
 
 **Documento único de referência** consolidando todo o setup, arquitetura, fluxos operacionais e implementações do ambiente OpenClaw.
 
-**Última atualização:** 2026-02-20 (atualizado com modelos DeepSeek/Gemini/Grok, reforço de governança anti-cooldown, e validações de runtime)
+**Última atualização:** 2026-02-21 (documentação alinhada ao openclaw.json: agentes, canais, Einstein model/tools, bindings Discord)
 
 ---
 
@@ -91,23 +91,38 @@ O OpenClaw é um sistema de agentes autônomos que opera através de:
 **Main (Presidente):**
 - ID: `main`
 - Workspace: `/var/www/openclaw/workspace`
-- Modelo: `openai/gpt-5.1-codex` (primary), fallbacks: Claude Sonnet 4.5, Gemini 1.5 Pro, Claude 3 Haiku
+- Modelo: `openai/gpt-5.1-codex` (primary), fallbacks: GPT-4 Turbo, DeepSeek Chat, Claude Sonnet 4.6, Claude Opus 4.6
+
+**Engenheiro SmartEnvios:**
+- ID: `eng-smartenvios`
+- Workspace: `/var/www/openclaw/workspace/agents/eng-smartenvios`
+- Modelo: `openai/gpt-5.1-codex` (primary)
+- Skills: `notion` (SmartEnvios)
+- Sandbox: `off`
+
+**Engenheiro de Prompt:**
+- ID: `eng-prompt`
+- Workspace: `/var/www/openclaw/workspace/agents/eng-prompt`
+- Modelo: `openai/gpt-5.1-codex` (primary)
+- Skills: `notion`
+- Sandbox: `off`
 
 **Einstein (SmartEnvios Support):**
 - ID: `einstein`
 - Workspace: `/var/www/openclaw/workspace/agents/einstein`
-- Modelo: `anthropic/claude-sonnet-4-5` (primary)
-- **Gatilho Discord:** menção `@1439351480514646087` ou palavra "einstein"
-- **Restrições:** sem `exec`, `gateway`, `sessions_*`, `subagents`, `cron`
-- **Tools permitidas:** `read`, `web_search`, `web_fetch`, `message`
-- **Sandbox:** `workspaceAccess: "ro"` (read-only)
+- Modelo: `xai/grok-4-1-fast-non-reasoning` (primary), fallbacks: Grok 3 Mini, Grok 3, DeepSeek Chat, GPT-4 Turbo, Claude Sonnet 4.6, Claude Opus 4.6, Grok Beta
+- **Gatilho Discord:** menção `@1439351480514646087` ou palavra "einstein" (`groupChat.mentionPatterns`)
+- **Tools permitidas:** `read`, `write`, `edit`, `web_search`, `web_fetch`, `message`, `exec`, `sessions_history`
+- **Tools bloqueadas:** `gateway`, `sessions_send`, `sessions_spawn`, `sessions_list`, `subagents`, `cron`, `process`, `nodes`, `browser`, `canvas`
+- **Sandbox:** `mode: "off"` (exec permitido para MCP/scripts, ex.: `scripts/smartenvios-mcp.sh`)
 
 ### 3.2. Canais Configurados
 
 **Discord:**
 - `groupPolicy: "open"`
-- Menções `@1439351480514646087` → roteadas para agente `einstein`
-- Todas as mensagens Discord → `einstein` (100% Discord)
+- **Bindings:** canal `discord` → agente `einstein` (todas as mensagens Discord são atendidas pelo Einstein)
+- `dmPolicy: "allowlist"` com `allowFrom: ["932709376790233088"]` — DMs aceitas apenas desse utilizador
+- Menções `@1439351480514646087` ou "einstein" acionam o Einstein em grupos
 
 **WhatsApp:**
 - `dmPolicy: "allowlist"`
@@ -176,7 +191,8 @@ OPENCLAW_WORKSPACE_DIR=/var/www/openclaw/workspace
 - `OPENAI_API_KEY=sk-proj-...`
 - `ANTHROPIC_API_KEY=sk-ant-api03-...`
 - `GEMINI_API_KEY=AIzaSyDOx9C8-...`
-- `GROK_API_KEY=[REDACTED]`
+- `DEEP_API_KEY=...` (DeepSeek; usado em `models.providers.deepseek`)
+- `XAI_API_KEY=...` ou `GROK_API_KEY=...` (xAI/Grok; Einstein e fallbacks usam modelos `xai/*`)
 
 ### 4.5. SmartEnvios MCP
 
@@ -223,8 +239,8 @@ OPENCLAW_WORKSPACE_DIR=/var/www/openclaw/workspace
 **Revisão contínua:** Ler cards `Tipo OpenClaw` em `Concluído`, comparar com esperado, juntar feedback e melhorar instruções/templates/KNOWLEDGE/fluxos.
 
 **Roteamento DM/Canais:**
-- **DM:** encaminhadas para agente `main`, respondidas apenas para o utilizador
-- **Canais Discord:** menções `@1439351480514646087` ou palavra "einstein" → agente `einstein`
+- **DM WhatsApp/WebChat:** agente `main`, respondidas apenas para o utilizador
+- **Discord:** todo o canal está ligado ao agente `einstein` (bindings); menções `@1439351480514646087` ou "einstein" acionam resposta em grupos; DMs Discord aceitas apenas de `allowFrom: 932709376790233088`
 
 ### 5.2. Diretores (3)
 
@@ -371,15 +387,17 @@ Commits: [hash1], [hash2]
 
 **Papel:** Responder dúvidas sobre SmartEnvios em canais Discord
 
+**Modelo (openclaw.json):** `xai/grok-4-1-fast-non-reasoning` (primary), fallbacks Grok 3 Mini, Grok 3, DeepSeek, GPT-4 Turbo, Claude Sonnet/Opus, Grok Beta
+
 **Gatilho Discord:** menção `@1439351480514646087` ou palavra "einstein"
 
-**Canais:** 100% Discord (todas as mensagens, canais, DMs)
+**Canais:** 100% Discord (bindings: canal discord → agente einstein)
 
-**Restrições:**
-- **Bloqueadas:** `exec`, `gateway`, `sessions_*`, `subagents`, `cron`, `write`, `edit`, `process`, `nodes`, `browser`, `canvas`
-- **Permitidas:** `read`, `web_search`, `web_fetch`, `message`
+**Tools (openclaw.json):**
+- **Permitidas:** `read`, `write`, `edit`, `web_search`, `web_fetch`, `message`, `exec`, `sessions_history`
+- **Bloqueadas:** `gateway`, `sessions_send`, `sessions_spawn`, `sessions_list`, `subagents`, `cron`, `process`, `nodes`, `browser`, `canvas`
 
-**Sandbox:** `workspaceAccess: "ro"` (read-only)
+**Sandbox:** `mode: "off"` — exec permitido (ex.: script MCP SmartEnvios)
 
 **Regras:**
 - Não deve abrir ou expor ecossistema de agentes nem OpenClaw

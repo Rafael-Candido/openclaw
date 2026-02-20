@@ -21,7 +21,7 @@ UNREAD=$("$TRIAGE_SH" "$PROFILE" "$LIMIT" 2>/dev/null)
 TOTAL=$(echo "$UNREAD" | jq -r '.unread')
 
 if [[ "$TOTAL" == "0" ]]; then
-  echo '{"profile": "'$PROFILE'", "total": 0, "processed": []}'
+  echo '{"profile": "'"$PROFILE"'", "total": 0, "processed": []}'
   exit 0
 fi
 

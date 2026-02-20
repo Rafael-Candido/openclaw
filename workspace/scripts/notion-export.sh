@@ -4,15 +4,17 @@ set -euo pipefail
 
 PAGE_ID="${1:-}"
 OUTPUT_FILE="${2:-}"
+OPENCLAW_CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}"
 
 if [[ -z "$PAGE_ID" || -z "$OUTPUT_FILE" ]]; then
   echo "Usage: $0 <pageId> <outputFile>" >&2
   exit 1
 fi
 
-if [[ -f "/var/www/openclaw/.env" ]]; then
+if [[ -f "${OPENCLAW_CONFIG_DIR}/.env" ]]; then
   set -a
-  source "/var/www/openclaw/.env"
+  # shellcheck disable=SC1090,SC1091
+  source "${OPENCLAW_CONFIG_DIR}/.env"
   set +a
 fi
 

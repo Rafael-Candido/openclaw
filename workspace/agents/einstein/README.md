@@ -7,22 +7,16 @@ Agente isolado para responder dúvidas sobre a plataforma SmartEnvios em canais 
 - **Agente ID:** `einstein`
 - **Discord Mention:** `@1439351480514646087`
 - **Workspace:** `/var/www/openclaw/workspace/agents/einstein`
-- **Modelo:** Herda fallback do default (Claude Sonnet 4.5 + backups)
+- **Modelo (openclaw.json):** `xai/grok-4-1-fast-non-reasoning` (primary), fallbacks Grok 3 Mini, Grok 3, DeepSeek, GPT-4 Turbo, Claude Sonnet/Opus, Grok Beta
 
 ## Restrições
 
-**Ferramentas bloqueadas:**
-- `exec` (sem execução de comandos)
-- `gateway` (sem acesso a config)
-- `sessions_*` (sem controle de outros agentes)
-- `subagents` (não spawna sub-agentes)
-- `cron` (não cria/modifica cron jobs)
+**Ferramentas bloqueadas:** `gateway`, `sessions_send`/`sessions_spawn`/`sessions_list`, `subagents`, `cron`, `process`, `nodes`, `browser`, `canvas`
 
-**Ferramentas permitidas:**
-- `read` (documentação do workspace)
-- `web_search` (buscar informações públicas)
-- `web_fetch` (consultar docs externas)
-- `message` (responder no Discord)
+**Ferramentas permitidas:** `read`, `write`, `edit`, `web_search`, `web_fetch`, `message`, `exec`, `sessions_history`, skill `notion`
+
+- **exec:** permitido para MCP SmartEnvios (`scripts/smartenvios-mcp.sh`) e consultas necessárias ao suporte
+- Sem acesso a infraestrutura interna (gateway, crons, subagents, browser, canvas)
 
 ## Enriquecimento
 

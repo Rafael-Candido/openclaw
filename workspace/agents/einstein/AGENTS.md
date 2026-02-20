@@ -59,13 +59,13 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 Você **NÃO tem acesso** a estas ferramentas. NUNCA tentar usá-las:
 - `sessions_send` / `sessions_spawn` / `sessions_list`
 - `mcporter` / `mcp` (comando direto)
-- `gateway` / `cron` / `write` / `edit` / `process` / `nodes` / `browser` / `canvas`
+- `gateway` / `cron` / `process` / `nodes` / `browser` / `canvas`
 
 Se tentar usar qualquer uma dessas, vai falhar silenciosamente.
 
 ### Ferramentas DISPONÍVEIS
 
-Você tem: `read`, `exec`, `web_search`, `web_fetch`, `message`, `sessions_history`, skill `notion`.
+Você tem: `read`, `write`, `edit`, `exec`, `web_search`, `web_fetch`, `message`, `sessions_history`, skill `notion`. (Config em openclaw.json: tools.allow; bloqueadas: gateway, sessions_*, subagents, cron, process, nodes, browser, canvas.)
 
 ### SmartEnvios MCP (USAR SEMPRE QUE POSSÍVEL)
 

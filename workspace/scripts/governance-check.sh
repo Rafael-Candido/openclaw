@@ -11,16 +11,23 @@ MAX_RUNNING_MIN=20
 MIN_GAP_MS=120000  # 2min mínimo entre crons
 MAX_LOCK_MIN=5
 REPORT=""
+PROJECT_ROOT="/private/var/www/openclaw"
+
+if [[ -f "${PROJECT_ROOT}/.env" ]]; then
+  # shellcheck disable=SC1091
+  source "${PROJECT_ROOT}/.env" 2>/dev/null || true
+fi
+OPENCLAW_CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}"
 
 log() { echo "${LOG_PREFIX} $(date -u +%H:%M:%S) $*"; }
 report() { REPORT="${REPORT}\n$*"; }
 
 clear_stale_session_locks() {
   local roots=(
-    "/private/var/www/openclaw/agents/main/sessions"
-    "/private/var/www/openclaw/agents/einstein/sessions"
-    "/private/var/www/openclaw/agents/eng-smartenvios/sessions"
-    "/private/var/www/openclaw/agents/eng-prompt/sessions"
+    "${OPENCLAW_CONFIG_DIR}/agents/main/sessions"
+    "${OPENCLAW_CONFIG_DIR}/agents/einstein/sessions"
+    "${OPENCLAW_CONFIG_DIR}/agents/eng-smartenvios/sessions"
+    "${OPENCLAW_CONFIG_DIR}/agents/eng-prompt/sessions"
   )
   local now
   now=$(date +%s)
@@ -49,14 +56,15 @@ clear_stale_session_locks() {
 }
 
 recover_on_model_pressure() {
-  local log_file="/var/www/openclaw/logs/gateway.log"
+  local log_file="${OPENCLAW_CONFIG_DIR}/logs/gateway.log"
   [[ -f "$log_file" ]] || return 0
 
   local pressure
-  pressure=$(python3 - <<'PY'
+  pressure=$(python3 - "$log_file" <<'PY'
 import re
+import sys
 from pathlib import Path
-p = Path("/var/www/openclaw/logs/gateway.log")
+p = Path(sys.argv[1])
 raw = p.read_bytes()[-2_000_000:]
 txt = raw.decode("utf-8", errors="ignore")
 patterns = [
@@ -181,7 +189,7 @@ for j in data.get('jobs', []):
 " 2>/dev/null || true)
 
 if [[ -n "$GHOST_RUNS" ]]; then
-  JOBS_PATH="/Users/rafaelcanper/.openclaw/cron/jobs.json"
+  JOBS_PATH="${OPENCLAW_CONFIG_DIR}/cron/jobs.json"
   while IFS='|' read -r cron_id cron_name ghost_mins; do
     log "Running fantasma há ${ghost_mins}min: ${cron_name} → limpando"
     report "⚠️ ${cron_name}: running fantasma há ${ghost_mins}min → limpo"
@@ -189,7 +197,7 @@ if [[ -n "$GHOST_RUNS" ]]; then
   
   python3 -c "
 import json, time
-p = '/Users/rafaelcanper/.openclaw/cron/jobs.json'
+p = '${JOBS_PATH}'
 with open(p) as f: data = json.load(f)
 now = int(time.time() * 1000)
 for j in data.get('jobs', []):
@@ -271,7 +279,7 @@ import json, sys, time
 data = json.load(sys.stdin)
 now_ms = int(time.time() * 1000)
 min_gap = ${MIN_GAP_MS}
-jobs_path = '/Users/rafaelcanper/.openclaw/cron/jobs.json'
+jobs_path = '${OPENCLAW_CONFIG_DIR}/cron/jobs.json'
 
 with open(jobs_path) as f:
     store = json.load(f)
@@ -313,9 +321,6 @@ fi
 
 # 8) Detecta cards Em andamento travados no Notion
 log "Checando cards Em andamento no Notion..."
-if [[ -f /private/var/www/openclaw/.env ]]; then
-  source /private/var/www/openclaw/.env 2>/dev/null || true
-fi
 
 NOTION_DBS=(
   "${NOTION_SMARTENVIOS_API_KEY:-}|adec12e735dc41a3bb7c274b287f3a10|Tech"
@@ -358,7 +363,7 @@ for page in data.get('results', []):
 " 2>/dev/null || true)
 
   if [[ -n "$STUCK_CARDS" ]]; then
-    while IFS='|' read -r page_id title agent mins; do
+    while IFS='|' read -r _page_id title agent mins; do
       log "[${label}] Card travado há ${mins}min: '${title}' (Agente=${agent})"
       report "⚠️ [${label}] Card '${title}' Em andamento há ${mins}min (Agente=${agent})"
 

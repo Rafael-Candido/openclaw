@@ -4,6 +4,8 @@ Este documento é a referência técnica para o plano em [PLANO_PROJETO.md](../.
 
 **Se o código vive noutro repositório,** copie este ficheiro para esse repo em `docs/development/LOGGING_AND_RULES.md` ou mantenha um link único (URL ou path) como fonte de verdade.
 
+**Âmbitos de logging:** O plano distingue (1) **operacional** — configuração do gateway, rotação, ficheiros — documentado em KNOWLEDGE.md; (2) **em código** — subsystem, logInfo/logError, requestId, redacção — documentado aqui e em PLANO_PROJETO.md. Não confundir: alterações em `openclaw.json` ou paths de log são operacionais; alterações em handlers, canais e skills seguem as regras deste documento.
+
 ---
 
 ## Regras expandidas com exemplos

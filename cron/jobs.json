@@ -275,7 +275,7 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771625713984,
+        "nextRunAtMs": 1771627513984,
         "lastRunAtMs": 1771623965564,
         "lastStatus": "ok",
         "lastDurationMs": 10931,
@@ -371,8 +371,7 @@
         "lastStatus": "error",
         "lastDurationMs": 120018,
         "consecutiveErrors": 2,
-        "nextRunAtMs": 1771624753984,
-        "runningAtMs": 1771624753998
+        "nextRunAtMs": 1771625953984
       }
     },
     {
@@ -413,7 +412,7 @@
       "name": "Mail-Pro especialista - execução 10min",
       "enabled": true,
       "createdAtMs": 1771622033758,
-      "updatedAtMs": 1771624548827,
+      "updatedAtMs": 1771625722823,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -431,10 +430,10 @@
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1771625093758,
-        "lastRunAtMs": 1771624493773,
+        "nextRunAtMs": 1771626293758,
+        "lastRunAtMs": 1771625688818,
         "lastStatus": "ok",
-        "lastDurationMs": 55054,
+        "lastDurationMs": 34005,
         "consecutiveErrors": 0
       }
     },
@@ -444,7 +443,7 @@
       "name": "Mail-Person especialista - execução 10min",
       "enabled": true,
       "createdAtMs": 1771622033758,
-      "updatedAtMs": 1771624625259,
+      "updatedAtMs": 1771625731734,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -463,10 +462,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771625213758,
-        "lastRunAtMs": 1771624613783,
+        "nextRunAtMs": 1771625813758,
+        "lastRunAtMs": 1771625722824,
         "lastStatus": "ok",
-        "lastDurationMs": 11476,
+        "lastDurationMs": 8910,
         "consecutiveErrors": 0
       }
     },
@@ -489,12 +488,15 @@
         "kind": "agentTurn",
         "message": "Atue como Engenheiro de Prompt em modo STRICT usando o skill notion-personal.\n\nObjetivo: captar e executar cards no Notion Pessoal com Status='Priorizado' e Agente='Engenheiro de Prompt'.\n\nRegras de execução:\n- Database: bfcbe7a7a3a745489e605e0762af12a9 (Notion Pessoal).\n- Filtrar Status='Priorizado' AND Tipo='OpenClaw' AND Agente='Engenheiro de Prompt'.\n- Deduplicação: se já existir card em Em andamento com mesmo título + Agente, aguardar próximo ciclo.\n- Para cada card elegível: mover para Em andamento, ler descrição, executar passos, comentar progresso e resultado, mover para Concluído.\n- Comentários progressivos curtos (<=300 chars) nas etapas-chave; comentário final estruturado com resultado, métricas e pendências.\n- Se bloqueio técnico (sem acesso, falta de credencial), registrar no comentário e manter Em andamento apenas se estiver atuando; caso contrário, retornar a Priorizado com pendência registrada.\n- Não criar novos cards; somente executar os já Priorizado.\n- Não usar message.send; comunicação apenas via comentário Notion.\n- Manter Agente como 'Engenheiro de Prompt' até conclusão.\nAPI-first obrigatório."
       },
-      "delivery": null,
+      "delivery": {
+        "mode": "announce"
+      },
       "state": {
         "lastRunAtMs": 0,
         "lastStatus": "",
         "lastDurationMs": 0,
-        "consecutiveErrors": 0
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1771628501237
       }
     }
   ]

@@ -8,6 +8,7 @@ set -euo pipefail
 
 PROFILE="${1:-}"
 ACTION="${2:-}"
+OPENCLAW_CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}"
 
 if [[ -z "$PROFILE" || -z "$ACTION" ]]; then
   echo "Usage: $0 <pro|personal> <action> [args...]" >&2
@@ -26,9 +27,10 @@ if [[ -z "$PROFILE" || -z "$ACTION" ]]; then
 fi
 
 # Load environment
-if [[ -f "/var/www/openclaw/.env" ]]; then
+if [[ -f "${OPENCLAW_CONFIG_DIR}/.env" ]]; then
   set -a
-  source "/var/www/openclaw/.env"
+  # shellcheck disable=SC1090,SC1091
+  source "${OPENCLAW_CONFIG_DIR}/.env"
   set +a
 fi
 

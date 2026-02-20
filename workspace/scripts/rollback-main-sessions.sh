@@ -11,9 +11,16 @@ BACKUP_DIR="$1"
 SESSION_BACKUP_DIR="${BACKUP_DIR}/sessions"
 RUNTIME_CONFIG_BACKUP="${BACKUP_DIR}/openclaw.runtime.json"
 PROJECT_CONFIG_BACKUP="${BACKUP_DIR}/openclaw.project.json"
+PROJECT_ROOT="/private/var/www/openclaw"
 
-SESSION_DIR="/Users/rafaelcanper/.openclaw/agents/main/sessions"
-RUNTIME_CONFIG="/Users/rafaelcanper/.openclaw/openclaw.json"
+if [[ -f "${PROJECT_ROOT}/.env" ]]; then
+  # shellcheck disable=SC1091
+  source "${PROJECT_ROOT}/.env" 2>/dev/null || true
+fi
+OPENCLAW_CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}"
+
+SESSION_DIR="${OPENCLAW_CONFIG_DIR}/agents/main/sessions"
+RUNTIME_CONFIG="${OPENCLAW_CONFIG_DIR}/openclaw.json"
 PROJECT_CONFIG="/private/var/www/openclaw/openclaw.json"
 
 if [[ ! -d "${SESSION_BACKUP_DIR}" ]]; then

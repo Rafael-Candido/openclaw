@@ -136,6 +136,23 @@ Quando os especialistas de Negócios forem criados:
 - Cron sugerido: **a cada 30 minutos**.
 - Aciona o Presidente para abrir/organizar rotinas em **Priorizado**, com **Agente** já definido para o especialista e descrição detalhada.
 
+### Cron rotineiro dos diretores Tech e Pessoal — cards Priorizado para e-mail
+
+Os diretores **Tech** e **Pessoal** têm rotinas de cron que **criam** cards em **Priorizado** com o objetivo de processamento de e-mail (Gmail, labels, rascunhos, aprendizagem), sem depender do Presidente para esses cards.
+
+- **Diretor Tech (rotina e-mail profissional):** Em cada ciclo do cron (ex.: 30 min), pode criar (ou reutilizar se já existir card ativo) um card em **Priorizado** com:
+  - **Agente:** **Mail-Pro**
+  - **Status:** Priorizado
+  - **Tipo:** OpenClaw
+  - **Descrição:** tarefa de processamento da caixa profissional conforme secção **Mail-Pro — caixa profissional** (buscar não lidos, classificar, rascunhos, arquivar, labels, aprendizagem). Incluir contexto, passos e critérios de conclusão conforme template de descrição do diretor.
+- **Diretor Pessoal (rotina e-mail pessoal):** Em cada ciclo do cron (ex.: 30 min), pode criar (ou reutilizar se já existir card ativo) um card em **Priorizado** com:
+  - **Agente:** **Mail-Person**
+  - **Status:** Priorizado
+  - **Tipo:** OpenClaw
+  - **Descrição:** tarefa de processamento da caixa pessoal conforme secção **Mail-Person — caixa pessoal** (buscar não lidos, classificar relevância, rascunhos, arquivar, labels, aprendizagem). Incluir contexto, passos e critérios de conclusão conforme template de descrição do diretor.
+
+Respeitar a **regra de duplicidade** (Assunto + Agente): se já existir card no status de saída do diretor com o mesmo objetivo (ex.: «Triagem e-mail profissional» + Mail-Pro em Priorizado), não criar outro; o Mail-Pro capta esse card no ciclo dele. O objetivo é garantir que exista sempre (ou com a cadência desejada) um card Priorizado para o especialista de e-mail processar, com descrição clara e completa.
+
 ## Especialistas
 - Cron sugerido: **a cada 15 minutos**.
 - Captam cards em **Priorizado** cujo **Agente** seja eles.
@@ -203,15 +220,35 @@ Cada especialista capta apenas cards em **Priorizado** onde a propriedade **Agen
 
 ### Mail-Pro e Mail-Person
 
-### Mail-Pro
+Ambos seguem a mesma **rotina detalhada** abaixo, com comentários organizados no card e report obrigatório no Discord e WhatsApp.
+
+#### Rotina detalhada (Mail-Pro e Mail-Person)
+
+1. **Captar:** Ler apenas cards em **Priorizado** onde **Agente** = **Mail-Pro** (ou **Mail-Person**).
+2. **Ler descrição:** Contexto, o que fazer, critérios de conclusão, Notion/skill e recursos indicados no card.
+3. **Planejar a execução:** Antes de mover para Em andamento, definir mentalmente ou em nota os passos (ex.: conectar Gmail → buscar não lidos → classificar → rascunhos → labels → arquivar). Garantir que a ordem e os critérios batem com a descrição do diretor.
+4. **Mover para Em andamento** e publicar **comentário de início** no card (máx. 300 caracteres): que captou, o que vai fazer e primeiro passo (ex.: «[HH:MM] 🟢 Início: captei card. Próximo: autenticar Gmail e listar não lidos.»).
+5. **Executar** exatamente conforme a descrição. A cada etapa significativa, publicar **comentário progressivo** no card (máx. 300 caracteres), no formato sugerido na regra **Comentários progressivos** (ver acima).
+6. **Comentário de conclusão:** Ao terminar, postar um **comentário final estruturado** no card com resultado completo (resumo do que foi feito, contagens, labels usados, rascunhos criados, etc.). Pode seguir o **Template de comentário de conclusão (especialista)** ou um resumo curto equivalente.
+7. **Report Discord e WhatsApp:** Enviar status report ao Rafael (resumo do resultado) nos canais Discord e WhatsApp indicados na descrição ou nos padrões do workspace. Ex.: «Mail-Pro: concluído. X não lidos triados, Y rascunhos, Z arquivados.»
+8. **Mover para Concluído** e garantir que a descrição do card (se necessário) está atualizada com o resultado.
+
+#### Mail-Pro
 - **Agente:** propriedade do card = **Mail-Pro**.
-- **Rotina:** (1) Captar cards em **Priorizado** onde **Agente** = **Mail-Pro**. (2) Ler a descrição do card (contexto, o que fazer, critérios de conclusão, Notion/recursos). (3) Mover para **Em andamento**. (4) Executar exatamente conforme a descrição. (5) Registar o resultado na descrição do card. (6) Enviar status report no Discord e WhatsApp. (7) Mover para **Concluído**.
 - **Uso:** tarefas de e-mail **profissional** (SmartEnvios). Quando a tarefa envolver Gmail, usar credenciais/skill de e-mail profissional (mail-pro). Usa o Notion indicado na descrição do card (por padrão o mesmo do diretor que delegou).
 
-### Mail-Person
+#### Mail-Person
 - **Agente:** propriedade do card = **Mail-Person**.
-- **Rotina:** (1) Captar cards em **Priorizado** onde **Agente** = **Mail-Person**. (2) Ler a descrição do card (contexto, o que fazer, critérios de conclusão, Notion/recursos). (3) Mover para **Em andamento**. (4) Executar exatamente conforme a descrição. (5) Registar o resultado na descrição do card. (6) Enviar status report no Discord e WhatsApp. (7) Mover para **Concluído**.
 - **Uso:** tarefas de e-mail **pessoal**. Quando a tarefa envolver Gmail, usar credenciais/skill de e-mail pessoal (mail-person). Usa o Notion indicado na descrição do card (por padrão o mesmo do diretor que delegou).
+
+**Template de comentário de conclusão (Mail)** — uso recomendado no comentário final do card:
+
+```md
+[Mail-Pro | Mail-Person] Concluído [HH:MM]
+- Não lidos processados: X | Rascunhos criados: Y | Arquivados: Z
+- Labels aplicados: [lista ou "nenhum novo"]
+- Observações: [opcional]
+```
 
 Os diretores devem nomear **Agente** = **Mail-Pro** ou **Mail-Person** conforme o especialista adequado à tarefa (e-mail profissional/SmartEnvios → Mail-Pro; e-mail pessoal → Mail-Person).
 

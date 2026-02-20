@@ -107,34 +107,37 @@ Uso:
 
 ## Available Models
 
-You have access to multiple AI models:
-- **OpenAI**: gpt-5.1-codex (primary), gpt-4-turbo, gpt-4, gpt-3.5-turbo
-- **Anthropic**: claude-3.7-sonnet, claude-3.5-sonnet, claude-3-opus, claude-3-sonnet, claude-3-haiku
-- **Google/Gemini**: gemini-1.5-pro, gemini-1.5-flash, gemini-pro, gemini-ultra
-- **X.AI/Grok**: grok-beta, grok-2
+Configuração em `openclaw.json` (agents.defaults.models e providers):
 
-All API keys are configured via environment variables in `.env`.
+- **OpenAI**: gpt-5.1-codex (primary main), gpt-4-turbo, gpt-4
+- **Anthropic**: claude-sonnet-4-6, claude-opus-4-6
+- **DeepSeek**: deepseek-chat, deepseek-reasoner (provider `DEEP_API_KEY`)
+- **Google/Gemini**: gemini-2.5-flash, gemini-2.5-pro, gemini-3-flash-preview, gemini-3-pro-preview
+- **xAI/Grok**: grok-4-1-fast-reasoning, grok-4-1-fast-non-reasoning (Einstein primary), grok-3-mini, grok-3, grok-beta, etc.
+
+API keys via `.env`: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, `DEEP_API_KEY`, `XAI_API_KEY`/`GROK_API_KEY`.
 
 ## Specialized Agents
 
 ### Einstein (SmartEnvios Support)
 - **Agent ID:** `einstein`
 - **Workspace:** `/var/www/openclaw/workspace/agents/einstein`
-- **Purpose:** Responder dúvidas sobre SmartEnvios
-- **Channels:** **100% Discord** (todas as mensagens, canais, DMs)
-- **Main channels:** WhatsApp + WebChat (não Discord)
-- **Restrictions:** Sem acesso a infraestrutura interna (exec, gateway, sessions)
-- **Tools:** read, web_search, web_fetch, message
+- **Model:** `xai/grok-4-1-fast-non-reasoning` (primary)
+- **Purpose:** Responder dúvidas sobre SmartEnvios em Discord
+- **Channels:** 100% Discord (bindings: canal discord → einstein)
+- **Tools permitidas:** read, write, edit, web_search, web_fetch, message, exec, sessions_history
+- **Tools bloqueadas:** gateway, sessions_send/spawn/list, subagents, cron, process, nodes, browser, canvas
 - **Enrichment:** Ver `agents/einstein/ENRICHMENT_GUIDE.md`
 
 **Como enriquecer o Einstein:**
 1. Adicionar FAQs em `agents/einstein/KNOWLEDGE.md`
-2. Adicionar exemplos de código em `agents/einstein/examples/`
+2. Adicionar exemplos em `agents/einstein/examples/`
 3. Documentar APIs em `agents/einstein/API_REFERENCE.md`
+4. Exec permitido para MCP (ex.: `scripts/smartenvios-mcp.sh`)
 
 ## Important Notes
 
 - When asked about Notion access, refer to this file or `NOTION.md`
 - You can use any of the 3 Notion skills by specifying the skill ID
 - Database IDs are available in the `.env` file if needed for specific operations
-- Einstein agent is isolated and restricted — only enriches knowledge, does not access internal systems
+- Einstein: canal Discord dedicado; pode usar exec para MCP SmartEnvios; não tem acesso a gateway, cron, subagents, browser, canvas

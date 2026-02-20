@@ -50,6 +50,13 @@ agents/*/agent/auth-profiles.json
 agents/*/sessions/*.jsonl
 agents/*/sessions/sessions.json
 
+# Python
+__pycache__/
+.pytest_cache/
+.venv/
+.venv-lint/
+*.pyc
+
 # Temporary files
 *.tmp
 *.temp

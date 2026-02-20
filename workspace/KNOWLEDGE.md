@@ -6,6 +6,16 @@ Este arquivo documenta padrões, descobertas e soluções que funcionaram bem pa
 
 Toda vez que descobrirmos um padrão, resolvermos um problema, ou configurarmos algo novo, devemos documentar aqui para referência futura. Este é o conhecimento histórico acumulado que permite replicar soluções e evitar erros já conhecidos.
 
+## 2026-02-21 – Sincronização documentação com openclaw.json
+
+**Alterações:** Documentação alinhada ao estado real do código e da config.
+
+- **SETUP_COMPLETO.md:** Agentes (main, eng-smartenvios, eng-prompt, einstein), modelos e fallbacks, canais Discord (bindings → einstein, dmPolicy allowFrom 932709376790233088), tools do Einstein (allow: read, write, edit, exec, web_search, web_fetch, message, sessions_history; deny: gateway, sessions_*, subagents, cron, process, nodes, browser, canvas), variáveis DEEP_API_KEY e XAI_API_KEY/GROK_API_KEY.
+- **TOOLS.md:** Lista de modelos (DeepSeek, xAI/Grok, Gemini 2.5/3), Einstein tools e restrições, nota sobre exec permitido para MCP.
+- **agents/einstein/README.md** e **AGENTS.md:** Modelo Grok como primary, ferramentas permitidas/bloqueadas alinhadas a openclaw.json; exec permitido para MCP.
+
+**Referência:** Fonte de verdade para agentes e canais é `openclaw.json`; manter SETUP_COMPLETO, TOOLS e docs do Einstein sincronizados após mudanças de config.
+
 ## 2026-02-20 – Regra de Resiliência para Automação (atualizada 13:23)
 
 **Princípio fundamental: TENTAR PRIMEIRO, FALHAR DEPOIS, NUNCA ASSUMIR**

@@ -13,7 +13,8 @@ set -euo pipefail
 #    ./scripts/gmail-oauth-refresh-token.sh pro exchange "<AUTH_CODE_OR_URL_WITH_CODE>"
 #    ./scripts/gmail-oauth-refresh-token.sh personal exchange "<AUTH_CODE_OR_URL_WITH_CODE>"
 
-ENV_FILE="/var/www/openclaw/.env"
+OPENCLAW_CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}"
+ENV_FILE="${OPENCLAW_CONFIG_DIR}/.env"
 REDIRECT_URI="${GMAIL_OAUTH_REDIRECT_URI:-http://localhost:53682/oauth2callback}"
 SCOPE="https://www.googleapis.com/auth/gmail.modify"
 
@@ -112,7 +113,7 @@ if 'refresh_token' not in obj:
 print(obj['refresh_token'])
 PY
   then
-    echo "\nDica: no passo 'exchange', cole o AUTH CODE (não a URL de autorização)." >&2
+    printf '\nDica: no passo '\''exchange'\'', cole o AUTH CODE (não a URL de autorização).\n' >&2
     exit 1
   fi
 
