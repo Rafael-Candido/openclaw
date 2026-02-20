@@ -104,22 +104,30 @@ curl -sS "https://discord.com/api/v10/channels/CHANNEL_ID/messages?limit=100&aft
 
 ### Jira — criar e consultar tarefas
 
-Acesso à API do Jira SmartEnvios via `exec`:
+Acesso ao Jira deve ser feito via helper local:
 
 ```bash
-source /var/www/openclaw/.env
-# Criar issue
-curl -sS -X POST "${JIRA_BASE_URL}rest/api/3/issue" \
-  -H "Authorization: Basic $(echo -n "${JIRA_EMAIL}:${JIRA_API_TOKEN}" | base64)" \
-  -H "Content-Type: application/json" \
-  -d '{"fields":{"project":{"key":"'${JIRA_PROJECT_KEY}'"},"summary":"TITULO","issuetype":{"name":"Task"},"priority":{"name":"Highest"},"assignee":{"accountId":"ACCOUNT_ID"},"description":{"type":"doc","version":1,"content":[{"type":"paragraph","content":[{"type":"text","text":"DESCRICAO"}]}]}}}'
-
-# Buscar usuários (para encontrar accountId do assignee)
-curl -sS "${JIRA_BASE_URL}rest/api/3/user/search?query=rodrigo" \
-  -H "Authorization: Basic $(echo -n "${JIRA_EMAIL}:${JIRA_API_TOKEN}" | base64)"
+/var/www/openclaw/workspace/agents/einstein/scripts/jira-helper.sh create \
+  --summary "TITULO" \
+  --description "DESCRICAO" \
+  --assignee "Rodrigo" \
+  --reason "bug" \
+  --link "https://exemplo"
 ```
 
-**Quando pedirem para criar tarefa no Jira:** usar diretamente via API, não escalonar para Notion.
+Regras obrigatórias para Jira:
+
+1. **Nunca pedir `accountId` antes de tentar resolver por nome.**
+2. Resolver assignee por `assignee-resolve`/`create` (cache em `.pi/jira-assignees.json`).
+3. Preencher dropdowns `produto`, `projeto`, `integração` e `categoria` com base na demanda.
+4. Definir `issuetype` pelo motivo:
+   - bug/falha/incidente -> `Bug`
+   - melhoria/evolução/feature -> `Story`
+   - tarefa/ajuste/solicitação -> `Task`
+5. Criar sempre com prioridade `Highest`.
+6. Após criar, garantir status em `To Do` / `Tarefas pendentes` (o helper já tenta transição).
+
+**Quando pedirem para criar tarefa no Jira:** usar helper Jira diretamente, não escalonar para Notion.
 
 ### Escalonamento para Notion (quando não conseguir resolver)
 

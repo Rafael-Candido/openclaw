@@ -103,6 +103,7 @@ Quando o pedido estiver no escopo do diretor, ele deve:
    - Identificar o especialista adequado para execução.
    - Responsabilizar o especialista correto no campo **Agente**.
 3. Escrever descrição técnica completa para o especialista.
+4. **Diretor Pessoal:** nunca manter `Agente=Diretor Pessoal` após triagem. Reatribuir sempre para o especialista competente (ex.: Mail-Person, Engenheiro de Prompt). Só manter `Diretor Pessoal` se não existir especialista para aquele escopo, e nesse caso abrir/comentar card pedindo criação do especialista correto.
 
 ### Função padrão (Notion) — Diretor de Negócios
 

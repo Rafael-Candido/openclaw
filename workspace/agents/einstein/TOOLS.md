@@ -38,12 +38,16 @@ NÃO usar `mcporter`, `mcp`, ou qualquer outro comando. O ÚNICO caminho é o sc
 ### Exemplo real — Jira:
 
 Se pedirem "crie atividade no Jira":
-1. Rodar `/var/www/openclaw/workspace/scripts/smartenvios-mcp.sh tools` e procurar ferramenta de Jira
-2. Se encontrar (ex: `jira_create_issue`): usar via `call`
-3. Se NÃO encontrar: criar card no Notion SmartEnvios em Aguardando para Diretor Tech com:
-   - Título descritivo do que foi pedido
-   - Todos os dados que o solicitante forneceu (responsável, produto, integração, categoria, prioridade)
-   - Motivo: "Ferramenta Jira não disponível no MCP — necessário implementar ou executar manualmente"
+1. Usar o helper local:
+   - `/var/www/openclaw/workspace/agents/einstein/scripts/jira-helper.sh create ...`
+2. Passar assignee por nome (`--assignee "Rodrigo"`), nunca exigir `accountId` antes.
+3. Passar `--reason` para o helper inferir tipo (`Bug`/`Story`/`Task`).
+4. Confirmar no retorno JSON:
+   - `classification.product`
+   - `classification.projectLabel`
+   - `classification.integration`
+   - `classification.category`
+   - `issue.status` (esperado `To Do` / `Tarefas pendentes`)
 
 ## Notion SmartEnvios (escalonamento)
 
@@ -92,7 +96,11 @@ curl -sS "https://discord.com/api/v10/channels/<CHANNEL_ID>/messages?limit=100" 
 
 ## Jira SmartEnvios
 
-Acesso direto à API do Jira para criar/consultar tarefas.
+Acesso operacional via helper:
+
+- Script: `/var/www/openclaw/workspace/agents/einstein/scripts/jira-helper.sh`
+- Cache assignees: `/var/www/openclaw/workspace/agents/einstein/.pi/jira-assignees.json`
+- Cache fields: `/var/www/openclaw/workspace/agents/einstein/.pi/jira-field-cache.json`
 
 **Credenciais no `.env`:**
 - `JIRA_BASE_URL=https://smartenv.atlassian.net/`
@@ -101,18 +109,22 @@ Acesso direto à API do Jira para criar/consultar tarefas.
 - `JIRA_PROJECT_KEY=SME`
 
 ```bash
-source /var/www/openclaw/.env
-AUTH=$(echo -n "${JIRA_EMAIL}:${JIRA_API_TOKEN}" | base64)
+# Resolver assignee e guardar cache
+/var/www/openclaw/workspace/agents/einstein/scripts/jira-helper.sh assignee-resolve "Rodrigo"
 
-# Buscar usuário por nome
-curl -sS "${JIRA_BASE_URL}rest/api/3/user/search?query=rodrigo" \
-  -H "Authorization: Basic ${AUTH}"
-
-# Criar issue
-curl -sS -X POST "${JIRA_BASE_URL}rest/api/3/issue" \
-  -H "Authorization: Basic ${AUTH}" \
-  -H "Content-Type: application/json" \
-  -d '{"fields":{"project":{"key":"SME"},"summary":"TITULO","issuetype":{"name":"Task"},"priority":{"name":"Highest"}}}'
+# Criar tarefa com classificação automática de dropdowns + tipo
+/var/www/openclaw/workspace/agents/einstein/scripts/jira-helper.sh create \
+  --summary "DHL tracking não atualizando - envio teste 6302554694" \
+  --description "Tracking não está atualizando corretamente no portal." \
+  --assignee "Rodrigo" \
+  --reason "bug" \
+  --integration "DHL" \
+  --category "Tracking" \
+  --product "APP" \
+  --project-label "SME project" \
+  --priority "Highest" \
+  --link "https://portal.smartenvios.com/rastreamento/codigo-de-rastreio/6302554694" \
+  --link "https://mydhl.express.dhl/br/pt/tracking.html#/results?id=6302554694"
 ```
 
 ## Gmail Scripts (referência)
