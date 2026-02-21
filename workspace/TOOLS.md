@@ -17,6 +17,9 @@ Para agentes que precisam interagir com Notion via `exec` (sem skill notion nati
 
 Passar `NOTION_PERSONAL_API_KEY`, `NOTION_SMARTENVIOS_API_KEY` ou `NOTION_CANPER_API_KEY` como parâmetro `api_key_var`.
 
+Padrão de comportamento e comentários:
+- Ver `workspace/templates/agent-behavior-patterns.md`.
+
 ## Notion Skills
 
 You have access to **3 Notion workspaces** configured as separate skills:
@@ -59,10 +62,12 @@ Scripts para triagem e gerenciamento de emails via Gmail API.
 - **personal** → `rafael.silva.pereira10@gmail.com` (Mail-Person)
 
 **Scripts principais:**
-- `gmail.sh` — API wrapper (auth, list, get, thread, labels, draft-create, archive)
+- `gmail.sh` — API wrapper (auth, list, get, thread, labels, mark-read, draft-create, archive)
 - `triage.sh` — Triagem de não lidos com metadata estruturada (limite: 100 emails)
 - `analyze.sh` — Análise inteligente (filtra auto-replies, prioriza menções diretas, contexto de thread)
 - `workflow.sh` — Workflow completo (triagem + análise + priorização, limite: 100 emails)
+- `process-workflow.sh` — Execução operacional completa (label + mark-read + draft + archive) com métricas reais
+- `process-notion-cards.sh` — Fluxo unificado Notion+Gmail para Mail-Pro/Mail-Person
 - `unsubscribe.sh` — Detecta e executa unsubscribe de emails promocionais
 - `cleanup-promotions.sh` — Cleanup automático de emails promocionais/sociais com unsubscribe
 

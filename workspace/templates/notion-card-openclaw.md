@@ -59,24 +59,31 @@ Ao captar o card, o diretor deve normalizar para:
 
 ## Comentário padrão do especialista (resumo de execução)
 
+Usar assinatura via `notion-helper.sh comment PAGE_ID API_KEY 'texto' 'ASSINATURA'`.
+
 ```md
-🚀 UPGRADE: [Título da entrega] ([AAAA-MM-DD HH:mm GMT-3])
+## Resultado executivo
+- Status: Sucesso | Sucesso parcial | Falha
+- Caixa analisada: [email/escopo]
+- Janela/consulta usada: [comando/query]
 
-Novo sistema de análise automática:
-✅ [Melhoria 1]
-✅ [Melhoria 2]
-✅ [Melhoria 3]
+## Métricas
+- Não lidos encontrados: N
+- E-mails lidos com histórico: N
+- Triados: N (Importante=X, Aguardando=Y, BaixoValor=Z)
+- Labels reaproveitadas: [lista]
+- Labels criadas: [lista]
+- E-mails marcados como lidos: N
+- Arquivados: N
+- Rascunhos criados: N
 
-📊 Capacidades:
-- [Capacidade 1]
-- [Capacidade 2]
+## Evidências
+- [messageId/assunto 1]
+- [messageId/assunto 2]
 
-🎯 Ações por score:
-- draft (50+): Criar rascunho contextualizado
-- review (20-49): Revisar e decidir
-- label (0-19): Apenas labelar
-- ignore (<0): Auto-reply, arquivar
-
-Documentação: [arquivo(s)]
-Commits: [hash1], [hash2]
+## Decisões e próximos passos
+- [critérios aplicados]
+- [pendências]
 ```
+
+Padrão completo: `workspace/templates/agent-behavior-patterns.md`.

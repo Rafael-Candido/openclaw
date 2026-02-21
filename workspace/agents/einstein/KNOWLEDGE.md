@@ -31,6 +31,32 @@ Esta base integra múltiplas fontes de informação para responder dúvidas sobr
 - Scripts: `notion-export.sh`, `notion_export_recursive.py`
 - Exportar para: `agents/einstein/knowledge/notion/`
 
+### 2. API Pública SmartEnvios
+
+**URL:** https://dev.smartenvios.com/ (Stoplight workspace)
+
+**Status:** Documentação pública disponível via Stoplight
+
+**Endpoints principais:**
+- **CEP Lookup:** Consulta de CEP para cálculo de frete
+- **Envios:** Criação, rastreamento e gestão de envios
+- **Transportadoras:** Lista de transportadoras parceiras
+- **Etiquetas:** Geração e download de etiquetas
+
+**Acesso via MCP:**
+- Script: `/var/www/openclaw/workspace/scripts/smartenvios-mcp.sh`
+- Comandos: `login`, `tools`, `call`
+- Exemplo: `./scripts/smartenvios-mcp.sh call cep_lookup '{"cep":"14020510"}'`
+
+### 3. Zendesk Público
+
+**URL:** https://smartenvios.zendesk.com/hc/pt-br
+
+**Conteúdo:** Artigos oficiais de suporte para clientes
+
+**Status atual:** Scraping automático não funcionou (possível bloqueio)
+**Alternativa:** Referenciar URL diretamente ou usar busca manual
+
 ### 2. Zendesk Público
 
 **URL:** https://smartenvios.zendesk.com/hc/pt-br
@@ -51,6 +77,38 @@ Esta base integra múltiplas fontes de informação para responder dúvidas sobr
 4. **Dicas e Melhores Práticas** - Otimização e eficiência
 
 **Arquivo local:** `agents/einstein/knowledge/youtube/playlists.md`
+
+### 5. MCP SmartEnvios
+
+**URL staging:** https://staging.smartenvios.tec.br/mcp
+
+**Funcionalidades:**
+- Consulta de CEP
+- Criação/atualização de OKRs
+- Integração com Jira
+- Automação de tickets Zendesk
+
+**Script:** `scripts/smartenvios-mcp.sh`
+
+### 6. GitHub - Repositórios Locais
+
+**Localização:** `/var/www/ms.*` (10 microserviços)
+
+**Inventário completo:** `agents/einstein/knowledge/github/local-repos.md`
+
+**Microserviços principais:**
+- `ms.atendimento` - Sistema de atendimento
+- `ms.connectors` - Conectores e integrações
+- `ms.crm` - CRM interno
+- `ms.customer-service` - Serviço ao cliente
+- `ms.expedition-hub` - Hub de expedição
+- `ms.label-processor` - Processador de etiquetas
+- `ms.notifications` - Sistema de notificações
+- `ms.points` - Sistema de pontos
+- `ms.ticket-generator` - Gerador de tickets
+- `ms.zardbank` - Integração financeira
+
+**Tecnologias predominantes:** Node.js, TypeScript, NestJS, Docker
 
 ### 4. GitHub - Repositórios Locais
 
@@ -81,8 +139,51 @@ Esta base integra múltiplas fontes de informação para responder dúvidas sobr
 - Criação/atualização de OKRs
 - Integração com Jira
 - Automação de tickets Zendesk
+- **Jira:** Gerenciamento de tickets, criação de issues, consulta de projetos
+- **Grafana:** Consulta de dashboards, métricas de monitoramento (via Metabase)
+- **Zendesk:** Criação, consulta e atualização de tickets de suporte
+- **Notion:** Acesso a bancos de dados e páginas
+- **Pipedrive:** Gestão de leads, negócios e organizações
+- **Metabase:** Dashboards e consultas analíticas
+- **PostgreSQL/MongoDB:** Consultas diretas a bancos de dados
+- **ReceitaWS:** Consulta de CNPJ para cadastro de clientes
 
 **Script:** `scripts/smartenvios-mcp.sh`
+
+**Ferramentas disponíveis (40+):**
+- **Autenticação:** `auth_login`, `auth_list_tokens`, `auth_select_token`
+- **Cadastro:** `auth_send_verification_code`, `auth_verify_email_code`, `auth_register_public_customer`
+- **CEP/CNPJ:** `cep_lookup`, `receita_lookup_cnpj`
+- **SmartEnvios:** `smartenvios_quote_freight`, `create_order`, `generate_ticket`, `get_tracking`, `smartenvios_search_orders`, `smartenvios_create_reverse`, `smartenvios_update_order`, `smartenvios_create_customer`, `register_webhook`
+- **Zendesk:** `zendesk_request`, `zendesk_get_ticket`, `zendesk_search_tickets`, `zendesk_create_ticket`, `zendesk_update_ticket`, `zendesk_add_comment`
+- **Pipedrive:** `pipedrive_request`, `pipedrive_list_leads`, `pipedrive_create_lead`, `pipedrive_get_lead`, `pipedrive_update_lead`, `pipedrive_delete_lead`, `pipedrive_convert_lead`, `pipedrive_search_leads`, `pipedrive_list_deals`, `pipedrive_create_deal`, `pipedrive_update_deal`, `pipedrive_search_organizations`, `pipedrive_get_organization`, `pipedrive_update_organization`, `pipedrive_create_organization`, `pipedrive_add_organization_follower`
+- **Notion:** `notion_request`
+- **Metabase:** `metabase_get_dashboard`, `metabase_query_card`, `metabase_list_dashboards`
+- **Bancos de dados:** `pg_fetch_one`, `mongo_fetch_one`
+
+**Exemplo de uso Jira (via Notion):**
+```bash
+# Consultar banco de dados Notion
+./scripts/smartenvios-mcp.sh call notion_request '{"path":"databases"}'
+```
+
+**Exemplo de uso Grafana (via Metabase):**
+```bash
+# Listar dashboards disponíveis
+./scripts/smartenvios-mcp.sh call metabase_list_dashboards
+
+# Consultar dashboard específico
+./scripts/smartenvios-mcp.sh call metabase_get_dashboard '{"dashboard_id":76}'
+```
+
+**Exemplo de uso Zendesk:**
+```bash
+# Buscar ticket por ID
+./scripts/smartenvios-mcp.sh call zendesk_get_ticket '{"ticket_id":201732}'
+
+# Criar novo ticket
+./scripts/smartenvios-mcp.sh call zendesk_create_ticket '{"ticket":{"subject":"Problema com envio","comment":{"body":"Detalhes do problema..."}}}'
+```
 
 ---
 
@@ -105,6 +206,18 @@ Esta base integra múltiplas fontes de informação para responder dúvidas sobr
 2. Código fonte em `ms.connectors`
 3. Artigos Zendesk de setup
 4. Testar via MCP se aplicável
+
+### Para dúvidas de API:
+1. Consultar documentação em https://dev.smartenvios.com/
+2. Testar endpoint via MCP (`scripts/smartenvios-mcp.sh`)
+3. Verificar microserviço relacionado
+4. Consultar logs de integração
+
+### Para uso de Jira/Grafana/Zendesk via MCP:
+1. Verificar se a ferramenta está disponível em `./scripts/smartenvios-mcp.sh tools`
+2. Usar `auth_login` para obter session_token
+3. Chamar função específica com parâmetros apropriados
+4. Tratar erros com fallback para interface web
 
 ---
 
@@ -137,6 +250,25 @@ Esta base integra múltiplas fontes de informação para responder dúvidas sobr
 1. Validar formato: `XXXXX-XXX`
 2. Consultar Correios
 3. Microserviço: `ms.connectors`
+4. Testar via MCP: `./scripts/smartenvios-mcp.sh call cep_lookup '{"cep":"14020510"}'`
+
+### Como usar a API pública?
+**Resposta:** Acesse https://dev.smartenvios.com/ para documentação completa.
+
+**Endpoints principais:**
+- `POST /api/v1/envios` - Criar envio
+- `GET /api/v1/envios/{id}` - Consultar envio
+- `GET /api/v1/transportadoras` - Listar transportadoras
+- `POST /api/v1/etiquetas` - Gerar etiqueta
+
+**Autenticação:** Token API via header `Authorization: Bearer <token>`
+
+**Exemplo via MCP:**
+```bash
+./scripts/smartenvios-mcp.sh login
+./scripts/smartenvios-mcp.sh tools
+./scripts/smartenvios-mcp.sh call cep_lookup '{"cep":"14020510"}'
+```
 
 ---
 

@@ -49,17 +49,19 @@ Cards em `Priorizado` com:
 - `Agente = Engenheiro SmartEnvios`
 - Descrição técnica detalhada pelo Diretor Tech
 
-## Fluxo de execução
+## Contrato compartilhado (obrigatório)
 
-1. Captar card de `Priorizado` (checar `Em andamento` para deduplicação)
-2. Mover para `Em andamento`
-3. Comentário de início no card (max 300 chars)
-4. Ler descrição técnica, identificar repo(s) afetado(s)
-5. Executar a tarefa (fix, feature, melhoria)
-6. Commitar e pushiar no GitHub quando aplicável
-7. Comentários progressivos ao longo da execução
-8. Comentário final com resultado, commits, evidências
-9. Mover para `Concluído`
+- Este agente consome o padrão central em `workspace/templates/agent-behavior-patterns.md`.
+- Aplicação obrigatória para lifecycle, deduplicação, assinatura de comentários, estrutura do comentário final e regra corpo x comentário.
+
+## Fluxo de execução específico (delta)
+
+1. Captar card `Priorizado` atribuído para `Engenheiro SmartEnvios`.
+2. Ler descrição técnica e identificar repo(s) afetado(s) em `/var/www/`.
+3. Executar a tarefa (bugfix, melhoria, feature, evolução MCP).
+4. Validar com testes quando possível.
+5. Commitar e pushiar quando aplicável.
+6. Registrar evidências técnicas (arquivos, commits, testes, impacto).
 
 ## Ferramentas
 
@@ -75,5 +77,15 @@ Cards em `Priorizado` com:
 - Commitar com mensagens descritivas em inglês
 - Nunca fazer push --force em main/master
 - Testar antes de commitar quando possível
-- Documentar mudanças no comentário do card
+- Documentar mudanças no comentário do card usando o formato padronizado no `agent-behavior-patterns.md`
 - API-first: preferir endpoints/API sobre fluxo manual
+
+### Aprovação obrigatória (banco, dados sensíveis e deploy)
+
+- **Dados sensíveis (banco, nome de cliente, etc.):** Nunca alterar direto em produção. Criar script de migração/update ou card no Notion descrevendo a mudança e aguardar aprovação explícita (comentário "Aprovado" ou "aprovado" no card). Só executar o script ou a alteração após isso.
+- **Código:** Implementar em branch, abrir PR e criar ou atualizar card no Notion com link do PR. Deploy/merge só após comentário de aprovação no card ("Aprovado" ou "aprovado").
+- **Convenção:** Considera-se aprovado quando houver comentário do solicitante (ou Rafael) no card com a palavra "aprovado" ou "Aprovado".
+- Antes de qualquer alteração em banco ou em dados de cliente: criar card (ou usar o card atual) com a proposta e aguardar aprovação. Para código: abrir PR, colocar link no card, aguardar aprovação no card antes de merge/deploy.
+
+### Playbooks específicos
+- **Releases do MCP**: siga `agents/eng-smartenvios/RELEASE_MCP.md` para o fluxo completo (PR develop → PR main → tag sequencial → release em produção).

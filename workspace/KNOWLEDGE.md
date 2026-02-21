@@ -4,7 +4,68 @@ Este arquivo documenta padrões, descobertas e soluções que funcionaram bem pa
 
 **⚠️ IMPORTANTE: Este arquivo deve ser atualizado sempre que aprendermos algo novo!**
 
-**Última documentação: 2026-02-20 23:01**
+**Última documentação: 2026-02-21**
+
+---
+
+## 2026-02-21 – Engenheiro de Prompt: implementador único, zero dependência do humano (CRÍTICO)
+
+**Regra:** Cards atribuídos ao Engenheiro de Prompt (Governança, Otimizador, Diretor Pessoal) exigem **implementação por ele**, não “sugestão para o Rafael executar”. Não existe ninguém depois dele para aplicar as mudanças.
+
+- **Se o ambiente tiver escrita no repo** (ex.: Cursor com agente Eng. Prompt): usar read/write/edit e git; commitar e dar push.
+- **Se o cron rodar sem escrita no repo** (ex.: gateway): o comentário final deve trazer **patch/diff ou conteúdo exato dos arquivos** para aplicação sem decisão humana (ex.: colar no Cursor e aplicar).
+
+Governança e Otimizador ao criarem cards para Engenheiro de Prompt devem esperar **entrega de implementação** (ou artefato aplicável), não apenas análise ou recomendação. Ver `workspace/agents/eng-prompt/AGENTS.md` (Regras, Independência do humano).
+
+## 2026-02-21 – Governança: resiliência memory + reporte ao Otimizador (CRÍTICO)
+
+**Objetivo:** Governança deve recuperar de falhas (ex.: ficheiro memory não existir) e identificar erros de pipeline (FailoverError, TPM/context overflow) para reportar ao Otimizador.
+
+**Resiliência em memory:**
+- Ficheiro de registro: `workspace/memory/YYYY-MM-DD.md`. Se ao ler o agente receber ENOENT (no such file or directory), deve **criar** o ficheiro com a ferramenta `write` (conteúdo mínimo: `# Memory YYYY-MM-DD` e duas quebras de linha) e depois acrescentar o registo. Nunca falhar por "ficheiro não existe".
+
+**Detecção e reporte ao Otimizador (obrigatório):**
+- O `governance-check.sh` passou a incluir no relatório a secção "Últimos erros por cron" com o `lastError` de cada job. A Governança deve analisar cada lastError e:
+  1. **Failover/cooldown:** se aparecer "FailoverError", "No available auth profile for anthropic", "all in cooldown or unavailable", "rate_limit" → registrar em memory e criar card no Notion PESSOAL com título `[Otimizador] Failover/cooldown em <nome cron>`, Agente='Diretor Pessoal', corpo com Ocorrências, Causa provável, Sugestões (revisar modelo do cron, evitar fallback Anthropic).
+  2. **Request too large / TPM / context overflow:** se aparecer "Request too large", "TPM", "tokens per min", "Limit", "context overflow", "compaction" → registrar em memory e criar card com título `[Otimizador] Context overflow/TPM em <nome cron>`, corpo com Ocorrências, Causa provável (sessão inchada, limite TPM), Sugestões (reset de sessão, modelo com janela maior, limitar saída de exec).
+- O Otimizador lê memory e cards do Notion Pessoal na fase diária e atua na causa raiz. Governança identifica e reporta; Otimizador corrige.
+
+## 2026-02-21 – Mail-Pro / Mail-Person: triagem de email + Notion (notion-helper obrigatório)
+
+**Problema:** A triagem de e-mail (workflow.sh) rodava, mas a atualização no Notion falhava: agente usava script inexistente (`update_card.sh`), tentava editar `notion-helper.sh` ou a API key não era encontrada no ambiente do gateway.
+
+**Solução:**
+1. **Notion — só notion-helper.sh:** Os prompts de Mail-Pro e Mail-Person passaram a exigir uso EXCLUSIVO de `notion-helper.sh` via exec: query (buscar cards Priorizado/Em andamento), update-status (mover Em andamento / Concluído), comment (comentários progressivos e final). NÃO usar skill notion, curl direto nem outros scripts. NÃO editar o script.
+2. **DB e API key por cron:** Mail-Pro: DB SmartEnvios `adec12e735dc41a3bb7c274b287f3a10`, variável `NOTION_SMARTENVIOS_API_KEY`. Mail-Person: DB Pessoal `bfcbe7a7a3a745489e605e0762af12a9`, variável `NOTION_PERSONAL_API_KEY`.
+3. **Ambiente do gateway:** O processo que executa os crons (gateway) precisa ter no ambiente as variáveis `NOTION_SMARTENVIOS_API_KEY` e `NOTION_PERSONAL_API_KEY` (ex.: .env no mesmo root do projeto ou env do processo que inicia o gateway). O `notion-helper.sh` faz source do `.env` em `PROJECT_ROOT` (dois níveis acima do script); se o gateway rodar com outro root (ex. ~/.openclaw), garantir que esse root tenha .env com as chaves ou que o processo receba as variáveis por outro meio.
+4. **Caminho do script:** Usar caminho completo nos prompts (ex.: `/var/www/openclaw/workspace/scripts/notion-helper.sh`). Se o gateway usar outro dir (ex. Mac), o path nos prompts deve coincidir com o que existe nesse ambiente ou usar `${OPENCLAW_CONFIG_DIR}/workspace/scripts/notion-helper.sh` se o runtime expandir.
+5. **workflow.sh Gmail — path absoluto obrigatório:** O agente às vezes executava `./scripts/gmail/workflow.sh pro 100` em vez do caminho completo; com o cwd do gateway fora do repo isso falha (0 não lidos, Sucesso Parcial). Regra: **sempre** executar exatamente `/var/www/openclaw/workspace/scripts/gmail/workflow.sh pro 100` (Mail-Pro) ou `.../workflow.sh personal 100` (Mail-Person). NUNCA usar `./scripts/...` nem caminho relativo. Nos prompts está explícito: "GMAIL — OBRIGATÓRIO caminho COMPLETO. Comando EXATO: ..."
+
+**Verificação rápida:** No host onde o gateway corre, executar manualmente com .env carregado: `workspace/scripts/notion-helper.sh query <db_id> NOTION_PERSONAL_API_KEY 'Mail-Person'` (e equivalente para SmartEnvios). Se falhar, corrigir path e/ou API keys até funcionar; depois os crons passam a atualizar e comentar no Notion após a triagem.
+
+**Bug 2026-02-21 — Mail-Person spam de comentários "Etapa 5/5: monitoramento":** O cron rodava a cada 10–15 min, encontrava o card em Em andamento e em vez de concluir postava sempre o mesmo comentário "Triagem continua; monitoramento do processo ativo", gerando dezenas de comentários iguais. **Causa:** o agente não tinha instrução explícita para concluir o card no mesmo run. **Fix:** No prompt, regra crítica: se houver card Mail-Person em Em andamento, o objetivo do run é **concluí-lo** (executar workflow, resultado, comentário final estruturado, mover Concluído). PROIBIDO postar "monitoramento" e sair. Comentários: no máximo 1 por etapa por run; nunca repetir o mesmo texto. Aplica-se igualmente ao Mail-Pro se surgir o mesmo padrão.
+
+**Bug 2026-02-21 — Mail-Pro/Mail-Person: cards em Em andamento, e-mails não lidos não triados:** O cron executava várias vezes mas os e-mails (28 pessoal, 125 profissional) continuavam sem ler e o card ficava em Em andamento. **Causa:** o agente não seguia uma sequência rígida; podia comentar ou tocar no Notion sem **executar de facto** o workflow.sh (ou executava com path errado/cwd errado). **Fix:** Prompts reescritos como **sequência obrigatória** em 5 passos: (1) query Notion, (2) identificar card / mover para Em andamento, (3) **executar com exec** `/var/www/openclaw/workspace/scripts/gmail/workflow.sh pro 100` ou `personal 100` e aguardar fim, (4) um comment com resultado extraído da saída do exec, (5) update-status para Concluído. Regra: NUNCA terminar o run sem ter executado o passo 3 e o passo 5. Se o script falhar, registar no comentário e mesmo assim mover para Concluído.
+
+**Governança deve pegar esse tipo de falha:** O `governance-check.sh` passou a incluir a secção 4c, que detecta em `lastError` padrões de falha de integração Notion/script (API key not set, notion, update_card, script não encontrado, etc.) e escreve no relatório "Possível falha de integração Notion/script (criar card para Engenheiro de Prompt)" com os nomes dos crons afetados. O prompt da Governança foi atualizado para, nesses casos, criar card no Notion PESSOAL com título `[Eng. Prompt] Falha Notion/script em <cron>`, Agente=Diretor Pessoal, corpo com lastError, causa provável e sugestões (revisar prompt, env do gateway). Assim a Governança também identifica quando especialistas falham por Notion/script e escalona para o Engenheiro de Prompt.
+
+## 2026-02-21 – Log gateway: ENOENT memory, FailoverError anthropic, TPM Eng SmartEnvios
+
+**Contexto:** Análise do log do gateway (terminal 1.txt) após runs de Governança, Mail-Pro e Eng SmartEnvios. Ver também entrada "Governança: resiliência memory + reporte ao Otimizador".
+
+**1. Governança — read ENOENT `workspace/memory/2026-02-21.md`**
+- **Causa:** O cron de Governança instrui "Se gateway DOWN, registrar em memory"; o agente tentou ler `workspace/memory/2026-02-21.md`, que não existia.
+- **Fix:** (1) No prompt: resiliência obrigatória — se ENOENT, criar o ficheiro com `write` antes de registrar. (2) Manter no repo `workspace/memory/YYYY-MM-DD.md` quando possível para o read não falhar.
+
+**2. Mail-Pro (e outro cron) — lane task error FailoverError anthropic**
+- **Log:** `lane task error: lane=cron ... error=FailoverError: No available auth profile for anthropic (all in cooldown or unavailable).`
+- **Causa:** O cron tem `model: xai/grok-3-mini` no payload; se o runtime não tiver xai ou falhar, o fallback vai para Anthropic. Com todos os perfis Anthropic em cooldown, o run falha.
+- **Fix:** Garantir que o cron use um modelo com provider disponível (ex.: manter xai/grok-3-mini e assegurar que a config do gateway tenha xai; ou fixar openai/deepseek no payload para não depender de Anthropic). Sincronizar `cron/jobs.json` do repo com o que o gateway usa (`storePath` em runtime, ex. `~/.openclaw/cron/jobs.json`).
+
+**3. Eng SmartEnvios — Request too large (TPM) + compaction**
+- **Log:** `Request too large for gpt-4-turbo-preview ... Limit 30000, Requested 48577` (tokens per min). Depois: `[compaction-diag] outcome=compacted`, retry, mas run continuou com `isError=true`.
+- **Causa:** Sessão com muitos toolResult de `exec` (até ~26k chars por mensagem); modelo em uso foi gpt-4-turbo (possível fallback quando gemini falhou). TPM excedido; compaction reduziu mensagens mas o run já estava em retry/erro.
+- **Fix:** (1) Resetar a sessão do cron Eng SmartEnvios para o próximo run começar com contexto limpo: `openclaw session reset` para `sessionKey=agent:eng-smartenvios:cron:a7b8c9d0-e1f2-3456-7890-abcdef123401` (ou equivalente pelo jobId). (2) Manter modelo com janela/TPM adequados (ex.: google/gemini-3-pro-preview no payload). (3) Opcional: limitar tamanho de saída de exec nos prompts (resumir output longo) para evitar novo inchaço.
 
 ---
 
@@ -273,3 +334,7 @@ Toda vez que descobrirmos um padrão, resolvermos um problema, ou configurarmos 
 - **Cause:** Script is missing or incorrectly pathed.
 - **Fix:** Para crons de especialista (Mail-Pro, Mail-Person etc.): usar **notion-helper.sh** — `workspace/scripts/notion-helper.sh query/update-status/comment`. NÃO usar skill notion (agentes de cron rodam em modo isolated sem skills). O script `update_card.sh` não existe.
 - **Context:** Occurred during Mail-Pro specialist task for cron ae4a0347-2e03-46ad-8595-6b9476c45d79.
+
+## Cards de melhoria (Governança/Otimizador) — formatação e assinatura (2026-02-21)
+- **Issue:** Governança e Otimizador criavam cards de melhoria em SmartEnvios (via skill notion), com Agente errado e sem assinatura correta.
+- **Fix:** Reforço nos prompts: PROIBIDO skill notion para cards de melhoria. SEMPRE notion-helper.sh + DB bfcbe7a7a3a745489e605e0762af12a9 (Pessoal) + Agente='Diretor Pessoal' + assinatura (7º param) = Governança ou Otimizador. Formato corpo: ## Ocorrências / ## Causa provável / ## Sugestões de fix.

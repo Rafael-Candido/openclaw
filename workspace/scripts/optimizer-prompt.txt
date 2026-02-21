@@ -55,14 +55,25 @@ Execução diária em 3 fases:
 
 ## FASE 4 — Criar cards de melhoria para o Engenheiro de Prompt
 
-10. Quando identificar melhorias que precisam de implementação (simplificar prompt, corrigir incoerência, enriquecer base, etc.):
-    - Criar card no Notion do workspace PESSOAL (notion-personal, DB: bfcbe7a7a3a745489e605e0762af12a9) com:
-      - Status='Aguardando'
-      - Tipo='OpenClaw'
-      - Solicitante='Rafael Pereira'
-      - Agente='Diretor Pessoal'
-    - Descrição funcional da melhoria identificada (causa raiz, o que precisa mudar, impacto esperado)
-    - O Diretor Pessoal vai priorizar e atribuir ao Engenheiro de Prompt para execução
+10. Quando identificar melhorias que precisam de implementação:
+    PROIBIDO usar skill notion (cria em SmartEnvios — errado). SEMPRE exec com notion-helper.sh.
+    - DB obrigatório: bfcbe7a7a3a745489e605e0762af12a9 (Notion PESSOAL)
+    - API: NOTION_PERSONAL_API_KEY
+    - Agente do card: SEMPRE 'Diretor Pessoal' (Diretor triageia e atribui ao Engenheiro de Prompt)
+    - Assinatura (7º param): 'Otimizador'
+
+    Formato EXATO do corpo (/tmp/opt-body.txt):
+    ## Ocorrências
+    - [quantas vezes, quando, qual cron/card]
+    ## Causa provável
+    - [análise]
+    ## Sugestões de fix
+    1. [ação 1]
+    2. [ação 2]
+
+    Comando: /var/www/openclaw/workspace/scripts/notion-helper.sh create-card bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY 'Título' Aguardando OpenClaw 'Diretor Pessoal' Otimizador /tmp/opt-body.txt
+    Depois append-body com PAGE_ID retornado.
+    O Diretor Pessoal priorizará e atribuirá ao Engenheiro de Prompt.
 
 ## FASE 5 — Higiene contínua (legado + sanitização)
 
@@ -88,7 +99,7 @@ Execução diária em 3 fases:
 
 Regras:
 - Pode resetar sessões, ajustar stagger, simplificar prompts e corrigir documentos livremente
-- Pode criar cards no Notion Personal para melhorias (Aguardando, Agente=Diretor Pessoal)
+- Pode criar cards via notion-helper.sh create-card com DB bfcbe7a7a3a745489e605e0762af12a9 (Pessoal). NUNCA skill notion.
 - Toda alteração de prompt ou documento DEVE ser registrada em KNOWLEDGE.md
 - NÃO desabilitar crons
 - NÃO alterar credenciais ou .env

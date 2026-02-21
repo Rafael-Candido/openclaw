@@ -7,6 +7,11 @@ Este documento define o fluxo operacional no Notion para cards com:
 - **Tipo:** `OpenClaw`
 - **Propriedade chave:** `Agente`
 
+Referência oficial de padronização transversal:
+- `workspace/templates/agent-behavior-patterns.md`
+- Esse documento define design patterns de assinatura, comentários, corpo x comentário, papéis e uso de ferramentas.
+- Os `workspace/agents/*/AGENTS.md` devem consumir este contrato e manter apenas regras específicas do papel (delta).
+
 ### Regra de escopo e deduplicação por agente — OBRIGATÓRIO
 
 Cada agente opera em **dois status**: capta do status de entrada e checa duplicidade no status de saída.
@@ -105,7 +110,9 @@ Quando o pedido estiver no escopo do diretor, ele deve:
    - Identificar o especialista adequado para execução.
    - Responsabilizar o especialista correto no campo **Agente**.
 3. Escrever descrição técnica completa para o especialista.
-4. **Diretor Pessoal:** nunca manter `Agente=Diretor Pessoal` após triagem. Reatribuir sempre para o especialista competente (ex.: Mail-Person, Engenheiro de Prompt). Só manter `Diretor Pessoal` se não existir especialista para aquele escopo, e nesse caso abrir/comentar card pedindo criação do especialista correto.
+4. Comentário de triagem **obrigatório** no card (assinatura do diretor), com resumo da decisão e agente destino.
+5. **Diretor Pessoal:** nunca manter `Agente=Diretor Pessoal` após triagem. Reatribuir sempre para o especialista competente (ex.: Mail-Person, Engenheiro de Prompt). Só manter `Diretor Pessoal` se não existir especialista para aquele escopo, e nesse caso abrir/comentar card pedindo criação do especialista correto.
+6. **Diretor Tech (legado):** se captar card com `Agente=Tech`, normalizar no ato da triagem para `Diretor Tech` (temporário) ou para o especialista final (`Mail-Pro`, `Engenheiro SmartEnvios`), evitando cards órfãos em `Aguardando`.
 
 ### Função padrão (Notion) — Diretor de Negócios
 
@@ -171,28 +178,48 @@ Respeitar a **regra de duplicidade** (Assunto + Agente): se já existir card no 
 Ao captar o card:
 
 1. Atualizar **Status** para `Em andamento`.
-2. **Comentário de início:** postar comentário no card (max 300 chars) indicando que captou e o que vai fazer.
+2. **Comentário de início:** postar comentário curto no card indicando que captou e o que vai fazer.
 3. Executar a atividade conforme descrição do card.
-4. **Comentários progressivos durante execução:** a cada etapa relevante, postar comentário curto no card (max 300 chars) mostrando progresso, etapa atual e próximo passo. Isso garante visibilidade da jornada mesmo se o processo travar.
-5. **Comentário de conclusão:** postar comentário final estruturado com resultado completo.
+4. **Comentários progressivos durante execução:** a cada etapa relevante, postar comentário curto no card mostrando progresso, etapa atual e próximo passo. Isso garante visibilidade da jornada mesmo se o processo travar.
+5. **Comentário de conclusão:** postar comentário final estruturado com resultado completo (ver template abaixo).
 6. Atualizar **Status** para `Concluído`.
+
+### Template único de comentários no Notion
+
+**Regra:** Todo comentário no Notion deve ser feito via `notion-helper.sh comment` com o **4º parâmetro = nome do agente** (ex.: `'Mail-Pro'`, `'Diretor Tech'`, `'Governança'`). Sem o 4º parâmetro não é possível saber quem escreveu (API não identifica autor).
+
+**Padrão de assinatura recomendado:**
+- Agente: `[Mail-Pro]`, `[Diretor Tech]`, `[Governança]`, etc.
+- Humano (anotação manual): `[Rafael]` (ex.: `[Rafael] Avaliei o ticket`).
+- Convenção detalhada: `workspace/templates/agent-behavior-patterns.md`.
+
+**Estrutura padrão para comentário final (especialistas Mail / execução):**
+- `## Resultado executivo` — Status (Sucesso / Sucesso parcial / Falha), caixa/janela usada
+- `## Métricas` — Números reais (não lidos, triados, rascunhos, etc.)
+- `## Evidências` — IDs/assuntos ou resumo do que foi feito
+
+Comentários de progresso: curtos (uma linha). Comentário final: até 2000 caracteres, com as seções acima quando aplicável.
 
 ### Regra de assinatura — OBRIGATÓRIO em todos os comentários e criações
 
 Sempre identificar quem criou ou atualizou o card:
 - **create-card:** passar o 7º parâmetro `[criador]` (ex.: Governança, Otimizador) — o script adiciona "Este card foi criado por: X".
-- **comment (notion-helper.sh):** passar o 4º parâmetro `[agente]` — o script prefixa "[Agente] " no comentário.
+- **comment (notion-helper.sh):** passar o **4º parâmetro `[agente]`** — OBRIGATÓRIO; o script prefixa "[Agente] " no comentário. Nunca omitir.
 - Exemplo: `notion-helper.sh comment PAGE_ID NOTION_PERSONAL_API_KEY 'Texto do comentário' 'Engenheiro de Prompt'`
 
 ### Regra de comentários progressivos — OBRIGATÓRIO para especialistas
 
-Especialistas DEVEM postar comentários no card do Notion ao longo da execução, não apenas no final. Máximo **300 caracteres** por comentário. Usar o 4º parâmetro do comment para assinar (ex.: 'Mail-Pro', 'Engenheiro de Prompt').
+Especialistas DEVEM postar comentários no card no Notion ao longo da execução, não apenas no final. Comentários de progresso: curtos (uma linha). Comentário final: estruturado (## Resultado executivo, ## Métricas, ## Evidências), até 2000 caracteres. **Sempre** usar o 4º parâmetro do comment para assinar (ex.: 'Mail-Pro', 'Engenheiro de Prompt').
 
 **Quando comentar:**
 - Ao captar o card (início)
 - Ao concluir cada etapa significativa
 - Se encontrar erro ou bloqueio
 - Ao concluir (resultado final)
+
+**Padrão corpo x comentário:**
+- Corpo (`append-body`): especificação estável (escopo, critérios, plano técnico).
+- Comentário (`comment`): timeline de execução (início, progresso, bloqueio, conclusão).
 
 **Formato sugerido — passo a passo com assinatura (manter Etapa X/N):**
 ```
@@ -432,6 +459,7 @@ Agente dedicado a garantir continuidade operacional e escalonamento correto de t
    - `Agente=Mail-Person` → força execução do cron Mail-Person
    - Outros agentes (>30min) → registra alerta para intervenção manual
 6. **Registra incidentes** em `memory/YYYY-MM-DD.md`.
+7. **Audita padronização operacional** — verifica se agentes/crons estão aderentes ao `workspace/templates/agent-behavior-patterns.md` e, quando houver desvio ou oportunidade, cria card no Notion Pessoal para `Engenheiro de Prompt`.
 
 ### Escalonamento automático — como funciona:
 
@@ -449,6 +477,7 @@ Isso significa que ao **adicionar novos agentes e crons**, a governança redistr
 - **Pode criar** cards no Notion PESSOAL para o Diretor Pessoal / Engenheiro de Prompt.
 - **CRÍTICO:** NUNCA usar skill `notion` (cria em SmartEnvios). SEMPRE usar `notion-helper.sh` + `NOTION_PERSONAL_API_KEY` + DB `bfcbe7a7a3a745489e605e0762af12a9` (Pessoal).
 - Assinar no create-card (7º param: Governança).
+- Para auditoria de patterns, preferir criar direto para `Agente=Engenheiro de Prompt` com `Status=Priorizado` e corpo com achados + ação recomendada.
 
 ### O que NÃO faz:
 

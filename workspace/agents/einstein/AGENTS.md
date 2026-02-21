@@ -156,6 +156,17 @@ curl -sS -X POST "https://api.notion.com/v1/pages" \
   -d '{"parent":{"database_id":"adec12e735dc41a3bb7c274b287f3a10"},"properties":{"Name":{"title":[{"text":{"content":"TITULO"}}]},"Status":{"select":{"name":"Aguardando"}},"Tipo":{"select":{"name":"OpenClaw"}},"Agente":{"select":{"name":"Diretor Tech"}}}}'
 ```
 
+### Padrão transversal para cards OpenClaw
+
+Quando criar, comentar ou atualizar cards do fluxo OpenClaw, seguir o contrato central em:
+- `workspace/templates/agent-behavior-patterns.md`
+
+Aplicação obrigatória:
+- assinatura no comentário (`[Agente]`);
+- lifecycle (`Aguardando -> Priorizado -> Em andamento -> Concluído`);
+- deduplicação por assunto+título e agente;
+- estrutura de comentário final com métricas reais.
+
 ## External vs Internal
 
 **Safe to do freely:**

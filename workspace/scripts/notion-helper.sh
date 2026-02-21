@@ -71,9 +71,21 @@ print(json.dumps({'filter': f}))")
     notion_request PATCH "https://api.notion.com/v1/pages/${PAGE_ID}" "$API_KEY" "$BODY"
     ;;
 
+  update-agent)
+    # Usage: notion-helper.sh update-agent <page_id> <api_key_var> <agent_name>
+    PAGE_ID="${1:?Page ID required}"
+    API_KEY_VAR="${2:?API key var required}"
+    API_KEY="${!API_KEY_VAR:-}"
+    [[ -z "$API_KEY" ]] && echo '{"error":"API key not set"}' && exit 1
+    NEW_AGENT="${3:?Agent name required}"
+
+    BODY=$(python3 -c "import json; print(json.dumps({'properties': {'Agente': {'select': {'name': '$NEW_AGENT'}}}}))")
+    notion_request PATCH "https://api.notion.com/v1/pages/${PAGE_ID}" "$API_KEY" "$BODY"
+    ;;
+
   comment)
     # Usage: notion-helper.sh comment <page_id> <api_key_var> <message> [agente]
-    # Se agente informado, prefixa o comentário com "[Agente] "
+    # agente (4º param) OBRIGATÓRIO: assinatura no Notion; prefixa "[Agente] ". Máx 2000 chars.
     PAGE_ID="${1:?Page ID required}"
     API_KEY_VAR="${2:?API key var required}"
     API_KEY="${!API_KEY_VAR:-}"
@@ -84,7 +96,7 @@ print(json.dumps({'filter': f}))")
 
     BODY=$(python3 -c "
 import json
-msg = '''$MESSAGE'''[:300]
+msg = '''$MESSAGE'''[:2000]
 print(json.dumps({
     'parent': {'page_id': '$PAGE_ID'},
     'rich_text': [{'type': 'text', 'text': {'content': msg}}]
@@ -224,7 +236,8 @@ print(json.dumps({'children': blocks}))
     echo "Comandos:"
     echo "  query <db_id> <api_key_var> <agent> [status1] [status2]"
     echo "  update-status <page_id> <api_key_var> <new_status>"
-    echo "  comment <page_id> <api_key_var> <message> [agente]  # agente=assinatura no comentário"
+    echo "  update-agent <page_id> <api_key_var> <new_agent>"
+    echo "  comment <page_id> <api_key_var> <message> [agente]  # agente (4º)=assinatura OBRIGATÓRIA, máx 2000 chars"
     echo "  get-page <page_id> <api_key_var>"
     echo "  get-blocks <page_id> <api_key_var>"
     echo "  create-card <db_id> <api_key_var> <title> [status] [tipo] [agente] [criador] [body_file]"

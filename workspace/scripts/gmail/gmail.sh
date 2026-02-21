@@ -2,7 +2,7 @@
 # Gmail API wrapper for Mail-Pro and Mail-Person specialists
 # Usage: ./gmail.sh <profile> <action> [args...]
 # Profiles: pro | personal
-# Actions: auth, list, get, thread, labels, label-create, label-apply, draft-create, archive
+# Actions: auth, list, get, thread, labels, label-create, label-apply, mark-read, draft-create, archive
 
 set -euo pipefail
 
@@ -21,6 +21,7 @@ if [[ -z "$PROFILE" || -z "$ACTION" ]]; then
   echo "  labels                         - List all labels" >&2
   echo "  label-create <name>            - Create label (or get existing)" >&2
   echo "  label-apply <msgId> <labelId>  - Apply label to message" >&2
+  echo "  mark-read <msgId>              - Mark message as read (remove UNREAD)" >&2
   echo "  draft-create <to> <subject> <body> [threadId] - Create draft" >&2
   echo "  archive <msgId>                - Archive message (remove INBOX)" >&2
   exit 1
@@ -169,6 +170,15 @@ case "$ACTION" in
       exit 1
     fi
     gmail_api POST "messages/$MSG_ID/modify" -d "{\"addLabelIds\": [\"$LABEL_ID\"]}"
+    ;;
+
+  mark-read)
+    MSG_ID="${3:-}"
+    if [[ -z "$MSG_ID" ]]; then
+      echo "Usage: $0 $PROFILE mark-read <messageId>" >&2
+      exit 1
+    fi
+    gmail_api POST "messages/$MSG_ID/modify" -d '{"removeLabelIds": ["UNREAD"]}'
     ;;
 
   draft-create)

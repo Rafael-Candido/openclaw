@@ -42,6 +42,9 @@
       }
     }
   },
+  "talk": {
+    "apiKey": "${ELEVENLABS_API_KEY}"
+  },
   "models": {
     "mode": "merge",
     "providers": {
@@ -342,7 +345,8 @@
   },
   "commands": {
     "native": "auto",
-    "nativeSkills": "auto"
+    "nativeSkills": "auto",
+    "restart": true
   },
   "hooks": {
     "internal": {
