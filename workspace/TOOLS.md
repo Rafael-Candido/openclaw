@@ -2,7 +2,7 @@
 
 This document lists all available tools, skills, and integrations configured in this workspace.
 
-**Última documentação: 2026-02-20 22:52**
+**Última documentação: 2026-02-20 23:01**
 
 ## Notion Helper (notion-helper.sh)
 

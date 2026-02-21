@@ -225,36 +225,6 @@
       }
     },
     {
-      "id": "b3c678e4-15ea-41e3-a96d-da661c9c27c0",
-      "agentId": "main",
-      "name": "Mail-Pro especialista - execução 10min [LEGACY OFF]",
-      "enabled": false,
-      "createdAtMs": 1771552403736,
-      "updatedAtMs": 1771624278345,
-      "schedule": {
-        "kind": "every",
-        "everyMs": 600000,
-        "anchorMs": 1771564633984
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Atue como especialista Mail-Pro com execução completa de e-mail + relatório padronizado detalhado. Contexto: caixa profissional rafael.pereira@smartenvios.com. Objetivo obrigatório em cada run com card Priorizado: (1) ler até 100 não lidos com histórico de thread, (2) triar por relevância usando workflow.sh, (3) aplicar/reusar labels Mail-Pro-Aguardando / Mail-Pro-BaixoValor / Mail-Pro-Importante, (4) arquivar processados, (5) criar rascunhos contextualizados para importantes (score >= 50). IMPORTANTE: Usar /var/www/openclaw/workspace/scripts/gmail/workflow.sh pro 100 para análise inteligente completa. Regras: - Se houver cards Mail-Pro em Em andamento >10 min, recuperar e finalizar com comentário de recuperação. - Para cada card Priorizado: mover para Em andamento, executar tarefas Gmail, registrar resultado no corpo E em comentário nativo, mover para Concluído no final. - Filtrar auto-replies e notificações automáticas (não processar). - Priorizar emails com menção direta ao rafael.pereira@smartenvios.com. - Criar rascunhos com contexto da thread (usar thread.context). - Não usar message.send. Não escrever em memory/*.md. - Só declarar bloqueio de credencial após teste real de Gmail API no run. Formato obrigatório do comentário nativo (padronizado): ## Resultado executivo - Status: Sucesso | Sucesso parcial | Falha - Caixa analisada: rafael.pereira@smartenvios.com - Janela/consulta usada: [query Gmail usada] ## Métricas - Não lidos encontrados: N - E-mails lidos com histórico: N - Triados: N (Importante=X, Aguardando=Y, BaixoValor=Z) - Labels reaproveitadas: [lista] - Labels criadas: [lista] - Arquivados: N - Rascunhos criados: N ## Evidências (IDs/assuntos) - [messageId/subject 1] - [messageId/subject 2] ## Decisões e próximos passos - [critérios aplicados] - [pendências] Se não houver não lidos, ainda assim preencher métricas com zero e evidenciar a consulta executada.",
-        "timeoutSeconds": 600,
-        "model": "xai/grok-3-mini"
-      },
-      "delivery": {
-        "mode": "none"
-      },
-      "state": {
-        "lastRunAtMs": 1771624165061,
-        "lastStatus": "ok",
-        "lastDurationMs": 113284,
-        "consecutiveErrors": 0
-      }
-    },
-    {
       "id": "702cce7b-5d44-4db7-8be8-81d75dc9e274",
       "agentId": "main",
       "name": "Mail-Person especialista - execução 10min",
@@ -350,7 +320,7 @@
       "name": "Presidente - criar demandas e-mail (Pro+Person)",
       "enabled": true,
       "createdAtMs": 1771571937957,
-      "updatedAtMs": 1771638685483,
+      "updatedAtMs": 1771639198031,
       "schedule": {
         "kind": "every",
         "everyMs": 3600000,
@@ -360,50 +330,20 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Presidente em modo STRICT para triagem de demandas de e-mail (profissional + pessoal) em um único fluxo.\n\nObjetivo:\n- Criar/captar demandas de e-mail em Notion no status Aguardando para os diretores corretos.\n\nRegras obrigatórias de criação de card:\n- Status='Aguardando'\n- Tipo='OpenClaw'\n- Solicitante='Rafael Pereira'\n- Agente='Tech' quando o escopo for e-mail profissional (SmartEnvios)\n- Agente='Diretor Pessoal' quando o escopo for e-mail pessoal\n\nRegra crítica de descrição (Presidente):\n- O card deve ter descrição FUNCIONAL, clara e objetiva, suficiente para o diretor entender o problema, objetivo e resultado esperado.\n- NÃO detalhar implementação técnica, arquitetura, scripts, nem instruções técnicas de execução.\n- O detalhamento técnico é responsabilidade do Diretor ao promover para Priorizado.\n\nEscopo do cron:\n- Varrer sinais/demandas de e-mail pendentes nos dois domínios (profissional e pessoal).\n- Garantir no máximo 1 card ativo por rotina de e-mail e por domínio:\n  - '[Rotina Mail-Pro] Triagem e rascunhos de e-mail profissional'\n  - '[Rotina Mail-Person] Triagem e rascunhos de e-mail pessoal'\n- Se já existir card ativo (Aguardando/Priorizado/Em andamento), não duplicar; apenas registrar comentário de acompanhamento quando necessário.\n- Se houver duplicados, consolidar mantendo o mais recente e comentar nos demais para encerramento.\n\nDescrição funcional obrigatória no card:\n- Contexto de negócio\n- Objetivo funcional\n- Escopo (o que entra/o que não entra)\n- Critérios de conclusão (resultado esperado)\n- Restrições/regras de negócio relevantes",
-        "model": "deepseek/deepseek-chat"
+        "message": "Atue como Presidente em modo STRICT. USE EXCLUSIVAMENTE notion-helper.sh via exec. NÃO usar skill notion nem curl direto. EXECUTE os comandos, não descreva.\n\nCOMANDOS (exec obrigatório):\n- Buscar SmartEnvios: /var/www/openclaw/workspace/scripts/notion-helper.sh query adec12e735dc41a3bb7c274b287f3a10 NOTION_SMARTENVIOS_API_KEY 'Tech' Aguardando Priorizado\n- Buscar Mail-Pro ativo: /var/www/openclaw/workspace/scripts/notion-helper.sh query adec12e735dc41a3bb7c274b287f3a10 NOTION_SMARTENVIOS_API_KEY 'Mail-Pro' Priorizado 'Em andamento'\n- Buscar Pessoal: /var/www/openclaw/workspace/scripts/notion-helper.sh query bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY 'Diretor Pessoal' Aguardando Priorizado\n- Buscar Mail-Person ativo: /var/www/openclaw/workspace/scripts/notion-helper.sh query bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY 'Mail-Person' Priorizado 'Em andamento'\n- Criar card COM DESCRIÇÃO: 1) Escrever corpo em /tmp/pres-desc.txt (markdown: ## Contexto, ## Objetivo, ## Escopo, ## Critérios de conclusão, ## Restrições). 2) /var/www/openclaw/workspace/scripts/notion-helper.sh create-card DB_ID API_KEY_VAR 'Título' Aguardando OpenClaw 'Agente' Presidente /tmp/pres-desc.txt\n- Comentar: /var/www/openclaw/workspace/scripts/notion-helper.sh comment PAGE_ID API_KEY_VAR 'Texto' Presidente\n\nFLUXO OBRIGATÓRIO:\n1. Executar query Tech e Mail-Pro no SmartEnvios. Se algum resultado contém título '[Rotina Mail-Pro]', NÃO criar; se existir card, executar comment de acompanhamento e responder IDs.\n2. Se NENHUM card ativo Mail-Pro: criar /tmp/pres-desc.txt com descrição funcional completa (contexto rafael.pereira@smartenvios.com, objetivo triagem+rascunhos, escopo, critérios, restrições). Executar create-card adec12e735dc41a3bb7c274b287f3a10 NOTION_SMARTENVIOS_API_KEY '[Rotina Mail-Pro] Triagem e rascunhos de e-mail profissional' Aguardando OpenClaw 'Tech' Presidente /tmp/pres-desc.txt\n3. Repetir para Pessoal: query Diretor Pessoal e Mail-Person. Se não houver card ativo, criar /tmp/pres-desc-person.txt e create-card bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY '[Rotina Mail-Person] Triagem e rascunhos de e-mail pessoal' Aguardando OpenClaw 'Diretor Pessoal' Presidente /tmp/pres-desc-person.txt\n4. Responder com IDs dos cards criados ou comentados.\n\nRegras: Máximo 1 card ativo por rotina. Descrição OBRIGATÓRIA (via body_file). Sem descrição = card incompleto. Não usar message.send.",
+        "model": "google/gemini-3-pro-preview",
+        "timeoutSeconds": 300
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "lastRunAtMs": 1771638647300,
+        "lastRunAtMs": 1771639191587,
         "lastStatus": "ok",
-        "lastDurationMs": 38183,
+        "lastDurationMs": 6444,
         "consecutiveErrors": 0,
         "nextRunAtMs": 1771655100000
-      }
-    },
-    {
-      "id": "590b6ee6-07b2-4fb6-b38f-cdfab81f403e",
-      "agentId": "main",
-      "name": "Mail-Person especialista - execução 10min [LEGACY OFF]",
-      "enabled": false,
-      "createdAtMs": 1771595593984,
-      "updatedAtMs": 1771622033758,
-      "schedule": {
-        "kind": "every",
-        "everyMs": 600000,
-        "anchorMs": 1771595713984
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "REGRA DE COMENTÁRIOS PROGRESSIVOS NO NOTION — OBRIGATÓRIO:\n- Ao captar o card: comentário de início (max 300 chars) com o que vai fazer.\n- A cada etapa relevante: comentário curto (max 300 chars) com progresso e próximo passo.\n- Se encontrar erro/bloqueio: comentário imediato explicando o que aconteceu.\n- Ao concluir: comentário final estruturado com resultado completo.\nFormato: [HH:MM] emoji Etapa X/N: resumo. Próximo: ação.\nExemplo: [08:15] 📧 Etapa 1/4: 47 não lidos encontrados. Triando por relevância...\nIsso garante visibilidade da jornada e ajuda a governança detectar travamentos.\n\nREGRA DE DEDUPLICAÇÃO — chave dupla (Assunto + Agente):\n- Antes de captar um card de Priorizado, consultar Status='Em andamento'.\n- Se já existir card em Em andamento com MESMO título E MESMO Agente:\n  - Se NÃO houver processo ativo: FORÇAR EXECUÇÃO.\n  - Se HOUVER processo ativo: ESPERAR o próximo ciclo.\n- Se não existir card em Em andamento, captar de Priorizado e mover normalmente.\n\nAtue como especialista Mail-Person com execução completa de e-mail pessoal. Contexto: caixa pessoal rafael.silva.pereira10@gmail.com. Usar /var/www/openclaw/workspace/scripts/gmail/workflow.sh personal 100. Regras: recuperar cards Em andamento, mover Priorizado para Em andamento, executar Gmail, registrar resultado em comentário nativo, mover para Concluído. Não usar message.send. Não escrever em memory/*.md.",
-        "timeoutSeconds": 600,
-        "model": "xai/grok-3-mini"
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "last"
-      },
-      "state": {
-        "lastRunAtMs": 1771620324600,
-        "lastStatus": "ok",
-        "lastDurationMs": 15117,
-        "consecutiveErrors": 0
       }
     },
     {
@@ -485,7 +425,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como especialista Mail-Pro com execução completa de e-mail + relatório padronizado detalhado. Contexto: caixa profissional rafael.pereira@smartenvios.com. Objetivo obrigatório em cada run com card Priorizado: (1) ler até 100 não lidos com histórico de thread, (2) triar por relevância usando workflow.sh, (3) aplicar/reusar labels Mail-Pro-Aguardando / Mail-Pro-BaixoValor / Mail-Pro-Importante, (4) arquivar processados, (5) criar rascunhos contextualizados para importantes (score >= 50). IMPORTANTE: Usar /var/www/openclaw/workspace/scripts/gmail/workflow.sh pro 100 para análise inteligente completa. Regras: - Se houver cards Mail-Pro em Em andamento >10 min, recuperar e finalizar com comentário de recuperação. - Para cada card Priorizado: mover para Em andamento, executar tarefas Gmail, registrar resultado no corpo E em comentário nativo, mover para Concluído no final. - Filtrar auto-replies e notificações automáticas (não processar). - Priorizar emails com menção direta ao rafael.pereira@smartenvios.com. - Criar rascunhos com contexto da thread (usar thread.context). - Não usar message.send. Não escrever em memory/*.md. - Só declarar bloqueio de credencial após teste real de Gmail API no run. Formato obrigatório do comentário nativo (padronizado): ## Resultado executivo - Status: Sucesso | Sucesso parcial | Falha - Caixa analisada: rafael.pereira@smartenvios.com - Janela/consulta usada: [query Gmail usada] ## Métricas - Não lidos encontrados: N - E-mails lidos com histórico: N - Triados: N (Importante=X, Aguardando=Y, BaixoValor=Z) - Labels reaproveitadas: [lista] - Labels criadas: [lista] - Arquivados: N - Rascunhos criados: N ## Evidências (IDs/assuntos) - [messageId/subject 1] - [messageId/subject 2] ## Decisões e próximos passos - [critérios aplicados] - [pendências] Se não houver não lidos, ainda assim preencher métricas com zero e evidenciar a consulta executada.",
+        "message": "USE EXCLUSIVAMENTE o script /var/www/openclaw/workspace/scripts/notion-helper.sh para TODAS as operações Notion. NÃO tente curl direto nem skill notion.\n\nDB SMARTENVIOS: adec12e735dc41a3bb7c274b287f3a10\nAPI KEY VAR: NOTION_SMARTENVIOS_API_KEY\n\nCOMANDOS (via exec):\n- Buscar cards: /var/www/openclaw/workspace/scripts/notion-helper.sh query adec12e735dc41a3bb7c274b287f3a10 NOTION_SMARTENVIOS_API_KEY 'Mail-Pro'\n- Mover status: /var/www/openclaw/workspace/scripts/notion-helper.sh update-status PAGE_ID NOTION_SMARTENVIOS_API_KEY 'Em andamento' ou 'Concluído'\n- Comentar: /var/www/openclaw/workspace/scripts/notion-helper.sh comment PAGE_ID NOTION_SMARTENVIOS_API_KEY 'Texto' 'Mail-Pro' (sempre assinar)\n\nAtue como especialista Mail-Pro com execução completa de e-mail + relatório padronizado detalhado. Contexto: caixa profissional rafael.pereira@smartenvios.com. Objetivo obrigatório em cada run com card Priorizado: (1) ler até 100 não lidos com histórico de thread, (2) triar por relevância usando workflow.sh, (3) aplicar/reusar labels Mail-Pro-Aguardando / Mail-Pro-BaixoValor / Mail-Pro-Importante, (4) arquivar processados, (5) criar rascunhos contextualizados para importantes (score >= 50). IMPORTANTE: Usar /var/www/openclaw/workspace/scripts/gmail/workflow.sh pro 100 para análise inteligente completa. Regras: - Se houver cards Mail-Pro em Em andamento >10 min, recuperar e finalizar com comentário de recuperação. - Para cada card Priorizado: mover para Em andamento, executar tarefas Gmail, registrar resultado no corpo E em comentário nativo, mover para Concluído no final. - Filtrar auto-replies e notificações automáticas (não processar). - Priorizar emails com menção direta ao rafael.pereira@smartenvios.com. - Criar rascunhos com contexto da thread (usar thread.context). - Não usar message.send. Não escrever em memory/*.md. - Só declarar bloqueio de credencial após teste real de Gmail API no run. Formato obrigatório do comentário nativo (padronizado): ## Resultado executivo - Status: Sucesso | Sucesso parcial | Falha - Caixa analisada: rafael.pereira@smartenvios.com - Janela/consulta usada: [query Gmail usada] ## Métricas - Não lidos encontrados: N - E-mails lidos com histórico: N - Triados: N (Importante=X, Aguardando=Y, BaixoValor=Z) - Labels reaproveitadas: [lista] - Labels criadas: [lista] - Arquivados: N - Rascunhos criados: N ## Evidências (IDs/assuntos) - [messageId/subject 1] - [messageId/subject 2] ## Decisões e próximos passos - [critérios aplicados] - [pendências] Se não houver não lidos, ainda assim preencher métricas com zero e evidenciar a consulta executada.",
         "timeoutSeconds": 600,
         "model": "xai/grok-3-mini"
       },
@@ -516,7 +456,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "REGRA DE COMENTÁRIOS PROGRESSIVOS NO NOTION — OBRIGATÓRIO:\n- Ao captar o card: comentário de início (max 300 chars) com o que vai fazer.\n- A cada etapa relevante: comentário curto (max 300 chars) com progresso e próximo passo.\n- Se encontrar erro/bloqueio: comentário imediato explicando o que aconteceu.\n- Ao concluir: comentário final estruturado com resultado completo.\nFormato: [HH:MM] emoji Etapa X/N: resumo. Próximo: ação.\nExemplo: [08:15] 📧 Etapa 1/4: 47 não lidos encontrados. Triando por relevância...\nIsso garante visibilidade da jornada e ajuda a governança detectar travamentos.\n\nREGRA DE DEDUPLICAÇÃO — chave dupla (Assunto + Agente):\n- Antes de captar um card de Priorizado, consultar Status='Em andamento'.\n- Se já existir card em Em andamento com MESMO título E MESMO Agente:\n  - Se NÃO houver processo ativo: FORÇAR EXECUÇÃO.\n  - Se HOUVER processo ativo: ESPERAR o próximo ciclo.\n- Se não existir card em Em andamento, captar de Priorizado e mover normalmente.\n\nAtue como especialista Mail-Person com execução completa de e-mail pessoal. Contexto: caixa pessoal rafael.silva.pereira10@gmail.com. Usar /var/www/openclaw/workspace/scripts/gmail/workflow.sh personal 100. Regras: recuperar cards Em andamento, mover Priorizado para Em andamento, executar Gmail, registrar resultado em comentário nativo, mover para Concluído. Não usar message.send. Não escrever em memory/*.md.",
+        "message": "USE EXCLUSIVAMENTE o script /var/www/openclaw/workspace/scripts/notion-helper.sh para TODAS as operações Notion. NÃO tente curl direto nem skill notion.\n\nDB PESSOAL: bfcbe7a7a3a745489e605e0762af12a9\nAPI KEY VAR: NOTION_PERSONAL_API_KEY\n\nCOMANDOS (via exec):\n- Buscar cards: /var/www/openclaw/workspace/scripts/notion-helper.sh query bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY 'Mail-Person'\n- Mover status: /var/www/openclaw/workspace/scripts/notion-helper.sh update-status PAGE_ID NOTION_PERSONAL_API_KEY 'Em andamento' ou 'Concluído'\n- Comentar: /var/www/openclaw/workspace/scripts/notion-helper.sh comment PAGE_ID NOTION_PERSONAL_API_KEY 'Texto' 'Mail-Person' (sempre assinar)\n\nREGRA DE COMENTÁRIOS PROGRESSIVOS NO NOTION — OBRIGATÓRIO:\n- Ao captar o card: comentário de início (max 300 chars) com o que vai fazer.\n- A cada etapa relevante: comentário curto (max 300 chars) com progresso e próximo passo.\n- Se encontrar erro/bloqueio: comentário imediato explicando o que aconteceu.\n- Ao concluir: comentário final estruturado com resultado completo.\nFormato: [HH:MM] emoji Etapa X/N: resumo. Próximo: ação.\nExemplo: [08:15] 📧 Etapa 1/4: 47 não lidos encontrados. Triando por relevância...\nIsso garante visibilidade da jornada e ajuda a governança detectar travamentos.\n\nREGRA DE DEDUPLICAÇÃO — chave dupla (Assunto + Agente):\n- Antes de captar um card de Priorizado, consultar Status='Em andamento'.\n- Se já existir card em Em andamento com MESMO título E MESMO Agente:\n  - Se NÃO houver processo ativo: FORÇAR EXECUÇÃO.\n  - Se HOUVER processo ativo: ESPERAR o próximo ciclo.\n- Se não existir card em Em andamento, captar de Priorizado e mover normalmente.\n\nAtue como especialista Mail-Person com execução completa de e-mail pessoal. Contexto: caixa pessoal rafael.silva.pereira10@gmail.com. Usar /var/www/openclaw/workspace/scripts/gmail/workflow.sh personal 100. Regras: recuperar cards Em andamento, mover Priorizado para Em andamento, executar Gmail, registrar resultado em comentário nativo, mover para Concluído. Não usar message.send. Não escrever em memory/*.md.",
         "timeoutSeconds": 600,
         "model": "xai/grok-3-mini"
       },

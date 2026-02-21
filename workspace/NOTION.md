@@ -1,6 +1,6 @@
 # Notion Workspaces Configurados
 
-**Última documentação: 2026-02-20 22:52**
+**Última documentação: 2026-02-20 23:01**
 
 Você tem acesso a **3 workspaces do Notion** configurados como skills separadas:
 

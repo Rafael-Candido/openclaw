@@ -350,7 +350,7 @@
       "name": "Presidente - criar demandas e-mail (Pro+Person)",
       "enabled": true,
       "createdAtMs": 1771571937957,
-      "updatedAtMs": 1771638685483,
+      "updatedAtMs": 1771639198031,
       "schedule": {
         "kind": "every",
         "everyMs": 3600000,
@@ -360,17 +360,18 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Presidente em modo STRICT para triagem de demandas de e-mail (profissional + pessoal) em um único fluxo.\n\nObjetivo:\n- Criar/captar demandas de e-mail em Notion no status Aguardando para os diretores corretos.\n\nRegras obrigatórias de criação de card:\n- Status='Aguardando'\n- Tipo='OpenClaw'\n- Solicitante='Rafael Pereira'\n- Agente='Tech' quando o escopo for e-mail profissional (SmartEnvios)\n- Agente='Diretor Pessoal' quando o escopo for e-mail pessoal\n\nRegra crítica de descrição (Presidente):\n- O card deve ter descrição FUNCIONAL, clara e objetiva, suficiente para o diretor entender o problema, objetivo e resultado esperado.\n- NÃO detalhar implementação técnica, arquitetura, scripts, nem instruções técnicas de execução.\n- O detalhamento técnico é responsabilidade do Diretor ao promover para Priorizado.\n\nEscopo do cron:\n- Varrer sinais/demandas de e-mail pendentes nos dois domínios (profissional e pessoal).\n- Garantir no máximo 1 card ativo por rotina de e-mail e por domínio:\n  - '[Rotina Mail-Pro] Triagem e rascunhos de e-mail profissional'\n  - '[Rotina Mail-Person] Triagem e rascunhos de e-mail pessoal'\n- Se já existir card ativo (Aguardando/Priorizado/Em andamento), não duplicar; apenas registrar comentário de acompanhamento quando necessário.\n- Se houver duplicados, consolidar mantendo o mais recente e comentar nos demais para encerramento.\n\nDescrição funcional obrigatória no card:\n- Contexto de negócio\n- Objetivo funcional\n- Escopo (o que entra/o que não entra)\n- Critérios de conclusão (resultado esperado)\n- Restrições/regras de negócio relevantes",
-        "model": "deepseek/deepseek-chat"
+        "message": "Atue como Presidente em modo STRICT. USE EXCLUSIVAMENTE notion-helper.sh via exec. NÃO usar skill notion nem curl direto. EXECUTE os comandos, não descreva.\n\nCOMANDOS (exec obrigatório):\n- Buscar SmartEnvios: /var/www/openclaw/workspace/scripts/notion-helper.sh query adec12e735dc41a3bb7c274b287f3a10 NOTION_SMARTENVIOS_API_KEY 'Tech' Aguardando Priorizado\n- Buscar Mail-Pro ativo: /var/www/openclaw/workspace/scripts/notion-helper.sh query adec12e735dc41a3bb7c274b287f3a10 NOTION_SMARTENVIOS_API_KEY 'Mail-Pro' Priorizado 'Em andamento'\n- Buscar Pessoal: /var/www/openclaw/workspace/scripts/notion-helper.sh query bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY 'Diretor Pessoal' Aguardando Priorizado\n- Buscar Mail-Person ativo: /var/www/openclaw/workspace/scripts/notion-helper.sh query bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY 'Mail-Person' Priorizado 'Em andamento'\n- Criar card COM DESCRIÇÃO: 1) Escrever corpo em /tmp/pres-desc.txt (markdown: ## Contexto, ## Objetivo, ## Escopo, ## Critérios de conclusão, ## Restrições). 2) /var/www/openclaw/workspace/scripts/notion-helper.sh create-card DB_ID API_KEY_VAR 'Título' Aguardando OpenClaw 'Agente' Presidente /tmp/pres-desc.txt\n- Comentar: /var/www/openclaw/workspace/scripts/notion-helper.sh comment PAGE_ID API_KEY_VAR 'Texto' Presidente\n\nFLUXO OBRIGATÓRIO:\n1. Executar query Tech e Mail-Pro no SmartEnvios. Se algum resultado contém título '[Rotina Mail-Pro]', NÃO criar; se existir card, executar comment de acompanhamento e responder IDs.\n2. Se NENHUM card ativo Mail-Pro: criar /tmp/pres-desc.txt com descrição funcional completa (contexto rafael.pereira@smartenvios.com, objetivo triagem+rascunhos, escopo, critérios, restrições). Executar create-card adec12e735dc41a3bb7c274b287f3a10 NOTION_SMARTENVIOS_API_KEY '[Rotina Mail-Pro] Triagem e rascunhos de e-mail profissional' Aguardando OpenClaw 'Tech' Presidente /tmp/pres-desc.txt\n3. Repetir para Pessoal: query Diretor Pessoal e Mail-Person. Se não houver card ativo, criar /tmp/pres-desc-person.txt e create-card bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY '[Rotina Mail-Person] Triagem e rascunhos de e-mail pessoal' Aguardando OpenClaw 'Diretor Pessoal' Presidente /tmp/pres-desc-person.txt\n4. Responder com IDs dos cards criados ou comentados.\n\nRegras: Máximo 1 card ativo por rotina. Descrição OBRIGATÓRIA (via body_file). Sem descrição = card incompleto. Não usar message.send.",
+        "model": "google/gemini-3-pro-preview",
+        "timeoutSeconds": 300
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "lastRunAtMs": 1771638647300,
+        "lastRunAtMs": 1771639191587,
         "lastStatus": "ok",
-        "lastDurationMs": 38183,
+        "lastDurationMs": 6444,
         "consecutiveErrors": 0,
         "nextRunAtMs": 1771655100000
       }

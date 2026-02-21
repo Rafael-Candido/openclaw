@@ -1,6 +1,6 @@
 # AGENTS.md - Engenheiro de Prompt
 
-**Última documentação: 2026-02-20 22:52**
+**Última documentação: 2026-02-20 23:01**
 
 ## Papel
 

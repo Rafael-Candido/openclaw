@@ -1,6 +1,6 @@
 # FLUXO_AGENTES.md — Presidente, Diretores e Especialistas
 
-**Última documentação: 2026-02-20 22:52**
+**Última documentação: 2026-02-20 23:01**
 
 Este documento define o fluxo operacional no Notion para cards com:
 - **Status:** `Aguardando` → `Priorizado` → `Em andamento` → `Concluído`

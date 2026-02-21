@@ -6,7 +6,10 @@ AGENT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 STATE_DIR="${AGENT_DIR}/.pi"
 ASSIGNEE_CACHE="${STATE_DIR}/jira-assignees.json"
 FIELD_CACHE="${STATE_DIR}/jira-field-cache.json"
-ENV_FILE="/var/www/openclaw/.env"
+# Usar config dir do projeto; fallback para deploy padrão
+OPENCLAW_ROOT="${OPENCLAW_CONFIG_DIR:-$(cd "${SCRIPT_DIR}/../../../.." 2>/dev/null && pwd)}"
+[[ -z "$OPENCLAW_ROOT" ]] && OPENCLAW_ROOT="/var/www/openclaw"
+ENV_FILE="${OPENCLAW_ROOT}/.env"
 
 AUTH_BASIC=""
 JIRA_BASE_URL=""

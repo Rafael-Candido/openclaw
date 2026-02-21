@@ -2,7 +2,7 @@
 
 **Documento único de referência** consolidando todo o setup, arquitetura, fluxos operacionais e implementações do ambiente OpenClaw.
 
-**Última documentação: 2026-02-20 22:52**
+**Última documentação: 2026-02-20 23:01**
 
 **Última atualização:** 2026-02-21 (documentação alinhada ao openclaw.json: agentes, canais, Einstein model/tools, bindings Discord)
 
@@ -60,7 +60,7 @@ O OpenClaw é um sistema de agentes autônomos que opera através de:
 /var/www/openclaw/
 ├── workspace/
 │   ├── agents/
-│   │   ├── einstein/          # Einstein: KNOWLEDGE.md (5 fontes), knowledge/{notion,youtube,github,zendesk,jira}
+│   │   ├── einstein/          # Einstein: KNOWLEDGE.md (5 fontes), scripts/jira-helper.sh, knowledge/{notion,youtube,github,zendesk,jira}
 │   │   ├── eng-prompt/        # Engenheiro de Prompt (BOOTSTRAP, IDENTITY, SOUL, TOOLS, USER)
 │   │   ├── eng-smartenvios/   # Engenheiro SmartEnvios (BOOTSTRAP, IDENTITY, SOUL, TOOLS, USER)
 │   │   └── backend-engineer/  # Engenheiro Backend (legado)

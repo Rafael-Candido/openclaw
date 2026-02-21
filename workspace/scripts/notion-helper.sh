@@ -150,8 +150,9 @@ print(json.dumps({'children': blocks}))
     ;;
 
   create-card)
-    # Usage: notion-helper.sh create-card <db_id> <api_key_var> <title> [status] [tipo] [agente] [criador]
-    # Se criador for informado, adiciona comentário: "Este card foi criado por: criador"
+    # Usage: notion-helper.sh create-card <db_id> <api_key_var> <title> [status] [tipo] [agente] [criador] [body_file]
+    # Se criador informado, adiciona comentário "Este card foi criado por: criador"
+    # Se body_file informado (caminho de arquivo), adiciona o conteúdo como descrição do card
     DB_ID="${1:?DB ID required}"
     API_KEY_VAR="${2:?API key var required}"
     API_KEY="${!API_KEY_VAR:-}"
@@ -161,6 +162,7 @@ print(json.dumps({'children': blocks}))
     TIPO="${5:-OpenClaw}"
     AGENTE="${6:-Diretor Tech}"
     CRIADOR="${7:-}"
+    BODY_FILE="${8:-}"
 
     BODY=$(python3 -c "
 import json
@@ -175,9 +177,9 @@ print(json.dumps({
 }))")
     RESPONSE=$(notion_request POST "https://api.notion.com/v1/pages" "$API_KEY" "$BODY")
     echo "$RESPONSE"
-    if [[ -n "$CRIADOR" ]]; then
-      PAGE_ID=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('id',''))" 2>/dev/null || true)
-      if [[ -n "$PAGE_ID" ]]; then
+    PAGE_ID=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('id',''))" 2>/dev/null || true)
+    if [[ -n "$PAGE_ID" ]]; then
+      if [[ -n "$CRIADOR" ]]; then
         BODY_CMD=$(python3 -c "
 import json, sys
 page_id, criador = sys.argv[1], sys.argv[2]
@@ -186,6 +188,32 @@ print(json.dumps({
     'rich_text': [{'type': 'text', 'text': {'content': 'Este card foi criado por: ' + criador}}]
 }))" "$PAGE_ID" "$CRIADOR")
         notion_request POST "https://api.notion.com/v1/comments" "$API_KEY" "$BODY_CMD" >/dev/null 2>&1 || true
+      fi
+      if [[ -n "$BODY_FILE" && -f "$BODY_FILE" ]]; then
+        INPUT=$(cat "$BODY_FILE")
+        BODY_BLOCKS=$(echo "$INPUT" | python3 -c "
+import json, sys, re
+text = sys.stdin.read()
+def esc(s):
+    return s[:2000] if len(s) > 2000 else s
+def mk_text(c):
+    return [{'type': 'text', 'text': {'content': esc(c)}}]
+blocks = []
+for line in text.split('\n'):
+    line = line.rstrip()
+    if not line:
+        continue
+    if line.startswith('## '):
+        blocks.append({'object': 'block', 'type': 'heading_2', 'heading_2': {'rich_text': mk_text(line[3:].strip())}})
+    elif re.match(r'^[-*]\s+', line):
+        blocks.append({'object': 'block', 'type': 'bulleted_list_item', 'bulleted_list_item': {'rich_text': mk_text(re.sub(r'^[-*]\s+', '', line))}})
+    elif re.match(r'^\d+\.\s+', line):
+        blocks.append({'object': 'block', 'type': 'numbered_list_item', 'numbered_list_item': {'rich_text': mk_text(re.sub(r'^\d+\.\s+', '', line))}})
+    else:
+        blocks.append({'object': 'block', 'type': 'paragraph', 'paragraph': {'rich_text': mk_text(line)}})
+print(json.dumps({'children': blocks}))
+" 2>/dev/null || echo '{"children":[]}')
+        notion_request PATCH "https://api.notion.com/v1/blocks/${PAGE_ID}/children" "$API_KEY" "$BODY_BLOCKS" >/dev/null 2>&1 || true
       fi
     fi
     ;;
@@ -199,7 +227,7 @@ print(json.dumps({
     echo "  comment <page_id> <api_key_var> <message> [agente]  # agente=assinatura no comentário"
     echo "  get-page <page_id> <api_key_var>"
     echo "  get-blocks <page_id> <api_key_var>"
-    echo "  create-card <db_id> <api_key_var> <title> [status] [tipo] [agente] [criador]"
+    echo "  create-card <db_id> <api_key_var> <title> [status] [tipo] [agente] [criador] [body_file]"
     echo "  append-body <page_id> <api_key_var> [file]  # lê de stdin se file omitido"
     echo ""
     echo "API Key Vars: NOTION_SMARTENVIOS_API_KEY, NOTION_PERSONAL_API_KEY, NOTION_CANPER_API_KEY"

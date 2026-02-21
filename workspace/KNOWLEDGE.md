@@ -4,9 +4,23 @@ Este arquivo documenta padrões, descobertas e soluções que funcionaram bem pa
 
 **⚠️ IMPORTANTE: Este arquivo deve ser atualizado sempre que aprendermos algo novo!**
 
-**Última documentação: 2026-02-20 22:52**
+**Última documentação: 2026-02-20 23:01**
 
 ---
+
+## 2026-02-20 – jira-helper.sh (Einstein)
+
+O `agents/einstein/scripts/jira-helper.sh` é o helper para API Jira usado pelo Einstein. Credenciais: `JIRA_BASE_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN`, `JIRA_PROJECT_KEY` no .env. Estado em `agents/einstein/.pi/` (jira-assignees.json, jira-field-cache.json). Comandos: assignee-resolve, assignee-list, sync-fields, create. Ver `agents/einstein/TOOLS.md` e `knowledge/jira/classification-rules.md`.
+
+## 2026-02-21 – Presidente: modelo + notion-helper + descrição (CRÍTICO)
+
+**Problema:** Presidente (DeepSeek) descrevia ações em vez de executá-las; cards criados sem descrição.
+
+**Solução:**
+1. **Modelo:** `google/gemini-3-pro-preview` (troca de DeepSeek — melhor uso de tools)
+2. **Exec obrigatório:** Presidente usa APENAS `notion-helper.sh` via exec, nunca skill notion
+3. **Descrição obrigatória:** `create-card` aceita 8º param `body_file` — Presidente escreve /tmp/pres-desc.txt com markdown (## Contexto, ## Objetivo, ## Escopo, ## Critérios, ## Restrições) e passa ao create-card
+4. **Agentes iniciais:** SmartEnvios Agente='Tech' (Diretor Tech pega), Pessoal Agente='Diretor Pessoal' (Diretor Pessoal pega)
 
 ## 2026-02-20 – Engenheiro SmartEnvios — Estrutura de personalização
 
@@ -58,7 +72,7 @@ O `workspace/scripts/notion-helper.sh` é o helper principal para interações c
 - **get-page** `<page_id> <api_key_var>`
 - **get-blocks** `<page_id> <api_key_var>`
 - **append-body** `<page_id> <api_key_var> [file]` — Adiciona blocos ao corpo (## heading, - item, 1. item). Lê de stdin se file omitido
-- **create-card** `<db_id> <api_key_var> <title> [status] [tipo] [agente] [criador]`
+- **create-card** `<db_id> <api_key_var> <title> [status] [tipo] [agente] [criador] [body_file]` — Se body_file (caminho) informado, adiciona descrição ao card (markdown: ## heading, - item)
 
 **API key vars:** `NOTION_SMARTENVIOS_API_KEY`, `NOTION_PERSONAL_API_KEY`, `NOTION_CANPER_API_KEY`
 
@@ -257,5 +271,5 @@ Toda vez que descobrirmos um padrão, resolvermos um problema, ou configurarmos 
 ## Error in Notion Card Update (2026-02-20)
 - **Issue:** Attempt to run './scripts/notion/update_card.sh' failed with 'no such file or directory'.
 - **Cause:** Script is missing or incorrectly pathed.
-- **Fix Recommendation:** Ensure Notion scripts are available in /var/www/openclaw/workspace/scripts/. Use an alternative method, such as direct Notion API calls via the 'notion' skill, for card updates.
+- **Fix:** Para crons de especialista (Mail-Pro, Mail-Person etc.): usar **notion-helper.sh** — `workspace/scripts/notion-helper.sh query/update-status/comment`. NÃO usar skill notion (agentes de cron rodam em modo isolated sem skills). O script `update_card.sh` não existe.
 - **Context:** Occurred during Mail-Pro specialist task for cron ae4a0347-2e03-46ad-8595-6b9476c45d79.
