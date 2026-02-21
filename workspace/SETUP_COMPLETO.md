@@ -2,6 +2,8 @@
 
 **Documento único de referência** consolidando todo o setup, arquitetura, fluxos operacionais e implementações do ambiente OpenClaw.
 
+**Última documentação: 2026-02-20 22:52**
+
 **Última atualização:** 2026-02-21 (documentação alinhada ao openclaw.json: agentes, canais, Einstein model/tools, bindings Discord)
 
 ---
@@ -31,7 +33,7 @@ Esta seção sobrescreve pontos antigos deste documento quando houver divergênc
 ### 0.2. Governança reforçada
 
 `scripts/governance-check.sh` passou a incluir:
-- limpeza de locks de sessão obsoletos (`*.lock`)
+- limpeza de locks de sessão obsoletos (`*.lock`) em main, einstein, eng-smartenvios, eng-prompt (MAX_LOCK_MIN=5min)
 - detecção de pressão de modelos no log (`rate limit`, `cooldown`, `session file locked`)
 - reinício preventivo do gateway em saturação recorrente
 
@@ -58,10 +60,16 @@ O OpenClaw é um sistema de agentes autônomos que opera através de:
 /var/www/openclaw/
 ├── workspace/
 │   ├── agents/
-│   │   ├── einstein/          # Agente Einstein (SmartEnvios Support)
-│   │   └── backend-engineer/  # Engenheiro Backend
+│   │   ├── einstein/          # Einstein: KNOWLEDGE.md (5 fontes), knowledge/{notion,youtube,github,zendesk,jira}
+│   │   ├── eng-prompt/        # Engenheiro de Prompt (BOOTSTRAP, IDENTITY, SOUL, TOOLS, USER)
+│   │   ├── eng-smartenvios/   # Engenheiro SmartEnvios (BOOTSTRAP, IDENTITY, SOUL, TOOLS, USER)
+│   │   └── backend-engineer/  # Engenheiro Backend (legado)
 │   ├── scripts/
 │   │   ├── gmail/             # Scripts Gmail (triagem, workflow)
+│   │   ├── notion-helper.sh   # Helper Notion API (query, update-status, comment, create-card, etc.)
+│   │   ├── notion-canper-*.py # Scripts Notion Canper (query, schema, status, update-card, check-*)
+│   │   ├── add-comment.py     # Ad-hoc: comentário em card Notion (NOTION_PERSONAL_API_KEY)
+│   │   ├── export_einstein_base*.py  # Export base SmartEnvios → einstein/knowledge
 │   │   └── smartenvios-mcp.sh # Cliente MCP SmartEnvios
 │   ├── docs/
 │   │   └── development/
@@ -96,15 +104,17 @@ O OpenClaw é um sistema de agentes autônomos que opera através de:
 **Engenheiro SmartEnvios:**
 - ID: `eng-smartenvios`
 - Workspace: `/var/www/openclaw/workspace/agents/eng-smartenvios`
-- Modelo: `openai/gpt-5.1-codex` (primary)
-- Skills: `notion` (SmartEnvios)
+- Papel: fullstack — repos SmartEnvios em `/var/www/`, recebe demandas do Diretor Tech (bugs, melhorias, MCP). GitHub https://github.com/SmartEnvios
+- Modelo: `google/gemini-3-pro-preview` (primary), fallbacks: Gemini 2.5 Pro, Claude Sonnet, GPT-4 Turbo, DeepSeek
+- Skills: `notion` (Notion SmartEnvios)
 - Sandbox: `off`
 
 **Engenheiro de Prompt:**
 - ID: `eng-prompt`
 - Workspace: `/var/www/openclaw/workspace/agents/eng-prompt`
-- Modelo: `openai/gpt-5.1-codex` (primary)
-- Skills: `notion`
+- Papel: manutenção e evolução da estrutura OpenClaw — agentes, prompts, docs. Reporta ao Diretor Pessoal. Otimizador e Governança criam cards para ele. GitHub https://github.com/Rafael-Candido
+- Modelo: `google/gemini-3-pro-preview` (primary), fallbacks: Gemini 2.5 Pro, Claude Sonnet, GPT-4 Turbo, DeepSeek
+- Skills: `notion-personal` (Notion Pessoal)
 - Sandbox: `off`
 
 **Einstein (SmartEnvios Support):**

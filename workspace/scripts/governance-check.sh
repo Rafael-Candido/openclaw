@@ -8,10 +8,11 @@ set -euo pipefail
 LOG_PREFIX="[governance]"
 MAX_CONSECUTIVE_ERRORS=2
 MAX_RUNNING_MIN=20
-MIN_GAP_MS=120000  # 2min mínimo entre crons
+MIN_GAP_MS=180000  # 3min mínimo entre crons (evita rate limit, execução sequencial)
 MAX_LOCK_MIN=5
 REPORT=""
-PROJECT_ROOT="/private/var/www/openclaw"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 if [[ -f "${PROJECT_ROOT}/.env" ]]; then
   # shellcheck disable=SC1091
@@ -21,6 +22,11 @@ OPENCLAW_CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}"
 
 log() { echo "${LOG_PREFIX} $(date -u +%H:%M:%S) $*"; }
 report() { REPORT="${REPORT}\n$*"; }
+
+force_cron_wake() {
+  local cron_id="$1"
+  openclaw cron wake "$cron_id" --mode now >/dev/null 2>&1 || true
+}
 
 clear_stale_session_locks() {
   local roots=(
@@ -268,58 +274,96 @@ if [[ "$SCHEDULE_FIX" == "OK|0" ]]; then
   report "✅ Escalonamento: sem colisões"
 else
   while IFS='|' read -r cron_id cron_name gap_s target_s; do
-    log "Colisão detectada: ${cron_name} (gap=${gap_s}, mínimo=${target_s}) — ajustando"
-    report "🔧 ${cron_name}: gap ${gap_s} → ajustado para ${target_s}"
+    log "Colisão detectada: ${cron_name} (gap=${gap_s}, mínimo=${target_s}) — REPORTANDO (anchorMs gerenciado pela grade fixa em KNOWLEDGE.md)"
+    report "⚠️ ${cron_name}: gap ${gap_s} (mín=${target_s}) — grade fixa impede ajuste automático"
   done <<< "$SCHEDULE_FIX"
-  
-  # Aplicar os ajustes diretamente no arquivo de jobs
-  echo "$CRON_JSON" | python3 -c "
-import json, sys, time
+fi
 
-data = json.load(sys.stdin)
-now_ms = int(time.time() * 1000)
-min_gap = ${MIN_GAP_MS}
-jobs_path = '${OPENCLAW_CONFIG_DIR}/cron/jobs.json'
+# 8) Ajuste dinâmico de frequência baseado em volume
+log "Ajustando frequência dinâmica dos crons..."
+JOBS_PATH="${OPENCLAW_CONFIG_DIR}/cron/jobs.json"
 
+python3 -c "
+import json, time
+
+jobs_path = '${JOBS_PATH}'
 with open(jobs_path) as f:
     store = json.load(f)
 
-enabled = []
-for j in store.get('jobs', []):
-    if not j.get('enabled', True):
-        continue
-    sched = j.get('schedule', {})
-    if sched.get('kind') != 'every':
-        continue
-    interval = sched.get('everyMs', 0)
-    anchor = sched.get('anchorMs', 0)
-    if interval <= 0:
-        continue
-    cycles = max(1, int((now_ms - anchor) / interval))
-    next_run = anchor + (cycles * interval)
-    if next_run < now_ms:
-        next_run += interval
-    enabled.append({'job': j, 'next': next_run})
-
-enabled.sort(key=lambda x: x['next'])
-
+now_ms = int(time.time() * 1000)
 changed = 0
-for i in range(1, len(enabled)):
-    gap = enabled[i]['next'] - enabled[i-1]['next']
-    if 0 <= gap < min_gap:
-        shift = min_gap - gap
-        enabled[i]['job']['schedule']['anchorMs'] += shift
-        enabled[i]['next'] += shift
+
+# Faixas dinâmicas (everyMs em ms)
+FREQ_MAP = {
+    # Presidente: 30/60/120/180 min
+    '8c232f9a': {
+        'tiers': [1800000, 3600000, 7200000, 10800000],
+        'type': 'creator'
+    },
+    # Diretores: 35/65/125/185 min
+    '12c33196': {'tiers': [2100000, 3900000, 7500000, 11100000], 'type': 'director'},
+    '9da1331a': {'tiers': [2100000, 3900000, 7500000, 11100000], 'type': 'director'},
+    'dd8959b6': {'tiers': [2100000, 3900000, 7500000, 11100000], 'type': 'director'},
+    # Mail: 15/30/60/120 min
+    'ae4a0347': {'tiers': [900000, 1800000, 3600000, 7200000], 'type': 'specialist'},
+    '27f27813': {'tiers': [900000, 1800000, 3600000, 7200000], 'type': 'specialist'},
+}
+
+for job in store.get('jobs', []):
+    prefix = job['id'][:8]
+    if prefix not in FREQ_MAP:
+        continue
+
+    conf = FREQ_MAP[prefix]
+    tiers = conf['tiers']
+    state = job.get('state', {})
+    current_every = job.get('schedule', {}).get('everyMs', 0)
+    last_dur = state.get('lastDurationMs', 0)
+    last_status = state.get('lastStatus', '')
+
+    # Heurística: duração curta (<30s) = sem trabalho, duração longa (>60s) = teve trabalho
+    if last_status != 'ok':
+        # Erro: manter freq atual ou subir 1 tier
+        new_every = current_every
+    elif last_dur > 60000:
+        # Trabalho pesado: freq máxima (tier 0)
+        new_every = tiers[0]
+    elif last_dur > 30000:
+        # Trabalho moderado: tier 1
+        new_every = tiers[1] if len(tiers) > 1 else tiers[0]
+    elif last_dur > 10000:
+        # Trabalho leve: tier 1
+        new_every = tiers[1] if len(tiers) > 1 else tiers[0]
+    elif last_dur > 0:
+        # Rápido (<10s): pouco/nenhum trabalho, subir 1 tier
+        idx = 0
+        for i, t in enumerate(tiers):
+            if current_every <= t:
+                idx = i
+                break
+        new_idx = min(idx + 1, len(tiers) - 1)
+        new_every = tiers[new_idx]
+    else:
+        # Nunca rodou: usar tier 0
+        new_every = tiers[0]
+
+    if new_every != current_every:
+        job['schedule']['everyMs'] = new_every
         changed += 1
+        name = job.get('name', '?')[:35]
+        print(f'{name}: {current_every//60000}min -> {new_every//60000}min')
 
-with open(jobs_path, 'w') as f:
-    json.dump(store, f, indent=2)
-
-print(f'Escalonamento corrigido: {changed} crons ajustados')
+if changed > 0:
+    with open(jobs_path, 'w') as f:
+        json.dump(store, f, indent=2, ensure_ascii=False)
+    print(f'Total: {changed} crons ajustados')
+else:
+    print('OK: nenhum ajuste necessário')
 " 2>/dev/null || true
-fi
 
-# 8) Detecta cards Em andamento travados no Notion
+report "$(python3 -c "print('✅ Frequência dinâmica: verificada')" 2>/dev/null || echo '✅ Frequência dinâmica: verificada')"
+
+# 9) Detecta cards Em andamento travados no Notion
 log "Checando cards Em andamento no Notion..."
 
 NOTION_DBS=(
@@ -327,18 +371,21 @@ NOTION_DBS=(
   "${NOTION_PERSONAL_API_KEY:-}|bfcbe7a7a3a745489e605e0762af12a9|Pessoal"
 )
 
-MAIL_PRO_CRON="b3c678e4-15ea-41e3-a96d-da661c9c27c0"
-MAIL_PERSON_CRON="590b6ee6-07b2-4fb6-b38f-cdfab81f403e"
+MAIL_PRO_CRON="ae4a0347-2e03-46ad-8595-6b9476c45d79"
+MAIL_PERSON_CRON="27f27813-12d5-4c2d-a66b-7a50d75b2e98"
+ENG_PROMPT_CRON="6bdd82c7-081d-486b-9700-0572b9fce72e"
+ENG_SMARTENVIOS_CRON="a7b8c9d0-e1f2-3456-7890-abcdef123401"
 
 for entry in "${NOTION_DBS[@]}"; do
   IFS='|' read -r api_key db_id label <<< "$entry"
   [[ -z "$api_key" ]] && continue
 
+  # Check cards Em andamento travados (>20min sem edição)
   STUCK_CARDS=$(curl -sS -X POST "https://api.notion.com/v1/databases/${db_id}/query" \
     -H "Authorization: Bearer ${api_key}" \
     -H "Notion-Version: 2022-06-28" \
     -H "Content-Type: application/json" \
-    -d '{"filter":{"and":[{"property":"Status","status":{"equals":"Em andamento"}},{"property":"Tipo","select":{"equals":"OpenClaw"}}]}}' 2>/dev/null | python3 -c "
+    -d '{"filter":{"and":[{"property":"Status","select":{"equals":"Em andamento"}},{"property":"Tipo","select":{"equals":"OpenClaw"}}]}}' 2>/dev/null | python3 -c "
 import json, sys, datetime
 data = json.load(sys.stdin)
 now = datetime.datetime.now(datetime.timezone.utc)
@@ -369,14 +416,24 @@ for page in data.get('results', []):
 
       case "$agent" in
         Mail-Pro)
-          log "Forçando execução do Mail-Pro..."
-          openclaw cron run "${MAIL_PRO_CRON}" --timeout 5000 2>/dev/null &
-          report "🔄 Forçado cron Mail-Pro para recuperação"
+          log "Acordando cron Mail-Pro via wake..."
+          force_cron_wake "${MAIL_PRO_CRON}"
+          report "🔄 Wake enviado para cron Mail-Pro (recuperação)"
           ;;
         Mail-Person)
-          log "Forçando execução do Mail-Person..."
-          openclaw cron run "${MAIL_PERSON_CRON}" --timeout 5000 2>/dev/null &
-          report "🔄 Forçado cron Mail-Person para recuperação"
+          log "Acordando cron Mail-Person via wake..."
+          force_cron_wake "${MAIL_PERSON_CRON}"
+          report "🔄 Wake enviado para cron Mail-Person (recuperação)"
+          ;;
+        "Engenheiro de Prompt")
+          log "Acordando cron Engenheiro de Prompt via wake..."
+          force_cron_wake "${ENG_PROMPT_CRON}"
+          report "🔄 Wake enviado para cron Engenheiro de Prompt (recuperação)"
+          ;;
+        "Engenheiro SmartEnvios")
+          log "Acordando cron Engenheiro SmartEnvios via wake..."
+          force_cron_wake "${ENG_SMARTENVIOS_CRON}"
+          report "🔄 Wake enviado para cron Engenheiro SmartEnvios (recuperação)"
           ;;
         *)
           if [[ "$mins" -gt 30 ]]; then
@@ -386,9 +443,65 @@ for page in data.get('results', []):
       esac
     done <<< "$STUCK_CARDS"
   else
-    log "[${label}] Nenhum card travado"
+    log "[${label}] Nenhum card Em andamento travado"
   fi
-done
+
+  # Check cards Priorizado abandonados (>60min sem ninguém pegar)
+  ABANDONED_CARDS=$(curl -sS -X POST "https://api.notion.com/v1/databases/${db_id}/query" \
+    -H "Authorization: Bearer ${api_key}" \
+    -H "Notion-Version: 2022-06-28" \
+    -H "Content-Type: application/json" \
+    -d '{"filter":{"and":[{"property":"Status","select":{"equals":"Priorizado"}},{"property":"Tipo","select":{"equals":"OpenClaw"}}]}}' 2>/dev/null | python3 -c "
+import json, sys, datetime
+data = json.load(sys.stdin)
+now = datetime.datetime.now(datetime.timezone.utc)
+for page in data.get('results', []):
+    edited = page.get('last_edited_time', '')
+    if edited:
+        dt = datetime.datetime.fromisoformat(edited.replace('Z', '+00:00'))
+        diff_min = (now - dt).total_seconds() / 60
+    else:
+        diff_min = 999
+    title = ''
+    for prop in page.get('properties', {}).values():
+        if prop.get('type') == 'title':
+            for t in prop.get('title', []):
+                title += t.get('plain_text', '')
+    agent = ''
+    agent_prop = page.get('properties', {}).get('Agente', {})
+    if agent_prop.get('type') == 'select' and agent_prop.get('select'):
+        agent = agent_prop['select'].get('name', '')
+    if diff_min > 60:
+        print(f'{page[\"id\"]}|{title[:50]}|{agent}|{int(diff_min)}')
+" 2>/dev/null || true)
+
+  if [[ -n "$ABANDONED_CARDS" ]]; then
+    while IFS='|' read -r _page_id title agent mins; do
+      log "[${label}] Card Priorizado abandonado há ${mins}min: '${title}' (Agente=${agent})"
+      report "🚨 [${label}] Card '${title}' Priorizado há ${mins}min sem execução (Agente=${agent})"
+
+      case "$agent" in
+        Mail-Pro)
+          force_cron_wake "${MAIL_PRO_CRON}"
+          report "🔄 Wake enviado para cron Mail-Pro (card abandonado)"
+          ;;
+        Mail-Person)
+          force_cron_wake "${MAIL_PERSON_CRON}"
+          report "🔄 Wake enviado para cron Mail-Person (card abandonado)"
+          ;;
+        "Engenheiro de Prompt")
+          force_cron_wake "${ENG_PROMPT_CRON}"
+          report "🔄 Wake enviado para cron Engenheiro de Prompt (card abandonado)"
+          ;;
+        *)
+          report "⚠️ Card '${title}' (Agente=${agent}) Priorizado há ${mins}min — nenhum cron mapeado para forçar"
+          ;;
+      esac
+    done <<< "$ABANDONED_CARDS"
+  else
+    log "[${label}] Nenhum card Priorizado abandonado"
+  fi
+  done
 
 # 6) Contagem final
 TOTAL_CRONS=$(echo "$CRON_JSON" | python3 -c "
@@ -399,6 +512,35 @@ enabled = sum(1 for j in jobs if j.get('enabled'))
 print(f'{enabled}/{len(jobs)}')
 " 2>/dev/null || echo "?/?")
 report "📊 Crons habilitados: ${TOTAL_CRONS}"
+
+# 9) Diagnóstico de pipeline parado / starvation (cron nunca executa por posição na fila)
+log "Checando starvation de crons..."
+STARVATION=$(echo "$CRON_JSON" | python3 -c "
+import json, sys, time
+data = json.load(sys.stdin)
+now_ms = int(time.time() * 1000)
+for j in data.get('jobs', []):
+    if not j.get('enabled', True):
+        continue
+    s = j.get('state', {})
+    last = s.get('lastRunAtMs', 0)
+    nxt = s.get('nextRunAtMs', 0)
+    if nxt > 0 and nxt < now_ms:
+        overdue_min = (now_ms - nxt) // 60000
+        if last > 0:
+            since_last = (now_ms - last) // 60000
+            if overdue_min >= 10 and since_last >= 30:
+                print(f\"{j['id']}|{j.get('name','?')[:35]}|{overdue_min}min atrasado|{since_last}min sem rodar\")
+" 2>/dev/null || true)
+
+if [[ -n "$STARVATION" ]]; then
+  while IFS='|' read -r _cid cname overdue since; do
+    log "Starvation: ${cname} — ${overdue}, ${since}"
+    report "🚨 STARVATION: ${cname} — ${overdue}, ${since} (forçar cron ou revisar ordem/anchor)"
+  done <<< "$STARVATION"
+else
+  report "✅ Pipeline: sem starvation detectada"
+fi
 
 # Output
 echo ""

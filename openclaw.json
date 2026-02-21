@@ -1,10 +1,10 @@
 {
   "meta": {
     "lastTouchedVersion": "2026.2.17",
-    "lastTouchedAt": "2026-02-20T18:12:23.343Z"
+    "lastTouchedAt": "2026-02-20T22:40:42.146Z"
   },
   "wizard": {
-    "lastRunAt": "2026-02-20T04:36:12.105Z",
+    "lastRunAt": "2026-02-20T22:40:42.120Z",
     "lastRunVersion": "2026.2.17",
     "lastRunCommand": "doctor",
     "lastRunMode": "local"
@@ -39,6 +39,51 @@
       "openai-codex:default": {
         "provider": "openai-codex",
         "mode": "oauth"
+      }
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "deepseek": {
+        "baseUrl": "https://api.deepseek.com/v1",
+        "apiKey": "${DEEP_API_KEY}",
+        "auth": "api-key",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "deepseek-chat",
+            "name": "DeepSeek V3.2 (Non-thinking)",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 128000,
+            "maxTokens": 8000
+          },
+          {
+            "id": "deepseek-reasoner",
+            "name": "DeepSeek V3.2 (Thinking)",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 128000,
+            "maxTokens": 64000
+          }
+        ]
       }
     }
   },
@@ -163,12 +208,12 @@
         "name": "Engenheiro SmartEnvios",
         "workspace": "/var/www/openclaw/workspace/agents/eng-smartenvios",
         "model": {
-          "primary": "openai/gpt-5.1-codex",
+          "primary": "google/gemini-3-pro-preview",
           "fallbacks": [
-            "openai/gpt-4-turbo",
-            "deepseek/deepseek-chat",
+            "google/gemini-2.5-pro",
             "anthropic/claude-sonnet-4-6",
-            "anthropic/claude-opus-4-6"
+            "openai/gpt-4-turbo",
+            "deepseek/deepseek-chat"
           ]
         },
         "skills": [
@@ -188,16 +233,16 @@
         "name": "Engenheiro de Prompt",
         "workspace": "/var/www/openclaw/workspace/agents/eng-prompt",
         "model": {
-          "primary": "openai/gpt-5.1-codex",
+          "primary": "google/gemini-3-pro-preview",
           "fallbacks": [
-            "openai/gpt-4-turbo",
-            "deepseek/deepseek-chat",
+            "google/gemini-2.5-pro",
             "anthropic/claude-sonnet-4-6",
-            "anthropic/claude-opus-4-6"
+            "openai/gpt-4-turbo",
+            "deepseek/deepseek-chat"
           ]
         },
         "skills": [
-          "notion"
+          "notion-personal"
         ],
         "identity": {
           "name": "Engenheiro de Prompt",
@@ -274,7 +319,7 @@
     "web": {
       "search": {
         "enabled": true,
-        "apiKey": "BSArTXVqj_LkdvPZU50fLC5dAXjK5DB"
+        "apiKey": "${BRAVE_API_KEY}"
       },
       "fetch": {
         "enabled": true
@@ -367,7 +412,7 @@
     "bind": "loopback",
     "auth": {
       "mode": "token",
-      "token": "97fb8d9c326a7d30f9b888d825c68d45f7cc3fad919ca763"
+      "token": "${OPENCLAW_GATEWAY_TOKEN}"
     },
     "tailscale": {
       "mode": "off",
@@ -413,51 +458,6 @@
       },
       "discord": {
         "enabled": true
-      }
-    }
-  },
-  "models": {
-    "mode": "merge",
-    "providers": {
-      "deepseek": {
-        "baseUrl": "https://api.deepseek.com/v1",
-        "apiKey": "${DEEP_API_KEY}",
-        "auth": "api-key",
-        "api": "openai-completions",
-        "models": [
-          {
-            "id": "deepseek-chat",
-            "name": "DeepSeek V3.2 (Non-thinking)",
-            "reasoning": false,
-            "input": [
-              "text"
-            ],
-            "cost": {
-              "input": 0,
-              "output": 0,
-              "cacheRead": 0,
-              "cacheWrite": 0
-            },
-            "contextWindow": 128000,
-            "maxTokens": 8000
-          },
-          {
-            "id": "deepseek-reasoner",
-            "name": "DeepSeek V3.2 (Thinking)",
-            "reasoning": true,
-            "input": [
-              "text"
-            ],
-            "cost": {
-              "input": 0,
-              "output": 0,
-              "cacheRead": 0,
-              "cacheWrite": 0
-            },
-            "contextWindow": 128000,
-            "maxTokens": 64000
-          }
-        ]
       }
     }
   }

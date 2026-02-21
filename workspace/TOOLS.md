@@ -2,6 +2,21 @@
 
 This document lists all available tools, skills, and integrations configured in this workspace.
 
+**Última documentação: 2026-02-20 22:52**
+
+## Notion Helper (notion-helper.sh)
+
+Para agentes que precisam interagir com Notion via `exec` (sem skill notion nativo no CLI), usar `workspace/scripts/notion-helper.sh`:
+
+- **query** — Lista cards por DB, agente e status
+- **update-status** — Atualiza Status do card
+- **comment** — Adiciona comentário
+- **get-page** / **get-blocks** — Lê página ou blocos
+- **append-body** — Adiciona conteúdo (headings, listas) ao corpo
+- **create-card** — Cria novo card
+
+Passar `NOTION_PERSONAL_API_KEY`, `NOTION_SMARTENVIOS_API_KEY` ou `NOTION_CANPER_API_KEY` como parâmetro `api_key_var`.
+
 ## Notion Skills
 
 You have access to **3 Notion workspaces** configured as separate skills:

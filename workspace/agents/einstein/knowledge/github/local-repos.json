@@ -1,0 +1,289 @@
+{
+  "generated_at": "2026-02-20T21:35:32.141870",
+  "total_repos": 10,
+  "repos": [
+    {
+      "name": "ms.notifications",
+      "path": "/var/www/ms.notifications",
+      "has_git": true,
+      "description": "# ms.notifications - Microserviço de Notificações ## Visão Geral O `ms.notifications` é um serviço desacoplado e escalável, construído para gerenciar e persistir notificações destinadas aos clientes da plataforma. O serviço opera de forma assíncrona, recebendo eventos de outros microsserviços, armazenando-os de forma durável e notificando os clientes em tempo real através de WebSocket.",
+      "last_commit": "36e50e5bd73dce39c51e394ca86e80f72e49270c solved lint 2026-02-19",
+      "branch": "block-duplicated-message",
+      "remote_url": "https://github.com/SmartEnvios/ms.notifications.git",
+      "tech_stack": [
+        "NestJS",
+        "Docker",
+        "React",
+        "Jest",
+        "Node.js",
+        "TypeScript"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "nest-cli.json",
+        "README.md",
+        "package-lock.json",
+        "package.json",
+        "tsconfig.build.json",
+        "tsconfig.json",
+        "jest.config.ts",
+        "test/phone-variants.spec.ts",
+        "test/notifications.e2e-spec.ts"
+      ]
+    },
+    {
+      "name": "ms.points",
+      "path": "/var/www/ms.points",
+      "has_git": true,
+      "description": "# ms.points ## Autenticação All requests except `/api/login` require an `Authorization` header with a valid token:",
+      "last_commit": "f095e5e3dc46aab06f050f6fd3d2f289c372ff33 sugest codex 2026-01-28",
+      "branch": "implement_externls",
+      "remote_url": "git@github.com:SmartEnvios/ms.points.git",
+      "tech_stack": [
+        "Knex",
+        "React",
+        "Node.js",
+        "Docker"
+      ],
+      "files": [
+        "swagger.yaml",
+        "knexfile.js",
+        "README.md",
+        "package-lock.json",
+        "package.json",
+        "migrations/20241008100000_create_point_freight_order_items.js",
+        ".github/workflows/buildDevRelease.yaml",
+        ".github/workflows/buildNewRelease.yaml",
+        ".github/workflows/deployRelease.yaml",
+        "src/app.js"
+      ]
+    },
+    {
+      "name": "ms.ticket-generator",
+      "path": "/var/www/ms.ticket-generator",
+      "has_git": true,
+      "description": "# Ticket Generator Serviço responsável por gerar etiquetas do pedidos e integrar etiquetas com transportadoras. Mais sobre esse microserviço: [Docs ⇗](./docs/intro.mdx)",
+      "last_commit": "e17ef3a894ade7aeec54668461f8f80e5628501c v1.27.37 2025-12-04",
+      "branch": "tracking-codes-print-label",
+      "remote_url": "https://github.com/SmartEnvios/ms.ticket-generator.git",
+      "tech_stack": [
+        "Knex",
+        "React",
+        "Node.js",
+        "Docker"
+      ],
+      "files": [
+        "jsconfig.json",
+        "knexfile.js",
+        "README.md",
+        "prettier.config.js",
+        "package-lock.json",
+        "package.json",
+        ".eslintrc.json",
+        "test/stubs/ticket-order.stub.js",
+        "test/stubs/ticket-destiny-city-zip-code.stub.js",
+        "test/stubs/ticket-orders-filter-transporter.stub.js"
+      ]
+    },
+    {
+      "name": "ms.crm",
+      "path": "/var/www/ms.crm",
+      "has_git": true,
+      "description": "# CRM SmartEnvios Sistema CRM moderno e otimizado para gestão de franquias, desenvolvido com React, TypeScript e Tailwind CSS. ## 🚀 Funcionalidades",
+      "last_commit": "52cb5e7ebf31e860114329a57b6cc8649a1ab88b implement middleware 2025-11-17",
+      "branch": "middleware-persons",
+      "remote_url": "https://github.com/SmartEnvios/ms.crm.git",
+      "tech_stack": [
+        "Next.js",
+        "React",
+        "Node.js",
+        "TypeScript"
+      ],
+      "files": [
+        "tsconfig.node.json",
+        "tailwind.config.js",
+        "next.config.js",
+        "next-env.d.ts",
+        "README.md",
+        "package-lock.json",
+        "package.json",
+        "tsconfig.json",
+        "postcss.config.js",
+        ".eslintrc.json"
+      ]
+    },
+    {
+      "name": "ms.expedition-hub",
+      "path": "/var/www/ms.expedition-hub",
+      "has_git": true,
+      "description": "# Microservice Expedition Hub O microserviço de hub tem por finalidade realizar gestão, logística e transporte de volumes, e gerenciar as empresas e pessoas envolvidas durante o processo",
+      "last_commit": "b05db5f455e7ccc3ffe37fa5f39fc3b582eea907 feat: SME-14084 Integração com 99 na finalização do romaneio 2025-12-03",
+      "branch": "develop",
+      "remote_url": "https://github.com/SmartEnvios/ms.expedition-hub.git",
+      "tech_stack": [
+        "NestJS",
+        "Docker",
+        "React",
+        "Node.js",
+        "TypeScript"
+      ],
+      "files": [
+        "nest-cli.json",
+        "README.md",
+        "package-lock.json",
+        "package.json",
+        "tsconfig.build.json",
+        "tsconfig.json",
+        "docker-compose.yml",
+        "test/jest-e2e.json",
+        "dist/main.d.ts",
+        "dist/main.js"
+      ]
+    },
+    {
+      "name": "ms.zardbank",
+      "path": "/var/www/ms.zardbank",
+      "has_git": true,
+      "description": "# Zardbank",
+      "last_commit": "01a84959ebc9275ee61df9be74e74e0ad8430ef6 Merge pull request #586 from SmartEnvios/develop 2026-02-03",
+      "branch": "main",
+      "remote_url": "https://github.com/SmartEnvios/ms.zardbank.git",
+      "tech_stack": [
+        "NestJS",
+        "Docker",
+        "React",
+        "Jest",
+        "Node.js",
+        "TypeScript"
+      ],
+      "files": [
+        "nest-cli.json",
+        "typeorm.config.ts",
+        "pull_request_template.md",
+        "README.md",
+        "package.json",
+        "tsconfig.build.json",
+        "tsconfig.json",
+        "jest.config.ts",
+        "database/migrations/1719077296960-AddNumberToFrieghtOrderTicket.ts",
+        "database/migrations/1720531407079-add-new-payment-columns-to-invoice.ts"
+      ]
+    },
+    {
+      "name": "ms.label-processor",
+      "path": "/var/www/ms.label-processor",
+      "has_git": true,
+      "description": "# Documentação ## Verificando a saúde do worker em ambiente Kubernetes O worker SQS utiliza uma abordagem baseada em arquivo para verificação de saúde (health check), evitando a necessidade de um servidor HTTP completo. Isso torna a aplicação mais leve e focada em sua função principal de processamento de mensagens.",
+      "last_commit": "f81019a980df79ae481448560c56586587edbd13 Merge pull request #136 from SmartEnvios/develop 2026-01-23",
+      "branch": "main",
+      "remote_url": "https://github.com/SmartEnvios/ms.label-processor.git",
+      "tech_stack": [
+        "NestJS",
+        "Docker",
+        "React",
+        "Jest",
+        "Node.js",
+        "TypeScript"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "nest-cli.json",
+        "pull_request_template.md",
+        "README.md",
+        "package-lock.json",
+        "package.json",
+        "tsconfig.build.json",
+        "tsconfig.json",
+        "jest.config.ts",
+        "test/setup-env.ts"
+      ]
+    },
+    {
+      "name": "ms.connectors",
+      "path": "/var/www/ms.connectors",
+      "has_git": true,
+      "description": "# Ms.Connectors > Software de controle das plataformas integradoras da SmartEnvios.",
+      "last_commit": "6ec437abea370493a9f90446279e89519d6c9988 adjusted-recomendation-bot 2026-02-18",
+      "branch": "improve-dhl-quote",
+      "remote_url": "https://github.com/SmartEnvios/ms.connectors.git",
+      "tech_stack": [
+        "NestJS",
+        "Docker",
+        "React",
+        "Jest",
+        "Node.js",
+        "TypeScript"
+      ],
+      "files": [
+        "changelog.md",
+        "nest-cli.json",
+        "jest.config.js",
+        "pull_request_template.md",
+        "README.md",
+        "package-lock.json",
+        "package.json",
+        "tsconfig.build.json",
+        ".eslintrc.js",
+        "tsconfig.json"
+      ]
+    },
+    {
+      "name": "ms.customer-service",
+      "path": "/var/www/ms.customer-service",
+      "has_git": true,
+      "description": "# ms.customer-service Central de Atendimento white-label, multi-tenant e omnichannel da SmartEnvios. ## Documentação",
+      "last_commit": "8c2ad3ce829dbe0b815bd9b966c7a20a2d61e0fe refactor(tenant): padronizar escopo branding nos cadastros 2026-02-07",
+      "branch": "init",
+      "remote_url": "https://github.com/SmartEnvios/ms.customer-service.git",
+      "tech_stack": [
+        "NestJS",
+        "React",
+        "Jest",
+        "Node.js",
+        "Prisma",
+        "TypeScript"
+      ],
+      "files": [
+        "nest-cli.json",
+        "jest.config.js",
+        "README.md",
+        "package-lock.json",
+        "package.json",
+        "tsconfig.json",
+        "dist/app.module.d.ts",
+        "dist/main.d.ts",
+        "dist/app.controller.js",
+        "dist/main.js"
+      ]
+    },
+    {
+      "name": "ms.atendimento",
+      "path": "/var/www/ms.atendimento",
+      "has_git": true,
+      "description": "# Smart Atendimentos API Backend API RESTful para gerenciamento de tickets integrado com Zendesk. ## 📋 Índice",
+      "last_commit": "3fa84a5526c0359766fdf5798922e5c6d56199c7 Merge pull request #61 from SmartEnvios/feat/smart-atendimentos-full-updates 2026-02-06",
+      "branch": "main",
+      "remote_url": "https://github.com/SmartEnvios/ms.atendimento.git",
+      "tech_stack": [
+        "Docker",
+        "Jest",
+        "React",
+        "Knex",
+        "Node.js",
+        "TypeScript"
+      ],
+      "files": [
+        "ZENDESK_SYNC.md",
+        "OTIMIZACAO_TICKET_INDIVIDUAL.md",
+        "ARQUITETURA.md",
+        "jest.config.js",
+        "OTIMIZACOES_PERFORMANCE.md",
+        "README.md",
+        "package-lock.json",
+        "package.json",
+        "DOCUMENTATION.md",
+        "tsconfig.json"
+      ]
+    }
+  ]
+}

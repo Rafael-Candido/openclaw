@@ -2,9 +2,10 @@
 set -euo pipefail
 
 NOW_UTC="$(date -u +"%Y%m%dT%H%M%SZ")"
-BACKUP_ROOT="/private/var/www/openclaw/backups/sessions"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+BACKUP_ROOT="${PROJECT_ROOT}/backups/sessions"
 BACKUP_DIR="${BACKUP_ROOT}/${NOW_UTC}"
-PROJECT_ROOT="/private/var/www/openclaw"
 
 if [[ -f "${PROJECT_ROOT}/.env" ]]; then
   # shellcheck disable=SC1091
@@ -14,7 +15,7 @@ OPENCLAW_CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}"
 
 SESSION_DIR="${OPENCLAW_CONFIG_DIR}/agents/main/sessions"
 RUNTIME_CONFIG="${OPENCLAW_CONFIG_DIR}/openclaw.json"
-PROJECT_CONFIG="/private/var/www/openclaw/openclaw.json"
+PROJECT_CONFIG="${PROJECT_ROOT}/openclaw.json"
 
 mkdir -p "${BACKUP_DIR}"
 

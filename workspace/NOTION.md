@@ -1,5 +1,7 @@
 # Notion Workspaces Configurados
 
+**Última documentação: 2026-02-20 22:52**
+
 Você tem acesso a **3 workspaces do Notion** configurados como skills separadas:
 
 ## 1. Notion Personal
@@ -40,6 +42,14 @@ Todas as skills suportam:
 - Consultar schemas de databases
 
 **Nota**: Os Database IDs estão disponíveis no arquivo `.env` e podem ser especificados nos comandos quando necessário.
+
+### Acesso via exec (notion-helper.sh)
+
+Para agentes que usam `exec` em vez de skill notion, usar `workspace/scripts/notion-helper.sh` com as variáveis de API key: `query`, `update-status`, `comment`, `get-page`, `get-blocks`, `append-body`, `create-card`. Ver [KNOWLEDGE.md](KNOWLEDGE.md) para detalhes dos comandos.
+
+### Scripts Notion Canper
+
+Scripts Python em `workspace/scripts/notion-canper-*.py` para o DB Canper: query, schema, status, update-card, add-content, check-recent, check-stalled, robust-check. Usar com `NOTION_CANPER_API_KEY`.
 
 ## Fluxo Presidente → Diretores → Especialistas
 

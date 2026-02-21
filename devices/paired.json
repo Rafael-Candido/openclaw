@@ -116,7 +116,7 @@
           "operator.pairing"
         ],
         "createdAtMs": 1771568886777,
-        "lastUsedAtMs": 1771625690201
+        "lastUsedAtMs": 1771631697264
       }
     },
     "createdAtMs": 1771568886777,
@@ -128,8 +128,8 @@
     "displayName": "Rafael’s MacBook Pro",
     "platform": "macOS 15.7.3",
     "clientId": "openclaw-macos",
-    "clientMode": "node",
-    "role": "node",
+    "clientMode": "ui",
+    "role": "operator",
     "roles": [
       "operator",
       "node"
@@ -149,14 +149,14 @@
           "operator.pairing"
         ],
         "createdAtMs": 1771614918191,
-        "lastUsedAtMs": 1771625691238
+        "lastUsedAtMs": 1771635364554
       },
       "node": {
         "token": "vqccsbqoQX4wEbVk6TAQ5nLGYfQaH_J74DKTFtyxSzg",
         "role": "node",
         "scopes": [],
         "createdAtMs": 1771614931340,
-        "lastUsedAtMs": 1771625691240
+        "lastUsedAtMs": 1771635358019
       }
     },
     "createdAtMs": 1771614918191,

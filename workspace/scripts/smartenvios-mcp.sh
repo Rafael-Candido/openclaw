@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ENV_FILE="/private/var/www/openclaw/.env"
-STATE_DIR="/private/var/www/openclaw/workspace/.state"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+ENV_FILE="${PROJECT_ROOT}/.env"
+STATE_DIR="${PROJECT_ROOT}/workspace/.state"
 TOKEN_FILE="${STATE_DIR}/smartenvios_mcp_session_token"
 
 if [[ -f "${ENV_FILE}" ]]; then

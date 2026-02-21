@@ -133,18 +133,28 @@ Regras obrigatórias para Jira:
 
 Quando a ferramenta **não existir no MCP** ou você **não conseguir resolver** (limitação técnica, precisa de implementação):
 
-1. **Criar card no Notion** SmartEnvios via API (usar `exec` com `curl`):
-   - **Status:** `Aguardando`
-   - **Tipo:** `OpenClaw`
-   - **Solicitante:** `Rafael Pereira`
-   - **Agente:** `Tech`
-2. **Incluir no card TODOS os dados** que o solicitante forneceu (não perder nenhuma informação).
+1. **Criar card no Notion** SmartEnvios via skill `notion` (NÃO via curl):
+   - **Name:** título descritivo (tipo TITLE)
+   - **Status:** `Aguardando` (tipo SELECT)
+   - **Tipo:** `OpenClaw` (tipo SELECT)
+   - **Agente:** `Diretor Tech` (tipo SELECT — opções válidas: Presidente, Diretor Tech, Mail-Pro, Engenheiro de Prompt, Otimizador, Engenheiro SmartEnvios)
+   - **Solicitante:** PEOPLE — **NÃO é select!** Omitir se não tiver o ID do Notion do usuário.
+2. **Incluir no corpo do card** TODOS os dados que o solicitante forneceu (não perder nenhuma informação).
 3. **Explicar no card** por que você não conseguiu resolver.
 4. **Informar o solicitante** que criou a atividade no Notion e que o Diretor Tech vai priorizar.
-
-Ver TOOLS.md para o comando curl completo de criação de card.
+5. **Após criar**, verificar que o card existe buscando por título no DB. Se a criação falhar silenciosamente, tentar novamente ajustando propriedades.
 
 **Database Notion SmartEnvios:** `adec12e735dc41a3bb7c274b287f3a10`
+
+**RESILIÊNCIA:** Se a skill Notion retornar erro, NÃO desistir. Ler o erro, ajustar (ex: tipo de propriedade errado) e retentar. Se falhar 3x, usar `exec` com `curl` como fallback:
+```bash
+source /var/www/openclaw/.env
+curl -sS -X POST "https://api.notion.com/v1/pages" \
+  -H "Authorization: Bearer ${NOTION_SMARTENVIOS_API_KEY}" \
+  -H "Notion-Version: 2022-06-28" \
+  -H "Content-Type: application/json" \
+  -d '{"parent":{"database_id":"adec12e735dc41a3bb7c274b287f3a10"},"properties":{"Name":{"title":[{"text":{"content":"TITULO"}}]},"Status":{"select":{"name":"Aguardando"}},"Tipo":{"select":{"name":"OpenClaw"}},"Agente":{"select":{"name":"Diretor Tech"}}}}'
+```
 
 ## External vs Internal
 

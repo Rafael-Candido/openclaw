@@ -25,6 +25,22 @@ Don't ask permission. Just do it.
 
 For **any** change that touches flows, new RPC handlers, channels, skills, or error handling: before implementing or reviewing, read `PLANO_PROJETO.md` and `docs/development/LOGGING_AND_RULES.md`. Apply the logging rules: no `console.log`, errors with `requestId` and `errorCode`, redact sensitive data, log start/end with `durationMs`, and log routing/agent decisions.
 
+## Project standards – Sanitization & Legacy
+
+For any change touching scripts/config/prompts/crons:
+
+1. **No secrets in git-tracked files**
+   - Never commit literal `apiKey`, `token`, `secret` values.
+   - Always use environment variables (`${...}`) for sensitive values.
+2. **No machine-specific absolute paths**
+   - Avoid `/Users/...` and `/private/...` in operational scripts/prompts.
+   - Prefer `OPENCLAW_CONFIG_DIR`, `SCRIPT_DIR`, `PROJECT_ROOT`.
+3. **Prompt/cron sync is mandatory**
+   - If a prompt template changes, sync the corresponding `cron/jobs.json` payload.
+4. **Final hygiene check before finishing**
+   - Search for hardcoded secrets and legacy paths.
+   - Validate JSON/shell syntax and run local lint.
+
 ## Autonomia – erros, correção e documentação
 
 You have **autonomy** to identify your own errors, correct the approach, and document so you don't repeat. You don't need to ask permission for non-destructive fixes.

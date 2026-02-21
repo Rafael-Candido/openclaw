@@ -1,5 +1,7 @@
 # FLUXO_AGENTES.md — Presidente, Diretores e Especialistas
 
+**Última documentação: 2026-02-20 22:52**
+
 Este documento define o fluxo operacional no Notion para cards com:
 - **Status:** `Aguardando` → `Priorizado` → `Em andamento` → `Concluído`
 - **Tipo:** `OpenClaw`
@@ -175,9 +177,16 @@ Ao captar o card:
 5. **Comentário de conclusão:** postar comentário final estruturado com resultado completo.
 6. Atualizar **Status** para `Concluído`.
 
+### Regra de assinatura — OBRIGATÓRIO em todos os comentários e criações
+
+Sempre identificar quem criou ou atualizou o card:
+- **create-card:** passar o 7º parâmetro `[criador]` (ex.: Governança, Otimizador) — o script adiciona "Este card foi criado por: X".
+- **comment (notion-helper.sh):** passar o 4º parâmetro `[agente]` — o script prefixa "[Agente] " no comentário.
+- Exemplo: `notion-helper.sh comment PAGE_ID NOTION_PERSONAL_API_KEY 'Texto do comentário' 'Engenheiro de Prompt'`
+
 ### Regra de comentários progressivos — OBRIGATÓRIO para especialistas
 
-Especialistas DEVEM postar comentários no card do Notion ao longo da execução, não apenas no final. Máximo **300 caracteres** por comentário.
+Especialistas DEVEM postar comentários no card do Notion ao longo da execução, não apenas no final. Máximo **300 caracteres** por comentário. Usar o 4º parâmetro do comment para assinar (ex.: 'Mail-Pro', 'Engenheiro de Prompt').
 
 **Quando comentar:**
 - Ao captar o card (início)
@@ -185,14 +194,15 @@ Especialistas DEVEM postar comentários no card do Notion ao longo da execução
 - Se encontrar erro ou bloqueio
 - Ao concluir (resultado final)
 
-**Formato sugerido:**
+**Formato sugerido — passo a passo com assinatura (manter Etapa X/N):**
 ```
-[HH:MM] 🟢 Início: captei card, lendo descrição. Próximo: verificar credenciais Gmail.
-[HH:MM] 📧 Etapa 1/4: 47 não lidos encontrados. Triando por relevância...
-[HH:MM] 🏷️ Etapa 2/4: 12 importantes, 8 baixo valor, 27 auto-reply. Aplicando labels...
-[HH:MM] ✍️ Etapa 3/4: 3 rascunhos criados para urgentes. Arquivando processados...
-[HH:MM] ✅ Concluído: 47 triados, 3 rascunhos, 44 arquivados. Movendo para Concluído.
+[Agente] [HH:MM] 🟢 Etapa 0: Início. Captei card, lendo descrição. Próximo: verificar credenciais.
+[Agente] [HH:MM] 📧 Etapa 1/4: 47 não lidos encontrados. Triando por relevância...
+[Agente] [HH:MM] 🏷️ Etapa 2/4: 12 importantes, 8 baixo valor, 27 auto-reply. Aplicando labels...
+[Agente] [HH:MM] ✍️ Etapa 3/4: 3 rascunhos criados para urgentes. Arquivando processados...
+[Agente] [HH:MM] ✅ Etapa 4/4: Concluído. 47 triados, 3 rascunhos, 44 arquivados. Movendo para Concluído.
 ```
+Assinar sempre (4º param do comment ou [Agente] no texto). Manter numeração de etapas (1/4, 2/4...) para visibilidade do progresso.
 
 **Por que isso é crítico:**
 - Se o especialista travar, sabemos exatamente em que etapa parou.
@@ -205,18 +215,20 @@ Cada especialista capta apenas cards em **Priorizado** onde a propriedade **Agen
 
 ### Engenheiro SmartEnvios
 - **Agente:** propriedade do card = **Engenheiro SmartEnvios**
-- **Diretor:** Tech
-- **Escopo:** bugs, features, melhorias em todos os repos SmartEnvios (`/var/www/ms.*`, `/var/www/mcp`, `/var/www/lgc.core`, etc.)
+- **Diretor:** Tech SmartEnvios (recebe demandas dele)
+- **Escopo:** fullstack — corrigir bugs, fazer melhorias, ampliar MCP, evoluir sistemas SmartEnvios. Todos os repos em `/var/www/` (ms.connectors, mcp, lgc.core, etc.). Código-fonte via GitHub SmartEnvios.
 - **GitHub:** https://github.com/SmartEnvios
 - **Acesso:** fullstack, git, exec, todos os repos em /var/www/
+- **Notion:** SmartEnvios (DB adec12e735dc41a3bb7c274b287f3a10)
 
 ### Engenheiro de Prompt
 - **Agente:** propriedade do card = **Engenheiro de Prompt**
-- **Diretor:** Pessoal
-- **Escopo:** manutenção e evolução da estrutura OpenClaw — agentes, prompts, documentação, KNOWLEDGE, SETUP_COMPLETO, versionamento
+- **Diretor:** Pessoal (reporta a ele)
+- **Escopo:** manutenção e evolução da estrutura OpenClaw — agentes, prompts, documentação, KNOWLEDGE, SETUP_COMPLETO, versionamento. Otimizador e Governança usam ele para evoluir a estrutura rumo a eficiência, baixo custo e qualidade.
 - **GitHub:** https://github.com/Rafael-Candido (repo `openclaw`)
-- **Parceiros:** Otimizador e Governança criam cards para ele evoluir a estrutura
+- **Parceiros:** Otimizador e Governança criam cards para ele evoluir a estrutura globalmente. Documenta aprendizados, atualiza setup, versiona OpenClaw.
 - **Acesso:** workspace OpenClaw completo, git, exec
+- **Notion:** Pessoal (DB bfcbe7a7a3a745489e605e0762af12a9)
 
 ### Mail-Pro e Mail-Person
 
@@ -277,7 +289,14 @@ Obrigatório incluir:
 - **Especialista nomeado:** propriedade **Agente** correta.
 - **Solicitante definido:** preencher o campo **Solicitante** (people), priorizando **Rafael Pereira** quando for o demandante.
 
-## 2.1) Padrão reutilizável de propriedades (sem retrabalho)
+## 2.1) Assinatura obrigatória em cards criados
+
+Todo agente que criar card no Notion deve assinar com comentário logo após a criação:
+- **Formato:** `Este card foi criado por: [Nome do Agente]`
+- **Exemplos:** Presidente, Governança, Otimizador, Diretor Tech, Diretor Pessoal, etc.
+- Quem usa `notion-helper.sh create-card`: passar o nome do agente como 7º parâmetro `[criador]` — o script adiciona o comentário automaticamente.
+
+## 2.2) Padrão reutilizável de propriedades (sem retrabalho)
 
 Ao criar cards de rotina/melhoria, usar padrão base:
 
@@ -290,13 +309,13 @@ Template oficial: `templates/notion-card-openclaw.md`
 
 Assim, o diretor só precisa complementar contexto/escopo e promover para `Priorizado`.
 
-## 2.2) Regra API-first
+## 2.3) Regra API-first
 
 - Todo acesso operacional deve ser via **API/MCP**.
 - Zendesk também deve ser consumido via MCP (API).
 - Exceção permitida: painel da base de conhecimento Zendesk para consulta visual quando necessário.
 
-## 2.3) Esteira Einstein -> Diretor Tech -> Engenheiro Backend
+## 2.4) Esteira Einstein -> Diretor Tech -> Engenheiro Backend
 
 Quando Einstein não conseguir responder uma dúvida SmartEnvios por limitação técnica:
 
@@ -425,9 +444,14 @@ Isso significa que ao **adicionar novos agentes e crons**, a governança redistr
 - 10-15 crons: considerar intervalos de 15min e 45min
 - 15+ crons: considerar intervalos de 20min e 1h, ou reduzir `maxConcurrent` para 1
 
+### Criação de cards de melhoria (quando identificar problemas recorrentes):
+
+- **Pode criar** cards no Notion PESSOAL para o Diretor Pessoal / Engenheiro de Prompt.
+- **CRÍTICO:** NUNCA usar skill `notion` (cria em SmartEnvios). SEMPRE usar `notion-helper.sh` + `NOTION_PERSONAL_API_KEY` + DB `bfcbe7a7a3a745489e605e0762af12a9` (Pessoal).
+- Assinar no create-card (7º param: Governança).
+
 ### O que NÃO faz:
 
-- Não cria cards no Notion.
 - Não move cards de status.
 - Não interfere na lógica de negócio dos agentes.
 
@@ -465,11 +489,16 @@ Fluxos maduros devem gerar **zero incidentes** para a governança. O otimizador 
 
 - Resetar sessões, ajustar stagger, simplificar prompts, corrigir documentos.
 - Toda alteração registrada em KNOWLEDGE.md.
+- **Criar cards de melhoria** (Fase 4) no Notion PESSOAL para o Diretor Pessoal / Engenheiro de Prompt — via `notion-helper.sh` (NUNCA skill `notion`).
+
+### Regra crítica para criação de cards (Governança e Otimizador):
+
+- **NUNCA** usar skill `notion` — cria em SmartEnvios.
+- **SEMPRE** usar `notion-helper.sh create-card` com DB `bfcbe7a7a3a745489e605e0762af12a9` e `NOTION_PERSONAL_API_KEY` (Notion Pessoal).
 
 ### O que NÃO faz:
 
 - Não desabilita crons.
-- Não cria/move cards no Notion.
 - Não altera credenciais.
 
 ## 6) Resiliência e autonomia

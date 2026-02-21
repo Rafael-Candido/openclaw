@@ -2,6 +2,68 @@
   "version": 1,
   "jobs": [
     {
+      "id": "a7b8c9d0-e1f2-3456-7890-abcdef123401",
+      "agentId": "eng-smartenvios",
+      "name": "Engenheiro SmartEnvios - varredura 30min",
+      "enabled": true,
+      "createdAtMs": 1771632000000,
+      "updatedAtMs": 1771635242414,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1771655010000
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Engenheiro SmartEnvios em modo STRICT.\n\nUSE EXCLUSIVAMENTE o script /var/www/openclaw/workspace/scripts/notion-helper.sh para TODAS as operações Notion. NÃO tente curl direto nem skill notion.\n\nDB SMARTENVIOS: adec12e735dc41a3bb7c274b287f3a10\nAPI KEY VAR: NOTION_SMARTENVIOS_API_KEY\n\nCOMANDOS DISPONÍVEIS (via exec):\n- Buscar cards: /var/www/openclaw/workspace/scripts/notion-helper.sh query adec12e735dc41a3bb7c274b287f3a10 NOTION_SMARTENVIOS_API_KEY 'Engenheiro SmartEnvios'\n- Mover status: /var/www/openclaw/workspace/scripts/notion-helper.sh update-status PAGE_ID NOTION_SMARTENVIOS_API_KEY 'Em andamento'\n- Comentar: /var/www/openclaw/workspace/scripts/notion-helper.sh comment PAGE_ID NOTION_SMARTENVIOS_API_KEY 'Texto' 'Engenheiro SmartEnvios' (sempre assinar)\n- Ler página: /var/www/openclaw/workspace/scripts/notion-helper.sh get-page PAGE_ID NOTION_SMARTENVIOS_API_KEY\n- Ler blocos: /var/www/openclaw/workspace/scripts/notion-helper.sh get-blocks PAGE_ID NOTION_SMARTENVIOS_API_KEY\n\nFLUXO:\n1. Executar query para buscar cards Priorizado/Em andamento com Agente='Engenheiro SmartEnvios'\n2. Para cada card Priorizado: update-status para 'Em andamento' + comment de início (<=300 chars)\n3. get-blocks para ler descrição, IMPLEMENTAR o pedido (código, scripts, MCP SmartEnvios, config)\n4. Comments progressivos com o que FOI FEITO\n5. update-status para 'Concluído' + comment final com evidências\n\nRegras: código/bugs/features SmartEnvios, MCP SmartEnvios, scripts, config. Implementar = fazer as mudanças técnicas, não só analisar. Não usar subagente. Não usar message.send.",
+        "timeoutSeconds": 900,
+        "model": "google/gemini-3-pro-preview"
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "lastRunAtMs": 1771634900018,
+        "lastStatus": "ok",
+        "lastDurationMs": 342396,
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1771656810000
+      }
+    },
+    {
+      "id": "6bdd82c7-081d-486b-9700-0572b9fce72e",
+      "agentId": "main",
+      "name": "Engenheiro de Prompt - varredura 1h",
+      "enabled": true,
+      "createdAtMs": 1771624901237,
+      "updatedAtMs": 1771636786514,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1771654410000
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Engenheiro de Prompt em modo STRICT.\n\nUSE EXCLUSIVAMENTE o script /var/www/openclaw/workspace/scripts/notion-helper.sh para TODAS as operações Notion. NÃO tente curl direto nem 'openclaw notion query'.\n\nDB PESSOAL: bfcbe7a7a3a745489e605e0762af12a9\nAPI KEY VAR: NOTION_PERSONAL_API_KEY\n\nCOMANDOS DISPONÍVEIS (via exec):\n- Buscar cards: /var/www/openclaw/workspace/scripts/notion-helper.sh query bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY 'Engenheiro de Prompt'\n- Mover status: /var/www/openclaw/workspace/scripts/notion-helper.sh update-status PAGE_ID NOTION_PERSONAL_API_KEY 'Em andamento'\n- Comentar: /var/www/openclaw/workspace/scripts/notion-helper.sh comment PAGE_ID NOTION_PERSONAL_API_KEY 'Texto' 'Engenheiro de Prompt' (sempre assinar)\n- Ler página: /var/www/openclaw/workspace/scripts/notion-helper.sh get-page PAGE_ID NOTION_PERSONAL_API_KEY\n- Ler blocos: /var/www/openclaw/workspace/scripts/notion-helper.sh get-blocks PAGE_ID NOTION_PERSONAL_API_KEY\n\nFLUXO:\n1. Executar query para buscar cards Priorizado/Em andamento\n2. Para cada card Priorizado: update-status para 'Em andamento' + comment de início (<=300 chars)\n3. get-blocks para ler descrição, executar o pedido\n4. Comments progressivos com passo a passo: Etapa X/N (ex: Etapa 1/4, 2/4...), sempre assinar (4º param 'Engenheiro de Prompt')\n5. update-status para 'Concluído' + comment final\n\nSe erro: ler mensagem e ajustar. Nao usar subagente. Nao usar message.send.\nResponder total processado e IDs.",
+        "timeoutSeconds": 900,
+        "model": "deepseek/deepseek-chat"
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "lastRunAtMs": 1771636422950,
+        "lastStatus": "ok",
+        "lastDurationMs": 363564,
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1771656210000
+      }
+    },
+    {
       "id": "444c6f8d-b08e-4407-b77c-eadc39ab7c2d",
       "agentId": "main",
       "sessionKey": "agent:main:main",
@@ -108,27 +170,27 @@
       "name": "Diretor Tech - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771552173190,
-      "updatedAtMs": 1771618900608,
+      "updatedAtMs": 1771637345452,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
-        "anchorMs": 1771552273984
+        "anchorMs": 1771653930000
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Diretor Tech SmartEnvios em modo STRICT usando o skill notion.\n\nObjetivo: varredura generalista de tarefas do domínio Tech.\n\nFunção padrão (Notion):\n- Captar cards OpenClaw em Aguardando no workspace Tech.\n- Normalizar cada card para Status='Priorizado', Tipo='OpenClaw', Solicitante='Rafael Pereira', Agente=especialista adequado.\n- Escrever descrição técnica completa para execução.\n\nRoteamento de especialista:\n- Código/bugs/features/MCP SmartEnvios -> Agente='Engenheiro SmartEnvios'\n- E-mail profissional -> Agente='Mail-Pro'\n- Sem especialista claro -> manter Agente='Tech' temporariamente.\n\nREGRA DE DEDUPLICAÇÃO — chave dupla (Assunto + Agente):\n- Antes de mover de Aguardando para Priorizado, consultar Status='Priorizado'.\n- Se já existir card em Priorizado com MESMO título E MESMO Agente, ESPERAR próximo ciclo.\n- NÃO consultar Em andamento nem Concluído.\n\nAPI-first obrigatório.",
+        "message": "Atue como Diretor Tech SmartEnvios em modo STRICT usando o skill notion.\n\nESQUEMA NOTION SMARTENVIOS (DB: adec12e735dc41a3bb7c274b287f3a10):\n- Status: SELECT (opções: Aguardando, Priorizado, Em andamento, Concluído, Impedimento, Cancelado, Anotação)\n- Tipo: SELECT (opções incluem: OpenClaw)\n- Agente: SELECT (opções: Presidente, Diretor Tech, Mail-Pro, Engenheiro de Prompt, Otimizador, Engenheiro SmartEnvios)\n- Solicitante: PEOPLE (NÃO é select — omitir na criação/update se não tiver o ID)\n- Name: TITLE\nIMPORTANTE: TODAS as propriedades filtráveis são SELECT. NUNCA usar filtro tipo 'status', sempre 'select'.\n\nObjetivo: varredura generalista de tarefas do domínio Tech.\n\nFunção padrão:\n- Captar cards OpenClaw em Aguardando.\n- Normalizar: Status='Priorizado', Tipo='OpenClaw', Agente=especialista adequado.\n- Escrever descrição técnica completa.\n\nRoteamento: Código/bugs/features/MCP SmartEnvios -> Agente='Engenheiro SmartEnvios'. E-mail profissional -> Agente='Mail-Pro'. Sem especialista -> Agente='Diretor Tech' temporariamente.\n\nDEDUPLICAÇÃO: Antes de mover Aguardando->Priorizado, consultar Priorizado. Se existir card com MESMO título E MESMO Agente, ESPERAR.\n\nRESILIÊNCIA: Se uma query Notion falhar com validation_error, ajustar o tipo de filtro e retentar. Se falhar 2x, reportar erro no log e seguir.",
         "model": "deepseek/deepseek-chat"
       },
       "delivery": {
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1771626073984,
-        "lastRunAtMs": 1771618873994,
+        "nextRunAtMs": 1771653930000,
+        "lastRunAtMs": 1771637153780,
         "lastStatus": "ok",
-        "lastDurationMs": 26614,
+        "lastDurationMs": 191672,
         "consecutiveErrors": 0
       }
     },
@@ -138,27 +200,27 @@
       "name": "Diretor Pessoal - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771552173203,
-      "updatedAtMs": 1771624493161,
+      "updatedAtMs": 1771637374119,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
-        "anchorMs": 1771552393984
+        "anchorMs": 1771654410000
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Diretor Pessoal em modo STRICT usando o skill notion-personal.\n\nObjetivo: varredura generalista de tarefas do domínio pessoal.\n\nFunção padrão (Notion):\n- Captar cards OpenClaw em Aguardando no workspace Pessoal.\n- Normalizar cada card para Status='Priorizado', Tipo='OpenClaw', Solicitante='Rafael Pereira', Agente=especialista adequado.\n- Escrever descrição técnica/funcional completa para execução.\n\nRoteamento de especialista:\n- E-mail pessoal -> Agente='Mail-Person'\n- Manutenção OpenClaw (agentes, prompts, docs, base Einstein) -> Agente='Engenheiro de Prompt'\n- Demais escopos -> atribuir especialista correto; NUNCA deixar Agente='Diretor Pessoal' após triagem. Se não houver especialista claro, atribuir Engenheiro de Prompt (ou Tech) e registrar pendência.\n\nREGRA DE DEDUPLICAÇÃO — chave dupla (Assunto + Agente):\n- Antes de mover de Aguardando para Priorizado, consultar Status='Priorizado'.\n- Se já existir card em Priorizado com MESMO título E MESMO Agente, ESPERAR próximo ciclo.\n- NÃO consultar Em andamento nem Concluído.\n\nAPI-first obrigatório.",
+        "message": "Atue como Diretor Pessoal em modo STRICT usando o skill notion-personal.\n\nESQUEMA NOTION PESSOAL (DB: bfcbe7a7a3a745489e605e0762af12a9):\n- Status: SELECT (opções: Aguardando, Priorizado, Em andamento, Concluído, Impedimento, Anotações)\n- Tipo: SELECT (opções incluem: OpenClaw)\n- Agente: SELECT (opções: Presidente, Diretor Pessoal, Mail-Person, Engenheiro de Prompt)\n- Solicitante: PEOPLE (NÃO é select — omitir na criação/update se não tiver o ID)\n- Name: TITLE\nIMPORTANTE: TODAS as propriedades filtráveis são SELECT. NUNCA usar filtro tipo 'status', sempre 'select'.\n\nObjetivo: varredura generalista de tarefas do domínio pessoal.\n\nFunção padrão:\n- Captar cards OpenClaw em Aguardando.\n- Normalizar: Status='Priorizado', Tipo='OpenClaw', Agente=especialista adequado.\n- Escrever descrição técnica/funcional completa.\n\nRoteamento: E-mail pessoal -> Agente='Mail-Person'. Manutenção OpenClaw -> Agente='Engenheiro de Prompt'. NUNCA deixar Agente='Diretor Pessoal' após triagem.\n\nDEDUPLICAÇÃO: Antes de mover Aguardando->Priorizado, consultar Priorizado. Se existir card com MESMO título E MESMO Agente, ESPERAR.\n\nRESILIÊNCIA: Se uma query Notion falhar com validation_error, ajustar o tipo de filtro e retentar. Se falhar 2x, reportar erro no log e seguir.",
         "model": "deepseek/deepseek-chat"
       },
       "delivery": {
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1771626193984,
-        "lastRunAtMs": 1771624394004,
+        "nextRunAtMs": 1771654410000,
+        "lastRunAtMs": 1771637345453,
         "lastStatus": "ok",
-        "lastDurationMs": 99157,
+        "lastDurationMs": 28666,
         "consecutiveErrors": 0
       }
     },
@@ -237,7 +299,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Execute /private/var/www/openclaw/workspace/scripts/backup-main-sessions.sh e responda somente com o caminho do backup criado.",
+        "message": "Execute /var/www/openclaw/workspace/scripts/backup-main-sessions.sh e responda somente com o caminho do backup criado.",
         "timeoutSeconds": 180
       },
       "delivery": {
@@ -257,17 +319,17 @@
       "name": "Diretor Negócios - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771571597733,
-      "updatedAtMs": 1771623976495,
+      "updatedAtMs": 1771632194213,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
-        "anchorMs": 1771571713984
+        "anchorMs": 1771653810000
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Diretor de Negócios em modo STRICT usando o skill notion-canper.\n\nObjetivo: varredura generalista de tarefas do domínio Negócios.\n\nFunção padrão (Notion):\n- Captar cards OpenClaw em Aguardando no workspace Negócios.\n- Normalizar cada card para:\n  - Status='Priorizado'\n  - Tipo='OpenClaw'\n  - Solicitante='Rafael Pereira'\n  - Agente=especialista mais adequado para o tipo de tarefa\n- Escrever descrição técnica/funcional completa para execução.\n\nRoteamento mínimo de especialista:\n- Enquanto especialistas de negócios não existirem -> Agente='Tech' temporariamente e registrar no card.\n- Quando existirem -> atribuir especialista de negócios correto por tipo de tarefa.\n\nRegras:\n- Consolidar duplicados quando necessário (manter o mais recente e comentar nos demais).\n- API-first obrigatório: usar MCP/APIs para tudo; Zendesk por MCP/API quando aplicável.",
+        "message": "Atue como Diretor de Negócios em modo STRICT usando o skill notion-canper.\n\nESQUEMA NOTION: Status, Tipo, Agente são SELECT. Solicitante é PEOPLE (omitir se não tiver ID). NUNCA usar filtro tipo 'status', sempre 'select'.\n\nObjetivo: varredura generalista de tarefas do domínio Negócios.\n\nFunção padrão:\n- Captar cards OpenClaw em Aguardando.\n- Normalizar: Status='Priorizado', Tipo='OpenClaw', Agente=especialista adequado.\n- Escrever descrição técnica/funcional completa.\n\nRoteamento: Enquanto especialistas de negócios não existirem -> Agente='Tech' temporariamente.\n\nRESILIÊNCIA: Se query Notion falhar com validation_error, ajustar tipo de filtro e retentar. Consolidar duplicados. API-first obrigatório.",
         "model": "deepseek/deepseek-chat"
       },
       "delivery": {
@@ -275,10 +337,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771627513984,
-        "lastRunAtMs": 1771623965564,
+        "nextRunAtMs": 1771655610000,
+        "lastRunAtMs": 1771632109964,
         "lastStatus": "ok",
-        "lastDurationMs": 10931,
+        "lastDurationMs": 84249,
         "consecutiveErrors": 0
       }
     },
@@ -286,29 +348,31 @@
       "id": "8c232f9a-b4aa-485f-83c8-99d348bb3176",
       "agentId": "main",
       "name": "Presidente - criar demandas e-mail (Pro+Person)",
-      "enabled": false,
+      "enabled": true,
       "createdAtMs": 1771571937957,
-      "updatedAtMs": 1771609344083,
+      "updatedAtMs": 1771638685483,
       "schedule": {
         "kind": "every",
-        "everyMs": 1800000,
-        "anchorMs": 1771571953984
+        "everyMs": 3600000,
+        "anchorMs": 1771655100000
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Presidente em modo STRICT para triagem de demandas de e-mail (profissional + pessoal) em um único fluxo.\n\nObjetivo:\n- Criar/captar demandas de e-mail em Notion no status Aguardando para os diretores corretos.\n\nRegras obrigatórias de criação de card:\n- Status='Aguardando'\n- Tipo='OpenClaw'\n- Solicitante='Rafael Pereira'\n- Agente='Tech' quando o escopo for e-mail profissional (SmartEnvios)\n- Agente='Diretor Pessoal' quando o escopo for e-mail pessoal\n\nRegra crítica de descrição (Presidente):\n- O card deve ter descrição FUNCIONAL, clara e objetiva, suficiente para o diretor entender o problema, objetivo e resultado esperado.\n- NÃO detalhar implementação técnica, arquitetura, scripts, nem instruções técnicas de execução.\n- O detalhamento técnico é responsabilidade do Diretor ao promover para Priorizado.\n\nEscopo do cron:\n- Varrer sinais/demandas de e-mail pendentes nos dois domínios (profissional e pessoal).\n- Garantir no máximo 1 card ativo por rotina de e-mail e por domínio:\n  - '[Rotina Mail-Pro] Triagem e rascunhos de e-mail profissional'\n  - '[Rotina Mail-Person] Triagem e rascunhos de e-mail pessoal'\n- Se já existir card ativo (Aguardando/Priorizado/Em andamento), não duplicar; apenas registrar comentário de acompanhamento quando necessário.\n- Se houver duplicados, consolidar mantendo o mais recente e comentar nos demais para encerramento.\n\nDescrição funcional obrigatória no card:\n- Contexto de negócio\n- Objetivo funcional\n- Escopo (o que entra/o que não entra)\n- Critérios de conclusão (resultado esperado)\n- Restrições/regras de negócio relevantes"
+        "message": "Atue como Presidente em modo STRICT para triagem de demandas de e-mail (profissional + pessoal) em um único fluxo.\n\nObjetivo:\n- Criar/captar demandas de e-mail em Notion no status Aguardando para os diretores corretos.\n\nRegras obrigatórias de criação de card:\n- Status='Aguardando'\n- Tipo='OpenClaw'\n- Solicitante='Rafael Pereira'\n- Agente='Tech' quando o escopo for e-mail profissional (SmartEnvios)\n- Agente='Diretor Pessoal' quando o escopo for e-mail pessoal\n\nRegra crítica de descrição (Presidente):\n- O card deve ter descrição FUNCIONAL, clara e objetiva, suficiente para o diretor entender o problema, objetivo e resultado esperado.\n- NÃO detalhar implementação técnica, arquitetura, scripts, nem instruções técnicas de execução.\n- O detalhamento técnico é responsabilidade do Diretor ao promover para Priorizado.\n\nEscopo do cron:\n- Varrer sinais/demandas de e-mail pendentes nos dois domínios (profissional e pessoal).\n- Garantir no máximo 1 card ativo por rotina de e-mail e por domínio:\n  - '[Rotina Mail-Pro] Triagem e rascunhos de e-mail profissional'\n  - '[Rotina Mail-Person] Triagem e rascunhos de e-mail pessoal'\n- Se já existir card ativo (Aguardando/Priorizado/Em andamento), não duplicar; apenas registrar comentário de acompanhamento quando necessário.\n- Se houver duplicados, consolidar mantendo o mais recente e comentar nos demais para encerramento.\n\nDescrição funcional obrigatória no card:\n- Contexto de negócio\n- Objetivo funcional\n- Escopo (o que entra/o que não entra)\n- Critérios de conclusão (resultado esperado)\n- Restrições/regras de negócio relevantes",
+        "model": "deepseek/deepseek-chat"
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "lastRunAtMs": 1771604341265,
+        "lastRunAtMs": 1771638647300,
         "lastStatus": "ok",
-        "lastDurationMs": 96254,
-        "consecutiveErrors": 0
+        "lastDurationMs": 38183,
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1771655100000
       }
     },
     {
@@ -348,17 +412,17 @@
       "name": "Governança - health check 10min",
       "enabled": true,
       "createdAtMs": 1771595607790,
-      "updatedAtMs": 1771624274015,
+      "updatedAtMs": 1771638242754,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
-        "anchorMs": 1771595953984
+        "anchorMs": 1771653600000
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Agente de Governança STRICT.\n\nExecução obrigatória:\n1. Executar /var/www/openclaw/workspace/scripts/governance-check.sh e analisar relatório.\n2. Se gateway DOWN, registrar em memory.\n3. Se cron com erros consecutivos, resetar sessão.\n4. Verificar Notion cards Em andamento >20min: Mail-Pro -> forçar cron ae4a0347, Mail-Person -> forçar cron 27f27813, outros >30min -> alerta.\n\nCriação de cards de melhoria:\nQuando identificar problemas RECORRENTES (mesmo cron travando, mesmo tipo de erro, padrão de instabilidade):\n- Criar card no Notion PESSOAL (notion-personal, DB bfcbe7a7a3a745489e605e0762af12a9) com:\n  - Status='Aguardando'\n  - Tipo='OpenClaw'\n  - Solicitante='Rafael Pereira'\n  - Agente='Diretor Pessoal'\n- Descrição: qual problema recorrente, quantas vezes aconteceu, causa provável, sugestão de fix\n- O Diretor Pessoal priorizará para o Engenheiro de Prompt implementar\n\nAtividade estratégica obrigatória (fallback por tipo de tarefa):\n- Revisar semanalmente se os crons de diretores/especialistas estão usando modelo barato para tarefas repetitivas (captar/mover/etiquetar/arquivar/desinscrever/mark read).\n- Se detectar que tarefas repetitivas ainda usam modelo caro ou sem política por etapa, criar card no Notion PESSOAL para o Diretor Pessoal com proposta de \"tiering por etapa\".\n- O card deve pedir triagem para Engenheiro de Prompt com proposta mínima:\n  1) Operações repetitivas -> modelo barato (DeepSeek/Grok)\n  2) Geração de rascunho/resposta complexa -> modelo mais inteligente\n  3) Critérios de fallback e rollback por custo/qualidade\n\nNÃO mover cards de status existentes. Pode CRIAR cards novos para melhorias.",
+        "message": "Atue como Agente de Governança STRICT.\n\nExecução obrigatória:\n1. Executar /var/www/openclaw/workspace/scripts/governance-check.sh e analisar relatório.\n2. Se gateway DOWN, registrar em memory.\n3. Se cron com erros consecutivos, resetar sessão.\n4. O script já detecta cards Em andamento travados E cards Priorizado abandonados >1h. Analisar o relatório e agir.\n\nIDs de crons ativos (NÃO usar IDs legacy):\n- Mail-Pro: ae4a0347-2e03-46ad-8595-6b9476c45d79\n- Mail-Person: 27f27813-12d5-4c2d-a66b-7a50d75b2e98\n- Engenheiro de Prompt: 6bdd82c7-081d-486b-9700-0572b9fce72e\n- Engenheiro SmartEnvios: a7b8c9d0-e1f2-3456-7890-abcdef123401\n- Diretor Tech: 9da1331a-2c84-4191-9e7d-87552039d8f1\n- Diretor Pessoal: dd8959b6-0346-487f-8281-591249c8dc31\n- Diretor Negócios: 12c33196-2e0e-4ce9-b616-98652b7db3ac\n\nDetecção de pipeline parado (CRÍTICO):\n- Se houver cards Priorizado há mais de 1h sem serem pegos por especialistas, forçar o cron do especialista responsável.\n- Se um especialista reporta '0 cards processados' por 3+ ciclos consecutivos E existem cards Priorizado para ele no Notion, resetar sessão e forçar re-execução.\n- Se um diretor não está criando cards novos (0 cards movidos Aguardando->Priorizado por >2h) e existem cards Aguardando, forçar o cron do diretor.\n\nRESILIÊNCIA em queries Notion:\n- Todas as propriedades Status, Tipo, Agente são do tipo SELECT (não status). Se uma query falhar com 'validation_error', tentar com tipo 'select'. NUNCA usar filtro tipo 'status'.\n\nCriação de cards de melhoria:\nCRÍTICO: NUNCA usar skill notion (cria em SmartEnvios). SEMPRE exec com notion-helper.sh + NOTION_PERSONAL_API_KEY + DB bfcbe7a7a3a745489e605e0762af12a9 (Notion PESSOAL apenas).\n1. create-card: /var/www/openclaw/workspace/scripts/notion-helper.sh create-card bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY 'Título' Aguardando OpenClaw 'Diretor Pessoal' Governança (7º param = assinatura)\n2. append-body: extrair PAGE_ID do JSON, escrever corpo em /tmp/gov-body.txt e executar /var/www/openclaw/workspace/scripts/notion-helper.sh append-body PAGE_ID NOTION_PERSONAL_API_KEY /tmp/gov-body.txt\nFormato OBRIGATÓRIO do corpo (markdown):\n## Ocorrências\n- [quantas vezes, quando, qual cron/card]\n## Causa provável\n- [análise]\n## Sugestões de fix\n1. [ação 1]\n2. [ação 2]\nAo comentar: /var/www/openclaw/workspace/scripts/notion-helper.sh comment PAGE_ID NOTION_PERSONAL_API_KEY 'Texto' Governança (4º param = assinar)\n\nNÃO mover cards de status existentes. Pode CRIAR cards novos para melhorias.",
         "timeoutSeconds": 120,
         "model": "deepseek/deepseek-chat"
       },
@@ -367,11 +431,11 @@
         "channel": "last"
       },
       "state": {
-        "lastRunAtMs": 1771624153997,
-        "lastStatus": "error",
-        "lastDurationMs": 120018,
-        "consecutiveErrors": 2,
-        "nextRunAtMs": 1771625953984
+        "lastRunAtMs": 1771638144260,
+        "lastStatus": "ok",
+        "lastDurationMs": 98494,
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1771653600000
       }
     },
     {
@@ -380,7 +444,7 @@
       "name": "Otimizador - análise diária 7h",
       "enabled": true,
       "createdAtMs": 1771595616548,
-      "updatedAtMs": 1771605000986,
+      "updatedAtMs": 1771638488209,
       "schedule": {
         "kind": "cron",
         "expr": "0 7 * * *",
@@ -390,7 +454,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Atue como Agente de Otimização e Performance em modo STRICT.\n\nVocê trabalha em parceria com o Agente de Governança. Enquanto a governança garante que os processos executem independente de erros (bombeiro), você é o engenheiro que elimina a causa raiz dos problemas para que a governança tenha cada vez MENOS trabalho. O objetivo de longo prazo é que fluxos maduros não gerem nenhum incidente para a governança.\n\nExecução diária em 3 fases:\n\n## FASE 1 — O que deu trabalho para a governança?\n\n1. Ler memory/YYYY-MM-DD.md dos últimos 2 dias (hoje e ontem) — buscar registros de incidentes da governança.\n2. Ler logs do gateway: /Users/rafaelcanper/.openclaw/logs/gateway.log (últimas 24h) — buscar restarts, timeouts, erros.\n3. Listar todos os crons (openclaw cron list --json) e identificar:\n   - Crons com consecutiveErrors > 0 → por que erraram?\n   - Sessões com >80k tokens → por que incharam? Prompt verboso? Muitos ciclos sem reset?\n   - Execuções com lastDurationMs > 60000 → por que demoraram?\n   - Cards que ficaram Em andamento > 20min → por que travaram?\n   - Gateway restarts → quantos? Crons simultâneos causaram?\n4. Para cada incidente, identificar a CAUSA RAIZ (não apenas o sintoma).\n\n## FASE 2 — Eliminar a causa raiz\n\n5. Para cada causa raiz, aplicar a correção definitiva:\n\n   a) Sessão inchada por acúmulo: resetar E analisar se o cron deveria ter session=isolated (já tem?) ou se o prompt pode ser mais enxuto.\n   b) Cron lento por prompt verboso: simplificar o prompt mantendo funcionalidade — menos texto = menos tokens = mais rápido.\n   c) Gateway instável por concorrência: aplicar stagger (openclaw cron edit --stagger 30s) para escalonar execuções e evitar picos.\n   d) Card travado por especialista que não completou: verificar se o especialista tem instruções claras de timeout e fallback.\n   e) Conflito entre instruções: ler FLUXO_AGENTES.md, templates/notion-card-openclaw.md e prompts dos crons — identificar sobreposições, incoerências ou regras conflitantes e corrigir.\n   f) Regra redundante em múltiplos lugares: consolidar em um único local (FLUXO_AGENTES.md) e referenciar nos prompts dos crons.\n\n6. Aplicar otimizações:\n   - Resetar sessões inchadas\n   - Simplificar prompts de crons quando possível\n   - Ajustar stagger entre crons para distribuir carga\n   - Limpar sessões antigas (>48h sem uso)\n   - Corrigir incoerências entre documentos e prompts\n   - Consolidar regras duplicadas\n\n## FASE 3 — Documentar para não repetir\n\n7. Registrar em KNOWLEDGE.md (padrões definitivos):\n   - Cada causa raiz encontrada + solução aplicada\n   - Formato: \"## [Data] Problema X → Causa: Y → Fix: Z\"\n   - Se o mesmo problema apareceu antes, atualizar a entrada existente com recorrência\n\n8. Registrar em memory/YYYY-MM-DD.md (seção \"Otimização diária\"):\n   - Resumo de gargalos + ações\n   - Métricas: quantos incidentes de governança no dia vs dia anterior (tendência)\n\n9. Relatório final compacto:\n   - Incidentes da governança ontem: N\n   - Causas raiz identificadas: [lista]\n   - Correções aplicadas: [lista]\n   - Tendência: melhorando/estável/piorando\n   - Recomendações que precisam aprovação humana (se houver)\n\nRegras:\n- Pode resetar sessões, ajustar stagger, simplificar prompts e corrigir documentos livremente\n- Toda alteração de prompt ou documento DEVE ser registrada em KNOWLEDGE.md\n- NÃO desabilitar crons\n- NÃO criar/mover cards no Notion\n- NÃO alterar credenciais ou .env\n- Prioridade: eliminar causas raiz > tratar sintomas",
+        "message": "Atue como Agente de Otimização e Performance em modo STRICT.\n\nVocê trabalha em parceria com o Agente de Governança. Enquanto a governança garante que os processos executem independente de erros (bombeiro), você é o engenheiro que elimina a causa raiz dos problemas para que a governança tenha cada vez MENOS trabalho. O objetivo de longo prazo é que fluxos maduros não gerem nenhum incidente para a governança.\n\nExecução diária em 3 fases:\n\n## FASE 1 — O que deu trabalho para a governança?\n\n1. Ler memory/YYYY-MM-DD.md dos últimos 2 dias (hoje e ontem) — buscar registros de incidentes da governança.\n2. Ler logs do gateway: ${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}/logs/gateway.log (últimas 24h) — buscar restarts, timeouts, erros.\n3. Listar todos os crons (openclaw cron list --json) e identificar:\n   - Crons com consecutiveErrors > 0 → por que erraram?\n   - Sessões com >80k tokens → por que incharam? Prompt verboso? Muitos ciclos sem reset?\n   - Execuções com lastDurationMs > 60000 → por que demoraram?\n   - Cards que ficaram Em andamento > 20min → por que travaram?\n   - Gateway restarts → quantos? Crons simultâneos causaram?\n4. Para cada incidente, identificar a CAUSA RAIZ (não apenas o sintoma).\n\n## FASE 2 — Eliminar a causa raiz\n\n5. Para cada causa raiz, aplicar a correção definitiva:\n\n   a) Sessão inchada por acúmulo: resetar E analisar se o cron deveria ter session=isolated (já tem?) ou se o prompt pode ser mais enxuto.\n   b) Cron lento por prompt verboso: simplificar o prompt mantendo funcionalidade — menos texto = menos tokens = mais rápido.\n   c) Gateway instável por concorrência: aplicar stagger (openclaw cron edit --stagger 30s) para escalonar execuções e evitar picos.\n   d) Card travado por especialista que não completou: verificar se o especialista tem instruções claras de timeout e fallback.\n   e) Conflito entre instruções: ler FLUXO_AGENTES.md, templates/notion-card-openclaw.md e prompts dos crons — identificar sobreposições, incoerências ou regras conflitantes e corrigir.\n   f) Regra redundante em múltiplos lugares: consolidar em um único local (FLUXO_AGENTES.md) e referenciar nos prompts dos crons.\n\n6. Aplicar otimizações:\n   - Resetar sessões inchadas\n   - Simplificar prompts de crons quando possível\n   - Ajustar stagger entre crons para distribuir carga\n   - Limpar sessões antigas (>48h sem uso)\n   - Corrigir incoerências entre documentos e prompts\n   - Consolidar regras duplicadas\n\n## FASE 3 — Documentar para não repetir\n\n7. Registrar em KNOWLEDGE.md (padrões definitivos):\n   - Cada causa raiz encontrada + solução aplicada\n   - Formato: \"## [Data] Problema X → Causa: Y → Fix: Z\"\n   - Se o mesmo problema apareceu antes, atualizar a entrada existente com recorrência\n\n8. Registrar em memory/YYYY-MM-DD.md (seção \"Otimização diária\"):\n   - Resumo de gargalos + ações\n   - Métricas: quantos incidentes de governança no dia vs dia anterior (tendência)\n\n9. Relatório final compacto:\n   - Incidentes da governança ontem: N\n   - Causas raiz identificadas: [lista]\n   - Correções aplicadas: [lista]\n   - Tendência: melhorando/estável/piorando\n   - Recomendações que precisam aprovação humana (se houver)\n\n## FASE 4 — Criar cards de melhoria para o Engenheiro de Prompt\n\n10. Quando identificar melhorias que precisam de implementação:\n    CRÍTICO: NUNCA skill notion (cria em SmartEnvios). SEMPRE exec com notion-helper.sh + NOTION_PERSONAL_API_KEY.\n    - create-card: /var/www/openclaw/workspace/scripts/notion-helper.sh create-card bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY 'Título' Aguardando OpenClaw 'Diretor Pessoal' Otimizador (7º param = assinatura)\n    - append-body: extrair PAGE_ID, escrever em /tmp/opt-body.txt, notion-helper.sh append-body PAGE_ID NOTION_PERSONAL_API_KEY /tmp/opt-body.txt\n    - Formato corpo: ## Ocorrências / ## Causa provável / ## Sugestões de fix\n    - O Diretor Pessoal priorizará para o Engenheiro de Prompt\n\n## FASE 5 — Higiene contínua (legado + sanitização)\n\n11. Em toda execução, fazer varredura rápida de legado em arquivos ativos (scripts/config/prompt):\n    - Paths legados hardcoded (ex.: /Users/.../.openclaw, /private/var/www/openclaw)\n    - Referências fora do padrão OPENCLAW_CONFIG_DIR\n    - Instruções de cron/prompt com caminhos absolutos antigos\n\n12. Sanitização obrigatória de segredos em arquivos versionados:\n    - Detectar apiKey/token hardcoded (ex.: sk-..., chaves literais em JSON)\n    - Substituir por variáveis de ambiente (ex.: ${DEEP_API_KEY}) quando aplicável\n    - NUNCA manter credencial literal em arquivo rastreado pelo git\n\n13. Ao encontrar legado/sigilo:\n    - Corrigir quando for seguro e determinístico\n    - Se houver risco operacional: usar notion-helper.sh create-card bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY (PESSOAL, nunca SmartEnvios)\n    - Registrar em KNOWLEDGE.md\n\n14. Fechamento diário obrigatório de higiene:\n    - Lista de ocorrências encontradas\n    - Correções aplicadas\n    - Pendências abertas (com card criado)\n\nRegras:\n- Pode resetar sessões, ajustar stagger, simplificar prompts e corrigir documentos livremente\n- Pode criar cards via notion-helper.sh create-card com DB bfcbe7a7a3a745489e605e0762af12a9 (Pessoal). NUNCA skill notion.\n- Toda alteração de prompt ou documento DEVE ser registrada em KNOWLEDGE.md\n- NÃO desabilitar crons\n- NÃO alterar credenciais ou .env\n- Prioridade: eliminar causas raiz > tratar sintomas",
         "timeoutSeconds": 300
       },
       "delivery": {
@@ -399,11 +463,10 @@
       },
       "state": {
         "nextRunAtMs": 1771668000000,
-        "lastError": "Error: All models failed (4): openai/gpt-5.1-codex: ⚠️ API rate limit reached. Please try again later. (rate_limit) | openai/gpt-4-turbo: ⚠️ API rate limit reached. Please try again later. (rate_limit) | anthropic/claude-sonnet-4-5: LLM request timed out. (unknown) | anthropic/claude-opus-4-6: No available auth profile for anthropic (all in cooldown or unavailable). (rate_limit)",
-        "lastRunAtMs": 1771604622512,
-        "lastStatus": "error",
-        "lastDurationMs": 378474,
-        "consecutiveErrors": 1
+        "lastRunAtMs": 1771638248583,
+        "lastStatus": "ok",
+        "lastDurationMs": 239626,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -412,11 +475,11 @@
       "name": "Mail-Pro especialista - execução 10min",
       "enabled": true,
       "createdAtMs": 1771622033758,
-      "updatedAtMs": 1771625722823,
+      "updatedAtMs": 1771637808734,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
-        "anchorMs": 1771622093758
+        "anchorMs": 1771653750000
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
@@ -430,10 +493,10 @@
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1771626293758,
-        "lastRunAtMs": 1771625688818,
+        "nextRunAtMs": 1771653750000,
+        "lastRunAtMs": 1771637374119,
         "lastStatus": "ok",
-        "lastDurationMs": 34005,
+        "lastDurationMs": 434615,
         "consecutiveErrors": 0
       }
     },
@@ -443,11 +506,11 @@
       "name": "Mail-Person especialista - execução 10min",
       "enabled": true,
       "createdAtMs": 1771622033758,
-      "updatedAtMs": 1771625731734,
+      "updatedAtMs": 1771634820027,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
-        "anchorMs": 1771622213758
+        "anchorMs": 1771653780000
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
@@ -462,41 +525,11 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771625813758,
-        "lastRunAtMs": 1771625722824,
+        "nextRunAtMs": 1771654380000,
+        "lastRunAtMs": 1771634813777,
         "lastStatus": "ok",
-        "lastDurationMs": 8910,
+        "lastDurationMs": 6250,
         "consecutiveErrors": 0
-      }
-    },
-    {
-      "id": "6bdd82c7-081d-486b-9700-0572b9fce72e",
-      "agentId": "main",
-      "sessionKey": "agent:main:cron:engenheiro-prompt-1h",
-      "name": "Engenheiro de Prompt - varredura 1h",
-      "enabled": true,
-      "createdAtMs": 1771624901237,
-      "updatedAtMs": 1771624901237,
-      "schedule": {
-        "kind": "every",
-        "everyMs": 3600000,
-        "anchorMs": 1771624901237
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "Atue como Engenheiro de Prompt em modo STRICT usando o skill notion-personal.\n\nObjetivo: captar e executar cards no Notion Pessoal com Status='Priorizado' e Agente='Engenheiro de Prompt'.\n\nRegras de execução:\n- Database: bfcbe7a7a3a745489e605e0762af12a9 (Notion Pessoal).\n- Filtrar Status='Priorizado' AND Tipo='OpenClaw' AND Agente='Engenheiro de Prompt'.\n- Deduplicação: se já existir card em Em andamento com mesmo título + Agente, aguardar próximo ciclo.\n- Para cada card elegível: mover para Em andamento, ler descrição, executar passos, comentar progresso e resultado, mover para Concluído.\n- Comentários progressivos curtos (<=300 chars) nas etapas-chave; comentário final estruturado com resultado, métricas e pendências.\n- Se bloqueio técnico (sem acesso, falta de credencial), registrar no comentário e manter Em andamento apenas se estiver atuando; caso contrário, retornar a Priorizado com pendência registrada.\n- Não criar novos cards; somente executar os já Priorizado.\n- Não usar message.send; comunicação apenas via comentário Notion.\n- Manter Agente como 'Engenheiro de Prompt' até conclusão.\nAPI-first obrigatório."
-      },
-      "delivery": {
-        "mode": "announce"
-      },
-      "state": {
-        "lastRunAtMs": 0,
-        "lastStatus": "",
-        "lastDurationMs": 0,
-        "consecutiveErrors": 0,
-        "nextRunAtMs": 1771628501237
       }
     }
   ]

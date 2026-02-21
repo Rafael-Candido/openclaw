@@ -1,135 +1,129 @@
 # YouTube Playlists SmartEnvios
 
-Canal oficial com tutoriais e guias de uso.
+Canal oficial com tutoriais, guias de uso e melhores práticas para a plataforma SmartEnvios.
 
-## 📺 Playlist 1: Tutorial Geral
-**URL:** https://www.youtube.com/playlist?list=PLCGSdWtokK2yEF-TwdQy-hSLUWE6Z262K
+**Última atualização:** 2026-02-20 21:34:30
+
+---
+
+## 🎬 Playlist 1: Tutorial Geral
+
+**URL da playlist:** https://www.youtube.com/watch?v=mSOers8WJos&list=PLCGSdWtokK2yEF-TwdQy-hSLUWE6Z262K
+
+**ID da playlist:** `PLCGSdWtokK2yEF-TwdQy-hSLUWE6Z262K`
+
 **Primeiro vídeo:** https://www.youtube.com/watch?v=mSOers8WJos
 
-**Conteúdo esperado:**
-- Introdução à plataforma
-- Primeiros passos
-- Navegação básica
-- Funcionalidades principais
+**Descrição:** Introdução à plataforma SmartEnvios, primeiros passos, navegação básica e funcionalidades principais.
 
-**Quando indicar:**
-- Novos usuários
-- Dúvidas sobre funcionalidades básicas
-- "Como começar a usar?"
+**Conteúdo típico:**
+- Configuração inicial da conta
+- Navegação na interface
+- Criação do primeiro envio
+- Geração de etiquetas
+- Configuração de transportadoras
+
+**Quando indicar esta playlist:**
+- Novos usuários, dúvidas sobre funcionalidades básicas, "Como começar a usar?"
+
+**Exemplos de perguntas dos usuários:**
+- "Como criar minha conta na SmartEnvios?"
+- "Qual o primeiro passo para começar a enviar?"
+- "Como gerar minha primeira etiqueta?"
 
 ---
 
-## 🔗 Playlist 2: Integrações
-**URL:** https://www.youtube.com/playlist?list=PLCGSdWtokK2xQgVnf0wpWCFVCePMWOI38
+## 🎬 Playlist 2: Integrações
+
+**URL da playlist:** https://www.youtube.com/watch?v=uc1hYNlvU58&list=PLCGSdWtokK2xQgVnf0wpWCFVCePMWOI38
+
+**ID da playlist:** `PLCGSdWtokK2xQgVnf0wpWCFVCePMWOI38`
+
 **Primeiro vídeo:** https://www.youtube.com/watch?v=uc1hYNlvU58
 
-**Conteúdo esperado:**
-- Integração com e-commerces (Shopify, WooCommerce, etc)
-- APIs e webhooks
-- Conectores de transportadoras
-- Automações
+**Descrição:** Integração com e-commerces (Shopify, WooCommerce, etc), APIs, webhooks, conectores de transportadoras e automações.
 
-**Quando indicar:**
-- Dúvidas sobre integrações
-- "Como integrar com minha loja?"
-- Problemas de sincronização
-- Setup de webhooks
+**Conteúdo típico:**
+- Integração com Shopify
+- Integração com WooCommerce
+- Configuração de API
+- Webhooks e automações
+- Sincronização de pedidos
+
+**Quando indicar esta playlist:**
+- Dúvidas sobre integrações, "Como integrar com minha loja?", problemas de sincronização, setup de webhooks
+
+**Exemplos de perguntas dos usuários:**
+- "Como conectar minha loja Shopify?"
+- "A SmartEnvios integra com WooCommerce?"
+- "Como configurar webhooks para atualizações?"
 
 ---
 
-## ⚡ Playlist 3: Funcionalidades Avançadas
-**URL:** https://www.youtube.com/playlist?list=PLCGSdWtokK2ymXUfIfHEEpHTNJ_m9KfAv
+## 🎬 Playlist 3: Funcionalidades Avançadas
+
+**URL da playlist:** https://www.youtube.com/watch?v=6J4w0d3DV_Y&list=PLCGSdWtokK2ymXUfIfHEEpHTNJ_m9KfAv
+
+**ID da playlist:** `PLCGSdWtokK2ymXUfIfHEEpHTNJ_m9KfAv`
+
 **Primeiro vídeo:** https://www.youtube.com/watch?v=6J4w0d3DV_Y
 
-**Conteúdo esperado:**
-- Recursos avançados
-- Configurações especiais
-- Otimizações
-- Casos de uso específicos
+**Descrição:** Recursos avançados da plataforma, configurações especiais, otimizações e casos de uso específicos.
 
-**Quando indicar:**
-- Usuários experientes
-- Configurações avançadas
-- Otimização de fluxo
-- Recursos especiais
+**Conteúdo típico:**
+- Regras de envio automático
+- Otimização de rotas
+- Relatórios avançados
+- Gestão de múltiplas contas
+- Configurações de compliance
+
+**Quando indicar esta playlist:**
+- Usuários experientes, configurações complexas, otimização de processos, casos específicos
+
+**Exemplos de perguntas dos usuários:**
+- "Como criar regras automáticas de envio?"
+- "É possível otimizar rotas de entrega?"
+- "Como gerar relatórios personalizados?"
 
 ---
 
-## 💼 Playlist 4: Casos de Uso
-**URL:** https://www.youtube.com/playlist?list=PLCGSdWtokK2xEFiLG2F2vdTSHlChx11v0
+## 🎬 Playlist 4: Dicas e Melhores Práticas
+
+**URL da playlist:** https://www.youtube.com/watch?v=-o4XrTpj7xg&list=PLCGSdWtokK2xEFiLG2F2vdTSHlChx11v0
+
+**ID da playlist:** `PLCGSdWtokK2xEFiLG2F2vdTSHlChx11v0`
+
 **Primeiro vídeo:** https://www.youtube.com/watch?v=-o4XrTpj7xg
 
-**Conteúdo esperado:**
-- Exemplos reais de uso
-- Cases de sucesso
-- Boas práticas
-- Soluções para cenários específicos
+**Descrição:** Dicas práticas, melhores práticas de uso, otimização de custos e eficiência operacional.
 
-**Quando indicar:**
-- "Como outros clientes usam?"
-- Inspiração de uso
-- Benchmarking
-- Casos similares ao do usuário
+**Conteúdo típico:**
+- Redução de custos de envio
+- Otimização de embalagens
+- Melhores transportadoras por região
+- Gestão de estoque integrada
+- Métricas e KPIs importantes
 
----
+**Quando indicar esta playlist:**
+- Otimização de processos, redução de custos, melhoria de eficiência, boas práticas
 
-## 🎯 Como Usar nas Respostas
-
-### Formato Recomendado
-
-**Para tutorial básico:**
-```
-Para começar, recomendo assistir este tutorial:
-📺 [Título do vídeo]
-https://youtu.be/VIDEO_ID
-
-O vídeo mostra passo a passo como [resumo breve].
-```
-
-**Para integração:**
-```
-Temos um guia em vídeo específico para essa integração:
-🔗 [Título]
-https://youtu.be/VIDEO_ID
-
-Ele cobre [pontos principais].
-
-Se tiver dúvidas após assistir, me avise!
-```
-
-**Para caso de uso:**
-```
-Vi que você está tentando [objetivo]. Temos um caso similar neste vídeo:
-💼 [Título]
-https://youtu.be/VIDEO_ID
-
-No vídeo, um cliente resolve [problema similar] usando [solução].
-```
+**Exemplos de perguntas dos usuários:**
+- "Como reduzir meus custos de envio?"
+- "Qual a melhor embalagem para meu produto?"
+- "Como escolher a transportadora mais barata?"
 
 ---
 
-## 📝 Boas Práticas
+## 📖 Como Usar Estas Playlists
 
-1. **Sempre contextualizar:** Explicar brevemente o que o vídeo aborda
-2. **Timestamp quando possível:** "O tópico X é explicado a partir de 3:45"
-3. **Complementar com texto:** Não só linkar vídeo, dar resumo
-4. **Múltiplas opções:** Se houver vários vídeos relevantes, listar 2-3
+1. **Para novos usuários:** Comece pela Playlist 1 (Tutorial Geral)
+2. **Para integrações:** Use a Playlist 2 quando precisar conectar com outras plataformas
+3. **Para funcionalidades avançadas:** Playlist 3 para recursos mais complexos
+4. **Para otimização:** Playlist 4 para dicas de melhores práticas e redução de custos
 
----
+## 🔗 Links Rápidos
 
-## 🔄 Futuras Melhorias
-
-- [ ] Criar índice com timestamps de cada vídeo
-- [ ] Transcrever vídeos mais importantes
-- [ ] Mapear tópicos por timestamp
-- [ ] Extrair FAQs dos comentários
-- [ ] Sincronizar com novos vídeos do canal
-
----
-
-## ⚠️ Notas
-
-- Vídeos podem ser atualizados ou removidos
-- Sempre verificar se link está ativo antes de enviar
-- Se vídeo não carregar, buscar alternativa (Zendesk)
-- Considerar idioma do usuário (playlists são PT-BR)
+1. [Tutorial Geral](https://www.youtube.com/watch?v=mSOers8WJos&list=PLCGSdWtokK2yEF-TwdQy-hSLUWE6Z262K)
+2. [Integrações](https://www.youtube.com/watch?v=uc1hYNlvU58&list=PLCGSdWtokK2xQgVnf0wpWCFVCePMWOI38)
+3. [Funcionalidades Avançadas](https://www.youtube.com/watch?v=6J4w0d3DV_Y&list=PLCGSdWtokK2ymXUfIfHEEpHTNJ_m9KfAv)
+4. [Dicas e Melhores Práticas](https://www.youtube.com/watch?v=-o4XrTpj7xg&list=PLCGSdWtokK2xEFiLG2F2vdTSHlChx11v0)

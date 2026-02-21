@@ -61,3 +61,4 @@ __pycache__/
 *.tmp
 *.temp
 .cache/
+agents/*/sessions/*.deleted.*

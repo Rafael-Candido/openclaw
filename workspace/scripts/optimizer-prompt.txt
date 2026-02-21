@@ -64,6 +64,28 @@ Execução diária em 3 fases:
     - Descrição funcional da melhoria identificada (causa raiz, o que precisa mudar, impacto esperado)
     - O Diretor Pessoal vai priorizar e atribuir ao Engenheiro de Prompt para execução
 
+## FASE 5 — Higiene contínua (legado + sanitização)
+
+11. Em toda execução, fazer varredura rápida de legado em arquivos ativos (scripts/config/prompt):
+    - Paths legados hardcoded (ex.: /Users/.../.openclaw)
+    - Referências fora do padrão OPENCLAW_CONFIG_DIR
+    - Instruções de cron/prompt com caminhos absolutos antigos
+
+12. Sanitização obrigatória de segredos em arquivos versionados:
+    - Detectar apiKey/token hardcoded (ex.: sk-..., chaves literais em JSON)
+    - Substituir por variáveis de ambiente (ex.: ${DEEP_API_KEY}) quando aplicável
+    - NUNCA manter credencial literal em arquivo rastreado pelo git
+
+13. Ao encontrar legado/sigilo:
+    - Corrigir quando for seguro e determinístico
+    - Se houver risco operacional, criar card no Notion Pessoal para Engenheiro de Prompt com plano de migração
+    - Registrar em KNOWLEDGE.md o que foi encontrado e como foi saneado
+
+14. Fechamento diário obrigatório de higiene:
+    - Lista de ocorrências encontradas
+    - Correções aplicadas
+    - Pendências abertas (com card criado)
+
 Regras:
 - Pode resetar sessões, ajustar stagger, simplificar prompts e corrigir documentos livremente
 - Pode criar cards no Notion Personal para melhorias (Aguardando, Agente=Diretor Pessoal)
