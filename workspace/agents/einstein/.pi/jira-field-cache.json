@@ -1,9 +1,9 @@
 {
-  "updatedAt": null,
+  "updatedAt": "2026-02-23T15:49:16Z",
   "fieldIds": {
-    "product": "",
+    "product": "customfield_10074",
     "integration": "",
-    "category": "",
-    "projectLabel": ""
+    "category": "customfield_10082",
+    "projectLabel": "customfield_10075"
   }
 }

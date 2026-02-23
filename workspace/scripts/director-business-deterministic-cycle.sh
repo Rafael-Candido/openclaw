@@ -7,7 +7,7 @@ HELPER="${SCRIPT_DIR}/notion-helper.sh"
 DB_ID="14abf9163c9680ff822bc2e32f6bec4b"
 API_KEY_VAR="NOTION_CANPER_API_KEY"
 DIRECTOR="Diretor Negócios"
-TARGET_AGENT="Tech"
+TARGET_AGENT="Especialista de Negócios"
 
 if [[ -f "${ROOT_DIR}/../.env" ]]; then
   # shellcheck disable=SC1091
@@ -51,7 +51,7 @@ if [[ "${CUR_STATUS}" != "Em andamento" ]]; then
 fi
 
 "${HELPER}" update-agent "${PAGE_ID}" "${API_KEY_VAR}" "${TARGET_AGENT}" >/dev/null || true
-"${HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Triagem determinística concluída pelo Diretor Negócios. Card roteado para ${TARGET_AGENT} (1 card mais antigo da fila)." "${DIRECTOR}" >/dev/null || true
+"${HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Triagem determinística concluída pelo Diretor Negócios. Card roteado para ${TARGET_AGENT} (execução generalista inicial, 1 card mais antigo da fila)." "${DIRECTOR}" >/dev/null || true
 "${HELPER}" update-status "${PAGE_ID}" "${API_KEY_VAR}" "Priorizado" >/dev/null || true
 
 verify_status="$("${HELPER}" get-page "${PAGE_ID}" "${API_KEY_VAR}" | jq -r '.properties.Status.select.name // ""' 2>/dev/null || true)"

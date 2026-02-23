@@ -94,3 +94,93 @@ Este playbook descreve o fluxo obrigatório para publicar uma nova versão do re
 - Guarde o link dos PRs e releases no comentário final do card para facilitar auditorias futuras.
 
 Seguindo este playbook, o Engenheiro SmartEnvios garante que o MCP chega à produção sempre passando pelos PRs de `develop`, `main`, tag e release documentada.
+
+---
+
+## Execução End-to-End (operacional, obrigatório)
+
+Use esta sequência quando precisar subir correções críticas do MCP e validar transacionais Jira/Grafana:
+
+1. **Criar branch de trabalho e commitar**
+   ```bash
+   cd /var/www/mcp
+   git checkout -b <feature-branch>
+   git add <arquivos>
+   git commit -m "<tipo>(<escopo>): <mensagem>"
+   git push -u origin <feature-branch>
+   ```
+
+2. **Merge para develop**
+   ```bash
+   git checkout develop
+   git pull origin develop
+   git merge --no-ff <feature-branch> -m "merge: <feature-branch> into develop"
+   git push origin develop
+   ```
+
+3. **Merge de release para main**
+   ```bash
+   git checkout main
+   git pull origin main
+   git merge --no-ff develop -m "release: merge develop into main"
+   git push origin main
+   ```
+
+4. **Tag sequencial e release**
+   ```bash
+   git tag --sort=-version:refname | head -n 5
+   # escolher próxima (ex.: v1.8.2)
+   git tag -a vX.Y.Z -m "Release vX.Y.Z"
+   git push origin vX.Y.Z
+   gh release create vX.Y.Z --repo SmartEnvios/mcp --title "Release vX.Y.Z" --notes "<changelog>"
+   ```
+
+5. **Acompanhar build release**
+   ```bash
+   gh run list --repo SmartEnvios/mcp --limit 10
+   gh run watch <RUN_ID_BUILD_RELEASE> --repo SmartEnvios/mcp --interval 5
+   ```
+
+6. **Disparar deploy de produção**
+   ```bash
+   gh workflow run "Deploy para produção" --repo SmartEnvios/mcp --ref vX.Y.Z
+   gh run watch <RUN_ID_DEPLOY> --repo SmartEnvios/mcp --interval 5
+   ```
+
+7. **Teste transacional pós-deploy (Jira via MCP)**
+   - Criar issue de teste via MCP:
+     ```bash
+     /var/www/openclaw/workspace/scripts/smartenvios-mcp.sh call jira_create_issue '{
+       "summary":"[TESTE MCP] validação classificação",
+       "description":"Teste pós-release para autopreenchimento",
+       "issue_type":"Story",
+       "fields":{"priority":{"name":"Highest"}}
+     }'
+     ```
+   - Buscar issue criada e validar campos:
+     ```bash
+     /var/www/openclaw/workspace/scripts/smartenvios-mcp.sh call jira_get_issue '{
+       "issue_key":"SME-XXXXX",
+       "fields":["customfield_10074","customfield_10075","customfield_10082","components","labels","priority","issuetype"]
+     }'
+     ```
+   - Critério de aceite para demanda de integração Magento:
+     - `Produto` preenchido (`customfield_10074`)  
+     - `Projeto` preenchido (`customfield_10075`)  
+     - `Componente` preenchido (`components`)  
+     - `Categoria` preenchida em campo próprio **ou** fallback em label `categoria:*`
+
+8. **Se o MCP responder 503/instável**
+   - Não assumir regressão funcional imediata.
+   - Confirmar status dos workflows e repetir smoke após estabilização.
+   - Escalar no Notion profissional para Diretor Tech se indisponibilidade persistir.
+
+## Evidências mínimas no card
+
+- Branch + commit de feature
+- Merge commit em `develop`
+- Merge commit em `main`
+- Tag publicada (`vX.Y.Z`)
+- Link da release
+- Run IDs de `Build Release` e `Deploy para produção`
+- Key(s) Jira de teste transacional e resultado de validação dos campos

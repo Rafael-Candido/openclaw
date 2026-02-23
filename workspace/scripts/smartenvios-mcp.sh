@@ -28,7 +28,7 @@ Uso:
 Exemplos:
   $0 login
   $0 tools
-  $0 call smartenvios_quote_freight '{"zip_code_start":"14020510","zip_code_end":"01305100","volumes":[{"quantity":1,"length":20,"height":10,"weight":1,"width":15}]}'
+  $0 call smartenvios_quote_freight '{"zip_code_start":"14020510","zip_code_end":"01305100","volumes":[{"quantity":1,"length":20,"height":10,"weight":1,"width":15}, "timeout": 5000}'  # Added timeout for CEP calls to improve performance
 EOF
 }
 

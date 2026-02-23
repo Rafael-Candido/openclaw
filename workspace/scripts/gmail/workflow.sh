@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Complete email processing workflow for Mail-Pro/Mail-Person
-# Returns actionable data for agent to process
+# Returns actionable data for agent to process.
+# Otimizado: 1 list + N get (triage) + análise em memória (sem N get + N thread do analyze.sh).
 
 set -euo pipefail
 
@@ -9,14 +10,14 @@ LIMIT="${2:-100}"
 
 SCRIPTS_DIR="$(dirname "$0")"
 TRIAGE_SH="$SCRIPTS_DIR/triage.sh"
-ANALYZE_SH="$SCRIPTS_DIR/analyze.sh"
+ANALYZE_FROM_TRIAGE_SH="$SCRIPTS_DIR/analyze-from-triage.sh"
 
-if [[ ! -x "$TRIAGE_SH" || ! -x "$ANALYZE_SH" ]]; then
+if [[ ! -x "$TRIAGE_SH" || ! -x "$ANALYZE_FROM_TRIAGE_SH" ]]; then
   echo "Error: required scripts not found" >&2
   exit 1
 fi
 
-# Get unread messages
+# Uma chamada: list + N get (triage). Sem loop de analyze.sh (evita N get + N thread).
 UNREAD=$("$TRIAGE_SH" "$PROFILE" "$LIMIT" 2>/dev/null)
 TOTAL=$(echo "$UNREAD" | jq -r '.unread')
 
@@ -25,39 +26,13 @@ if [[ "$TOTAL" == "0" ]]; then
   exit 0
 fi
 
-# Analyze each message
-PROCESSED="[]"
-COUNT=0
+# Análise em memória a partir do JSON do triage (zero chamadas Gmail extras)
+RESULT=$(echo "$UNREAD" | "$ANALYZE_FROM_TRIAGE_SH" "$PROFILE" 2>/dev/null)
 
-while IFS= read -r MSG_ID; do
-  [[ -z "$MSG_ID" ]] && continue
-  
-  ANALYSIS=$("$ANALYZE_SH" "$PROFILE" "$MSG_ID" 2>/dev/null)
-  
-  # Add analysis to processed list
-  PROCESSED=$(echo "$PROCESSED" | jq --argjson analysis "$ANALYSIS" '. + [$analysis]')
-  
-  COUNT=$((COUNT + 1))
-  echo "Analyzed $COUNT/$TOTAL..." >&2
-  
-done < <(echo "$UNREAD" | jq -r '.messages[].id')
-
-# Sort by priority score (descending)
-PROCESSED=$(echo "$PROCESSED" | jq 'sort_by(-.priority.score)')
-
-# Build final report
-jq -n \
-  --arg profile "$PROFILE" \
-  --argjson total "$TOTAL" \
-  --argjson processed "$PROCESSED" \
-  '{
-    profile: $profile,
-    total: $total,
-    processed: $processed,
-    summary: {
-      needsDraft: ([$processed[] | select(.priority.action == "draft")] | length),
-      needsReview: ([$processed[] | select(.priority.action == "review")] | length),
-      needsLabel: ([$processed[] | select(.priority.action == "label")] | length),
-      shouldIgnore: ([$processed[] | select(.priority.action == "ignore")] | length)
-    }
-  }'
+# Garantir formato esperado por process-workflow.sh
+echo "$RESULT" | jq -c '{
+  profile: .profile,
+  total: .total,
+  processed: .processed,
+  summary: .summary
+}'

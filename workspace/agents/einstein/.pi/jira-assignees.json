@@ -1,9 +1,20 @@
 {
-  "updatedAt": "2026-02-20T23:20:30Z",
+  "updatedAt": "2026-02-23T15:42:38Z",
   "aliases": {
     "guilherme dantas pereira": "712020:c13315ec-ea59-48c2-a3a9-d6d2e98df84a",
     "guilherme": "712020:c13315ec-ea59-48c2-a3a9-d6d2e98df84a",
-    "guilherme dantas": "712020:c13315ec-ea59-48c2-a3a9-d6d2e98df84a"
+    "guilherme dantas": "712020:c13315ec-ea59-48c2-a3a9-d6d2e98df84a",
+    "rodrigo silvestre": "712020:3ee7acdb-6457-4e6a-8fd8-c975ecae7182",
+    "rodrigo": "712020:3ee7acdb-6457-4e6a-8fd8-c975ecae7182",
+    "joão henrique silva rodrigues": "712020:256a3bda-5a75-4c3e-997b-2975866ad58d",
+    "joão": "712020:256a3bda-5a75-4c3e-997b-2975866ad58d",
+    "joão henrique": "627ab90f9bb6600069950404",
+    "joao.santos": "712020:df8db567-a200-42fc-826e-2d3ecee3c19b",
+    "edson henrique de souza": "627ab90f9bb6600069950404",
+    "edson": "627ab90f9bb6600069950404",
+    "joao henrique silva rodrigues": "712020:256a3bda-5a75-4c3e-997b-2975866ad58d",
+    "joao": "712020:256a3bda-5a75-4c3e-997b-2975866ad58d",
+    "joao henrique": "627ab90f9bb6600069950404"
   },
   "usersByAccountId": {
     "712020:c13315ec-ea59-48c2-a3a9-d6d2e98df84a": {
@@ -11,6 +22,30 @@
       "displayName": "Guilherme Dantas Pereira",
       "emailAddress": "",
       "lastSeenAt": "2026-02-20T23:20:30Z"
+    },
+    "712020:3ee7acdb-6457-4e6a-8fd8-c975ecae7182": {
+      "accountId": "712020:3ee7acdb-6457-4e6a-8fd8-c975ecae7182",
+      "displayName": "Rodrigo Silvestre",
+      "emailAddress": "",
+      "lastSeenAt": "2026-02-23T14:43:37Z"
+    },
+    "712020:256a3bda-5a75-4c3e-997b-2975866ad58d": {
+      "accountId": "712020:256a3bda-5a75-4c3e-997b-2975866ad58d",
+      "displayName": "João Henrique Silva Rodrigues",
+      "emailAddress": "",
+      "lastSeenAt": "2026-02-23T15:42:37Z"
+    },
+    "712020:df8db567-a200-42fc-826e-2d3ecee3c19b": {
+      "accountId": "712020:df8db567-a200-42fc-826e-2d3ecee3c19b",
+      "displayName": "joao.santos",
+      "emailAddress": "",
+      "lastSeenAt": "2026-02-23T15:42:38Z"
+    },
+    "627ab90f9bb6600069950404": {
+      "accountId": "627ab90f9bb6600069950404",
+      "displayName": "Edson Henrique de Souza",
+      "emailAddress": "",
+      "lastSeenAt": "2026-02-23T15:42:38Z"
     }
   }
 }

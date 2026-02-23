@@ -3,6 +3,12 @@ set -euo pipefail
 
 ###############################################################################
 # governance-check.sh — Health check + recovery + escalonamento automático
+#
+# Princípio: resolver na raiz. Não adicionar fallbacks nem nova criticidade.
+# Se um cron não cumpre o papel (e-mail acumulado, card travado, etc.),
+# corrigir o processo principal (script, payload, frequência, gateway).
+# Recovery (wake, force chain) é paliativo até a causa raiz ser corrigida;
+# evitar sobrecarregar o ecossistema com mais alternativas.
 ###############################################################################
 
 LOG_PREFIX="[governance]"
@@ -13,6 +19,8 @@ MIN_GAP_MS=180000  # 3min mínimo entre crons (evita rate limit, execução sequ
 MAX_LOCK_MIN=5
 REPORT=""
 NOTION_QUALITY_SUMMARY="OK"
+OPERATIONAL_HEALTH_STATUS="OK"   # OK | ALERTA | CRÍTICO — reflete resultado real dos papéis, não só "cron rodou"
+OPERATIONAL_HEALTH_ISSUES=""
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
@@ -49,6 +57,7 @@ GOV_ENG_SMART_STUCK_MIN="${GOV_ENG_SMART_STUCK_MIN:-30}"                    # mi
 GOV_CONCLUDED_AUDIT_WINDOW_MIN="${GOV_CONCLUDED_AUDIT_WINDOW_MIN:-360}"     # janela (min) para auditar concluidos sem evidência
 GOV_CONCLUDED_AUDIT_LIMIT="${GOV_CONCLUDED_AUDIT_LIMIT:-30}"                # cards concluidos recentes a auditar por DB
 GOV_CONCLUDED_REOPEN_LIMIT="${GOV_CONCLUDED_REOPEN_LIMIT:-2}"               # reabrir no máximo N cards por rodada
+GOV_MCP_AUDIT_TIMEOUT_SEC="${GOV_MCP_AUDIT_TIMEOUT_SEC:-90}"                # timeout etapa auditoria MCP
 
 OPTIMIZER_CRON="59c24991-af6c-4df2-95fe-bbf012cd73c0"
 MAIL_PRO_CRON="99de71d1-97b0-48d0-933e-7fcacfda2184"
@@ -90,15 +99,18 @@ GOV_SESSION_OVERFLOW_PCT="${GOV_SESSION_OVERFLOW_PCT:-150}" # percentUsed >= thi
 GOV_DISABLE_CRON_ON_CONFIG_ERROR="${GOV_DISABLE_CRON_ON_CONFIG_ERROR:-true}"
 GOV_GATEWAY_RESTART_ON_PRESSURE="${GOV_GATEWAY_RESTART_ON_PRESSURE:-false}" # prefer reset sessions first; restart only if needed
 GOV_FORCE_CRON_RUN_ON_RECOVERY="${GOV_FORCE_CRON_RUN_ON_RECOVERY:-false}"   # wake-first; run only as fallback
-GOV_WAKE_MIN_GAP_SEC="${GOV_WAKE_MIN_GAP_SEC:-900}"                          # 15min por cron entre wakes
-GOV_WAKE_BUDGET_PER_ROUND="${GOV_WAKE_BUDGET_PER_ROUND:-4}"                  # limite de wakes por rodada
+GOV_WAKE_MIN_GAP_SEC="${GOV_WAKE_MIN_GAP_SEC:-120}"                          # 2min por cron entre wakes (backlog response)
+GOV_WAKE_BUDGET_PER_ROUND="${GOV_WAKE_BUDGET_PER_ROUND:-8}"                  # limite de wakes por rodada
 GOV_WAKE_TIMEOUT_MS="${GOV_WAKE_TIMEOUT_MS:-6000}"                           # timeout curto para evitar bloqueio
 GOV_USE_SAFE_RUN_FALLBACK="${GOV_USE_SAFE_RUN_FALLBACK:-true}"               # fallback para cron-safe-run em falha de wake/run direto
+GOV_MAIL_CHAIN_FORCE_COOLDOWN_SEC="${GOV_MAIL_CHAIN_FORCE_COOLDOWN_SEC:-900}" # evita tempestade de forçar cadeia (15min)
 GATEWAY_RESTART_REQUESTED="false"
 WOKEN_CRONS="|"
 WAKES_USED=0
 WAKES_DROPPED=0
 GOV_WAKE_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-wake-state.json"
+GOV_MAIL_CHAIN_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-mail-chain-state.json"
+PRESIDENT_FORCE_FILE="/tmp/openclaw-president-force-governance.json"
 CRON_SAFE_RUNNER="${PROJECT_ROOT}/workspace/scripts/cron-safe-run.sh"
 
 # Reduz tentativas/bloqueios da camada helper durante pressão.
@@ -700,7 +712,7 @@ send_governance_whatsapp_table() {
     return
   fi
 
-  panel_json="$(python3 - "$CRON_JSON" "$NOTION_QUALITY_SUMMARY" <<'PY'
+  panel_json="$(python3 - "$CRON_JSON" "$NOTION_QUALITY_SUMMARY" "${OPERATIONAL_HEALTH_STATUS:-OK}" <<'PY'
 import datetime
 import json
 import sys
@@ -711,6 +723,7 @@ except Exception:
     print(json.dumps({"text": ""}))
     raise SystemExit
 quality = sys.argv[2] if len(sys.argv) > 2 else "OK"
+operational = (sys.argv[3] if len(sys.argv) > 3 else "OK").strip() or "OK"
 
 jobs = data.get("jobs", []) if isinstance(data, dict) else []
 now_ms = int(datetime.datetime.now(datetime.timezone.utc).timestamp() * 1000)
@@ -782,6 +795,7 @@ def stage_emoji(stage_text):
 lines = [
     "🛡️ Governança | Painel de Crons",
     f"🕒 {timestamp}",
+    f"Saúde operacional: {operational}",
     f"Ativos: {enabled}/{len(jobs)}",
     f"Qualidade Notion: {quality}",
     "",
@@ -1250,6 +1264,36 @@ PY
   fi
 }
 
+run_mcp_governance_audit() {
+  local audit_script="${PROJECT_ROOT}/workspace/scripts/mcp-governance-audit.sh"
+  if [[ ! -x "${audit_script}" ]]; then
+    report "⚠️ MCP audit: script ausente (${audit_script})"
+    register_bottleneck "mcp-audit-script-missing" "high" "Script de auditoria MCP ausente" "Governança não encontrou o script de auditoria Jira/Grafana via MCP." "Restaurar workspace/scripts/mcp-governance-audit.sh e manter execução em toda rodada."
+    return
+  fi
+
+  local audit_output audit_status audit_report audit_fails audit_card
+  audit_output="$("${audit_script}" --auto-notion 2>/dev/null || true)"
+  audit_status="$(echo "${audit_output}" | awk -F= '/^MCP_AUDIT_STATUS=/{print $2}' | tail -n 1)"
+  audit_report="$(echo "${audit_output}" | awk -F= '/^MCP_AUDIT_REPORT=/{print $2}' | tail -n 1)"
+  audit_fails="$(echo "${audit_output}" | awk -F= '/^MCP_AUDIT_FAIL_COUNT=/{print $2}' | tail -n 1)"
+  audit_card="$(echo "${audit_output}" | awk -F= '/^MCP_AUDIT_CARD_ID=/{print $2}' | tail -n 1)"
+
+  [[ ! "${audit_fails}" =~ ^[0-9]+$ ]] && audit_fails=0
+  if [[ "${audit_status}" == "ok" && "${audit_fails}" -eq 0 ]]; then
+    report "✅ MCP audit (Jira/Grafana): saudável"
+  elif [[ -n "${audit_status}" ]]; then
+    report "⚠️ MCP audit (Jira/Grafana): ${audit_status} (falhas=${audit_fails})"
+    if [[ -n "${audit_card}" ]]; then
+      report "📌 MCP audit: card automático criado/atualizado para Diretor Tech (${audit_card})"
+    fi
+    register_bottleneck "mcp-audit-degraded" "high" "Falhas operacionais no MCP (Jira/Grafana)" "Auditoria automática detectou ${audit_fails} falha(s) no MCP. Relatório: ${audit_report:-indisponível}" "Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática."
+  else
+    report "⚠️ MCP audit: sem retorno estruturado (timeout/falha de execução)"
+    register_bottleneck "mcp-audit-timeout" "high" "Auditoria MCP sem retorno estruturado" "A etapa de auditoria MCP excedeu timeout ou falhou antes de gerar status." "Revisar tempo de execução e robustez de workspace/scripts/mcp-governance-audit.sh."
+  fi
+}
+
 audit_mail_scripts_contract() {
   local workflow="${PROJECT_ROOT}/workspace/scripts/gmail/process-workflow.sh"
   local runner="${PROJECT_ROOT}/workspace/scripts/gmail/process-notion-cards.sh"
@@ -1462,6 +1506,165 @@ PY
   if [[ "$changed" -gt 0 ]]; then
     CRON_JSON=$(openclaw cron list --json 2>/dev/null || echo '{"jobs":[]}')
     register_bottleneck "cron-contract-autofix" "medium" "Autocorreção recorrente de contrato de cron" "Governança aplicou ${changed} correções automáticas de contrato nesta rodada." "Eliminar a origem do drift para não depender de autocorreções frequentes."
+  fi
+}
+
+enforce_president_heartbeat_language() {
+  local runs_file
+  runs_file="${OPENCLAW_CONFIG_DIR}/cron/runs/${PRESIDENT_CRON}.jsonl"
+  if [[ ! -f "${runs_file}" ]]; then
+    runs_file="${PROJECT_ROOT}/cron/runs/${PRESIDENT_CRON}.jsonl"
+  fi
+  [[ -f "${runs_file}" ]] || return 0
+
+  local check_result
+  check_result="$(python3 - "${runs_file}" <<'PY'
+import json
+import re
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+if not path.exists():
+    print("ok|0||")
+    sys.exit(0)
+
+lines = [ln for ln in path.read_text(encoding="utf-8", errors="ignore").splitlines() if ln.strip()]
+last = lines[-8:]
+en_markers = re.compile(r"\b(the|since|cannot|i will|i need|nothing needs attention|gateway timeout)\b", re.I)
+pt_markers = re.compile(r"\b(status|acao|pr[oó]ximo passo|backlog|falhas|custo|executado|conclu[ií]do|governan[çc]a)\b", re.I)
+violations = 0
+session_key = ""
+sample = ""
+
+for raw in last:
+    try:
+        item = json.loads(raw)
+    except Exception:
+        continue
+    summary = str(item.get("summary") or "")
+    if not summary:
+        continue
+    has_en = bool(en_markers.search(summary))
+    has_pt = bool(pt_markers.search(summary))
+    if has_en and not has_pt:
+        violations += 1
+        session_key = str(item.get("sessionKey") or session_key)
+        if not sample:
+            sample = summary[:180].replace("\n", " ")
+
+print(f"{'drift' if violations > 0 else 'ok'}|{violations}|{session_key}|{sample}")
+PY
+)"
+
+  local status count session_key sample
+  status="${check_result%%|*}"
+  count="$(echo "${check_result}" | cut -d'|' -f2)"
+  session_key="$(echo "${check_result}" | cut -d'|' -f3)"
+  sample="$(echo "${check_result}" | cut -d'|' -f4-)"
+  [[ ! "${count}" =~ ^[0-9]+$ ]] && count=0
+
+  if [[ "${status}" != "drift" ]]; then
+    report "✅ Idioma heartbeat (Presidente): conforme (pt-BR)"
+    return 0
+  fi
+
+  report "🚨 Idioma heartbeat (Presidente): detectado desvio para inglês (${count} ocorrência(s) recentes)"
+  register_bottleneck "president-heartbeat-language-drift" "high" "Presidente respondeu heartbeat fora de pt-BR" "Foram detectadas ${count} ocorrências recentes de resumo em inglês. Exemplo: ${sample}" "Forçar prompt determinístico em pt-BR, resetar sessão do cron do Presidente e validar próximas rodadas."
+
+  local strict_msg
+  strict_msg="MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando em foreground e sem process/background: ./scripts/president-mail-demand-cycle.sh. Responda somente com o JSON retornado pelo comando (sem texto adicional). Idioma obrigatório pt-BR."
+
+  if openclaw cron edit "${PRESIDENT_CRON}" --message "${strict_msg}" >/dev/null 2>&1; then
+    report "🛠️ Presidente: prompt de heartbeat reforçado para saída estrita em pt-BR"
+  else
+    report "⚠️ Presidente: falha ao reforçar prompt do cron"
+  fi
+
+  if [[ -n "${session_key:-}" ]]; then
+    if openclaw sessions reset "${session_key}" --yes >/dev/null 2>&1; then
+      report "🧹 Presidente: sessão de cron resetada para eliminar contexto contaminado"
+    fi
+  fi
+
+  force_cron_wake "${PRESIDENT_CRON}" || true
+}
+
+enforce_main_heartbeat_language() {
+  local sessions_dir
+  sessions_dir="${OPENCLAW_CONFIG_DIR}/agents/main/sessions"
+  if [[ ! -d "${sessions_dir}" ]]; then
+    sessions_dir="${PROJECT_ROOT}/agents/main/sessions"
+  fi
+  [[ -d "${sessions_dir}" ]] || return 0
+
+  local check_result
+  check_result="$(python3 - "${sessions_dir}" <<'PY'
+import json
+import re
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+files = sorted(root.glob("*.jsonl"), key=lambda p: p.stat().st_mtime, reverse=True)
+if not files:
+    print("ok|0|")
+    raise SystemExit(0)
+
+target = files[0]
+raw_lines = target.read_text(encoding="utf-8", errors="ignore").splitlines()[-220:]
+en_markers = re.compile(r"\b(the|since|cannot|i will|i need|nothing needs attention|gateway timeout|checked the cron jobs)\b", re.I)
+pt_markers = re.compile(r"\b(status|ação|proximo passo|próximo passo|falhas|backlog|governan[çc]a|executado|conclu[ií]do)\b", re.I)
+heartbeat_markers = re.compile(r"heartbeat|HEARTBEAT_OK|nothing needs attention|HEARTBEAT\.md", re.I)
+violations = 0
+sample = ""
+
+for ln in raw_lines:
+    try:
+        obj = json.loads(ln)
+    except Exception:
+        continue
+    msg = obj.get("message") or {}
+    if msg.get("role") != "assistant":
+        continue
+    text_parts = []
+    content = msg.get("content") or []
+    if isinstance(content, list):
+        for item in content:
+            if isinstance(item, dict) and item.get("type") == "text":
+                text_parts.append(str(item.get("text") or ""))
+    text = "\n".join(text_parts).strip()
+    if not text:
+        continue
+    if not heartbeat_markers.search(text):
+        continue
+    has_en = bool(en_markers.search(text))
+    has_pt = bool(pt_markers.search(text))
+    if has_en and not has_pt:
+        violations += 1
+        if not sample:
+            sample = text[:180].replace("\n", " ")
+
+print(f"{'drift' if violations > 0 else 'ok'}|{violations}|{sample}")
+PY
+)"
+
+  local status count sample
+  status="${check_result%%|*}"
+  count="$(echo "${check_result}" | cut -d'|' -f2)"
+  sample="$(echo "${check_result}" | cut -d'|' -f3-)"
+  [[ ! "${count}" =~ ^[0-9]+$ ]] && count=0
+
+  if [[ "${status}" != "drift" ]]; then
+    report "✅ Idioma heartbeat (main): conforme (pt-BR)"
+    return 0
+  fi
+
+  report "🚨 Idioma heartbeat (main): desvio para inglês (${count} ocorrência(s))"
+  register_bottleneck "main-heartbeat-language-drift" "high" "Main respondeu heartbeat fora de pt-BR" "Detectadas ${count} ocorrências recentes no agent:main:main. Exemplo: ${sample}" "Resetar sessão main e reforçar HEARTBEAT.md para saída binária (HEARTBEAT_OK/ALERTA)."
+
+  if openclaw sessions reset "agent:main:main" --yes >/dev/null 2>&1; then
+    report "🧹 Main: sessão agent:main:main resetada após desvio de idioma"
   fi
 }
 
@@ -2040,6 +2243,55 @@ PY
   return 0
 }
 
+consume_president_force_request() {
+  [[ -f "${PRESIDENT_FORCE_FILE}" ]] || return 0
+
+  local requested_at unread_pro unread_personal threshold_pro threshold_personal reason
+  local chain_gate chain_decision chain_reason
+  requested_at="$(jq -r '.requestedAt // 0' "${PRESIDENT_FORCE_FILE}" 2>/dev/null || echo 0)"
+  unread_pro="$(jq -r '.unreadPro // 0' "${PRESIDENT_FORCE_FILE}" 2>/dev/null || echo 0)"
+  unread_personal="$(jq -r '.unreadPersonal // 0' "${PRESIDENT_FORCE_FILE}" 2>/dev/null || echo 0)"
+  threshold_pro="$(jq -r '.thresholdPro // 0' "${PRESIDENT_FORCE_FILE}" 2>/dev/null || echo 0)"
+  threshold_personal="$(jq -r '.thresholdPersonal // 0' "${PRESIDENT_FORCE_FILE}" 2>/dev/null || echo 0)"
+  reason="$(jq -r '.reason // "manual"' "${PRESIDENT_FORCE_FILE}" 2>/dev/null || echo "manual")"
+
+  [[ ! "${requested_at}" =~ ^[0-9]+$ ]] && requested_at=0
+  [[ ! "${unread_pro}" =~ ^[0-9]+$ ]] && unread_pro=0
+  [[ ! "${unread_personal}" =~ ^[0-9]+$ ]] && unread_personal=0
+  [[ ! "${threshold_pro}" =~ ^[0-9]+$ ]] && threshold_pro=0
+  [[ ! "${threshold_personal}" =~ ^[0-9]+$ ]] && threshold_personal=0
+
+  if (( requested_at > 0 )); then
+    local now age_sec
+    now="$(date +%s)"
+    age_sec=$((now - requested_at))
+    if (( age_sec > 3600 )); then
+      report "ℹ️ Sinal do Presidente expirado (${age_sec}s); descartando pedido antigo."
+      rm -f "${PRESIDENT_FORCE_FILE}" 2>/dev/null || true
+      return 0
+    fi
+  fi
+
+  chain_gate="$(mail_chain_force_gate)"
+  chain_decision="${chain_gate%%|*}"
+  chain_reason="${chain_gate#*|}"
+  if [[ "${chain_decision}" != "allow" ]]; then
+    report "⏸️ Sinal do Presidente recebido, mas forçar cadeia está em cooldown (${chain_reason})."
+    return 0
+  fi
+
+  report "🚨 Sinal do Presidente: forçar execução da cadeia mail (motivo=${reason}, pro=${unread_pro}/${threshold_pro}, pessoal=${unread_personal}/${threshold_personal})"
+  force_cron_wake "${DIRECTOR_TECH_CRON}" || true
+  force_cron_wake "${DIRECTOR_PERSONAL_CRON}" || true
+  force_cron_wake "${MAIL_PRO_CRON}" || true
+  force_cron_wake "${MAIL_PERSON_CRON}" || true
+  force_cron_wake "${OPTIMIZER_CRON}" || true
+  mark_mail_chain_forced
+  register_bottleneck "president-force-chain" "high" "Presidente solicitou forçar cadeia de execução" "Backlog elevado sinalizado pelo Presidente (pro=${unread_pro}, pessoal=${unread_personal})." "Drenar backlog em ondas curtas e validar queda sustentada dos não lidos."
+
+  rm -f "${PRESIDENT_FORCE_FILE}" 2>/dev/null || true
+}
+
 wake_for_agent() {
   local agent="${1:-}"
   local reason="${2:-recuperação}"
@@ -2404,6 +2656,148 @@ PY
   [[ "${result}" == "yes" ]]
 }
 
+mail_chain_force_gate() {
+  python3 - "${GOV_MAIL_CHAIN_STATE_FILE}" "${GOV_MAIL_CHAIN_FORCE_COOLDOWN_SEC}" <<'PY'
+import json
+import sys
+import time
+from pathlib import Path
+
+state_path = Path(sys.argv[1])
+cooldown = int(sys.argv[2])
+now = int(time.time())
+last = 0
+if state_path.exists():
+    try:
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        if isinstance(state, dict):
+            last = int(state.get("lastForcedAt", 0) or 0)
+    except Exception:
+        last = 0
+elapsed = (now - last) if last > 0 else (cooldown + 1)
+if elapsed >= cooldown:
+    print("allow|ok")
+else:
+    print(f"deny|cooldown:{max(1, cooldown - elapsed)}")
+PY
+}
+
+# Avalia saúde operacional por resultados reais (backlog, crons em erro, cards travados).
+# Não confundir com "cron rodou" — aqui importa se os papéis estão sendo cumpridos.
+compute_operational_health() {
+  local issues="" status="OK"
+  local unread_pro=0 unread_personal=0
+  local backlog_alert="${GOV_OPERATIONAL_BACKLOG_ALERT:-40}"
+  local backlog_critical="${GOV_OPERATIONAL_BACKLOG_CRITICAL:-60}"
+  local critical_count=0 high_count=0
+
+  [[ "${backlog_alert}" =~ ^[0-9]+$ ]] || backlog_alert=40
+  [[ "${backlog_critical}" =~ ^[0-9]+$ ]] || backlog_critical=60
+
+  # Backlog de e-mail (resultado real do Mail-Pro / Mail-Person)
+  if [[ -x "${GMAIL_SCRIPT}" ]]; then
+    unread_pro="$("${GMAIL_SCRIPT}" pro list "is:unread in:inbox" 2>/dev/null | jq -r '.resultSizeEstimate // 0' 2>/dev/null || echo 0)"
+    unread_personal="$("${GMAIL_SCRIPT}" personal list "is:unread in:inbox" 2>/dev/null | jq -r '.resultSizeEstimate // 0' 2>/dev/null || echo 0)"
+    [[ ! "${unread_pro}" =~ ^[0-9]+$ ]] && unread_pro=0
+    [[ ! "${unread_personal}" =~ ^[0-9]+$ ]] && unread_personal=0
+    if (( unread_pro >= backlog_critical )); then
+      issues="${issues}\n  • E-mail pro: ${unread_pro} não lidos (limiar crítico ${backlog_critical})"
+      status="CRÍTICO"
+    elif (( unread_pro >= backlog_alert )); then
+      issues="${issues}\n  • E-mail pro: ${unread_pro} não lidos (acima do limiar ${backlog_alert})"
+      [[ "${status}" != "CRÍTICO" ]] && status="ALERTA"
+    fi
+    if (( unread_personal >= backlog_critical )); then
+      issues="${issues}\n  • E-mail pessoal: ${unread_personal} não lidos (limiar crítico ${backlog_critical})"
+      status="CRÍTICO"
+    elif (( unread_personal >= backlog_alert )); then
+      issues="${issues}\n  • E-mail pessoal: ${unread_personal} não lidos (acima do limiar ${backlog_alert})"
+      [[ "${status}" != "CRÍTICO" ]] && status="ALERTA"
+    fi
+  fi
+
+  # Crons críticos com lastStatus = error (Presidente, Mail-Pro, Mail-Person, Eng. Prompt, Eng. SmartEnvios)
+  local key_crons="${PRESIDENT_CRON}|Presidente,${MAIL_PRO_CRON}|Mail-Pro,${MAIL_PERSON_CRON}|Mail-Person,${ENG_PROMPT_CRON}|Eng. de Prompt,${ENG_SMARTENVIOS_CRON}|Eng. SmartEnvios"
+  local cron_errors
+  cron_errors="$(echo "$CRON_JSON" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+key_list = sys.argv[1].split(',')
+for pair in key_list:
+    cid, label = pair.split('|', 1)
+    for j in data.get('jobs', []):
+        if j.get('id') == cid:
+            st = (j.get('state') or {})
+            if (st.get('lastStatus') or '').lower() == 'error':
+                err = (st.get('lastError') or '')[:80]
+                print(f\"{label}|{err}\")
+            break
+" "${key_crons}" 2>/dev/null || true)"
+  if [[ -n "${cron_errors}" ]]; then
+    while IFS='|' read -r label err; do
+      [[ -z "${label}" ]] && continue
+      issues="${issues}\n  • Cron ${label} em erro (última execução)"
+      status="CRÍTICO"
+    done <<< "${cron_errors}"
+  fi
+
+  # Qualidade Notion (auditoria de duplicados/roteamento)
+  if [[ "${NOTION_QUALITY_SUMMARY}" != "OK" ]]; then
+    issues="${issues}\n  • Notion: ${NOTION_QUALITY_SUMMARY}"
+    [[ "${status}" != "CRÍTICO" ]] && status="ALERTA"
+  fi
+
+  # Gargalos críticos/high desta rodada
+  if [[ -s "${BOTTLENECK_EVENTS_FILE}" ]]; then
+    critical_count="$(grep -c '"severity":"critical"' "${BOTTLENECK_EVENTS_FILE}" 2>/dev/null || echo 0)"
+    high_count="$(grep -c '"severity":"high"' "${BOTTLENECK_EVENTS_FILE}" 2>/dev/null || echo 0)"
+    [[ ! "${critical_count}" =~ ^[0-9]+$ ]] && critical_count=0
+    [[ ! "${high_count}" =~ ^[0-9]+$ ]] && high_count=0
+    if (( critical_count > 0 )); then
+      issues="${issues}\n  • ${critical_count} gargalo(s) crítico(s) registrado(s) nesta rodada"
+      status="CRÍTICO"
+    fi
+    if (( high_count > 0 )) && [[ "${status}" != "CRÍTICO" ]]; then
+      issues="${issues}\n  • ${high_count} gargalo(s) de alta prioridade nesta rodada"
+      status="ALERTA"
+    fi
+  fi
+
+  # Cards travados ou Priorizado abandonado (resultado real dos especialistas / Presidente)
+  if [[ -s "${NOTION_RECOVERY_CANDIDATES_FILE:-}" ]]; then
+    local stuck_count priorizado_count
+    stuck_count="$(grep -c '|stuck|' "${NOTION_RECOVERY_CANDIDATES_FILE}" 2>/dev/null || echo 0)"
+    priorizado_count="$(grep -c '|priorizado|' "${NOTION_RECOVERY_CANDIDATES_FILE}" 2>/dev/null || echo 0)"
+    [[ ! "${stuck_count}" =~ ^[0-9]+$ ]] && stuck_count=0
+    [[ ! "${priorizado_count}" =~ ^[0-9]+$ ]] && priorizado_count=0
+    if (( stuck_count > 0 )); then
+      issues="${issues}\n  • ${stuck_count} card(s) Em andamento travado(s) (especialista sem progresso)"
+      status="CRÍTICO"
+    fi
+    if (( priorizado_count > 0 )) && [[ "${status}" != "CRÍTICO" ]]; then
+      issues="${issues}\n  • ${priorizado_count} card(s) Priorizado abandonado(s) (sem execução)"
+      status="ALERTA"
+    fi
+  fi
+
+  OPERATIONAL_HEALTH_STATUS="${status}"
+  OPERATIONAL_HEALTH_ISSUES="${issues}"
+}
+
+mark_mail_chain_forced() {
+  python3 - "${GOV_MAIL_CHAIN_STATE_FILE}" <<'PY'
+import json
+import sys
+import time
+from pathlib import Path
+
+state_path = Path(sys.argv[1])
+state_path.parent.mkdir(parents=True, exist_ok=True)
+state = {"lastForcedAt": int(time.time())}
+state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+PY
+}
+
 guard_mail_backlogs() {
   local unread_pro unread_personal
   local active_pro active_personal
@@ -2412,10 +2806,14 @@ guard_mail_backlogs() {
   local create_threshold_personal="${MAIL_BACKLOG_CREATE_THRESHOLD_PERSONAL:-5}"
   local overload=0
   local create_triggered=0
+  local chain_gate chain_decision chain_reason chain_forced_this_round=0
 
   [[ ! "${threshold}" =~ ^[0-9]+$ ]] && threshold=80
   [[ ! "${create_threshold_pro}" =~ ^[0-9]+$ ]] && create_threshold_pro=20
   [[ ! "${create_threshold_personal}" =~ ^[0-9]+$ ]] && create_threshold_personal=5
+  chain_gate="$(mail_chain_force_gate)"
+  chain_decision="${chain_gate%%|*}"
+  chain_reason="${chain_gate#*|}"
 
   if [[ ! -x "${GMAIL_SCRIPT}" || ! -x "${NOTION_HELPER_SCRIPT}" ]]; then
     report "⚠️ Backlog e-mail: scripts Gmail/Notion indisponíveis para auditoria"
@@ -2439,18 +2837,30 @@ guard_mail_backlogs() {
   # e não há card ativo do especialista.
   if (( unread_pro >= create_threshold_pro )) && (( active_pro == 0 )); then
     create_triggered=1
-    report "🧭 Mail-Pro sem card ativo com backlog >= ${create_threshold_pro}: forçando Presidente -> Diretor Tech -> Mail-Pro"
-    force_cron_wake "${PRESIDENT_CRON}" || true
-    force_cron_wake "${DIRECTOR_TECH_CRON}" || true
-    force_cron_wake "${MAIL_PRO_CRON}" || true
+    if [[ "${chain_decision}" == "allow" && ${chain_forced_this_round} -eq 0 ]]; then
+      report "🧭 Mail-Pro sem card ativo com backlog >= ${create_threshold_pro}: forçando Presidente -> Diretor Tech -> Mail-Pro"
+      force_cron_wake "${PRESIDENT_CRON}" || true
+      force_cron_wake "${DIRECTOR_TECH_CRON}" || true
+      force_cron_wake "${MAIL_PRO_CRON}" || true
+      chain_forced_this_round=1
+      mark_mail_chain_forced
+    else
+      report "⏸️ Forçar cadeia Mail-Pro em cooldown (${chain_reason})"
+    fi
   fi
 
   if (( unread_personal >= create_threshold_personal )) && (( active_personal == 0 )); then
     create_triggered=1
-    report "🧭 Mail-Person sem card ativo com backlog >= ${create_threshold_personal}: forçando Presidente -> Diretor Pessoal -> Mail-Person"
-    force_cron_wake "${PRESIDENT_CRON}" || true
-    force_cron_wake "${DIRECTOR_PERSONAL_CRON}" || true
-    force_cron_wake "${MAIL_PERSON_CRON}" || true
+    if [[ "${chain_decision}" == "allow" && ${chain_forced_this_round} -eq 0 ]]; then
+      report "🧭 Mail-Person sem card ativo com backlog >= ${create_threshold_personal}: forçando Presidente -> Diretor Pessoal -> Mail-Person"
+      force_cron_wake "${PRESIDENT_CRON}" || true
+      force_cron_wake "${DIRECTOR_PERSONAL_CRON}" || true
+      force_cron_wake "${MAIL_PERSON_CRON}" || true
+      chain_forced_this_round=1
+      mark_mail_chain_forced
+    else
+      report "⏸️ Forçar cadeia Mail-Person em cooldown (${chain_reason})"
+    fi
   fi
 
   if (( unread_pro >= threshold )); then
@@ -2458,10 +2868,16 @@ guard_mail_backlogs() {
     report "🚨 Mail-Pro backlog alto: ${unread_pro} não lidos"
     register_bottleneck "mail-backlog-pro" "high" "Backlog alto no Mail-Pro" "Mail-Pro com ${unread_pro} não lidos (cards ativos: ${active_pro})." "Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada."
     if (( active_pro == 0 )); then
-      report "  Ação: sem card ativo Mail-Pro, forçando cadeia Presidente -> Diretor Tech -> Mail-Pro"
-      force_cron_wake "${PRESIDENT_CRON}" || true
-      force_cron_wake "${DIRECTOR_TECH_CRON}" || true
-      force_cron_wake "${MAIL_PRO_CRON}" || true
+      if [[ "${chain_decision}" == "allow" && ${chain_forced_this_round} -eq 0 ]]; then
+        report "  Ação: sem card ativo Mail-Pro, forçando cadeia Presidente -> Diretor Tech -> Mail-Pro"
+        force_cron_wake "${PRESIDENT_CRON}" || true
+        force_cron_wake "${DIRECTOR_TECH_CRON}" || true
+        force_cron_wake "${MAIL_PRO_CRON}" || true
+        chain_forced_this_round=1
+        mark_mail_chain_forced
+      else
+        report "  Ação: cadeia Mail-Pro em cooldown (${chain_reason}); sem fan-out nesta rodada"
+      fi
     else
       report "  Ação: ${active_pro} card(s) ativo(s) Mail-Pro; forçando execução imediata do Mail-Pro"
       force_cron_wake "${MAIL_PRO_CRON}" || true
@@ -2473,10 +2889,16 @@ guard_mail_backlogs() {
     report "🚨 Mail-Person backlog alto: ${unread_personal} não lidos"
     register_bottleneck "mail-backlog-personal" "high" "Backlog alto no Mail-Person" "Mail-Person com ${unread_personal} não lidos (cards ativos: ${active_personal})." "Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada."
     if (( active_personal == 0 )); then
-      report "  Ação: sem card ativo Mail-Person, forçando cadeia Presidente -> Diretor Pessoal -> Mail-Person"
-      force_cron_wake "${PRESIDENT_CRON}" || true
-      force_cron_wake "${DIRECTOR_PERSONAL_CRON}" || true
-      force_cron_wake "${MAIL_PERSON_CRON}" || true
+      if [[ "${chain_decision}" == "allow" && ${chain_forced_this_round} -eq 0 ]]; then
+        report "  Ação: sem card ativo Mail-Person, forçando cadeia Presidente -> Diretor Pessoal -> Mail-Person"
+        force_cron_wake "${PRESIDENT_CRON}" || true
+        force_cron_wake "${DIRECTOR_PERSONAL_CRON}" || true
+        force_cron_wake "${MAIL_PERSON_CRON}" || true
+        chain_forced_this_round=1
+        mark_mail_chain_forced
+      else
+        report "  Ação: cadeia Mail-Person em cooldown (${chain_reason}); sem fan-out nesta rodada"
+      fi
     else
       report "  Ação: ${active_personal} card(s) ativo(s) Mail-Person; forçando execução imediata do Mail-Person"
       force_cron_wake "${MAIL_PERSON_CRON}" || true
@@ -2878,6 +3300,14 @@ audit_mail_cron_contention
 log "Validando contrato crítico dos crons..."
 enforce_critical_cron_contract
 
+# 4a1) Auditoria automática do idioma de heartbeat do Presidente (pt-BR obrigatório)
+log "Validando idioma do heartbeat do Presidente..."
+enforce_president_heartbeat_language
+
+# 4a2) Auditoria automática do idioma de heartbeat do main (pt-BR obrigatório)
+log "Validando idioma do heartbeat do main..."
+enforce_main_heartbeat_language
+
 # 4aa) Contrato da esteira Mail (mark-read/archive/fluxo unificado)
 log "Validando contrato dos scripts de Mail..."
 audit_mail_scripts_contract
@@ -2886,10 +3316,17 @@ audit_mail_scripts_contract
 log "Checando backlog de e-mail (Mail-Pro + Mail-Person)..."
 guard_mail_backlogs
 
+# 4ab1) Sinal explícito do Presidente para forçar a execução da cadeia de e-mail
+consume_president_force_request
+
 # 4aba) Qualidade operacional do Notion (backlog real + duplicidade de cards)
 log "Checando qualidade operacional do Notion..."
 check_notion_operational_quality
 quarantine_empty_eng_prompt_cards
+
+# 4aba1) Auditoria transacional MCP (Jira + Grafana) com escalonamento automático
+log "Auditando MCP (Jira + Grafana)..."
+run_mcp_governance_audit
 
 # 4abb) Drenagem ativa de backlog por agente (Aguardando/Priorizado)
 log "Drenando backlog de cards por agente (Notion pessoal/profissional)..."
@@ -3464,6 +3901,10 @@ fi
 log "Escalonando gargalos recorrentes para Notion Pessoal..."
 auto_escalate_bottlenecks_to_notion
 
+# 10.5) Saúde operacional por resultado real (para painel e relatório não passarem "estável" quando há falhas)
+log "Calculando saúde operacional (resultados reais dos papéis)..."
+compute_operational_health
+
 # 11) Painel operacional por WhatsApp (cada execução da governança)
 log "Enviando painel operacional via WhatsApp..."
 send_governance_whatsapp_table
@@ -3471,11 +3912,39 @@ send_governance_whatsapp_table
 # 12) Telemetria de recuperação (wake/circuit breaker)
 report "🧯 Recovery: wakes usados=${WAKES_USED}/${GOV_WAKE_BUDGET_PER_ROUND}, bloqueados=${WAKES_DROPPED}, cooldown=${GOV_WAKE_MIN_GAP_SEC}s"
 
-# Output
+# 13) Handoff para Otimizador: escrever gargalos desta rodada para o Otimizador ler e evoluir o fluxo
+GOV_BOTTLENECKS_FOR_OPTIMIZER="${PROJECT_ROOT}/workspace/docs/operacao/governance-bottlenecks-for-optimizer.md"
+if [[ -s "${BOTTLENECK_EVENTS_FILE}" ]]; then
+  mkdir -p "$(dirname "${GOV_BOTTLENECKS_FOR_OPTIMIZER}")" 2>/dev/null || true
+  {
+    echo ""
+    echo "## $(date -u '+%Y-%m-%d %H:%M UTC')"
+    while IFS= read -r line; do
+      [[ -z "${line}" ]] && continue
+      key="$(echo "${line}" | jq -r '.key // ""')"
+      sev="$(echo "${line}" | jq -r '.severity // ""')"
+      title="$(echo "${line}" | jq -r '.title // ""')"
+      rec="$(echo "${line}" | jq -r '.recommendation // ""')"
+      [[ -n "${key}" ]] && echo "- **${key}** [${sev}]: ${title}"
+      [[ -n "${rec}" ]] && echo "  - Recomendação: ${rec}"
+    done < "${BOTTLENECK_EVENTS_FILE}"
+  } >> "${GOV_BOTTLENECKS_FOR_OPTIMIZER}" 2>/dev/null || true
+fi
+
+# Output — cabeçalho com saúde operacional primeiro (nunca passar mensagem de "estável" quando há falhas)
 echo ""
 echo "=========================================="
 echo " RELATÓRIO DE GOVERNANÇA"
 echo " $(date -u '+%Y-%m-%d %H:%M UTC')"
 echo "=========================================="
+if [[ "${OPERATIONAL_HEALTH_STATUS}" == "OK" ]]; then
+  echo " SAÚDE OPERACIONAL: OK — fluxo e papéis cumpridos"
+else
+  echo " SAÚDE OPERACIONAL: ${OPERATIONAL_HEALTH_STATUS} — NÃO reportar como estável"
+  if [[ -n "${OPERATIONAL_HEALTH_ISSUES}" ]]; then
+    echo -e "${OPERATIONAL_HEALTH_ISSUES}"
+  fi
+fi
+echo "------------------------------------------"
 echo -e "$REPORT"
 echo "=========================================="

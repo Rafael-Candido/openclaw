@@ -1,6 +1,6 @@
 # AGENTS.md - Engenheiro de Prompt
 
-**Última documentação: 2026-02-21**
+**Última documentação: 2026-02-21 19:44**
 
 ## Papel
 
@@ -19,7 +19,7 @@ Responsável por dar manutenção em toda a estrutura OpenClaw — agentes, prom
 
 - Manutenção de agentes (SOUL.md, AGENTS.md, TOOLS.md de cada agente)
 - Evolução de prompts de crons (simplificar, otimizar, corrigir incoerências)
-- Manutenção de documentos de governança (FLUXO_AGENTES.md, KNOWLEDGE.md, MEMORY.md)
+- Manutenção de documentos de governança (FLUXO_AGENTES.md, KNOWLEDGE.md, KNOWLEDGE.md)
 - Atualização do SETUP_COMPLETO.md
 - Enriquecimento de base de conhecimento (Einstein, etc.)
 - Versionamento do projeto OpenClaw no GitHub Rafael-Candido

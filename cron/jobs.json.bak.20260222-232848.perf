@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "e4cd9635-efdd-4588-8ecc-523a4a50ea20",
+      "name": "Mail-Person especialista - execução 60min",
+      "enabled": true,
+      "createdAtMs": 1771800244262,
+      "updatedAtMs": 1771812023469,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1771800244262
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como especialista Mail-Person executando toda a rotina de e-mail pessoal + captura de card Notion + relatório padronizado.\n\nFLUXO OBRIGATÓRIO:\n1. CAPTURAR CARD: Use ./scripts/notion-simple.sh query bfcbe7a7a3a745489e605e0762af12a9 \"Mail-Person\" \"Priorizado\" NOTION_PERSONAL_API_KEY para buscar card Priorizado. Se encontrar, pegue o primeiro ID.\n2. MOVER PARA EM ANDAMENTO: Use ./scripts/notion-simple.sh update-status <PAGE_ID> \"Em andamento\" NOTION_PERSONAL_API_KEY.\n3. EXECUTAR WORKFLOW: DNA DO RAFAEL — ler antes de rascunhar. GMAIL — ./scripts/gmail/workflow.sh personal 80. NÃO criar rascunhos para notificações FYI.\n4. ATUALIZAR CARD: Use ./scripts/notion-simple.sh comment <PAGE_ID> \"Execução concluída: X emails processados, Y rotulados\" \"Mail-Person\" NOTION_PERSONAL_API_KEY.\n5. CONCLUIR: Use ./scripts/notion-simple.sh update-status <PAGE_ID> \"Concluído\" NOTION_PERSONAL_API_KEY.\n\nSe não encontrar card Priorizado, criar um novo via API Notion (opcional).",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 360
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771814644262,
+        "lastRunAtMs": 1771811871025,
+        "lastStatus": "ok",
+        "lastDurationMs": 152444,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "985165be-59eb-46e7-8715-17571c8e8227",
+      "name": "Presidente - criar demandas 30min",
+      "enabled": true,
+      "createdAtMs": 1771802119702,
+      "updatedAtMs": 1771811859705,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1771802119702
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Presidente (main). Crie cards em Aguardando com descrição funcional clara (contexto, objetivo, escopo, critério de sucesso).\n\nTRAVA DE ROTEAMENTO (OBRIGATÓRIA):\n- O Agente 'Engenheiro de Prompt' NÃO deve ser usado no Notion profissional (SmartEnvios).\n- Os Agentes 'Diretor Pessoal' e 'Diretor Negócios' NÃO devem ser usados no Notion profissional (SmartEnvios).\n- Toda demanda para Engenheiro de Prompt deve ser criada/movida no Notion PESSOAL (DB bfcbe7a7a3a745489e605e0762af12a9, key NOTION_PERSONAL_API_KEY).\n- No Notion profissional, os únicos agentes válidos para execução são: Diretor Tech, Mail-Pro, Engenheiro SmartEnvios.\n- Se detectar card no SmartEnvios com Agente='Engenheiro de Prompt' OU Agente='Diretor Pessoal' OU Agente='Diretor Negócios': corrigir roteamento imediatamente e remover duplicidade.\n\nREGRA DE ROTEAMENTO POR DOMÍNIO (ENRIQUECIMENTO):\n- Se o card mencionar enriquecimento, padronização, governança de prompt, otimização de prompt, custo/token de prompt, ou arquitetura de agentes, o destino é Engenheiro de Prompt no Notion PESSOAL.\n- Para esses casos, NÃO atribuir Engenheiro SmartEnvios.",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 240
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771814719702,
+        "lastRunAtMs": 1771811852828,
+        "lastStatus": "ok",
+        "lastDurationMs": 6877,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "7fba5b1f-2ee9-4b1e-aae0-bd211c32b925",
+      "name": "Diretor Tech - varredura 30min",
+      "enabled": true,
+      "createdAtMs": 1771802125258,
+      "updatedAtMs": 1771812220397,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1771802125258
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Diretor Tech. Capture cards Aguardando (DB Tech), priorize com descrição técnica, defina Agente correto.\n\nTRAVA DE ROTEAMENTO (OBRIGATÓRIA):\n- O Agente 'Engenheiro de Prompt' NÃO deve ser usado no Notion profissional (SmartEnvios).\n- Os Agentes 'Diretor Pessoal' e 'Diretor Negócios' NÃO devem ser usados no Notion profissional (SmartEnvios).\n- Toda demanda para Engenheiro de Prompt deve ser criada/movida no Notion PESSOAL (DB bfcbe7a7a3a745489e605e0762af12a9, key NOTION_PERSONAL_API_KEY).\n- No Notion profissional, os únicos agentes válidos para execução são: Diretor Tech, Mail-Pro, Engenheiro SmartEnvios.\n- Se detectar card no SmartEnvios com Agente='Engenheiro de Prompt' OU Agente='Diretor Pessoal' OU Agente='Diretor Negócios': corrigir roteamento imediatamente e remover duplicidade.\n\nREGRA DE ROTEAMENTO POR DOMÍNIO (ENRIQUECIMENTO):\n- Se o card mencionar enriquecimento, padronização, governança de prompt, otimização de prompt, custo/token de prompt, ou arquitetura de agentes, o destino é Engenheiro de Prompt no Notion PESSOAL.\n- Para esses casos, NÃO atribuir Engenheiro SmartEnvios.",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 240
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771814725258,
+        "lastRunAtMs": 1771812214705,
+        "lastStatus": "ok",
+        "lastDurationMs": 5692,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "a71c2958-e52f-4f37-9876-bedf6dcb9434",
+      "name": "Diretor Pessoal - varredura 30min",
+      "enabled": true,
+      "createdAtMs": 1771802131232,
+      "updatedAtMs": 1771812343165,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1771802131232
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Diretor Pessoal. Capture cards Aguardando (DB Pessoal), priorize com descrição técnica, defina Agente correto.",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 240
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771814731232,
+        "lastRunAtMs": 1771812220417,
+        "lastStatus": "ok",
+        "lastDurationMs": 122748,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "cf343b94-0816-42e5-b3dc-d40ecf12786e",
+      "name": "Diretor Negócios - varredura 30min",
+      "enabled": true,
+      "createdAtMs": 1771802136467,
+      "updatedAtMs": 1771809594605,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1771802136467
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Diretor Negócios. Capture cards Aguardando (DB Canper), priorize com descrição técnica, defina Agente correto.",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 240
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771814736467,
+        "lastRunAtMs": 1771809514313,
+        "lastStatus": "ok",
+        "lastDurationMs": 80292,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "99de71d1-97b0-48d0-933e-7fcacfda2184",
+      "name": "Mail-Pro especialista - execução 60min",
+      "enabled": true,
+      "createdAtMs": 1771802143478,
+      "updatedAtMs": 1771811845910,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1771802143478
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como especialista Mail-Pro executando toda a rotina de e-mail profissional + captura de card Notion + relatório padronizado.\n\nFLUXO OBRIGATÓRIO:\n1. CAPTURAR CARD: Use ./scripts/notion-simple.sh query adec12e735dc41a3bb7c274b287f3a10 \"Mail-Pro\" \"Priorizado\" NOTION_SMARTENVIOS_API_KEY para buscar card Priorizado. Se encontrar, pegue o primeiro ID.\n2. MOVER PARA EM ANDAMENTO: Use ./scripts/notion-simple.sh update-status <PAGE_ID> \"Em andamento\" NOTION_SMARTENVIOS_API_KEY.\n3. EXECUTAR WORKFLOW: DNA DO RAFAEL — ler antes de rascunhar. GMAIL — ./scripts/gmail/workflow.sh pro 40. NÃO criar rascunhos para notificações FYI.\n4. ATUALIZAR CARD: Use ./scripts/notion-simple.sh comment <PAGE_ID> \"Execução concluída: X emails processados, Y rascunhos criados, Z rotulados\" \"Mail-Pro\" NOTION_SMARTENVIOS_API_KEY.\n5. CONCLUIR: Use ./scripts/notion-simple.sh update-status <PAGE_ID> \"Concluído\" NOTION_SMARTENVIOS_API_KEY.\n\nSe não encontrar card Priorizado, criar um novo via API Notion (opcional).",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 360
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771816543478,
+        "lastRunAtMs": 1771811809465,
+        "lastStatus": "ok",
+        "lastDurationMs": 36445,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "59c24991-af6c-4df2-95fe-bbf012cd73c0",
+      "name": "Otimizador - performance e custo 6h",
+      "enabled": true,
+      "createdAtMs": 1771812501384,
+      "updatedAtMs": 1771813351565,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 21600000,
+        "anchorMs": 1771812501384
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Agente de Otimização e Performance em modo STRICT.\n\nREFERÊNCIA A PADRÕES CENTRAIS:\n- Lifecycle de crons: patterns/cron-lifecycle.md\n- Guia de implementação: patterns/cron-implementation-guide.md\n\nMISSÃO PRINCIPAL:\n- reduzir custo diário de IA e consumo de tokens sem perder confiabilidade do fluxo;\n- transformar achados em mudanças estruturais executáveis pelo Engenheiro de Prompt.\n- reduzir latência operacional da Governança e do Gateway (fila, timeout, retries) sem degradar autonomia.\n\n## FASE 1 — Diagnóstico de custo e token (prioridade máxima)\n\n1. Ler `cron/runs/*.jsonl` (últimas 24h e dia atual) e consolidar:\n   - tokens de entrada/saída por cron e por modelo;\n   - custo estimado por cron e por modelo;\n   - top 3 crons com maior custo.\n2. Identificar desperdícios:\n   - runs com input muito alto (ex.: >120k tokens por execução);\n   - sessões inchadas por acúmulo de contexto;\n   - prompts longos/redundantes;\n   - uso de modelo caro em tarefa operacional simples;\n   - envio de mídia quando texto é suficiente.\n3. Correlacionar com saúde operacional:\n   - consecutiveErrors;\n   - duração alta;\n   - retries e cooldown.\n\n## FASE 2 — Correções estruturais de baixo risco\n\n4. Aplicar melhorias seguras diretamente quando possível:\n   - priorizar modelos flash/lite em rotinas operacionais;\n   - simplificar prompts verbosos e remover duplicidades;\n   - reduzir saídas desnecessárias;\n   - ajustar stagger/frequência para diminuir picos;\n   - preferir comunicação em texto quando imagem não é estritamente necessária.\n\n### Pacote obrigatório de performance (execução imediata)\n\nQuando houver sinais de lentidão (fila `waitMs` alta, `gateway timeout`, rodada longa da governança), aplicar estes 3 pontos em ordem:\n\n1. **Wake-first (reduz bloqueio de run síncrono)**\n   - Priorizar `wake-now` primeiro, e usar `cron run` apenas como fallback.\n   - Evitar estratégia `cron run` primeiro em lotes de recuperação.\n   - Objetivo: reduzir chamadas bloqueantes ao gateway em cascata.\n\n2. **Timeout/retry enxutos para recuperação**\n   - Reduzir timeout das ações de recovery/wake (cron run/edit/session reset) para janelas curtas e previsíveis.\n   - Limitar retries quando houver pressão de fila/rate-limit para evitar tempestade de tentativas.\n   - Objetivo: manter rodada responsiva mesmo com gateway degradado.\n\n3. **Budget de wakes por rodada (circuit breaker)**\n   - Definir teto de wakes por ciclo da governança e priorizar por severidade.\n   - Deduplicar por agente/cron e abortar ações não-críticas quando o teto for atingido.\n   - Objetivo: impedir amplificação de fila no gateway.\n\nCritérios de aceite do pacote:\n- queda perceptível de `waitMs` p90 no gateway;\n- redução de ocorrências de `gateway timeout` em `cron run/list`;\n- rodada da governança concluindo com timeout parcial controlado, sem travar o ciclo inteiro.\n5. Higiene obrigatória:\n   - detectar segredos hardcoded e substituir por env vars (sem alterar credenciais reais);\n   - remover legado de caminhos/config que causam retrabalho e custo.\n\n## FASE 3 — Escalonar melhorias para Engenheiro de Prompt\n\n6. Quando houver necessidade de mudança maior, abrir/atualizar card no Notion PESSOAL para implementação direta do Engenheiro de Prompt.\n\nGatilhos obrigatórios para abrir/atualizar card:\n- custo diário estimado >= R$50;\n- qualquer execução com input >= 500k tokens;\n- recorrência de estouro de contexto/rate-limit por 2+ ciclos;\n- inconsistência estrutural que impede redução de custo.\n\nRegras de criação (CRÍTICO):\n- NUNCA usar skill notion.\n- SEMPRE usar `notion-helper.sh` com DB pessoal e `NOTION_PERSONAL_API_KEY`.\n- Criar direto para `Agente='Engenheiro de Prompt'` com `Status='Priorizado'` e `Prioridade='Alta'`.\n\nComandos base:\n- Query dedupe:\n  `/var/www/openclaw/workspace/scripts/notion-helper.sh query bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY 'Engenheiro de Prompt' Priorizado 'Em andamento'`\n- Create card (com prioridade):\n  `/var/www/openclaw/workspace/scripts/notion-helper.sh create-card bfcbe7a7a3a745489e605e0762af12a9 NOTION_PERSONAL_API_KEY 'Título' Priorizado OpenClaw 'Engenheiro de Prompt' Alta Otimizador /tmp/opt-body.txt`\n- Atualizar card existente:\n  `comment` + `append-body` + `update-priority PAGE_ID ... Alta`\n\nFormato obrigatório do `/tmp/opt-body.txt`:\n- `## Custo e tokens`\n- `## Evidências`\n- `## Causa raiz`\n- `## Mudanças propostas`\n- `## Critério de aceite`\n\n## FASE 4 — Registro e tendência\n\n7. Atualizar `workspace/KNOWLEDGE.md` com:\n   - problema de custo/token;\n   - causa raiz;\n   - fix aplicado ou proposto;\n   - impacto esperado em custo.\n8. Registrar no `memory/YYYY-MM-DD.md`:\n   - custo estimado do dia;\n   - principais ofensores;\n   - ações tomadas;\n   - pendências abertas para Engenheiro de Prompt.\n\n## FASE 5 — Telemetria de performance (obrigatória)\n\n9. Antes/depois das mudanças de performance, registrar no comentário final:\n   - tempo da rodada da governança;\n   - contagem de `gateway timeout` no período analisado;\n   - percentis de `waitMs` (p50/p90/p99) quando disponível.\n10. Se não conseguir aplicar mudança direta, criar card no Notion Pessoal para `Engenheiro de Prompt` com:\n   - evidência numérica;\n   - patch sugerido;\n   - risco/rollback;\n   - critério de aceite mensurável.\n\n## Regras finais\n\n- Prioridade absoluta: custo/token -> estabilidade -> velocidade.\n- Não desabilitar crons.\n- Não alterar credenciais reais/.env.\n- Sempre preferir mudanças estruturais e duradouras (evitar mitigação temporária sem plano de fix).\n- Não declarar sucesso de performance sem métrica comparativa antes/depois.",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 360
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771834101384,
+        "lastRunAtMs": 1771813268610,
+        "lastStatus": "ok",
+        "lastDurationMs": 82955,
+        "consecutiveErrors": 0
+      }
+    }
+  ]
+}

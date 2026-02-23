@@ -2,7 +2,7 @@
 
 ## 📋 Visão Geral
 
-O MCP SmartEnvios oferece acesso a múltiplas ferramentas via API, incluindo integrações com Jira (via Notion) e Grafana (via Metabase). Este documento fornece exemplos práticos de uso.
+O MCP SmartEnvios oferece acesso a múltiplas ferramentas via API, incluindo Jira e Grafana. Este documento fornece exemplos práticos de uso operacional.
 
 ## 🔧 Configuração Inicial
 
@@ -21,106 +21,68 @@ O MCP SmartEnvios oferece acesso a múltiplas ferramentas via API, incluindo int
 ./scripts/smartenvios-mcp.sh tools
 ```
 
-## 🎯 Jira (via Notion)
+## 🎯 Jira (direto via MCP)
 
-### Consultar Bancos de Dados Notion
+### Verificar ferramentas Jira disponíveis
 ```bash
-# Listar todos os bancos de dados disponíveis
-./scripts/smartenvios-mcp.sh call notion_request '{"path":"databases"}'
-
-# Resposta esperada (exemplo):
-# {
-#   "object": "list",
-#   "results": [
-#     {
-#       "object": "database",
-#       "id": "21f21016bd48807588b1f3e0e13f72c3",
-#       "title": [{"text": {"content": "Processos"}}]
-#     },
-#     {
-#       "object": "database",
-#       "id": "95c2dfe4878a4180a99f4a2c21ac0ea9",
-#       "title": [{"text": {"content": "Base de Conhecimento"}}]
-#     }
-#   ]
-# }
+./scripts/smartenvios-mcp.sh tools | jq -r '.result.tools[].name' | rg '^jira_'
 ```
 
-### Consultar Tickets Jira (via Banco de Dados Notion)
+### Criar issue no Jira
 ```bash
-# Supondo que há um banco de dados "Jira Issues" no Notion
-./scripts/smartenvios-mcp.sh call notion_request '{"path":"databases/21f21016bd48807588b1f3e0e13f72c3/query"}'
-
-# Com filtros específicos
-./scripts/smartenvios-mcp.sh call notion_request '{"path":"databases/21f21016bd48807588b1f3e0e13f72c3/query", "body": {"filter": {"property": "Status", "select": {"equals": "Open"}}}}'
-```
-
-### Criar Novo Ticket (via Notion)
-```bash
-# Criar página no banco de dados de issues
-./scripts/smartenvios-mcp.sh call notion_request '{"path":"pages", "method": "POST", "body": {
-  "parent": {"database_id": "21f21016bd48807588b1f3e0e13f72c3"},
-  "properties": {
-    "Title": {"title": [{"text": {"content": "Bug: Cálculo de frete incorreto"}}]},
-    "Status": {"select": {"name": "Open"}},
-    "Priority": {"select": {"name": "High"}},
-    "Assignee": {"people": [{"id": "user_id"}]}
-  },
-  "children": [
-    {
-      "object": "block",
-      "type": "paragraph",
-      "paragraph": {
-        "rich_text": [{"type": "text", "text": {"content": "Descrição detalhada do bug..."}}]
-      }
-    }
-  ]
-}}'
-```
-
-## 📊 Grafana (via Metabase)
-
-### Listar Dashboards Disponíveis
-```bash
-# Listar todos os dashboards no Metabase
-./scripts/smartenvios-mcp.sh call metabase_list_dashboards
-
-# Resposta esperada (exemplo):
-# {
-#   "data": [
-#     {"id": 76, "name": "Dashboard de Vendas", "description": "Métricas de vendas mensais"},
-#     {"id": 77, "name": "Dashboard de Logística", "description": "KPIs de envios e entregas"},
-#     {"id": 78, "name": "Dashboard de Suporte", "description": "Métricas de atendimento"}
-#   ]
-# }
-```
-
-### Consultar Dashboard Específico
-```bash
-# Obter detalhes de um dashboard
-./scripts/smartenvios-mcp.sh call metabase_get_dashboard '{"dashboard_id":76}'
-
-# Resposta inclui:
-# - Cards (gráficos, tabelas)
-# - Parâmetros disponíveis
-# - Layout do dashboard
-```
-
-### Executar Query de Card
-```bash
-# Executar query de um card específico
-./scripts/smartenvios-mcp.sh call metabase_query_card '{"card_id":1441}'
-
-# Com parâmetros
-./scripts/smartenvios-mcp.sh call metabase_query_card '{
-  "card_id": 1441,
-  "body": {
-    "parameters": [
-      {"type": "date/single", "target": ["variable", ["template-tag", "data_inicio"]], "value": "2026-01-01"},
-      {"type": "date/single", "target": ["variable", ["template-tag", "data_fim"]], "value": "2026-01-31"}
-    ]
+./scripts/smartenvios-mcp.sh call jira_create_issue '{
+  "summary": "Adicionar permissionamento nas rotas de API do ms_atendimento",
+  "description": "Implementar controle de permissões e validar contagem de tickets.",
+  "issue_type": "Story",
+  "project_key": "SME",
+  "fields": {
+    "priority": {"name": "Highest"}
   }
 }'
+```
+
+### Atribuir e mover para To Do
+```bash
+./scripts/smartenvios-mcp.sh call jira_search_users '{"query":"Guilherme Dantas","maxResults":10}'
+./scripts/smartenvios-mcp.sh call jira_assign_issue '{"issue_key":"SME-12345","account_id":"<accountId>"}'
+./scripts/smartenvios-mcp.sh call jira_transition_issue '{"issue_key":"SME-12345","transition_name":"To Do"}'
+```
+
+## 📊 Grafana (produção)
+
+### Consulta rápida de erro por serviço/rota
+```bash
+./scripts/smartenvios-mcp.sh call grafana_loki_query_range '{
+  "query": "{app=\"ms.atendimento\"} |= \"permission\"",
+  "limit": 200,
+  "direction": "backward"
+}'
+```
+
+## 🧩 Fluxo recomendado: bug -> logs -> card técnico
+
+1. Identificar repositório/serviço da rota.
+2. Validar erro no Grafana (Loki) com query por rota, erro e app.
+3. Criar card no Notion profissional para Diretor Tech:
+```bash
+./scripts/smartenvios-mcp.sh call notion_request '{"path":"pages","method":"POST","body":{
+  "parent":{"database_id":"adec12e735dc41a3bb7c274b287f3a10"},
+  "properties":{
+    "Name":{"title":[{"text":{"content":"[Bug] Falha na rota X - diagnóstico com logs"}}]},
+    "Status":{"select":{"name":"Aguardando"}},
+    "Tipo":{"select":{"name":"OpenClaw"}},
+    "Agente":{"select":{"name":"Diretor Tech"}}
+  },
+  "children":[
+    {"object":"block","type":"heading_2","heading_2":{"rich_text":[{"type":"text","text":{"content":"Contexto"}}]}},
+    {"object":"block","type":"paragraph","paragraph":{"rich_text":[{"type":"text","text":{"content":"Resumo do bug e impacto."}}]}},
+    {"object":"block","type":"heading_2","heading_2":{"rich_text":[{"type":"text","text":{"content":"Evidências (Grafana)"}}]}},
+    {"object":"block","type":"paragraph","paragraph":{"rich_text":[{"type":"text","text":{"content":"Serviço, rota, erro, timestamps e correlação."}}]}},
+    {"object":"block","type":"heading_2","heading_2":{"rich_text":[{"type":"text","text":{"content":"Plano de correção"}}]}},
+    {"object":"block","type":"paragraph","paragraph":{"rich_text":[{"type":"text","text":{"content":"Ação técnica recomendada e validação."}}]}},
+    {"object":"block","type":"paragraph","paragraph":{"rich_text":[{"type":"text","text":{"content":"Direcionar para Engenheiro SmartEnvios."}}]}}
+  ]
+}}'
 ```
 
 ## 🎫 Zendesk (Suporte)
@@ -337,18 +299,15 @@ sleep 1  # Aguardar 1 segundo entre chamadas
 ### monitor-jira-issues.sh
 ```bash
 #!/bin/bash
-# Monitorar issues Jira abertas via Notion
+# Monitorar issues Jira abertas via MCP Jira
 
-SESSION_TOKEN=$(./scripts/smartenvios-mcp.sh login | jq -r '.result.session_token')
-
-# Consultar issues abertas
-ISSUES=$(./scripts/smartenvios-mcp.sh call notion_request '{
-  "path": "databases/21f21016bd48807588b1f3e0e13f72c3/query",
-  "body": {"filter": {"property": "Status", "select": {"equals": "Open"}}}
+ISSUES=$(./scripts/smartenvios-mcp.sh call jira_search_issues '{
+  "jql": "project = SME AND statusCategory != Done ORDER BY updated DESC",
+  "maxResults": 20
 }')
 
 echo "Issues abertas no Jira:"
-echo "$ISSUES" | jq -r '.results[] | "• \(.properties.Title.title[0].text.content) - \(.properties.Priority.select.name)"'
+echo "$ISSUES" | jq -r '.issues[]? | "• \(.key) - \(.fields.summary) - \(.fields.priority.name // "N/A")"'
 ```
 
 ### dashboard-metrics.sh
@@ -367,4 +326,4 @@ echo "$METRICS" | jq -r '.data.rows[] | join(", ")'
 
 ---
 
-**Nota:** As ferramentas Jira e Grafana são acessadas via integrações do MCP (Notion para Jira, Metabase para Grafana). Sempre verifique a disponibilidade das ferramentas com `./scripts/smartenvios-mcp.sh tools` antes de usar.
+**Nota:** As ferramentas Jira e Grafana são acessadas via MCP direto. Sempre verifique a disponibilidade com `./scripts/smartenvios-mcp.sh tools` antes de usar.

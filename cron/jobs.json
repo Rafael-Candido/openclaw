@@ -6,7 +6,7 @@
       "name": "Mail-Person especialista - execução 60min",
       "enabled": true,
       "createdAtMs": 1771800244262,
-      "updatedAtMs": 1771850342012,
+      "updatedAtMs": 1771886502793,
       "schedule": {
         "kind": "every",
         "everyMs": 3600000,
@@ -21,16 +21,15 @@
         "timeoutSeconds": 300
       },
       "delivery": {
-        "mode": "announce",
+        "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771853640000,
-        "lastRunAtMs": 1771850042009,
-        "lastStatus": "error",
-        "lastDurationMs": 300003,
-        "consecutiveErrors": 1,
-        "lastError": "Error: cron: job execution timed out"
+        "nextRunAtMs": 1771889640000,
+        "lastRunAtMs": 1771886487891,
+        "lastStatus": "ok",
+        "lastDurationMs": 14902,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -38,7 +37,7 @@
       "name": "Presidente - criar demandas 30min",
       "enabled": true,
       "createdAtMs": 1771802119702,
-      "updatedAtMs": 1771848315219,
+      "updatedAtMs": 1771886554379,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -48,8 +47,8 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e use o JSON retornado como fonte de verdade: ./scripts/president-mail-demand-cycle.sh. Regras: criar demanda apenas quando backlog de e-mail exceder limiar e não houver card ativo do diretor responsável; evitar duplicidade.",
-        "model": "xai/grok-3-mini",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando em foreground e sem process/background: ./scripts/president-mail-demand-cycle.sh. Saída permitida APENAS em pt-BR: (1) HEARTBEAT_OK quando estável; ou (2) ALERTA em no máximo 5 linhas no formato padronizado. Nunca responder em inglês. Nunca expor raciocínio interno.",
+        "model": "google/gemini-2.5-flash",
         "timeoutSeconds": 180
       },
       "delivery": {
@@ -57,11 +56,11 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771851720000,
-        "lastRunAtMs": 1771848295969,
+        "lastRunAtMs": 1771886520838,
         "lastStatus": "ok",
-        "lastDurationMs": 19250,
-        "consecutiveErrors": 0
+        "lastDurationMs": 33541,
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1771887720000
       }
     },
     {
@@ -69,7 +68,7 @@
       "name": "Diretor Tech - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771802125258,
-      "updatedAtMs": 1771850434096,
+      "updatedAtMs": 1771886587933,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -88,10 +87,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771852020000,
-        "lastRunAtMs": 1771850342065,
+        "nextRunAtMs": 1771888020000,
+        "lastRunAtMs": 1771886571659,
         "lastStatus": "ok",
-        "lastDurationMs": 92031,
+        "lastDurationMs": 16274,
         "consecutiveErrors": 0
       }
     },
@@ -100,7 +99,7 @@
       "name": "Diretor Pessoal - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771802131232,
-      "updatedAtMs": 1771848362891,
+      "updatedAtMs": 1771886626332,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -119,10 +118,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771850520000,
-        "lastRunAtMs": 1771848347378,
+        "nextRunAtMs": 1771888320000,
+        "lastRunAtMs": 1771886614120,
         "lastStatus": "ok",
-        "lastDurationMs": 15513,
+        "lastDurationMs": 12212,
         "consecutiveErrors": 0
       }
     },
@@ -131,7 +130,7 @@
       "name": "Diretor Negócios - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771802136467,
-      "updatedAtMs": 1771848261471,
+      "updatedAtMs": 1771886666231,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -150,10 +149,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771850820000,
-        "lastRunAtMs": 1771848237921,
+        "nextRunAtMs": 1771886820000,
+        "lastRunAtMs": 1771886647926,
         "lastStatus": "ok",
-        "lastDurationMs": 23550,
+        "lastDurationMs": 18305,
         "consecutiveErrors": 0
       }
     },
@@ -162,7 +161,7 @@
       "name": "Mail-Pro especialista - execução 60min",
       "enabled": true,
       "createdAtMs": 1771802143478,
-      "updatedAtMs": 1771849889392,
+      "updatedAtMs": 1771886647924,
       "schedule": {
         "kind": "every",
         "everyMs": 3600000,
@@ -177,16 +176,15 @@
         "timeoutSeconds": 300
       },
       "delivery": {
-        "mode": "announce",
+        "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771852920000,
-        "lastRunAtMs": 1771848364729,
-        "lastStatus": "error",
-        "lastDurationMs": 1524663,
-        "consecutiveErrors": 1,
-        "lastError": "Error: All models failed (2): xai/grok-3-mini: LLM request timed out. (unknown) | google/gemini-2.5-flash-lite: Request was aborted (unknown)"
+        "nextRunAtMs": 1771888920000,
+        "lastRunAtMs": 1771886626334,
+        "lastStatus": "ok",
+        "lastDurationMs": 21590,
+        "consecutiveErrors": 0
       }
     },
     {
@@ -194,7 +192,7 @@
       "name": "Otimizador - performance e custo 6h",
       "enabled": true,
       "createdAtMs": 1771812501384,
-      "updatedAtMs": 1771848294637,
+      "updatedAtMs": 1771886682776,
       "schedule": {
         "kind": "every",
         "everyMs": 21600000,
@@ -213,10 +211,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771850820000,
-        "lastRunAtMs": 1771848277694,
+        "nextRunAtMs": 1771894020000,
+        "lastRunAtMs": 1771886666234,
         "lastStatus": "ok",
-        "lastDurationMs": 16943,
+        "lastDurationMs": 16542,
         "consecutiveErrors": 0
       }
     },
@@ -225,7 +223,7 @@
       "name": "Engenheiro de Prompt - execução 10min (drenagem)",
       "enabled": true,
       "createdAtMs": 1771815285058,
-      "updatedAtMs": 1771849938874,
+      "updatedAtMs": 1771886432137,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -244,10 +242,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771850520000,
-        "lastRunAtMs": 1771849933093,
+        "nextRunAtMs": 1771887120000,
+        "lastRunAtMs": 1771886410827,
         "lastStatus": "ok",
-        "lastDurationMs": 5781,
+        "lastDurationMs": 21310,
         "consecutiveErrors": 0
       }
     },
@@ -256,7 +254,7 @@
       "name": "Engenheiro SmartEnvios - execução 60min",
       "enabled": true,
       "createdAtMs": 1771815285058,
-      "updatedAtMs": 1771848276231,
+      "updatedAtMs": 1771886448627,
       "schedule": {
         "kind": "every",
         "everyMs": 3600000,
@@ -275,10 +273,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771851420000,
-        "lastRunAtMs": 1771848263043,
+        "nextRunAtMs": 1771887420000,
+        "lastRunAtMs": 1771886433638,
         "lastStatus": "ok",
-        "lastDurationMs": 13188,
+        "lastDurationMs": 14989,
         "consecutiveErrors": 0
       }
     }

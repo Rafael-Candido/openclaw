@@ -2,7 +2,7 @@
 
 **Documento único de referência** consolidando todo o setup, arquitetura, fluxos operacionais e implementações do ambiente OpenClaw.
 
-**Última documentação: 2026-02-20 23:01**
+**Última documentação: 2026-02-21 19:44**
 
 **Última atualização:** 2026-02-21 (documentação alinhada ao openclaw.json: agentes, canais, Einstein model/tools, bindings Discord)
 
@@ -36,6 +36,8 @@ Esta seção sobrescreve pontos antigos deste documento quando houver divergênc
 - limpeza de locks de sessão obsoletos (`*.lock`) em main, einstein, eng-smartenvios, eng-prompt (MAX_LOCK_MIN=5min)
 - detecção de pressão de modelos no log (`rate limit`, `cooldown`, `session file locked`)
 - reinício preventivo do gateway em saturação recorrente
+- **Relatório "Últimos erros por cron"** com `lastError` de cada job; Governança analisa e cria cards para Otimizador (Failover/cooldown, Context overflow/TPM)
+- **Secção 4c:** detecção de falhas de integração Notion/script (API key not set, update_card, script não encontrado); sugestão de card para Engenheiro de Prompt
 
 ---
 
@@ -60,23 +62,33 @@ O OpenClaw é um sistema de agentes autônomos que opera através de:
 /var/www/openclaw/
 ├── workspace/
 │   ├── agents/
-│   │   ├── einstein/          # Einstein: KNOWLEDGE.md (5 fontes), scripts/jira-helper.sh, knowledge/{notion,youtube,github,zendesk,jira}
+│   │   ├── einstein/          # KNOWLEDGE.md (5 fontes), scripts/jira-helper.sh, examples/, knowledge/{notion,youtube,github,zendesk,jira}
 │   │   ├── eng-prompt/        # Engenheiro de Prompt (BOOTSTRAP, IDENTITY, SOUL, TOOLS, USER)
-│   │   ├── eng-smartenvios/   # Engenheiro SmartEnvios (BOOTSTRAP, IDENTITY, SOUL, TOOLS, USER)
-│   │   └── backend-engineer/  # Engenheiro Backend (legado)
+│   │   ├── eng-smartenvios/   # Engenheiro SmartEnvios (BOOTSTRAP, RELEASE_MCP.md, etc.)
+│   │   └── backend-engineer/  # Engenheiro Backend (contrato: agent-behavior-patterns.md)
 │   ├── scripts/
-│   │   ├── gmail/             # Scripts Gmail (triagem, workflow)
+│   │   ├── gmail/             # Gmail (workflow.sh, gmail.sh; path absoluto obrigatório nos crons)
+│   │   ├── notion/            # update_card.sh (wrapper notion-helper; Mail-Pro System)
 │   │   ├── notion-helper.sh   # Helper Notion API (query, update-status, comment, create-card, etc.)
-│   │   ├── notion-canper-*.py # Scripts Notion Canper (query, schema, status, update-card, check-*)
-│   │   ├── add-comment.py     # Ad-hoc: comentário em card Notion (NOTION_PERSONAL_API_KEY)
-│   │   ├── export_einstein_base*.py  # Export base SmartEnvios → einstein/knowledge
+│   │   ├── notion-canper-*.py # Scripts Notion Canper
+│   │   ├── add-comment.py     # Ad-hoc: comentário em card
+│   │   ├── create-gateway-issue-card.py   # Card Governança no Notion Pessoal
+│   │   ├── priorize-gateway-card.py       # Priorizar card gateway
+│   │   ├── process-new-card.py            # Processar novo card Mail-Person
+│   │   ├── process-notion-cards.sh        # Processar cards Notion
+│   │   ├── process-workflow.sh            # Workflow de processamento
+│   │   ├── export_einstein_base*.py       # Export base SmartEnvios → einstein/knowledge
 │   │   └── smartenvios-mcp.sh # Cliente MCP SmartEnvios
 │   ├── docs/
 │   │   └── development/
 │   │       └── LOGGING_AND_RULES.md
+│   ├── patterns/              # Contratos centralizados para crons
+│   │   ├── cron-lifecycle.md       # Lifecycle padrão (query, update-status, comment, get-blocks)
+│   │   └── cron-implementation-guide.md  # Guia de implementação (DRY, módulos)
 │   ├── templates/
-│   │   └── notion-card-openclaw.md
-│   ├── memory/                # Notas diárias
+│   │   ├── notion-card-openclaw.md
+│   │   └── agent-behavior-patterns.md     # Padrões transversais (assinatura, comentários)
+│   ├── docs/diario/           # Notas diárias (YYYY-MM-DD.md)
 │   ├── FLUXO_AGENTES.md       # Fluxo operacional Notion
 │   ├── AGENTS.md              # Regras e padrões dos agentes
 │   ├── PLANO_PROJETO.md       # Plano de projeto (logging)
@@ -84,7 +96,7 @@ O OpenClaw é um sistema de agentes autônomos que opera através de:
 │   ├── NOTION.md              # Workspaces Notion configurados
 │   ├── KNOWLEDGE.md           # Conhecimento histórico
 │   └── SETUP_COMPLETO.md      # Este documento
-├── openclaw.json              # Configuração do gateway
+├── openclaw.json              # Configuração do gateway (incl. talk.apiKey ElevenLabs)
 ├── .env                       # Variáveis de ambiente (credenciais)
 └── logs/
     └── gateway.log            # Logs do gateway
@@ -155,6 +167,10 @@ O OpenClaw é um sistema de agentes autônomos que opera através de:
 - Level: `debug`
 - File: `/var/www/openclaw/logs/gateway.log`
 - Console: `debug` (pretty style)
+
+### 3.5. Talk (voz / ElevenLabs)
+
+- `openclaw.json` pode incluir `talk.apiKey: "${ELEVENLABS_API_KEY}"` para integração de voz (ElevenLabs). Variável no `.env`.
 
 ---
 
@@ -522,7 +538,7 @@ Quando Einstein não conseguir responder uma dúvida SmartEnvios por limitação
    - `Agente=Mail-Pro` → força execução do cron Mail-Pro
    - `Agente=Mail-Person` → força execução do cron Mail-Person
    - Outros agentes (>30min) → registra alerta para intervenção manual
-6. **Registra incidentes** em `memory/YYYY-MM-DD.md`
+6. **Registra incidentes** em `docs/diario/YYYY-MM-DD.md`
 
 **Escalonamento automático — como funciona:**
 - A governança calcula o `nextRun` de cada cron habilitado, ordena por proximidade, e verifica se há gap < 2min entre consecutivos
@@ -568,7 +584,7 @@ Quando Einstein não conseguir responder uma dúvida SmartEnvios por limitação
 
 3. **Documentar para não repetir:**
    - `KNOWLEDGE.md` → padrões definitivos com causa + fix
-   - `memory/YYYY-MM-DD.md` → resumo do dia + tendência
+   - `docs/diario/YYYY-MM-DD.md` → resumo do dia + tendência
 
 **Objetivo de longo prazo:**
 - Fluxos maduros devem gerar **zero incidentes** para a governança
@@ -870,14 +886,14 @@ Quando receber um heartbeat poll, não apenas responder `HEARTBEAT_OK` sempre. U
 - Verificar projetos (git status, etc.)
 - Atualizar documentação
 - Commit e push de suas próprias mudanças
-- **Revisar e atualizar MEMORY.md** (manutenção de memória)
+- **Revisar e atualizar KNOWLEDGE.md** (manutenção de memória)
 
 **Memory Maintenance (Durante Heartbeats):**
 Periodicamente (a cada poucos dias), usar um heartbeat para:
-1. Ler através de arquivos recentes `memory/YYYY-MM-DD.md`
+1. Ler através de arquivos recentes `docs/diario/YYYY-MM-DD.md`
 2. Identificar eventos significativos, lições ou insights que valem manter a longo prazo
-3. Atualizar `MEMORY.md` com aprendizados destilados
-4. Remover informações desatualizadas de MEMORY.md que não são mais relevantes
+3. Atualizar `KNOWLEDGE.md` com aprendizados destilados
+4. Remover informações desatualizadas de KNOWLEDGE.md que não são mais relevantes
 
 ---
 
@@ -979,7 +995,7 @@ Periodicamente (a cada poucos dias), usar um heartbeat para:
 
 ### 11.2. Atualizações
 
-- Documentar mudanças em `memory/YYYY-MM-DD.md`
+- Documentar mudanças em `docs/diario/YYYY-MM-DD.md`
 - Atualizar `SETUP_COMPLETO.md` quando houver mudanças significativas na arquitetura, fluxos ou implementações
 - Revisar e atualizar templates quando necessário
 - Manter sincronização entre FLUXO_AGENTES.md, AGENTS.md, PLANO_PROJETO.md e SETUP_COMPLETO.md

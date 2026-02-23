@@ -2,7 +2,7 @@
 
 This document lists all available tools, skills, and integrations configured in this workspace.
 
-**Última documentação: 2026-02-20 23:01**
+**Última documentação: 2026-02-21 19:44**
 
 ## Notion Helper (notion-helper.sh)
 
@@ -16,6 +16,8 @@ Para agentes que precisam interagir com Notion via `exec` (sem skill notion nati
 - **create-card** — Cria novo card
 
 Passar `NOTION_PERSONAL_API_KEY`, `NOTION_SMARTENVIOS_API_KEY` ou `NOTION_CANPER_API_KEY` como parâmetro `api_key_var`.
+
+**Wrapper para automações:** `workspace/scripts/notion/update_card.sh <PAGE_ID> <STATUS> [COMMENT]` — chama notion-helper update-status + comment com retry; usa `NOTION_SMARTENVIOS_API_KEY` e assinatura "Mail-Pro System". Útil quando o caller não pode usar exec direto no notion-helper.
 
 Padrão de comportamento e comentários:
 - Ver `workspace/templates/agent-behavior-patterns.md`.
@@ -120,10 +122,28 @@ Uso:
 ./scripts/smartenvios-mcp.sh call cep_lookup '{"cep":"14020510"}'
 ```
 
+## n8n MCP (automações)
+
+Cliente local para consumir o MCP do n8n com bearer token via `.env`.
+
+- Script: `/var/www/openclaw/workspace/scripts/n8n-mcp.sh`
+- Credenciais no `.env`:
+  - `N8N_MCP_URL`
+  - `N8N_MCP_BEARER_TOKEN`
+
+Uso:
+
+```bash
+./scripts/n8n-mcp.sh tools
+./scripts/n8n-mcp.sh call search_workflows '{"limit":10,"query":"crm"}'
+./scripts/n8n-mcp.sh call get_workflow_details '{"workflowId":"<ID>"}'
+```
+
 ## Other Skills
 
 - **nano-banana-pro**: Gemini AI integration (uses `${GEMINI_API_KEY}`)
 - **sag**: SAG API integration (uses `${SAG_API_KEY}`)
+- **Talk (voz)**: Integração ElevenLabs em `openclaw.json` via `talk.apiKey: "${ELEVENLABS_API_KEY}"`. Variável no `.env`.
 
 ## Available Models
 

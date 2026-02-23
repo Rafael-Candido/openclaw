@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "e4cd9635-efdd-4588-8ecc-523a4a50ea20",
+      "name": "Mail-Person especialista - execução 60min",
+      "enabled": true,
+      "createdAtMs": 1771800244262,
+      "updatedAtMs": 1771808715767,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1771800244262
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como especialista Mail-Person executando toda a rotina de e-mail pessoal + captura de card Notion + relatório padronizado.\n\nFLUXO OBRIGATÓRIO:\n1. CAPTURAR CARD: Use ./scripts/notion-simple.sh query bfcbe7a7a3a745489e605e0762af12a9 \"Mail-Person\" \"Priorizado\" NOTION_PERSONAL_API_KEY para buscar card Priorizado. Se encontrar, pegue o primeiro ID.\n2. MOVER PARA EM ANDAMENTO: Use ./scripts/notion-simple.sh update-status <PAGE_ID> \"Em andamento\" NOTION_PERSONAL_API_KEY.\n3. EXECUTAR WORKFLOW: DNA DO RAFAEL — ler antes de rascunhar. GMAIL — ./scripts/gmail/workflow.sh personal 80. NÃO criar rascunhos para notificações FYI.\n4. ATUALIZAR CARD: Use ./scripts/notion-simple.sh comment <PAGE_ID> \"Execução concluída: X emails processados, Y rotulados\" \"Mail-Person\" NOTION_PERSONAL_API_KEY.\n5. CONCLUIR: Use ./scripts/notion-simple.sh update-status <PAGE_ID> \"Concluído\" NOTION_PERSONAL_API_KEY.\n\nSe não encontrar card Priorizado, criar um novo via API Notion (opcional).",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 360
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771811044262,
+        "lastRunAtMs": 1771808678443,
+        "lastStatus": "ok",
+        "lastDurationMs": 37324,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "985165be-59eb-46e7-8715-17571c8e8227",
+      "name": "Presidente - criar demandas 30min",
+      "enabled": true,
+      "createdAtMs": 1771802119702,
+      "updatedAtMs": 1771809358582,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1771802119702
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Presidente (main). Crie cards em Aguardando com descrição funcional clara (contexto, objetivo, escopo, critério de sucesso).\n\nTRAVA DE ROTEAMENTO (OBRIGATÓRIA):\n- O Agente 'Engenheiro de Prompt' NÃO deve ser usado no Notion profissional (SmartEnvios).\n- Os Agentes 'Diretor Pessoal' e 'Diretor Negócios' NÃO devem ser usados no Notion profissional (SmartEnvios).\n- Toda demanda para Engenheiro de Prompt deve ser criada/movida no Notion PESSOAL (DB bfcbe7a7a3a745489e605e0762af12a9, key NOTION_PERSONAL_API_KEY).\n- No Notion profissional, os únicos agentes válidos para execução são: Diretor Tech, Mail-Pro, Engenheiro SmartEnvios.\n- Se detectar card no SmartEnvios com Agente='Engenheiro de Prompt' OU Agente='Diretor Pessoal' OU Agente='Diretor Negócios': corrigir roteamento imediatamente e remover duplicidade.\n\nREGRA DE ROTEAMENTO POR DOMÍNIO (ENRIQUECIMENTO):\n- Se o card mencionar enriquecimento, padronização, governança de prompt, otimização de prompt, custo/token de prompt, ou arquitetura de agentes, o destino é Engenheiro de Prompt no Notion PESSOAL.\n- Para esses casos, NÃO atribuir Engenheiro SmartEnvios.",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 240
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771811119702,
+        "lastRunAtMs": 1771807519710,
+        "lastStatus": "error",
+        "lastDurationMs": 172304,
+        "consecutiveErrors": 2,
+        "runningAtMs": 1771809319729
+      }
+    },
+    {
+      "id": "7fba5b1f-2ee9-4b1e-aae0-bd211c32b925",
+      "name": "Diretor Tech - varredura 30min",
+      "enabled": true,
+      "createdAtMs": 1771802125258,
+      "updatedAtMs": 1771809285046,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1771802125258
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Diretor Tech. Capture cards Aguardando (DB Tech), priorize com descrição técnica, defina Agente correto.\n\nTRAVA DE ROTEAMENTO (OBRIGATÓRIA):\n- O Agente 'Engenheiro de Prompt' NÃO deve ser usado no Notion profissional (SmartEnvios).\n- Os Agentes 'Diretor Pessoal' e 'Diretor Negócios' NÃO devem ser usados no Notion profissional (SmartEnvios).\n- Toda demanda para Engenheiro de Prompt deve ser criada/movida no Notion PESSOAL (DB bfcbe7a7a3a745489e605e0762af12a9, key NOTION_PERSONAL_API_KEY).\n- No Notion profissional, os únicos agentes válidos para execução são: Diretor Tech, Mail-Pro, Engenheiro SmartEnvios.\n- Se detectar card no SmartEnvios com Agente='Engenheiro de Prompt' OU Agente='Diretor Pessoal' OU Agente='Diretor Negócios': corrigir roteamento imediatamente e remover duplicidade.\n\nREGRA DE ROTEAMENTO POR DOMÍNIO (ENRIQUECIMENTO):\n- Se o card mencionar enriquecimento, padronização, governança de prompt, otimização de prompt, custo/token de prompt, ou arquitetura de agentes, o destino é Engenheiro de Prompt no Notion PESSOAL.\n- Para esses casos, NÃO atribuir Engenheiro SmartEnvios.",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 240
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771809325258,
+        "lastRunAtMs": 1771808863259,
+        "lastStatus": "ok",
+        "lastDurationMs": 205195,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "a71c2958-e52f-4f37-9876-bedf6dcb9434",
+      "name": "Diretor Pessoal - varredura 30min",
+      "enabled": true,
+      "createdAtMs": 1771802131232,
+      "updatedAtMs": 1771808717330,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1771802131232
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Diretor Pessoal. Capture cards Aguardando (DB Pessoal), priorize com descrição técnica, defina Agente correto.",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 240
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771809331232,
+        "lastRunAtMs": 1771807932039,
+        "lastStatus": "ok",
+        "lastDurationMs": 239515,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "cf343b94-0816-42e5-b3dc-d40ecf12786e",
+      "name": "Diretor Negócios - varredura 30min",
+      "enabled": true,
+      "createdAtMs": 1771802136467,
+      "updatedAtMs": 1771808718118,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1771802136467
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como Diretor Negócios. Capture cards Aguardando (DB Canper), priorize com descrição técnica, defina Agente correto.",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 240
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771809336467,
+        "lastRunAtMs": 1771808171554,
+        "lastStatus": "ok",
+        "lastDurationMs": 130461,
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "99de71d1-97b0-48d0-933e-7fcacfda2184",
+      "name": "Mail-Pro especialista - execução 60min",
+      "enabled": true,
+      "createdAtMs": 1771802143478,
+      "updatedAtMs": 1771808551336,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1771802143478
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Atue como especialista Mail-Pro executando toda a rotina de e-mail profissional + captura de card Notion + relatório padronizado.\n\nFLUXO OBRIGATÓRIO:\n1. CAPTURAR CARD: Use ./scripts/notion-simple.sh query adec12e735dc41a3bb7c274b287f3a10 \"Mail-Pro\" \"Priorizado\" NOTION_SMARTENVIOS_API_KEY para buscar card Priorizado. Se encontrar, pegue o primeiro ID.\n2. MOVER PARA EM ANDAMENTO: Use ./scripts/notion-simple.sh update-status <PAGE_ID> \"Em andamento\" NOTION_SMARTENVIOS_API_KEY.\n3. EXECUTAR WORKFLOW: DNA DO RAFAEL — ler antes de rascunhar. GMAIL — ./scripts/gmail/workflow.sh pro 40. NÃO criar rascunhos para notificações FYI.\n4. ATUALIZAR CARD: Use ./scripts/notion-simple.sh comment <PAGE_ID> \"Execução concluída: X emails processados, Y rascunhos criados, Z rotulados\" \"Mail-Pro\" NOTION_SMARTENVIOS_API_KEY.\n5. CONCLUIR: Use ./scripts/notion-simple.sh update-status <PAGE_ID> \"Concluído\" NOTION_SMARTENVIOS_API_KEY.\n\nSe não encontrar card Priorizado, criar um novo via API Notion (opcional).",
+        "model": "xai/grok-3-mini",
+        "timeoutSeconds": 360
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1771809343478,
+        "lastRunAtMs": 1771806340023,
+        "lastStatus": "ok",
+        "lastDurationMs": 31934,
+        "consecutiveErrors": 0
+      }
+    }
+  ]
+}

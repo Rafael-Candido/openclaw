@@ -21,6 +21,7 @@ MSG=$("$GMAIL_SH" "$PROFILE" get "$MSG_ID")
 SUBJECT=$(echo "$MSG" | jq -r '.payload.headers[] | select(.name == "Subject") | .value')
 FROM=$(echo "$MSG" | jq -r '.payload.headers[] | select(.name == "From") | .value')
 TO=$(echo "$MSG" | jq -r '.payload.headers[] | select(.name == "To") | .value')
+CC=$(echo "$MSG" | jq -r '.payload.headers[] | select(.name == "Cc") | .value // empty')
 DATE=$(echo "$MSG" | jq -r '.payload.headers[] | select(.name == "Date") | .value')
 THREAD_ID=$(echo "$MSG" | jq -r '.threadId')
 SNIPPET=$(echo "$MSG" | jq -r '.snippet')
@@ -80,9 +81,13 @@ case "$PROFILE" in
 esac
 
 HAS_DIRECT_MENTION="false"
-# Check if Rafael is in To: (not just Cc/Bcc)
-if [[ "$TO" == *"$EMAIL_TO_CHECK"* ]]; then
+# Destinatário direto só se Rafael estiver em To:. Em Cc = informativo, não criar draft.
+if [[ -n "$TO" && "$TO" == *"$EMAIL_TO_CHECK"* ]]; then
   HAS_DIRECT_MENTION="true"
+fi
+# Se está apenas em Cc (não em To), nunca draft — é informativo.
+if [[ -n "$CC" && "$CC" == *"$EMAIL_TO_CHECK"* && "$TO" != *"$EMAIL_TO_CHECK"* ]]; then
+  HAS_DIRECT_MENTION="false"
 fi
 
 # Request signal: only draft when there is explicit ask or ongoing actionable thread
@@ -161,7 +166,7 @@ elif [[ $PRIORITY_SCORE -ge 0 ]]; then
   ACTION="label"
 fi
 
-# Never create draft for no-reply / notifications / bulk senders (saves tokens and avoids noise)
+# Never create draft for no-reply / notifications / bulk / or when Rafael is only in Cc (informativo)
 if [[ "$ACTION" == "draft" ]]; then
   if [[ "$IS_NOTIFICATION" == "true" ]]; then
     ACTION="label"
@@ -170,6 +175,7 @@ if [[ "$ACTION" == "draft" ]]; then
   elif [[ "$IS_PROMOTIONAL" == "true" ]]; then
     ACTION="review"
   elif [[ "$HAS_DIRECT_MENTION" != "true" ]]; then
+    # Inclui: não está em To; ou está apenas em Cc (informativo) — nunca draft
     ACTION="review"
   elif [[ "$HAS_REQUEST_SIGNAL" != "true" && $THREAD_SIZE -lt 3 ]]; then
     ACTION="review"

@@ -93,13 +93,10 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "anthropic/claude-sonnet-4-6",
+        "primary": "google/gemini-2.5-flash",
         "fallbacks": [
-          "openai/gpt-4-turbo",
-          "deepseek/deepseek-chat",
-          "google/gemini-2.5-flash",
-          "anthropic/claude-sonnet-4-6",
-          "anthropic/claude-opus-4-6"
+          "google/gemini-2.5-flash-lite",
+          "xai/grok-3-mini"
         ]
       },
       "models": {
@@ -178,7 +175,7 @@
       "workspace": "/var/www/openclaw/workspace",
       "contextPruning": {
         "mode": "cache-ttl",
-        "ttl": "1h"
+        "ttl": "20m"
       },
       "compaction": {
         "mode": "safeguard"
@@ -186,9 +183,9 @@
       "heartbeat": {
         "every": "30m"
       },
-      "maxConcurrent": 2,
+      "maxConcurrent": 1,
       "subagents": {
-        "maxConcurrent": 4
+        "maxConcurrent": 2
       }
     },
     "list": [
@@ -197,12 +194,10 @@
         "name": "Main",
         "workspace": "/var/www/openclaw/workspace",
         "model": {
-          "primary": "openai/gpt-5.1-codex",
+          "primary": "google/gemini-2.5-flash",
           "fallbacks": [
-            "openai/gpt-4-turbo",
-            "deepseek/deepseek-chat",
-            "anthropic/claude-sonnet-4-6",
-            "anthropic/claude-opus-4-6"
+            "google/gemini-2.5-flash-lite",
+            "xai/grok-3-mini"
           ]
         }
       },
@@ -211,12 +206,11 @@
         "name": "Engenheiro SmartEnvios",
         "workspace": "/var/www/openclaw/workspace/agents/eng-smartenvios",
         "model": {
-          "primary": "google/gemini-3-pro-preview",
+          "primary": "google/gemini-2.5-flash",
           "fallbacks": [
+            "google/gemini-2.5-flash-lite",
             "google/gemini-2.5-pro",
-            "anthropic/claude-sonnet-4-6",
-            "openai/gpt-4-turbo",
-            "deepseek/deepseek-chat"
+            "xai/grok-3-mini"
           ]
         },
         "skills": [
@@ -236,12 +230,11 @@
         "name": "Engenheiro de Prompt",
         "workspace": "/var/www/openclaw/workspace/agents/eng-prompt",
         "model": {
-          "primary": "google/gemini-3-pro-preview",
+          "primary": "google/gemini-2.5-flash",
           "fallbacks": [
+            "google/gemini-2.5-flash-lite",
             "google/gemini-2.5-pro",
-            "anthropic/claude-sonnet-4-6",
-            "openai/gpt-4-turbo",
-            "deepseek/deepseek-chat"
+            "xai/grok-3-mini"
           ]
         },
         "skills": [
@@ -261,15 +254,13 @@
         "name": "Einstein (SmartEnvios)",
         "workspace": "/var/www/openclaw/workspace/agents/einstein",
         "model": {
-          "primary": "xai/grok-4-1-fast-non-reasoning",
+          "primary": "google/gemini-2.5-flash",
           "fallbacks": [
+            "google/gemini-2.5-flash-lite",
+            "google/gemini-2.5-pro",
             "xai/grok-3-mini",
             "xai/grok-3",
-            "deepseek/deepseek-chat",
-            "openai/gpt-4-turbo",
-            "anthropic/claude-sonnet-4-6",
-            "anthropic/claude-opus-4-6",
-            "xai/grok-beta"
+            "openai/gpt-4-turbo"
           ]
         },
         "skills": [
@@ -315,6 +306,54 @@
             "canvas"
           ]
         }
+      },
+      {
+        "id": "eng-automacao",
+        "name": "Engenheiro de Automação",
+        "workspace": "/var/www/openclaw/workspace/agents/eng-automacao",
+        "model": {
+          "primary": "google/gemini-2.5-flash",
+          "fallbacks": [
+            "google/gemini-2.5-flash-lite",
+            "xai/grok-3-mini",
+            "google/gemini-2.5-pro"
+          ]
+        },
+        "skills": [
+          "notion"
+        ],
+        "identity": {
+          "name": "Engenheiro de Automação",
+          "theme": "n8n Automation Engineer",
+          "emoji": "🤖"
+        },
+        "sandbox": {
+          "mode": "off"
+        }
+      },
+      {
+        "id": "esp-negocios",
+        "name": "Especialista de Negócios",
+        "workspace": "/var/www/openclaw/workspace/agents/esp-negocios",
+        "model": {
+          "primary": "google/gemini-2.5-flash",
+          "fallbacks": [
+            "google/gemini-2.5-flash-lite",
+            "xai/grok-3-mini",
+            "google/gemini-2.5-pro"
+          ]
+        },
+        "skills": [
+          "notion-canper"
+        ],
+        "identity": {
+          "name": "Especialista de Negócios",
+          "theme": "Generalista de execução para demandas de negócios",
+          "emoji": "📊"
+        },
+        "sandbox": {
+          "mode": "off"
+        }
       }
     ]
   },
@@ -339,7 +378,7 @@
   ],
   "messages": {
     "groupChat": {
-      "historyLimit": 30
+      "historyLimit": 1
     },
     "ackReactionScope": "group-mentions"
   },
@@ -362,7 +401,7 @@
           "enabled": true
         },
         "session-memory": {
-          "enabled": true
+          "enabled": false
         }
       }
     }
@@ -381,8 +420,8 @@
     "discord": {
       "allowBots": true,
       "groupPolicy": "open",
-      "historyLimit": 40,
-      "dmHistoryLimit": 25,
+      "historyLimit": 1,
+      "dmHistoryLimit": 0,
       "actions": {
         "reactions": true,
         "stickers": true,

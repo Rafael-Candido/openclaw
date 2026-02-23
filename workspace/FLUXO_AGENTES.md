@@ -57,6 +57,8 @@ Mapa atual de scripts determinísticos:
 - Otimizador: `workspace/scripts/optimizer-deterministic-cycle.sh`
 - Governança: `workspace/scripts/governance-check.sh`
 
+**Responsabilidades únicas (evitar sobreposição):** Cada agente/cron tem uma responsabilidade exclusiva no fluxo Notion; não duplicar criação, priorização ou execução entre agentes. Matriz completa e coordenação Presidente–Governança–Otimizador: `workspace/docs/NOTION-FLOW-OPTIMIZATION.md`.
+
 Regra de backlog de e-mail:
 - Governança força cadeia de execução quando não há card ativo:
   - Pro: `Presidente -> Diretor Tech -> Mail-Pro`
@@ -263,11 +265,12 @@ Assinar sempre (4º param do comment ou [Agente] no texto). Manter numeração d
 
 ## Especialistas nomeados
 
-Cada especialista capta apenas cards em **Priorizado** onde a propriedade **Agente** está no **seu nome**.
+Cada especialista capta apenas cards em **Priorizado** (ou Em andamento) onde a propriedade **Agente** está no **seu nome**. **Papéis detalhados (responsabilidade única e “nunca faz”)** para evitar sobreposição: `workspace/docs/NOTION-FLOW-OPTIMIZATION.md` secção 2.1.
 
 ### Engenheiro SmartEnvios
 - **Agente:** propriedade do card = **Engenheiro SmartEnvios**
 - **Diretor:** Tech SmartEnvios (recebe demandas dele)
+- **Não faz:** criar/priorizar cards; alterar prompts/crons/docs do OpenClaw; operar e-mail; deploy ou dados sensíveis sem aprovação no card (matriz completa: `workspace/docs/NOTION-FLOW-OPTIMIZATION.md`).
 - **Escopo:** fullstack — corrigir bugs, fazer melhorias, ampliar MCP, evoluir sistemas SmartEnvios. Todos os repos em `/var/www/` (ms.connectors, mcp, lgc.core, etc.). Código-fonte via GitHub SmartEnvios.
 - **GitHub:** https://github.com/SmartEnvios
 - **Acesso:** fullstack, git, exec, todos os repos em /var/www/
@@ -276,6 +279,7 @@ Cada especialista capta apenas cards em **Priorizado** onde a propriedade **Agen
 ### Engenheiro de Prompt
 - **Agente:** propriedade do card = **Engenheiro de Prompt**
 - **Diretor:** Pessoal (reporta a ele)
+- **Não faz:** criar cards no SmartEnvios; priorizar; executar e-mail ou código SmartEnvios; alterar .env/credenciais; desabilitar crons sem aprovação (matriz completa: `workspace/docs/NOTION-FLOW-OPTIMIZATION.md`).
 - **Escopo:** manutenção e evolução da estrutura OpenClaw — agentes, prompts, documentação, KNOWLEDGE, SETUP_COMPLETO, versionamento. Otimizador e Governança usam ele para evoluir a estrutura rumo a eficiência, baixo custo e qualidade.
 - **GitHub:** https://github.com/Rafael-Candido (repo `openclaw`)
 - **Parceiros:** Otimizador e Governança criam cards para ele evoluir a estrutura globalmente. Documenta aprendizados, atualiza setup, versiona OpenClaw.
@@ -299,10 +303,12 @@ Ambos seguem a mesma **rotina detalhada** abaixo, com comentários organizados n
 
 #### Mail-Pro
 - **Agente:** propriedade do card = **Mail-Pro**.
+- **Não faz:** criar ou priorizar cards; operar no DB Pessoal; alterar cron/scripts do OpenClaw (matriz: `workspace/docs/NOTION-FLOW-OPTIMIZATION.md`).
 - **Uso:** tarefas de e-mail **profissional** (SmartEnvios). Quando a tarefa envolver Gmail, usar credenciais/skill de e-mail profissional (mail-pro). Usa o Notion indicado na descrição do card (por padrão o mesmo do diretor que delegou).
 
 #### Mail-Person
 - **Agente:** propriedade do card = **Mail-Person**.
+- **Não faz:** criar ou priorizar cards; operar no DB SmartEnvios; alterar cron/scripts (matriz: `workspace/docs/NOTION-FLOW-OPTIMIZATION.md`).
 - **Uso:** tarefas de e-mail **pessoal**. Quando a tarefa envolver Gmail, usar credenciais/skill de e-mail pessoal (mail-person). Usa o Notion indicado na descrição do card (por padrão o mesmo do diretor que delegou).
 
 **Template de comentário de conclusão (Mail)** — uso recomendado no comentário final do card:
@@ -483,10 +489,12 @@ Agente dedicado a garantir continuidade operacional e escalonamento correto de t
    - `Agente=Mail-Pro` → força execução do cron Mail-Pro
    - `Agente=Mail-Person` → força execução do cron Mail-Person
    - Outros agentes (>30min) → registra alerta para intervenção manual
-6. **Registra incidentes** em `memory/YYYY-MM-DD.md`.
+6. **Registra incidentes** em `docs/diario/YYYY-MM-DD.md`.
 7. **Audita padronização operacional** — verifica se agentes/crons estão aderentes ao `workspace/templates/agent-behavior-patterns.md` e, quando houver desvio ou oportunidade, cria card no Notion Pessoal para `Engenheiro de Prompt`.
 8. **Monitora custo diário de IA** — consolida tokens/custo das execuções do dia; se ultrapassar limite, aciona Otimizador e escala card de redução de custo para `Engenheiro de Prompt`.
 9. **Painel WhatsApp em texto** — envio operacional da governança deve ser textual (sem imagem) para reduzir custo e complexidade.
+
+**Saúde operacional (resultado real):** A governança calcula **SAÚDE OPERACIONAL** com base em **resultados**, não só em "cron rodou". Inclui: backlog de e-mail (pro/pessoal) acima do limiar, crons críticos (Presidente, Mail-Pro, Mail-Person, Eng. de Prompt, Eng. SmartEnvios) com última execução em erro, qualidade Notion (auditoria), gargalos críticos/altos e cards travados ou Priorizado abandonados. O relatório e o painel WhatsApp exibem **OK** só quando o fluxo está a ser cumprido; em caso de falhas exibem **ALERTA** ou **CRÍTICO** e listam os problemas, para não passar mensagem de "estável e funcional" quando não é verdade. Limiares configuráveis: `GOV_OPERATIONAL_BACKLOG_ALERT` (default 40), `GOV_OPERATIONAL_BACKLOG_CRITICAL` (default 60).
 
 ### Protocolo de autonomia (obrigatório)
 
@@ -511,6 +519,8 @@ A governança não deve apenas alertar; deve **executar recuperação e organiza
 
 Regra de sucesso:
 - Se um problema reaparece em ciclos consecutivos, a governança deve sair do modo "monitoramento" para modo "correção + melhoria" automaticamente.
+
+**Handoff para o Otimizador:** Ao final de cada rodada, a Governança anota os gargalos registrados em `workspace/docs/operacao/governance-bottlenecks-for-optimizer.md` (data, key, severidade, recomendação). O Otimizador lê esse ficheiro na sua execução e usa os itens para criar cards de melhoria para o Engenheiro de Prompt ou aplicar correções de baixo risco, evoluindo o fluxo em conjunto (detalhes em `workspace/docs/NOTION-FLOW-OPTIMIZATION.md`).
 
 ### Escalonamento automático — como funciona:
 
@@ -542,6 +552,8 @@ Isso significa que ao **adicionar novos agentes e crons**, a governança redistr
 
 Trabalha em parceria com a Governança. A governança é o **bombeiro** (garante execução em tempo real); o otimizador é o **engenheiro** (elimina a causa raiz para que a governança tenha cada vez menos trabalho).
 
+**Entrada do Otimizador:** Além do custo/tokens em `cron/runs/*.jsonl`, o Otimizador deve ler `workspace/docs/operacao/governance-bottlenecks-for-optimizer.md` (gargalos que a Governança registou nesta rodada/dia) e usar essa lista para priorizar cards de melhoria para o Engenheiro de Prompt e correções estruturais. Ver `workspace/docs/NOTION-FLOW-OPTIMIZATION.md`.
+
 - **Cron:** `Otimizador - análise diária 7h` (ID: `9cb7163f-2e4e-48ed-9035-8148c77c5968`)
 - **Frequência:** diário às 7h (America/Sao_Paulo)
 - **Prompt:** `scripts/optimizer-prompt.txt`
@@ -562,7 +574,7 @@ Trabalha em parceria com a Governança. A governança é o **bombeiro** (garante
 
 3. **Documentar para não repetir:**
    - `KNOWLEDGE.md` → padrões definitivos com causa + fix
-   - `memory/YYYY-MM-DD.md` → resumo do dia + tendência
+   - `docs/diario/YYYY-MM-DD.md` → resumo do dia + tendência
 
 ### Objetivo de longo prazo:
 

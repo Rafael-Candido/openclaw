@@ -57,20 +57,15 @@ extract_email() {
   printf '%s' "${parsed}"
 }
 
+# Rascunho alinhado ao rafael-dna: frases curtas, sem floreio, sem "obrigado pela mensagem" nem resumo de contexto.
+# Ref: workspace/docs/rafael-dna.md (Estilo de Comunicação), communication-patterns-from-samples.md
 build_draft_body() {
   local subject="$1"
   local snippet="$2"
+  # Corpo mínimo: confirmação e próximo passo. O thread já tem o contexto; não repetir snippet.
   cat <<EOF
-Olá,
+Recebi. Retorno em breve.
 
-Obrigado pela mensagem sobre "${subject}".
-
-Resumo inicial do contexto:
-${snippet}
-
-Vou revisar os detalhes e retorno em seguida com os próximos passos.
-
-Att,
 Rafael
 EOF
 }
@@ -188,19 +183,17 @@ if [[ "${TOTAL}" != "0" ]]; then
         add_error "action" "${msg_id}" "unknown action: ${action}"
         ;;
     esac
-
-    if "${GMAIL}" "${PROFILE}" mark-read "${msg_id}" >/dev/null 2>&1; then
-      MARKED_READ=$((MARKED_READ + 1))
-    else
-      add_error "mark-read" "${msg_id}" "gmail.sh mark-read failed"
-    fi
-
-    if "${GMAIL}" "${PROFILE}" archive "${msg_id}" >/dev/null 2>&1; then
-      ARCHIVED=$((ARCHIVED + 1))
-    else
-      add_error "archive" "${msg_id}" "gmail.sh archive failed"
-    fi
   done < <(echo "${WORKFLOW_OUT}" | jq -c '.processed[]')
+
+  # Batch mark-read e archive (paralelo; menos round-trips)
+  BATCH_IDS=()
+  while IFS= read -r id; do [[ -n "$id" ]] && BATCH_IDS+=("$id"); done < <(echo "${WORKFLOW_OUT}" | jq -r '.processed[].messageId // empty')
+  if [[ ${#BATCH_IDS[@]} -gt 0 ]]; then
+    MARKED_READ="$("${GMAIL}" "${PROFILE}" batch-mark-read "${BATCH_IDS[@]}" 2>/dev/null | jq -r '.modified // 0')"
+    ARCHIVED="$("${GMAIL}" "${PROFILE}" batch-archive "${BATCH_IDS[@]}" 2>/dev/null | jq -r '.archived // 0')"
+    [[ ! "${MARKED_READ}" =~ ^[0-9]+$ ]] && MARKED_READ=${#BATCH_IDS[@]}
+    [[ ! "${ARCHIVED}" =~ ^[0-9]+$ ]] && ARCHIVED=${#BATCH_IDS[@]}
+  fi
 fi
 
 jq -n \

@@ -15,8 +15,9 @@ if [[ -z "$PROFILE" || -z "$ACTION" ]]; then
   echo "" >&2
   echo "Actions:" >&2
   echo "  auth                           - Get access token (cached 50min)" >&2
-  echo "  list [query]                   - List messages (default: is:unread)" >&2
-  echo "  get <msgId>                    - Get single message" >&2
+  echo "  list [query] [maxResults]      - List messages (default: is:unread, 50)" >&2
+  echo "  get <msgId>                    - Get single message (metadata)" >&2
+  echo "  get-full <msgId>               - Get full message (incl. body)" >&2
   echo "  thread <threadId>              - Get full thread with history" >&2
   echo "  labels                         - List all labels" >&2
   echo "  label-create <name>            - Create label (or get existing)" >&2
@@ -119,7 +120,8 @@ case "$ACTION" in
 
   list)
     QUERY="${3:-is:unread}"
-    gmail_api GET "messages?q=$(python3 -c "import urllib.parse; print(urllib.parse.quote('''$QUERY'''))")"
+    MAX="${4:-50}"
+    gmail_api GET "messages?maxResults=$MAX&q=$(python3 -c "import urllib.parse; print(urllib.parse.quote('''$QUERY'''))")"
     ;;
 
   get)
@@ -129,6 +131,15 @@ case "$ACTION" in
       exit 1
     fi
     gmail_api GET "messages/$MSG_ID?format=metadata&metadataHeaders=Subject&metadataHeaders=From&metadataHeaders=To&metadataHeaders=Date"
+    ;;
+
+  get-full)
+    MSG_ID="${3:-}"
+    if [[ -z "$MSG_ID" ]]; then
+      echo "Usage: $0 $PROFILE get-full <messageId>" >&2
+      exit 1
+    fi
+    gmail_api GET "messages/$MSG_ID?format=full"
     ;;
 
   thread)
@@ -219,6 +230,41 @@ $BODY"
       exit 1
     fi
     gmail_api POST "messages/$MSG_ID/modify" -d '{"removeLabelIds": ["INBOX"]}'
+    ;;
+
+  batch-mark-read)
+    # Uso: $0 $PROFILE batch-mark-read id1 id2 ...  Processa em paralelo (GMAIL_BATCH_PARALLEL, default 8).
+    PARALLEL="${GMAIL_BATCH_PARALLEL:-8}"
+    shift 2
+    ids=()
+    for a in "$@"; do [[ -n "$a" ]] && ids+=("$a"); done
+    if [[ ${#ids[@]} -eq 0 ]]; then
+      echo '{"modified":0}' | jq .
+      exit 0
+    fi
+    for id in "${ids[@]}"; do
+      while [[ $(jobs -r 2>/dev/null | wc -l) -ge "$PARALLEL" ]]; do sleep 0.1; done
+      gmail_api POST "messages/${id}/modify" -d '{"removeLabelIds": ["UNREAD"]}' >/dev/null 2>&1 &
+    done
+    wait
+    echo "{\"modified\": ${#ids[@]}}" | jq .
+    ;;
+
+  batch-archive)
+    PARALLEL="${GMAIL_BATCH_PARALLEL:-8}"
+    shift 2
+    ids=()
+    for a in "$@"; do [[ -n "$a" ]] && ids+=("$a"); done
+    if [[ ${#ids[@]} -eq 0 ]]; then
+      echo '{"archived":0}' | jq .
+      exit 0
+    fi
+    for id in "${ids[@]}"; do
+      while [[ $(jobs -r 2>/dev/null | wc -l) -ge "$PARALLEL" ]]; do sleep 0.1; done
+      gmail_api POST "messages/${id}/modify" -d '{"removeLabelIds": ["INBOX"]}' >/dev/null 2>&1 &
+    done
+    wait
+    echo "{\"archived\": ${#ids[@]}}" | jq .
     ;;
 
   *)

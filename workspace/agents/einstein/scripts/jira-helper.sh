@@ -29,11 +29,17 @@ lower() {
 }
 
 normalize_alias() {
-  local value
-  value="$(lower "$1")"
-  # shellcheck disable=SC2001
-  value="$(echo "$value" | sed -E 's/[[:space:]]+/ /g; s/^ //; s/ $//')"
-  printf "%s" "$value"
+  python3 - "$1" <<'PY'
+import re
+import sys
+import unicodedata
+
+raw = sys.argv[1] if len(sys.argv) > 1 else ""
+text = raw.lower()
+text = "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
+text = re.sub(r"\s+", " ", text).strip()
+print(text)
+PY
 }
 
 urlencode() {
@@ -143,7 +149,7 @@ jira_post() {
 cache_user_object() {
   local user_json="$1"
   local query_alias="${2:-}"
-  local account_id display_name email normalized_display normalized_first normalized_query tmp_file
+  local account_id display_name email normalized_display normalized_first tmp_file
 
   account_id="$(jq -r '.accountId // empty' <<<"$user_json")"
   [[ -n "$account_id" ]] || return 0
@@ -152,7 +158,6 @@ cache_user_object() {
   email="$(jq -r '.emailAddress // empty' <<<"$user_json")"
   normalized_display="$(normalize_alias "$display_name")"
   normalized_first="$(normalize_alias "${display_name%% *}")"
-  normalized_query="$(normalize_alias "$query_alias")"
 
   tmp_file="$(mktemp)"
   jq \
@@ -162,7 +167,6 @@ cache_user_object() {
     --arg now "$(now_iso)" \
     --arg normalizedDisplay "$normalized_display" \
     --arg normalizedFirst "$normalized_first" \
-    --arg normalizedQuery "$normalized_query" \
     '
       .updatedAt = $now
       | .usersByAccountId[$accountId] = {
@@ -170,10 +174,9 @@ cache_user_object() {
           displayName: $displayName,
           emailAddress: $email,
           lastSeenAt: $now
-        }
+      }
       | if $normalizedDisplay != "" then .aliases[$normalizedDisplay] = $accountId else . end
       | if $normalizedFirst != "" then .aliases[$normalizedFirst] = $accountId else . end
-      | if $normalizedQuery != "" then .aliases[$normalizedQuery] = $accountId else . end
       | if $email != "" then .aliases[($email | ascii_downcase)] = $accountId else . end
       | if $email != "" then .aliases[(($email | split("@")[0]) | ascii_downcase)] = $accountId else . end
     ' "$ASSIGNEE_CACHE" > "$tmp_file"
@@ -183,14 +186,14 @@ cache_user_object() {
 
 resolve_assignee() {
   local query="$1"
-  local normalized_query account_id cached_user uri search_results selected
+  local normalized_query account_id cached_user uri search_results selected tmp_file
 
   normalized_query="$(normalize_alias "$query")"
   account_id="$(jq -r --arg alias "$normalized_query" '.aliases[$alias] // empty' "$ASSIGNEE_CACHE")"
 
   if [[ -n "$account_id" ]]; then
     cached_user="$(jq -c --arg id "$account_id" '.usersByAccountId[$id] // {}' "$ASSIGNEE_CACHE")"
-    if [[ "$cached_user" != "{}" ]]; then
+    if [[ "$cached_user" != "{}" ]] && assignee_matches_query "$query" "$cached_user"; then
       jq -c '. + {source: "cache"}' <<<"$cached_user"
       return 0
     fi
@@ -203,8 +206,18 @@ resolve_assignee() {
     cache_user_object "$user_line" "$query"
   done < <(jq -c '.[]' <<<"$search_results")
 
+  # Após popular cache com resultados da API, tenta novamente por alias normalizado.
+  account_id="$(jq -r --arg alias "$normalized_query" '.aliases[$alias] // empty' "$ASSIGNEE_CACHE")"
+  if [[ -n "$account_id" ]]; then
+    cached_user="$(jq -c --arg id "$account_id" '.usersByAccountId[$id] // {}' "$ASSIGNEE_CACHE")"
+    if [[ "$cached_user" != "{}" ]] && assignee_matches_query "$query" "$cached_user"; then
+      jq -c '. + {source: "api-cache"}' <<<"$cached_user"
+      return 0
+    fi
+  fi
+
   selected="$(jq -c --arg q "$normalized_query" '
-    def norm: ascii_downcase;
+    def norm: tostring | ascii_downcase;
     if (type != "array" or length == 0) then
       null
     else
@@ -218,7 +231,6 @@ resolve_assignee() {
           ((.displayName // "" | norm) | contains($q))
           or ((.emailAddress // "" | norm) | contains($q))
         ))[0]
-        // .[0]
       )
     end
   ' <<<"$search_results")"
@@ -226,6 +238,15 @@ resolve_assignee() {
   [[ "$selected" != "null" && -n "$selected" ]] || return 1
 
   cache_user_object "$selected" "$query"
+
+  # Apenas o usuário escolhido recebe alias da consulta textual.
+  account_id="$(jq -r '.accountId // empty' <<<"$selected")"
+  if [[ -n "$account_id" && -n "$normalized_query" ]]; then
+    tmp_file="$(mktemp)"
+    jq --arg alias "$normalized_query" --arg id "$account_id" '.aliases[$alias] = $id' "$ASSIGNEE_CACHE" > "$tmp_file"
+    mv "$tmp_file" "$ASSIGNEE_CACHE"
+  fi
+
   jq -c '. + {source: "api"}' <<<"$selected"
 }
 
@@ -239,8 +260,30 @@ resolve_assignee_from_cache_only() {
 
   cached_user="$(jq -c --arg id "$account_id" '.usersByAccountId[$id] // {}' "$ASSIGNEE_CACHE")"
   [[ "$cached_user" != "{}" ]] || return 1
+  assignee_matches_query "$query" "$cached_user" || return 1
 
   jq -c '. + {source: "cache"}' <<<"$cached_user"
+}
+
+assignee_matches_query() {
+  local query="$1"
+  local user_json="$2"
+  local q_norm display_norm email_local_norm token
+
+  q_norm="$(normalize_alias "$query")"
+  [[ -n "$q_norm" ]] || return 1
+
+  display_norm="$(normalize_alias "$(jq -r '.displayName // ""' <<<"$user_json")")"
+  email_local_norm="$(normalize_alias "$(jq -r '.emailAddress // ""' <<<"$user_json" | awk -F'@' '{print $1}')")"
+
+  for token in $q_norm; do
+    [[ ${#token} -ge 2 ]] || continue
+    if [[ "$display_norm" == *"$token"* || "$email_local_norm" == *"$token"* ]]; then
+      continue
+    fi
+    return 1
+  done
+  return 0
 }
 
 sync_field_ids() {
@@ -249,7 +292,10 @@ sync_field_ids() {
   fields_json="$(jira_get "rest/api/3/field")"
 
   product_id="$(jq -r '
-    map(select(.custom == true and ((.name // "" | ascii_downcase) | test("produto|product"))))
+    map(select(
+      .custom == true
+      and ((.name // "" | ascii_downcase) | test("^(produto|product)(\\b|\\s|$)"))
+    ))
     | .[0].id // ""
   ' <<<"$fields_json")"
 
@@ -341,23 +387,42 @@ infer_product() {
   local text
   text="$(normalize_alias "$1")"
 
-  if [[ "$text" =~ app|aplicativo ]]; then echo "APP"; return; fi
-  if [[ "$text" =~ tracking|rastreio|rastreamento ]]; then echo "APP"; return; fi
-  if [[ "$text" =~ api ]]; then echo "API"; return; fi
-  if [[ "$text" =~ portal ]]; then echo "Portal"; return; fi
+  if [[ "$text" =~ magento|connector|integracao|integration|plataforma ]]; then echo "Integração Plataformas"; return; fi
+  if [[ "$text" =~ tracking|rastreio|rastreamento ]]; then echo "Tracking"; return; fi
   if [[ "$text" =~ dashboard|painel ]]; then echo "Dashboard"; return; fi
-  echo "APP"
+  echo "Não se aplica"
 }
 
 infer_project_label() {
   local text
   text="$(normalize_alias "$1")"
 
-  if [[ "$text" =~ smartenvios|sme ]]; then
-    echo "SME project"
-    return
-  fi
-  echo "SME project"
+  if [[ "$text" =~ magento\ 2|magento2|magento ]]; then echo "Connector Magento 2"; return; fi
+  if [[ "$text" =~ vtex ]]; then echo "Connector VTEX"; return; fi
+  if [[ "$text" =~ shopify ]]; then echo "Connector Shopify"; return; fi
+  if [[ "$text" =~ woocommerce|woo\ commerce ]]; then echo "Connector WooCommerce"; return; fi
+  if [[ "$text" =~ bling ]]; then echo "Connector Bling"; return; fi
+  if [[ "$text" =~ tiny ]]; then echo "Connector Tiny"; return; fi
+  echo "Não se aplica"
+}
+
+infer_component() {
+  local text
+  text="$(normalize_alias "$1")"
+
+  if [[ "$text" =~ magento|connector|integracao|integration ]]; then echo "ms.connectors"; return; fi
+  if [[ "$text" =~ tracking|rastreio|rastreamento ]]; then echo "ms.tracking"; return; fi
+  echo "Não se aplica"
+}
+
+to_label_slug() {
+  local text
+  text="$(normalize_alias "$1")"
+  text="$(tr ' ' '-' <<<"$text")"
+  text="$(tr -cd '[:alnum:]-_' <<<"$text")"
+  text="${text#-}"
+  text="${text%-}"
+  echo "$text"
 }
 
 candidate_values_for_kind() {
@@ -389,23 +454,17 @@ candidate_values_for_kind() {
       fi
       ;;
     product)
-      if [[ "$normalized" == "app" || "$normalized" == "aplicativo" ]]; then
-        echo "APP"
-        echo "Aplicativo"
-      fi
-      if [[ "$normalized" == "portal" ]]; then
-        echo "Portal"
-      fi
-      if [[ "$normalized" == "api" ]]; then
-        echo "API"
-      fi
+      if [[ "$normalized" == "integracao plataformas" || "$normalized" == "integracao" || "$normalized" == "integration" || "$normalized" == "magento" || "$normalized" == "magento 2" ]]; then echo "Integração Plataformas"; fi
+      if [[ "$normalized" == "tracking" || "$normalized" == "rastreio" || "$normalized" == "rastreamento" ]]; then echo "Tracking"; fi
+      if [[ "$normalized" == "nao se aplica" ]]; then echo "Não se aplica"; fi
       ;;
     projectLabel)
-      if [[ "$normalized" == "sme project" || "$normalized" == "sme" || "$normalized" == "smartenvios" ]]; then
-        echo "SME project"
-        echo "SME"
-        echo "SmartEnvios"
-      fi
+      if [[ "$normalized" == "magento 2" || "$normalized" == "magento" || "$normalized" == "connector magento 2" ]]; then echo "Connector Magento 2"; fi
+      if [[ "$normalized" == "nao se aplica" ]]; then echo "Não se aplica"; fi
+      ;;
+    component)
+      if [[ "$normalized" == "ms connectors" || "$normalized" == "connectors" || "$normalized" == "connector" || "$normalized" == "magento" || "$normalized" == "magento 2" ]]; then echo "ms.connectors"; fi
+      if [[ "$normalized" == "nao se aplica" ]]; then echo "Não se aplica"; fi
       ;;
   esac
 }
@@ -417,15 +476,25 @@ pick_allowed_value() {
   local required="$4"
   local chosen=""
   local candidate allowed candidate_l allowed_l
+  local -a allowed_values=()
+  local -a candidates=()
 
-  mapfile -t allowed_values < <(jq -r '.[] | .value // .name // empty' <<<"$allowed_json")
+  while IFS= read -r allowed; do
+    [[ -n "$allowed" ]] || continue
+    allowed_values+=("$allowed")
+  done < <(jq -r '.[] | .value // .name // empty' <<<"$allowed_json")
 
   if [[ "${#allowed_values[@]}" -eq 0 ]]; then
-    echo "$desired"
+    # Sem allowedValues não há garantia de que o valor é aceito.
+    # Melhor omitir e deixar o Jira aplicar default, evitando 400.
+    echo ""
     return
   fi
 
-  mapfile -t candidates < <(candidate_values_for_kind "$kind" "$desired" | awk 'NF' | awk '!seen[$0]++')
+  while IFS= read -r candidate; do
+    [[ -n "$candidate" ]] || continue
+    candidates+=("$candidate")
+  done < <(candidate_values_for_kind "$kind" "$desired" | awk 'NF' | awk '!seen[$0]++')
 
   for candidate in "${candidates[@]}"; do
     candidate_l="$(normalize_alias "$candidate")"
@@ -462,7 +531,8 @@ field_spec_from_meta() {
         else
           {
             required: ($selected.fields[$fieldId].required // false),
-            allowed: ($selected.fields[$fieldId].allowedValues // [])
+            allowed: ($selected.fields[$fieldId].allowedValues // []),
+            schema: ($selected.fields[$fieldId].schema // {})
           }
         end
     ' <<<"$createmeta_json"
@@ -528,6 +598,7 @@ cmd_create() {
   local integration=""
   local category=""
   local project_label=""
+  local component=""
   local priority="Highest"
   local project_key=""
   local dry_run="false"
@@ -540,12 +611,12 @@ cmd_create() {
   local createmeta_json="{}"
   local custom_fields_json="{}"
   local issue_response issue_key issue_id issue_url status_name transitioned_to_todo
-  local product_field integration_field category_field project_label_field
-  local product_spec integration_spec category_spec project_label_spec
-  local product_required integration_required category_required project_label_required
-  local product_allowed integration_allowed category_allowed project_label_allowed
-  local selected_product selected_integration selected_category selected_project_label
-  local description_text description_doc payload
+  local product_field integration_field category_field project_label_field component_field
+  local product_spec integration_spec category_spec project_label_spec component_spec
+  local product_required integration_required category_required project_label_required component_required
+  local product_allowed integration_allowed category_allowed project_label_allowed component_allowed
+  local selected_product selected_integration selected_category selected_project_label selected_component
+  local description_text description_doc payload payload_component_json labels_json category_label
   local links=()
 
   load_env
@@ -585,6 +656,10 @@ cmd_create() {
         project_label="${2:-}"
         shift 2
         ;;
+      --component)
+        component="${2:-}"
+        shift 2
+        ;;
       --priority)
         priority="${2:-}"
         shift 2
@@ -617,7 +692,17 @@ cmd_create() {
     project_key="$JIRA_PROJECT_KEY_LOCAL"
   fi
 
-  context_text="$summary"$'\n'"$description"$'\n'"$reason"$'\n'"${links[*]}"
+  local links_text=""
+  if [[ "${#links[@]-0}" -gt 0 ]]; then
+    local link_item
+    for link_item in "${links[@]-}"; do
+      if [[ -n "$links_text" ]]; then
+        links_text+=$' '
+      fi
+      links_text+="$link_item"
+    done
+  fi
+  context_text="$summary"$'\n'"$description"$'\n'"$reason"$'\n'"$links_text"
 
   if [[ -z "$reason" ]]; then
     reason="tarefa"
@@ -628,6 +713,7 @@ cmd_create() {
   [[ -n "$integration" ]] || integration="$(infer_integration "$context_text")"
   [[ -n "$category" ]] || category="$(infer_category "$context_text")"
   [[ -n "$project_label" ]] || project_label="$(infer_project_label "$context_text")"
+  [[ -n "$component" ]] || component="$(infer_component "$context_text $integration $project_label")"
 
   if [[ -n "$assignee_name" ]]; then
     if [[ "$dry_run" == "true" ]]; then
@@ -654,6 +740,7 @@ cmd_create() {
   integration_field="$(jq -r '.fieldIds.integration // empty' "$FIELD_CACHE")"
   category_field="$(jq -r '.fieldIds.category // empty' "$FIELD_CACHE")"
   project_label_field="$(jq -r '.fieldIds.projectLabel // empty' "$FIELD_CACHE")"
+  component_field="components"
 
   if [[ "$dry_run" != "true" ]]; then
     createmeta_json="$(jira_get "rest/api/3/issue/createmeta?projectKeys=$(urlencode "$project_key")&expand=projects.issuetypes.fields" || echo '{}')"
@@ -663,10 +750,28 @@ cmd_create() {
     product_spec="$(field_spec_from_meta "$createmeta_json" "$issue_type" "$product_field")"
     product_required="$(jq -r '.required // false' <<<"$product_spec")"
     product_allowed="$(jq -c '.allowed // []' <<<"$product_spec")"
+    product_schema_type="$(jq -r '.schema.type // empty' <<<"$product_spec")"
+    product_schema_items="$(jq -r '.schema.items // empty' <<<"$product_spec")"
     selected_product="$(pick_allowed_value "product" "$product" "$product_allowed" "$product_required")"
     if [[ -n "$selected_product" ]]; then
-      custom_fields_json="$(jq --arg field "$product_field" --arg value "$selected_product" '. + {($field): {value: $value}}' <<<"$custom_fields_json")"
-      product="$selected_product"
+      case "${product_schema_type}:${product_schema_items}" in
+        array:option)
+          custom_fields_json="$(jq --arg field "$product_field" --arg value "$selected_product" '. + {($field): [{value: $value}]}' <<<"$custom_fields_json")"
+          product="$selected_product"
+          ;;
+        option|"")
+          custom_fields_json="$(jq --arg field "$product_field" --arg value "$selected_product" '. + {($field): {value: $value}}' <<<"$custom_fields_json")"
+          product="$selected_product"
+          ;;
+        array:string)
+          custom_fields_json="$(jq --arg field "$product_field" --arg value "$selected_product" '. + {($field): [$value]}' <<<"$custom_fields_json")"
+          product="$selected_product"
+          ;;
+        string)
+          custom_fields_json="$(jq --arg field "$product_field" --arg value "$selected_product" '. + {($field): $value}' <<<"$custom_fields_json")"
+          product="$selected_product"
+          ;;
+      esac
     fi
   fi
 
@@ -674,10 +779,28 @@ cmd_create() {
     integration_spec="$(field_spec_from_meta "$createmeta_json" "$issue_type" "$integration_field")"
     integration_required="$(jq -r '.required // false' <<<"$integration_spec")"
     integration_allowed="$(jq -c '.allowed // []' <<<"$integration_spec")"
+    integration_schema_type="$(jq -r '.schema.type // empty' <<<"$integration_spec")"
+    integration_schema_items="$(jq -r '.schema.items // empty' <<<"$integration_spec")"
     selected_integration="$(pick_allowed_value "integration" "$integration" "$integration_allowed" "$integration_required")"
     if [[ -n "$selected_integration" ]]; then
-      custom_fields_json="$(jq --arg field "$integration_field" --arg value "$selected_integration" '. + {($field): {value: $value}}' <<<"$custom_fields_json")"
-      integration="$selected_integration"
+      case "${integration_schema_type}:${integration_schema_items}" in
+        array:option)
+          custom_fields_json="$(jq --arg field "$integration_field" --arg value "$selected_integration" '. + {($field): [{value: $value}]}' <<<"$custom_fields_json")"
+          integration="$selected_integration"
+          ;;
+        option|"")
+          custom_fields_json="$(jq --arg field "$integration_field" --arg value "$selected_integration" '. + {($field): {value: $value}}' <<<"$custom_fields_json")"
+          integration="$selected_integration"
+          ;;
+        array:string)
+          custom_fields_json="$(jq --arg field "$integration_field" --arg value "$selected_integration" '. + {($field): [$value]}' <<<"$custom_fields_json")"
+          integration="$selected_integration"
+          ;;
+        string)
+          custom_fields_json="$(jq --arg field "$integration_field" --arg value "$selected_integration" '. + {($field): $value}' <<<"$custom_fields_json")"
+          integration="$selected_integration"
+          ;;
+      esac
     fi
   fi
 
@@ -685,10 +808,28 @@ cmd_create() {
     category_spec="$(field_spec_from_meta "$createmeta_json" "$issue_type" "$category_field")"
     category_required="$(jq -r '.required // false' <<<"$category_spec")"
     category_allowed="$(jq -c '.allowed // []' <<<"$category_spec")"
+    category_schema_type="$(jq -r '.schema.type // empty' <<<"$category_spec")"
+    category_schema_items="$(jq -r '.schema.items // empty' <<<"$category_spec")"
     selected_category="$(pick_allowed_value "category" "$category" "$category_allowed" "$category_required")"
     if [[ -n "$selected_category" ]]; then
-      custom_fields_json="$(jq --arg field "$category_field" --arg value "$selected_category" '. + {($field): {value: $value}}' <<<"$custom_fields_json")"
-      category="$selected_category"
+      case "${category_schema_type}:${category_schema_items}" in
+        array:option)
+          custom_fields_json="$(jq --arg field "$category_field" --arg value "$selected_category" '. + {($field): [{value: $value}]}' <<<"$custom_fields_json")"
+          category="$selected_category"
+          ;;
+        option|"")
+          custom_fields_json="$(jq --arg field "$category_field" --arg value "$selected_category" '. + {($field): {value: $value}}' <<<"$custom_fields_json")"
+          category="$selected_category"
+          ;;
+        array:string)
+          custom_fields_json="$(jq --arg field "$category_field" --arg value "$selected_category" '. + {($field): [$value]}' <<<"$custom_fields_json")"
+          category="$selected_category"
+          ;;
+        string)
+          custom_fields_json="$(jq --arg field "$category_field" --arg value "$selected_category" '. + {($field): $value}' <<<"$custom_fields_json")"
+          category="$selected_category"
+          ;;
+      esac
     fi
   fi
 
@@ -696,10 +837,39 @@ cmd_create() {
     project_label_spec="$(field_spec_from_meta "$createmeta_json" "$issue_type" "$project_label_field")"
     project_label_required="$(jq -r '.required // false' <<<"$project_label_spec")"
     project_label_allowed="$(jq -c '.allowed // []' <<<"$project_label_spec")"
+    project_label_schema_type="$(jq -r '.schema.type // empty' <<<"$project_label_spec")"
+    project_label_schema_items="$(jq -r '.schema.items // empty' <<<"$project_label_spec")"
     selected_project_label="$(pick_allowed_value "projectLabel" "$project_label" "$project_label_allowed" "$project_label_required")"
     if [[ -n "$selected_project_label" ]]; then
-      custom_fields_json="$(jq --arg field "$project_label_field" --arg value "$selected_project_label" '. + {($field): {value: $value}}' <<<"$custom_fields_json")"
-      project_label="$selected_project_label"
+      case "${project_label_schema_type}:${project_label_schema_items}" in
+        array:option)
+          custom_fields_json="$(jq --arg field "$project_label_field" --arg value "$selected_project_label" '. + {($field): [{value: $value}]}' <<<"$custom_fields_json")"
+          project_label="$selected_project_label"
+          ;;
+        option|"")
+          custom_fields_json="$(jq --arg field "$project_label_field" --arg value "$selected_project_label" '. + {($field): {value: $value}}' <<<"$custom_fields_json")"
+          project_label="$selected_project_label"
+          ;;
+        array:string)
+          custom_fields_json="$(jq --arg field "$project_label_field" --arg value "$selected_project_label" '. + {($field): [$value]}' <<<"$custom_fields_json")"
+          project_label="$selected_project_label"
+          ;;
+        string)
+          custom_fields_json="$(jq --arg field "$project_label_field" --arg value "$selected_project_label" '. + {($field): $value}' <<<"$custom_fields_json")"
+          project_label="$selected_project_label"
+          ;;
+      esac
+    fi
+  fi
+
+  if [[ -n "$component_field" ]]; then
+    component_spec="$(field_spec_from_meta "$createmeta_json" "$issue_type" "$component_field")"
+    component_required="$(jq -r '.required // false' <<<"$component_spec")"
+    component_allowed="$(jq -c '.allowed // []' <<<"$component_spec")"
+    selected_component="$(pick_allowed_value "component" "$component" "$component_allowed" "$component_required")"
+    if [[ -n "$selected_component" ]]; then
+      payload_component_json="$(jq -n --arg name "$selected_component" '[{name: $name}]')"
+      component="$selected_component"
     fi
   fi
 
@@ -708,9 +878,9 @@ cmd_create() {
     description_text+="$description"$'\n\n'
   fi
 
-  if [[ "${#links[@]}" -gt 0 ]]; then
+  if [[ "${#links[@]-0}" -gt 0 ]]; then
     description_text+="Links relevantes:"$'\n'
-    for link in "${links[@]}"; do
+    for link in "${links[@]-}"; do
       [[ -n "$link" ]] || continue
       description_text+="- $link"$'\n'
     done
@@ -763,6 +933,16 @@ cmd_create() {
   ')"
 
   payload="$(jq --argjson custom "$custom_fields_json" '.fields += $custom' <<<"$payload")"
+  if [[ -n "$payload_component_json" ]]; then
+    payload="$(jq --argjson comps "$payload_component_json" '.fields.components = $comps' <<<"$payload")"
+  fi
+  if [[ -n "$category" ]]; then
+    category_label="$(to_label_slug "$category")"
+    if [[ -n "$category_label" ]]; then
+      labels_json="$(jq -n --arg lbl "categoria:$category_label" '[$lbl]')"
+      payload="$(jq --argjson labels "$labels_json" '.fields.labels = (($labels + (.fields.labels // [])) | unique)' <<<"$payload")"
+    fi
+  fi
 
   if [[ "$dry_run" == "true" ]]; then
     jq -n \
@@ -776,6 +956,7 @@ cmd_create() {
       --arg projectLabel "$project_label" \
       --arg integration "${integration:-}" \
       --arg category "$category" \
+      --arg component "$component" \
       --argjson payload "$payload" \
       '{
         dryRun: true,
@@ -789,7 +970,8 @@ cmd_create() {
           product: $product,
           projectLabel: $projectLabel,
           integration: $integration,
-          category: $category
+          category: $category,
+          component: $component
         },
         payload: $payload
       }'
@@ -821,6 +1003,7 @@ cmd_create() {
     --arg projectLabel "$project_label" \
     --arg integration "${integration:-}" \
     --arg category "$category" \
+    --arg component "$component" \
     '{
       ok: true,
       issue: {
@@ -838,7 +1021,8 @@ cmd_create() {
         product: $product,
         projectLabel: $projectLabel,
         integration: $integration,
-        category: $category
+        category: $category,
+        component: $component
       },
       transitionedToPending: ($transitioned == "true")
     }'

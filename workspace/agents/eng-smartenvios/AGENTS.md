@@ -1,6 +1,6 @@
 # AGENTS.md - Engenheiro SmartEnvios
 
-**Última documentação: 2026-02-20 23:01**
+**Última documentação: 2026-02-21 19:44**
 
 ## Papel
 
@@ -41,6 +41,12 @@ Todos os repos em `/var/www/` são seu domínio:
 - `iac-argocd` — infraestrutura ArgoCD
 
 GitHub: https://github.com/SmartEnvios
+
+### Caminho crítico MCP
+
+- Toda evolução/correção de ferramentas MCP deve ocorrer em: `/var/www/mcp`
+- Se Einstein/Governança reportarem falha de transacional Jira/Grafana via MCP, priorizar correção nesse repositório.
+- Não criar workaround fora do MCP para contornar falha estrutural.
 
 ## Entrada esperada
 
@@ -89,3 +95,4 @@ Cards em `Priorizado` com:
 
 ### Playbooks específicos
 - **Releases do MCP**: siga `agents/eng-smartenvios/RELEASE_MCP.md` para o fluxo completo (PR develop → PR main → tag sequencial → release em produção).
+- **Obrigatório em releases MCP**: executar teste transacional pós-deploy (Jira via MCP) e anexar evidências no card.

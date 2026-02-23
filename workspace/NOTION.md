@@ -1,6 +1,6 @@
 # Notion Workspaces Configurados
 
-**Última documentação: 2026-02-20 23:01**
+**Última documentação: 2026-02-21 19:44**
 
 Você tem acesso a **3 workspaces do Notion** configurados como skills separadas:
 
@@ -46,6 +46,8 @@ Todas as skills suportam:
 ### Acesso via exec (notion-helper.sh)
 
 Para agentes que usam `exec` em vez de skill notion, usar `workspace/scripts/notion-helper.sh` com as variáveis de API key: `query`, `update-status`, `comment`, `get-page`, `get-blocks`, `append-body`, `create-card`. Ver [KNOWLEDGE.md](KNOWLEDGE.md) para detalhes dos comandos.
+
+**Wrapper:** `workspace/scripts/notion/update_card.sh <PAGE_ID> <STATUS> [COMMENT]` — chama notion-helper com retry; usa NOTION_SMARTENVIOS_API_KEY e assinatura "Mail-Pro System".
 
 ### Scripts Notion Canper
 

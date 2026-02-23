@@ -33,23 +33,63 @@ NÃO usar `mcporter`, `mcp`, ou qualquer outro comando. O ÚNICO caminho é o sc
 
 1. **Primeiro:** rodar `./smartenvios-mcp.sh tools` para ver se a ferramenta existe no MCP
 2. **Se existir:** executar via `./smartenvios-mcp.sh call <ferramenta> '<args>'`
-3. **Se NÃO existir:** criar card no Notion para o Diretor Tech (ver seção abaixo)
+3. **Se NÃO existir:** escalar no Notion para o Diretor Tech (ver seção abaixo)
+4. **Para criação de demanda (card/atividade/chamado/tarefa):** usar Jira por padrão via MCP.
+5. Se `jira_*` falhar no MCP, escalar correção no Notion profissional para Diretor Tech (MCP-only; sem fallback local).
 
-### Exemplo real — Jira:
+### Exemplo real — Jira (via MCP)
 
-Se pedirem "crie atividade no Jira":
-1. Usar o helper local:
-   - `/var/www/openclaw/workspace/agents/einstein/scripts/jira-helper.sh create ...`
-2. Passar assignee por nome (`--assignee "Rodrigo"`), nunca exigir `accountId` antes.
-3. Passar `--reason` para o helper inferir tipo (`Bug`/`Story`/`Task`).
-4. Confirmar no retorno JSON:
-   - `classification.product`
-   - `classification.projectLabel`
-   - `classification.integration`
-   - `classification.category`
-   - `issue.status` (esperado `To Do` / `Tarefas pendentes`)
+Se pedirem "crie atividade no Jira" (ou "crie card/atividade/chamado/tarefa" no contexto SmartEnvios):
+1. Validar se o MCP expõe Jira:
+   - `./smartenvios-mcp.sh tools | jq -r '.result.tools[].name' | rg '^jira_'`
+2. Resolver assignee por nome:
+   - `./smartenvios-mcp.sh call jira_search_users '{"query":"Rodrigo Silvestre","maxResults":10}'`
+3. Criar issue:
+   - `./smartenvios-mcp.sh call jira_create_issue '{"summary":"...","description":"...","issue_type":"Task","product":"Integração Plataformas","project_label":"Connector Magento 2","category":"Integração","component":"ms.connectors"}'`
+4. Definir prioridade alvo:
+   - se o usuário pediu prioridade explícita, usar essa prioridade;
+   - senão, fallback `Highest`.
+5. Forçar prioridade após create (workaround runtime atual):
+   - `./smartenvios-mcp.sh call jira_update_issue '{"issue_key":"SME-123","fields":{"priority":{"name":"<PRIORIDADE_ALVO>"}}}'`
+   - `./smartenvios-mcp.sh call jira_get_issue '{"issue_key":"SME-123"}'` (validar prioridade)
+6. Validar classificação pós-create:
+   - `./smartenvios-mcp.sh call jira_get_issue '{"issue_key":"SME-123"}'`
+   - se `Produto/Projeto/Categoria` vierem vazios, aplicar `jira_update_issue` com os campos corretos e validar novamente.
+7. Atribuir:
+   - `./smartenvios-mcp.sh call jira_assign_issue '{"issue_key":"SME-123","account_id":"<accountId>"}'`
+8. Garantir `To Do` / pendente:
+   - `./smartenvios-mcp.sh call jira_list_transitions '{"issue_key":"SME-123"}'`
+   - `./smartenvios-mcp.sh call jira_transition_issue '{"issue_key":"SME-123","transition_name":"To Do"}'`
+9. Confirmar no retorno:
+   - `key`, `status`, `assignee`, `priority`.
+10. Se falhar:
+   - retentar 1x no MCP;
+   - abrir/atualizar card técnico no Notion profissional para Diretor Tech corrigir o MCP em `/var/www/mcp`;
+   - não criar workaround local fora do MCP.
+11. Preencher campos de classificação quando disponíveis no projeto:
+   - `Produto`
+   - `Projeto`
+   - `Categoria`
+   - `Componente`
 
-## Notion SmartEnvios (escalonamento)
+### Resposta padrão para criação Jira (Discord/WhatsApp)
+
+Usar formato curto e único:
+
+```text
+Atividade criada no Jira.
+Key: SME-12345
+Responsável: Nome
+Tipo/Prioridade: <TIPO> / <PRIORIDADE>
+Link: https://smartenv.atlassian.net/browse/SME-12345
+```
+
+Regra:
+- manter o texto no mesmo idioma do pedido do usuário.
+- enviar somente esse bloco (não concatenar respostas).
+- para pedido em português, não incluir nenhuma frase em inglês.
+
+## Notion SmartEnvios (somente escalonamento)
 
 Usar quando Einstein **não conseguir resolver** algo via MCP.
 
@@ -94,38 +134,34 @@ curl -sS "https://discord.com/api/v10/channels/<CHANNEL_ID>/messages?limit=100" 
   -H "Authorization: Bot ${DISCORD_BOT_TOKEN}"
 ```
 
-## Jira SmartEnvios
+## Política Jira
 
-Acesso operacional via helper:
+- Einstein é **MCP-only** para Jira.
+- Melhorias/falhas do fluxo Jira devem ser tratadas no repositório `/var/www/mcp`.
+- Quando houver falha persistente no MCP, escalar no Notion profissional para `Diretor Tech` com evidências técnicas.
 
-- Script: `/var/www/openclaw/workspace/agents/einstein/scripts/jira-helper.sh`
-- Cache assignees: `/var/www/openclaw/workspace/agents/einstein/.pi/jira-assignees.json`
-- Cache fields: `/var/www/openclaw/workspace/agents/einstein/.pi/jira-field-cache.json`
+## Bug Triage com Grafana (produção) + Notion Tech
 
-**Credenciais no `.env`:**
-- `JIRA_BASE_URL=https://smartenv.atlassian.net/`
-- `JIRA_EMAIL=rafael.pereira@smartenvios.com`
-- `JIRA_API_TOKEN`
-- `JIRA_PROJECT_KEY=SME`
+Quando reportarem bug com rota/endpoints:
 
+1. Mapear app/serviço da rota:
 ```bash
-# Resolver assignee e guardar cache
-/var/www/openclaw/workspace/agents/einstein/scripts/jira-helper.sh assignee-resolve "Rodrigo"
-
-# Criar tarefa com classificação automática de dropdowns + tipo
-/var/www/openclaw/workspace/agents/einstein/scripts/jira-helper.sh create \
-  --summary "DHL tracking não atualizando - envio teste 6302554694" \
-  --description "Tracking não está atualizando corretamente no portal." \
-  --assignee "Rodrigo" \
-  --reason "bug" \
-  --integration "DHL" \
-  --category "Tracking" \
-  --product "APP" \
-  --project-label "SME project" \
-  --priority "Highest" \
-  --link "https://portal.smartenvios.com/rastreamento/codigo-de-rastreio/6302554694" \
-  --link "https://mydhl.express.dhl/br/pt/tracking.html#/results?id=6302554694"
+rg -n "rota|endpoint|controller|path" /var/www/ms.* -S
 ```
+2. Buscar erro em produção no Grafana via MCP:
+```bash
+./smartenvios-mcp.sh call grafana_loki_query_range '{"query":"{app=\"ms.atendimento\"} |= \"<rota ou erro>\"","limit":200}'
+```
+3. Consolidar diagnóstico técnico com evidências de log (erro + serviço + janela temporal).
+4. Criar card no Notion profissional para `Diretor Tech`:
+- DB: `adec12e735dc41a3bb7c274b287f3a10`
+- `Status=Aguardando`, `Tipo=OpenClaw`, `Agente=Diretor Tech`
+- Corpo obrigatório:
+  - Contexto do bug
+  - Evidências (logs/rotas)
+  - Causa provável
+  - Plano de correção
+  - "Direcionar para Engenheiro SmartEnvios"
 
 ## Gmail Scripts (referência)
 

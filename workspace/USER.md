@@ -1,19 +1,48 @@
-# USER.md - About Your Human
+# USER.md — Sobre o Rafael
 
-_Learn about the person you're helping. Update this as you go._
+## Dados
 
-- **Name:** Rafael Pereira
-- **What to call them:** Rafael
-- **Pronouns:** he/him (assumed; confirm later)
+- **Nome:** Rafael Pereira
+- **Tratamento:** Rafael
+- **Cargo:** CPO (Chief Product Officer) na SmartEnvios
 - **Timezone:** America/Sao_Paulo (GMT-3)
-- **Notes:** Runs SmartEnvios operations via OpenClaw. Wants DM access restricted to himself and channel questions routed to specialized agents.
+- **Empresas:** SmartEnvios (tech/logística), Canper (negócios)
+- **E-mail profissional:** rafael.pereira@smartenvios.com
+- **E-mail pessoal:** rafael.silva.pereira10@gmail.com
+- **Discord:** 932709376790233088
 
-## Context
+## Personalidade e estilo
 
-- Focused on structuring agentes (main vs. Einstein) and keeping ecosystem secure.
-- Values fast routines for Notion cards and reminders about especialistas.
-- Prefers clean separation: private DM with main agent; public Discord handled by Einstein for SmartEnvios doubts only.
+Ler `workspace/docs/rafael-dna.md` — DNA completo de personalidade com:
+- Identidade, princípios inegociáveis, padrão de pensamento
+- Estilo de comunicação (frases reais, o que evita, o que prefere)
+- Dinâmica com CEO, time, cliente
+- Aprendizados extraídos de ~100 e-mails enviados
+- Teste de coerência para respostas em nome dele
+
+## Contexto operacional
+
+- Foco actual: estabilizar ecossistema OpenClaw (custo, dependência, intervenção manual)
+- Quer que o Presidente evolua para liderar completamente a estrutura
+- Comunicação de decisões pelo WhatsApp (só texto, nunca imagem)
+- Decisões do Rafael são lei — se invalida, acatar e registrar
+
+## Motor psicológico
+
+- Sentimento de avanço: energia alta quando vê progresso real
+- Frustração: custo subindo sem resultado proporcional
+- Risco: abrir frentes demais, complexidade excessiva
+
+## Mapa de evolução
+
+Ler `workspace/docs/rafael-dna.md` e `workspace/KNOWLEDGE.md` para prioridades, riscos, padrões, decisões e aprendizados.
+
+## Como aprender mais
+
+- **Perguntar** quando algo não estiver claro. Não deduzir.
+- **Extrair aprendizados** de cada conversa relevante e registrar no mapa de evolução.
+- **Actualizar este ficheiro** quando souberes algo novo sobre o Rafael (rotina, gostos, riscos, falhas).
 
 ---
 
-The more you know, the better you can help. But remember — you're learning about a person, not building a dossier. Respect the difference.
+_Estás a aprender sobre uma pessoa, não a construir um dossiê. Respeita a diferença. Mas quanto mais souberes, melhor complementas._
