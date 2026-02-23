@@ -10,14 +10,16 @@ If `BOOTSTRAP.md` exists, that's your birth certificate. Follow it, figure out w
 
 Before doing anything else:
 
-1. Read `SOUL.md` — this is who you are
-2. Read `USER.md` — this is who you're helping
+1. Read `SOUL.md` — this is who you are (Presidente: protocolo de evolução e domínio)
+2. Read `USER.md` — this is who you're helping (Rafael: dados, personalidade, contexto)
 3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
 4. **If in MAIN SESSION** (direct chat with your human): Also read `MEMORY.md`
-5. Read `NOTION.md` — available Notion workspaces and skills
-6. Read `TOOLS.md` — available tools and skills (if exists)
-7. **When debugging or setting up new integrations**: Read `KNOWLEDGE.md` — historical patterns and solutions
-8. **If acting as Presidente, Diretor, or Especialista** (Notion flow: cards Aguardando/Priorizado/Em andamento/Concluído), **or as Especialista Dúvidas SmartEnvios**: Read `FLUXO_AGENTES.md` before executing.
+5. **If in MAIN SESSION**: Read `memory/rafael-evolution-map.json` — mapa vivo de evolução (prioridades, riscos, padrões, decisões)
+6. **If in MAIN SESSION**: Read `docs/rafael-dna.md` — DNA de personalidade do Rafael (estilo, princípios, evidências de e-mails)
+7. Read `NOTION.md` — available Notion workspaces and skills
+8. Read `TOOLS.md` — available tools and skills (if exists)
+9. **When debugging or setting up new integrations**: Read `KNOWLEDGE.md` — historical patterns and solutions
+10. **If acting as Presidente, Diretor, or Especialista** (Notion flow: cards Aguardando/Priorizado/Em andamento/Concluído), **or as Especialista Dúvidas SmartEnvios**: Read `FLUXO_AGENTES.md` before executing.
 
 Don't ask permission. Just do it.
 
@@ -37,6 +39,7 @@ For any change touching scripts/config/prompts/crons:
    - Prefer `OPENCLAW_CONFIG_DIR`, `SCRIPT_DIR`, `PROJECT_ROOT`.
 3. **Prompt/cron sync is mandatory**
    - If a prompt template changes, sync the corresponding `cron/jobs.json` payload.
+   - Cron payloads operacionais devem seguir modo determinístico: comando único explícito + JSON de retorno como fonte de verdade.
 4. **Final hygiene check before finishing**
    - Search for hardcoded secrets and legacy paths.
    - Validate JSON/shell syntax and run local lint.
@@ -189,6 +192,22 @@ Para cards `Tipo = OpenClaw` no Notion:
 - **Presidente/Main:** cria em `Aguardando` com descrição **funcional clara** (contexto, objetivo, escopo, critério de sucesso), sem detalhamento técnico.
 - **Diretor:** capta e move para `Priorizado`, define o especialista correto no `Agente` e escreve a descrição **técnica de execução**.
 - **Especialista:** move para `Em andamento`, executa, comenta evidências no card e finaliza em `Concluído`.
+
+### Mapeamento de DBs por Agente (CRÍTICO)
+
+Cada agente opera em um banco de dados específico do Notion:
+
+| Agente | DB Notion | ID | Uso |
+|--------|-----------|----|-----|
+| **Engenheiro de Prompt** | Pessoal | `bfcbe7a7a3a745489e605e0762af12a9` | Cards de governança, otimização técnica, padrões |
+| **Mail-Pro** | SmartEnvios | `adec12e735dc41a3bb7c274b287f3a10` | Rotina de e-mail profissional (rafael.pereira@smartenvios.com) |
+| **Mail-Person** | Pessoal | `bfcbe7a7a3a745489e605e0762af12a9` | Rotina de e-mail pessoal (rafael.silva.pereira10@gmail.com) |
+| **Einstein** | SmartEnvios | `adec12e735dc41a3bb7c274b287f3a10` | Enriquecimento de conhecimento para suporte Discord |
+| **Diretor Tech** | SmartEnvios | `adec12e735dc41a3bb7c274b287f3a10` | Priorização de cards técnicos |
+| **Diretor Pessoal** | Pessoal | `bfcbe7a7a3a745489e605e0762af12a9` | Priorização de cards pessoais |
+| **Diretor Negócios** | Canper | `14abf9163c9680ff822bc2e32f6bec4b` | Priorização de cards Canper |
+
+**Regra vital:** O Presidente deve criar cards no DB correto conforme o agente destino. Se criar no DB errado (ex.: Engenheiro de Prompt no DB SmartEnvios), mover imediatamente para o DB correto (Pessoal) e arquivar o original.
 
 **🎭 Voice Storytelling:** If you have `sag` (ElevenLabs TTS), use voice for stories, movie summaries, and "storytime" moments! Way more engaging than walls of text. Surprise people with funny voices.
 
