@@ -1,6 +1,6 @@
 # FLUXO_AGENTES.md — Presidente, Diretores e Especialistas
 
-**Última documentação: 2026-02-20 23:01**
+**Última documentação: 2026-02-21 19:44**
 
 Este documento define o fluxo operacional no Notion para cards com:
 - **Status:** `Aguardando` → `Priorizado` → `Em andamento` → `Concluído`
@@ -36,6 +36,31 @@ Cada agente opera em **dois status**: capta do status de entrada e checa duplici
 - Especialista: não consulta `Aguardando` nem `Concluído`.
 
 ## 1) Papéis e responsabilidades
+
+## Modo Determinístico dos Crons (obrigatório)
+
+Todos os crons operacionais devem rodar em modo determinístico:
+- payload do cron com **um comando explícito**;
+- JSON retornado pelo script como **fonte de verdade**;
+- sem decisões abertas no texto do payload;
+- sem “simulação de execução”.
+
+Mapa atual de scripts determinísticos:
+- Presidente: `workspace/scripts/president-mail-demand-cycle.sh`
+- Diretor Tech: `workspace/scripts/director-tech-deterministic-cycle.sh`
+- Diretor Pessoal: `workspace/scripts/director-personal-deterministic-cycle.sh`
+- Diretor Negócios: `workspace/scripts/director-business-deterministic-cycle.sh`
+- Engenheiro de Prompt: `workspace/scripts/eng-prompt-deterministic-cycle.sh`
+- Engenheiro SmartEnvios: `workspace/scripts/eng-smartenvios-deterministic-cycle.sh`
+- Mail-Pro: `workspace/scripts/gmail/process-notion-cards.sh pro 15`
+- Mail-Person: `workspace/scripts/gmail/process-notion-cards.sh personal 15`
+- Otimizador: `workspace/scripts/optimizer-deterministic-cycle.sh`
+- Governança: `workspace/scripts/governance-check.sh`
+
+Regra de backlog de e-mail:
+- Governança força cadeia de execução quando não há card ativo:
+  - Pro: `Presidente -> Diretor Tech -> Mail-Pro`
+  - Pessoal: `Presidente -> Diretor Pessoal -> Mail-Person`
 
 ## Presidente
 - Recebe demandas por Discord, WhatsApp e Web Chat.
@@ -460,6 +485,32 @@ Agente dedicado a garantir continuidade operacional e escalonamento correto de t
    - Outros agentes (>30min) → registra alerta para intervenção manual
 6. **Registra incidentes** em `memory/YYYY-MM-DD.md`.
 7. **Audita padronização operacional** — verifica se agentes/crons estão aderentes ao `workspace/templates/agent-behavior-patterns.md` e, quando houver desvio ou oportunidade, cria card no Notion Pessoal para `Engenheiro de Prompt`.
+8. **Monitora custo diário de IA** — consolida tokens/custo das execuções do dia; se ultrapassar limite, aciona Otimizador e escala card de redução de custo para `Engenheiro de Prompt`.
+9. **Painel WhatsApp em texto** — envio operacional da governança deve ser textual (sem imagem) para reduzir custo e complexidade.
+
+### Protocolo de autonomia (obrigatório)
+
+A governança não deve apenas alertar; deve **executar recuperação e organizar a fila** no mesmo ciclo:
+
+1. **Detectar**
+   - cards travados (`Em andamento`) e cards abandonados (`Priorizado`);
+   - backlog em `Aguardando/Priorizado` por agente;
+   - roteamento incorreto entre Notion profissional x pessoal;
+   - cards de melhoria sem descrição.
+2. **Corrigir automaticamente**
+   - enviar wake/run para o cron do agente correto;
+   - normalizar `Agente` inválido no banco (ex.: no SmartEnvios, `Engenheiro de Prompt` -> `Diretor Tech` para reroteamento);
+   - rebaixar para `Aguardando` cards sem descrição mínima, com comentário de bloqueio objetivo;
+   - drenar backlog por agente (uma tentativa por ciclo, com dedupe para evitar tempestade).
+3. **Escalonar causa raiz**
+   - registrar gargalo com severidade (`critical/high/medium/low`);
+   - abrir/atualizar card no Notion **Pessoal** para `Engenheiro de Prompt` com evidência + recomendação + critério de aceite.
+4. **Fechar o ciclo**
+   - publicar painel operacional com o que foi detectado, corrigido e pendente;
+   - manter histórico em memory e evitar repetição do mesmo incidente sem ação estrutural.
+
+Regra de sucesso:
+- Se um problema reaparece em ciclos consecutivos, a governança deve sair do modo "monitoramento" para modo "correção + melhoria" automaticamente.
 
 ### Escalonamento automático — como funciona:
 
@@ -476,7 +527,10 @@ Isso significa que ao **adicionar novos agentes e crons**, a governança redistr
 
 - **Pode criar** cards no Notion PESSOAL para o Diretor Pessoal / Engenheiro de Prompt.
 - **CRÍTICO:** NUNCA usar skill `notion` (cria em SmartEnvios). SEMPRE usar `notion-helper.sh` + `NOTION_PERSONAL_API_KEY` + DB `bfcbe7a7a3a745489e605e0762af12a9` (Pessoal).
-- Assinar no create-card (7º param: Governança).
+- `create-card` agora aceita prioridade opcional:
+  - formato antigo (compatível): `[criador] [body_file]`
+  - formato novo: `[prioridade] [criador] [body_file]` (prioridade: `Alta|Média|Baixa`)
+- Assinar no create-card com criador (`Governança`, `Otimizador`, etc.).
 - Para auditoria de patterns, preferir criar direto para `Agente=Engenheiro de Prompt` com `Status=Priorizado` e corpo com achados + ação recomendada.
 
 ### O que NÃO faz:
@@ -518,7 +572,7 @@ Fluxos maduros devem gerar **zero incidentes** para a governança. O otimizador 
 
 - Resetar sessões, ajustar stagger, simplificar prompts, corrigir documentos.
 - Toda alteração registrada em KNOWLEDGE.md.
-- **Criar cards de melhoria** (Fase 4) no Notion PESSOAL para o Diretor Pessoal / Engenheiro de Prompt — via `notion-helper.sh` (NUNCA skill `notion`).
+- **Criar cards de melhoria** (Fase 4) no Notion PESSOAL, preferencialmente **direto para `Engenheiro de Prompt`** com `Status=Priorizado` e `Prioridade=Alta` — via `notion-helper.sh` (NUNCA skill `notion`).
 
 ### Regra crítica para criação de cards (Governança e Otimizador):
 

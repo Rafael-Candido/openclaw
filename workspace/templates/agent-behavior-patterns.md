@@ -32,11 +32,32 @@ Para qualquer atividade baseada em card Notion no fluxo OpenClaw:
 - deduplicação por **título + agente** no status de saída do papel;
 - status só pode ir para `Concluído` quando execução estiver efetivamente aplicada (não apenas análise);
 - toda métrica declarada em comentário final deve vir de output real de execução.
+- é proibido fechar card por “drenagem manual” sem execução real do agente responsável.
 
 Escopo de consulta por papel:
 - Presidente: cria em `Aguardando` e não opera execução técnica;
 - Diretor: capta `Aguardando`, normaliza em `Priorizado`, define especialista;
 - Especialista: capta `Priorizado`, executa em `Em andamento`, conclui.
+
+## 1.2) Padrão de Severidade e Prioridade (obrigatório)
+
+Objetivo:
+- padronizar urgência entre agentes e reduzir cards sem classificação.
+
+Regra geral:
+- todo card criado por automação deve preencher a propriedade `Prioridade` no Notion.
+
+Mapeamento canônico:
+- `critical` ou `high` -> `Alta`
+- `medium` -> `Média`
+- `low` -> `Baixa`
+
+Fallback quando severidade não vier explícita:
+- card criado em `Priorizado` -> `Média`
+- card criado em `Aguardando` -> `Baixa`
+
+Regra de escalonamento:
+- se card ficar parado por múltiplos ciclos de cron, subir prioridade em um nível (até `Alta`) e comentar a razão.
 
 ## 2) Padrão de Comentários
 
@@ -89,6 +110,16 @@ Campos recomendados por tipo:
 - desenvolvimento técnico: incluir `arquivos alterados`, `commits/PR`, `resultado de testes`;
 - governança/otimização: incluir `incidente`, `causa raiz`, `ação aplicada`, `prevenção`.
 
+### 2.5 Anti-Spam de Comentário (obrigatório)
+Quando NÃO comentar:
+- não repetir o mesmo comentário de acompanhamento no mesmo card sem mudança real de estado;
+- não comentar em loop com o mesmo texto em execuções consecutivas.
+
+Regra prática:
+- comentar apenas em: mudança de status, bloqueio novo, avanço de etapa, conclusão;
+- mensagens de acompanhamento idênticas no mesmo card devem ser evitadas (dedupe por texto normalizado).
+- comentário de conclusão deve conter evidência mínima: comando/script executado + resultado objetivo + validação final.
+
 ## 3) Padrão Corpo x Comentário
 
 Use corpo do card (`append-body`) para:
@@ -105,6 +136,15 @@ Use comentário para:
 Regra prática:
 - se muda o "como executar", atualizar corpo;
 - se mostra "o que aconteceu na execução", comentar.
+
+### 3.1 Idempotência do Corpo (obrigatório)
+- diretores não devem reapendar a especificação completa em toda triagem;
+- antes de `append-body`, verificar se a seção já existe e escrever apenas delta;
+- evitar duplicar seções estruturais como `Objetivo`, `Escopo`, `Critérios de conclusão`.
+
+Para rotinas de Mail:
+- não fixar `limite 100` no corpo como regra permanente;
+- descrever como `lote base + autoescalonamento seguro`, refletindo execução real.
 
 ## 4) Padrões por Papel
 
@@ -131,23 +171,53 @@ Regra prática:
 - quando abrir card de melhoria, usar assinatura explícita e corpo estruturado.
 - Governança deve auditar periodicamente a adoção deste documento e abrir card para `Engenheiro de Prompt` quando detectar desvios ou novas oportunidades de padronização.
 
+### 4.1) Protocolo de Recuperação Autônoma (Governança)
+
+A cada rodada, a Governança deve executar nesta ordem:
+1. Detectar anomalia operacional (stuck, abandonado, backlog, roteamento incorreto, card vazio).
+2. Aplicar recuperação imediata (wake/run, normalização de agente, quarantine de card inválido).
+3. Registrar gargalo com severidade e evidência objetiva.
+4. Escalonar melhoria estrutural para `Engenheiro de Prompt` no Notion Pessoal.
+5. Reportar resultado no painel (o que foi corrigido agora vs o que depende de evolução estrutural).
+6. Auditar cards recém-concluídos: se não houver evidência mínima, reabrir para `Priorizado` e acionar wake do agente responsável.
+
+Restrições:
+- não ficar apenas em “status ok” quando houver cards parados ou backlog alto;
+- não abrir card técnico sem descrição mínima (objetivo + escopo + critério de aceite);
+- não deixar roteamento inválido persistir entre bancos Notion (profissional x pessoal).
+
 ## 5) Padrão de Ferramentas
 
 Notion:
 - usar `workspace/scripts/notion-helper.sh` (query, update-status, comment, append-body, create-card);
 - sempre caminho absoluto em automação;
 - comentário com assinatura obrigatória (4º parâmetro).
+- `notion-helper.sh comment` aplica dedupe anti-spam de comentário idêntico no mesmo card.
 - criação de card com autoria explícita (`create-card` com criador).
+
+OpenClaw (autonomia operacional):
+- scripts de automação devem usar `workspace/scripts/openclaw-helper.sh` (retry + hard timeouts) quando chamarem `openclaw` em loop;
+- toda etapa de auditoria/integração externa (Notion/API) deve ter orçamento de tempo interno; ao atingir o limite, retornar parcial e seguir a rodada (nunca travar execução inteira);
+- Governança pode executar ações de recuperação sem intervenção humana:
+  - `ocw_cron_run` (forçar execução imediata de cron),
+  - `ocw_cron_wake_now` (wake quando o run falhar),
+  - `ocw_sessions_reset` (derrubar sessão problemática de cron),
+  - `ocw_cron_disable`/`ocw_cron_enable` (circuit breaker para falhas previsíveis de credencial/billing),
+  - `ocw_gateway_restart` (somente quando gateway estiver DOWN ou quando explicitamente habilitado por flag).
+- evitar reiniciar o gateway no meio de uma rodada enquanto está forçando `cron run` (usar restart "post-ops" quando necessário).
 
 Gmail:
 - usar pipeline unificado para especialistas de e-mail;
 - após triagem e aplicação de labels, marcar como lido e arquivar;
 - reportar contagens reais (triados, marcados como lidos, arquivados, rascunhos).
+- regra de rascunho: só criar `draft` quando o e-mail estiver claramente direcionado ao usuário (`To` direto) **e** houver sinal de pedido/ação (request signal) ou thread acionável.
+- e-mails promocionais/comerciais (ex.: convite genérico, newsletter, outreach) não devem virar `draft` automático; classificar como `review` ou `label`.
 
 Regras transversais de execução:
 - preferir fluxo automatizado padronizado em vez de lógica ad hoc por agente;
 - usar caminhos absolutos em automação (`/var/www/openclaw/workspace/...`);
 - evitar polling infinito e “estado herdado” de sessão anterior.
+- para comunicações operacionais recorrentes (ex.: painel da governança no WhatsApp), priorizar formato textual; usar imagem apenas quando explicitamente solicitado.
 
 ## 6) Convenção de Texto
 

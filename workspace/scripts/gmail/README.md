@@ -4,8 +4,10 @@ Scripts para triagem, gerenciamento de labels, rascunhos e arquivamento de email
 
 ## Arquivos
 
-- **gmail.sh** - API wrapper de baixo nível (auth, list, get, thread, labels, draft-create, archive)
+- **gmail.sh** - API wrapper de baixo nível (auth, list, get, get-full, thread, labels, draft-create, archive)
 - **triage.sh** - Triagem de não lidos com metadata estruturada
+- **export-sent-samples.py** - Exporta e-mails enviados (pro + personal) para JSON (para extração de estilo)
+- **extract-communication-patterns.py** - Lê o JSON exportado e gera padrões por contexto (cliente, time, etc.)
 - **README.md** - Este arquivo
 
 ## Setup
@@ -86,6 +88,11 @@ Scripts para triagem, gerenciamento de labels, rascunhos e arquivamento de email
   "Corpo da resposta" \
   "19c796afb11f9001"  # threadId
 ```
+
+**Regra anti-ruído (obrigatória):**
+- não criar rascunho automático para e-mails promocionais/outreach;
+- só gerar `draft` quando o e-mail estiver claramente direcionado ao usuário (destinatário direto) **e** houver sinal de pedido/ação;
+- casos sem pedido explícito devem cair para `review` ou `label`.
 
 ### 5. Arquivar email
 
@@ -191,6 +198,22 @@ grep GMAIL_.*_REFRESH_TOKEN /var/www/openclaw/.env | sed 's/=.*/=***/'
 # Pegar um email específico
 ./gmail.sh pro get "MESSAGE_ID" | jq .
 ```
+
+### Exportar e-mails enviados e extrair padrões de comunicação
+
+Para alimentar o **rafael-dna** (ou prompts de rascunho) com exemplos reais de como tu respondes:
+
+1. **Exportar enviados** (requer .env com credenciais Gmail carregado):
+   ```bash
+   cd /var/www/openclaw && . .env 2>/dev/null; python3 workspace/scripts/gmail/export-sent-samples.py --max 20
+   ```
+   Gera `workspace/docs/email-samples-sent.json` (pro + personal, até 20 por perfil).
+
+2. **Extrair padrões por contexto** (cliente, time, suporte, etc.):
+   ```bash
+   python3 workspace/scripts/gmail/extract-communication-patterns.py workspace/docs/email-samples-sent.json --out workspace/docs/communication-patterns-from-samples.md
+   ```
+   Gera `communication-patterns-from-samples.md` com secções por contexto e notas de estilo (resposta curta, próximo passo explícito, saudação informal, etc.). Podes revisar e incorporar trechos em `workspace/docs/rafael-dna.md` ou usar o .md nos prompts de draft.
 
 ## Performance
 

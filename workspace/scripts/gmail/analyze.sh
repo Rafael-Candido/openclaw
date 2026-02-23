@@ -32,6 +32,7 @@ PRECEDENCE=$(echo "$MSG" | jq -r '.payload.headers[] | select(.name == "Preceden
 
 IS_AUTO_REPLY="false"
 IS_BULK_MAIL="false"
+IS_PROMOTIONAL="false"
 
 # Strong auto-reply indicators
 if [[ -n "$AUTO_SUBMITTED" && "$AUTO_SUBMITTED" != "no" ]]; then
@@ -62,6 +63,11 @@ if [[ "$SUBJECT" =~ (notification|notificação|alert|alerta|status|update|atual
   IS_NOTIFICATION="true"
 fi
 
+# Promotional/commercial outreach patterns (avoid drafting by default)
+if echo "$SUBJECT $SNIPPET" | grep -qEi "(newsletter|boletim|oferta|promo(ção)?|cupom|desconto|inscreva-se|webinar|evento|convite|agenda|horários|horarios|últimos horários|ultimos horarios|demonstração|demonstracao|vamos conversar|conversar sobre)"; then
+  IS_PROMOTIONAL="true"
+fi
+
 # Check for direct mention (profile-specific)
 EMAIL_TO_CHECK=""
 case "$PROFILE" in
@@ -77,6 +83,12 @@ HAS_DIRECT_MENTION="false"
 # Check if Rafael is in To: (not just Cc/Bcc)
 if [[ "$TO" == *"$EMAIL_TO_CHECK"* ]]; then
   HAS_DIRECT_MENTION="true"
+fi
+
+# Request signal: only draft when there is explicit ask or ongoing actionable thread
+HAS_REQUEST_SIGNAL="false"
+if echo "$SUBJECT $SNIPPET" | grep -qEi "(pode|poderia|consegue|conseguiria|favor|por favor|preciso|precisamos|pode me|solicito|solicitação|request|need|could you|can you|prazo|deadline|urgente|urgent|\?)"; then
+  HAS_REQUEST_SIGNAL="true"
 fi
 
 # Get thread history (up to 10 messages)
@@ -149,6 +161,23 @@ elif [[ $PRIORITY_SCORE -ge 0 ]]; then
   ACTION="label"
 fi
 
+# Never create draft for no-reply / notifications / bulk senders (saves tokens and avoids noise)
+if [[ "$ACTION" == "draft" ]]; then
+  if [[ "$IS_NOTIFICATION" == "true" ]]; then
+    ACTION="label"
+  elif [[ "$IS_BULK_MAIL" == "true" ]]; then
+    ACTION="label"
+  elif [[ "$IS_PROMOTIONAL" == "true" ]]; then
+    ACTION="review"
+  elif [[ "$HAS_DIRECT_MENTION" != "true" ]]; then
+    ACTION="review"
+  elif [[ "$HAS_REQUEST_SIGNAL" != "true" && $THREAD_SIZE -lt 3 ]]; then
+    ACTION="review"
+  elif echo "$FROM" | grep -qEi "noreply@|no-reply@|donotreply@|do-not-reply@|notifications?@|alerts?@|status@|mailer-daemon@|bounce@"; then
+    ACTION="label"
+  fi
+fi
+
 # Build analysis JSON
 jq -n \
   --arg id "$MSG_ID" \
@@ -161,7 +190,9 @@ jq -n \
   --arg auto "$IS_AUTO_REPLY" \
   --arg bulk "$IS_BULK_MAIL" \
   --arg notif "$IS_NOTIFICATION" \
+  --arg promo "$IS_PROMOTIONAL" \
   --arg mention "$HAS_DIRECT_MENTION" \
+  --arg requestSignal "$HAS_REQUEST_SIGNAL" \
   --argjson score "$PRIORITY_SCORE" \
   --arg action "$ACTION" \
   --argjson threadSize "$THREAD_SIZE" \
@@ -178,7 +209,9 @@ jq -n \
       isAutoReply: $auto,
       isBulkMail: $bulk,
       isNotification: $notif,
-      hasDirectMention: $mention
+      isPromotional: $promo,
+      hasDirectMention: $mention,
+      hasRequestSignal: $requestSignal
     },
     priority: {
       score: $score,
