@@ -10,6 +10,7 @@ Objetivo:
 Escopo de consumo:
 - Este é o contrato único para comportamentos operacionais semelhantes no fluxo OpenClaw.
 - AGENTS por papel devem manter apenas regras específicas (delta), sem duplicar padrão transversal.
+- Novo especialista (ou novo cron de especialista) deve nascer aderente a este documento, incluindo fatiamento obrigatório para demanda complexa.
 
 ## 1) Padrão de Assinatura (obrigatório)
 
@@ -29,10 +30,37 @@ Exemplos:
 
 Para qualquer atividade baseada em card Notion no fluxo OpenClaw:
 - lifecycle padrão: `Aguardando` -> `Priorizado` -> `Em andamento` -> `Concluído`;
+- ordem de captura do especialista: **retomar primeiro `Em andamento`**, depois captar `Priorizado` (mais antigo primeiro);
+- orçamento determinístico padrão: **1 card por rodada por agente** (salvo exceção explícita no cron);
 - deduplicação por **título + agente** no status de saída do papel;
 - status só pode ir para `Concluído` quando execução estiver efetivamente aplicada (não apenas análise);
 - toda métrica declarada em comentário final deve vir de output real de execução.
 - é proibido fechar card por “drenagem manual” sem execução real do agente responsável.
+
+### 1.1.1) Fatiamento obrigatório para tarefas complexas (micro-cards)
+
+Objetivo:
+- garantir execução visual, rastreável e retomável em ciclos curtos de cron.
+
+Regra:
+- antes de executar demanda complexa, o especialista deve estimar esforço e quebrar em micro-cards;
+- cada micro-card deve ter objetivo único, evidência de pronto e ETA alvo curto (padrão: `<=30s` por rodada);
+- a execução nas rodadas seguintes deve priorizar micro-cards sobre card macro;
+- o card macro vira card pai de acompanhamento e não deve gerar duplicação de planejamento.
+
+Critério de tarefa complexa (heurística mínima):
+- escopo amplo (ex.: "novo projeto", "arquitetura", "integração grande", "refatoração ampla");
+- descrição longa ou com múltiplas entregas dependentes.
+
+Regras de idempotência:
+- marcar o card pai com identificador de microplano (`MICROPLAN_V1_PARENT`);
+- nunca recriar micro-cards se já existir marcador válido;
+- comentários de progresso devem citar etapa atual e próximo micro-card.
+- aplicar limite de WIP de micro-cards por especialista; ao atingir o teto, adiar novo fatiamento e drenar a fila ativa.
+
+Regra de retomada:
+- quando houver micro-cards pendentes, o especialista retoma primeiro a menor fatia pendente de maior prioridade;
+- somente após concluir as fatias obrigatórias o fluxo volta ao card pai para consolidação final.
 
 Escopo de consulta por papel:
 - Presidente: cria em `Aguardando` e não opera execução técnica;
@@ -83,6 +111,13 @@ Formato:
 Exemplo:
 - `Etapa 2/4: 5 e-mails triados, labels aplicadas. Próximo: criar rascunhos.`
 
+Regra de ETA (obrigatória):
+- se o card ficar sem atualização do agente por janela acima do limite operacional (ex.: 20-30 min), publicar comentário de progresso com:
+  - etapa atual;
+  - ações pendentes;
+  - ETA revisado.
+- esse comentário deve ser assinado e objetivo (sem repetir texto idêntico).
+
 ### 2.3 Bloqueio (curto + objetivo)
 Quando usar:
 - erro de credencial, script, permissão, timeout, API.
@@ -92,6 +127,10 @@ Formato:
 
 Exemplo:
 - `Bloqueio: NOTION_PERSONAL_API_KEY ausente. Execução pausada; card permanece em Em andamento.`
+
+Regra de contexto mínimo (obrigatória):
+- se o card não tiver contexto técnico/funcional mínimo para execução (ex.: descrição vazia ou insuficiente), não manter em loop;
+- comentar bloqueio com motivo objetivo e mover para `Impedimento`.
 
 ### 2.4 Conclusão (estruturado)
 Quando usar:
@@ -164,12 +203,39 @@ Para rotinas de Mail:
 - captam em `Priorizado`, executam em `Em andamento`, concluem;
 - padrão mínimo de comentários: início + (progresso se necessário) + conclusão estruturada;
 - métricas sempre com dados reais da execução.
+- após `update-status`, validar estado final no Notion (verificação pós-write) antes de prosseguir;
+- se a transição não confirmar, abortar rodada com status de falha controlada (sem concluir indevidamente).
+- primeira ação em tarefa complexa: planejar e fatiar em micro-cards com ETA e critério de pronto.
 
 ### Gestores Operacionais (Governança / Otimizador)
 - foco em saúde do fluxo, erros recorrentes e causa raiz;
 - devem comentar incidentes, ação aplicada e recomendação;
 - quando abrir card de melhoria, usar assinatura explícita e corpo estruturado.
 - Governança deve auditar periodicamente a adoção deste documento e abrir card para `Engenheiro de Prompt` quando detectar desvios ou novas oportunidades de padronização.
+
+### 4.1) Regra de Cadeia sem Sobreposição (Presidente -> Diretor -> Especialista)
+- O Presidente só cria demanda quando backlog >= limiar e **não existe card aberto da mesma rotina** (dedupe por prefixo de título da rotina).
+- Se a cadeia estiver vazia e backlog persistir, o Presidente pode furar cooldown e recriar demanda (não deixar fluxo sem card).
+- Wake forçado deve ser seletivo por domínio:
+  - Profissional: acordar apenas `Diretor Tech` e `Mail-Pro`.
+  - Pessoal: acordar apenas `Diretor Pessoal` e `Mail-Person`.
+- Não acordar todos os crons indiscriminadamente; isso cria corrida e degrada throughput.
+- Otimizador deve ser acordado apenas quando houve criação de nova demanda (evento de mudança real).
+- Governança deve validar em cada auditoria:
+  - backlog de e-mail,
+  - quantidade de cards abertos por cadeia,
+  - tempo entre criação -> triagem -> execução -> conclusão.
+
+### 4.2) Triagem de Diretor (transação curta)
+
+Fluxo recomendado para diretores ao triar:
+1. Captar card e aplicar lock curto em `Em andamento` para evitar corrida.
+2. Definir `Agente` de destino + comentário de triagem assinado.
+3. Retornar para `Priorizado` para execução do especialista.
+
+Restrições:
+- diretor não conclui execução técnica no lugar do especialista;
+- toda triagem deve deixar explícito no comentário o próximo executor.
 
 ### 4.1) Protocolo de Recuperação Autônoma (Governança)
 
@@ -232,6 +298,10 @@ Regras transversais de execução:
 - Troca de responsável no meio da execução.
 - Auditoria de incidentes e regressões.
 - Governação por cron (detecção de travas por `last_edited_time`).
+
+Nota de confiabilidade de atividade:
+- `last_edited_time` da página pode não refletir atividade real do agente em todos os casos.
+- para medir “tempo sem atualização”, preferir a **última atividade assinada do agente nos comentários**; usar `last_edited_time` apenas como fallback.
 
 ## 8) Checklist rápido
 

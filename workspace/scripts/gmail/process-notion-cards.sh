@@ -5,6 +5,7 @@ set -euo pipefail
 
 PROFILE="${1:-pro}"
 LIMIT="${2:-15}"
+MAIL_MICRO_TARGET_SEC="${MAIL_MICRO_TARGET_SEC:-30}"
 
 # Carregar configurações de batch se existirem
 if [[ -f "/var/www/openclaw/workspace/scripts/gmail/batch-config.sh" ]]; then
@@ -87,12 +88,16 @@ case "${PROFILE}" in
     DB_ID="adec12e735dc41a3bb7c274b287f3a10"
     API_KEY_VAR="NOTION_SMARTENVIOS_API_KEY"
     AGENT_NAME="Mail-Pro"
+    DEMAND_AGENT="Diretor Tech"
+    DEMAND_TITLE_PREFIX="[Rotina Mail-Pro] Drenagem de backlog"
     MAILBOX="rafael.pereira@smartenvios.com"
     ;;
   personal)
     DB_ID="bfcbe7a7a3a745489e605e0762af12a9"
     API_KEY_VAR="NOTION_PERSONAL_API_KEY"
     AGENT_NAME="Mail-Person"
+    DEMAND_AGENT="Diretor Pessoal"
+    DEMAND_TITLE_PREFIX="[Rotina Mail-Person] Drenagem de backlog"
     MAILBOX="rafael.silva.pereira10@gmail.com"
     ;;
   *)
@@ -100,6 +105,45 @@ case "${PROFILE}" in
     exit 1
     ;;
 esac
+
+is_complex_mail_card() {
+  local title_lc="$1"
+  if [[ "${title_lc}" == *"novo projeto"* || "${title_lc}" == *"projeto"* || "${title_lc}" == *"arquitet"* || "${title_lc}" == *"integra"* || "${title_lc}" == *"refator"* || "${title_lc}" == *"migr"* ]]; then
+    return 0
+  fi
+  return 1
+}
+
+create_mail_microcards() {
+  local parent_id="$1"
+  local parent_title="$2"
+  local priority="$3"
+  local total=4
+  local i step_title body_file created_json cid
+  i=1
+  while (( i <= total )); do
+    case "${i}" in
+      1) step_title="Classificar backlog e separar lotes curtos de execução" ;;
+      2) step_title="Executar lote prioritário e registrar métricas objetivas" ;;
+      3) step_title="Executar lote complementar e validar redução de backlog" ;;
+      4) step_title="Consolidar resultado e próximos passos do card pai" ;;
+    esac
+    body_file="/tmp/mail_micro_${PROFILE}_${parent_id}_${i}.md"
+    cat > "${body_file}" <<EOF
+MICROPLAN_V1_CHILD=true
+PARENT_CARD_ID=${parent_id}
+PARENT_CARD_TITLE=${parent_title}
+MICRO_STEP=${i}/${total}
+MICRO_TARGET_SECONDS=${MAIL_MICRO_TARGET_SEC}
+MAIL_PROFILE=${PROFILE}
+MAILBOX=${MAILBOX}
+EOF
+    created_json="$(NOTION_CACHE_ENABLED=false "${NOTION_HELPER}" create-card "${DB_ID}" "${API_KEY_VAR}" "[Micro ${i}/${total}] ${parent_title} — ${step_title}" "Priorizado" "OpenClaw" "${AGENT_NAME}" "${priority}" "${AGENT_NAME}" "${body_file}" 2>/dev/null || true)"
+    cid="$(jq -r '.id // empty' <<<"${created_json}" 2>/dev/null || true)"
+    [[ -n "${cid}" ]] && echo "${cid}"
+    i=$((i+1))
+  done
+}
 
 normalize_positive_int() {
   local value="$1"
@@ -203,7 +247,8 @@ resolve_effective_limit() {
     base_limit="${max_limit}"
   fi
 
-  raw_count="$("${GMAIL_SCRIPT}" "${PROFILE}" list "is:unread in:inbox" 100 2>/dev/null | jq -r '.resultSizeEstimate // 0' 2>/dev/null || echo 0)"
+  # Gmail pode subestimar resultSizeEstimate com maxResults altos em alguns tenants; usar max=1 é mais estável.
+  raw_count="$("${GMAIL_SCRIPT}" "${PROFILE}" list "is:unread in:inbox" 1 2>/dev/null | jq -r '.resultSizeEstimate // 0' 2>/dev/null || echo 0)"
   unread_estimate=0
   if [[ "${raw_count}" =~ ^[0-9]+$ ]]; then
     unread_estimate="${raw_count}"
@@ -264,51 +309,71 @@ resolve_effective_limit() {
 
 QUERY_OUT="$(NOTION_CACHE_ENABLED=false "${NOTION_HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${AGENT_NAME}" Priorizado "Em andamento")"
 CARDS_FOUND="$(echo "${QUERY_OUT}" | jq -r '.results | length')"
-PROCESS_MAX_CARDS="${MAIL_PROCESS_MAX_CARDS:-1}"
+PROCESS_MAX_CARDS="${MAIL_PROCESS_MAX_CARDS:-3}"
 if [[ ! "${PROCESS_MAX_CARDS}" =~ ^[0-9]+$ ]] || (( PROCESS_MAX_CARDS < 1 )); then
   PROCESS_MAX_CARDS=1
 fi
 
-# Backlog alto sem card: executar triagem mesmo assim para não deixar caixa parada (crítico).
-RUN_WITHOUT_CARD_THRESHOLD="${MAIL_BACKLOG_RUN_WITHOUT_CARD_THRESHOLD:-25}"
+# Sem card no Notion: não executar e-mail; garantir criação de card (Notion é a central).
+RUN_WITHOUT_CARD_THRESHOLD="${MAIL_BACKLOG_RUN_WITHOUT_CARD_THRESHOLD:-1}"
 
 if [[ "${CARDS_FOUND}" == "0" ]]; then
   LIMIT_INFO="$(resolve_effective_limit "${LIMIT}")"
   EFFECTIVE_LIMIT="${LIMIT_INFO%%|*}"
   BACKLOG_ESTIMATE="${LIMIT_INFO##*|}"
 
+  created_card=0
+  dedup_open=0
+  created_card_id=""
+
   if [[ "${BACKLOG_ESTIMATE}" =~ ^[0-9]+$ ]] && (( BACKLOG_ESTIMATE >= RUN_WITHOUT_CARD_THRESHOLD )); then
-    RESULT_FILE="/tmp/mail-${PROFILE}-no-card-$$.json"
-    RUN_STARTED_AT="$(date +%s)"
-    if "${PROCESS_WORKFLOW}" "${PROFILE}" "${EFFECTIVE_LIMIT}" > "${RESULT_FILE}" 2>/dev/null; then
-      TRIAGED_COUNT="$(jq -r '.triaged // 0' "${RESULT_FILE}" 2>/dev/null || echo 0)"
-      MARKED_READ_COUNT="$(jq -r '.markedRead // 0' "${RESULT_FILE}" 2>/dev/null || echo 0)"
-      ARCHIVED_COUNT="$(jq -r '.archived // 0' "${RESULT_FILE}" 2>/dev/null || echo 0)"
-      RUN_DURATION_SEC=$(( $(date +%s) - RUN_STARTED_AT ))
-      save_batch_state "success" "${EFFECTIVE_LIMIT}" "${BACKLOG_ESTIMATE}" "${RUN_DURATION_SEC}"
-      jq -n \
-        --arg profile "${PROFILE}" \
-        --arg agent "${AGENT_NAME}" \
-        --arg mailbox "${MAILBOX}" \
-        --argjson backlog "${BACKLOG_ESTIMATE}" \
-        --argjson baseLimit "${LIMIT}" \
-        --argjson effectiveLimit "${EFFECTIVE_LIMIT}" \
-        --argjson triaged "${TRIAGED_COUNT}" \
-        --argjson markedRead "${MARKED_READ_COUNT}" \
-        --argjson archived "${ARCHIVED_COUNT}" \
-        '{profile:$profile,agent:$agent,mailbox:$mailbox,cardsFound:0,processed:1,success:1,partial:0,failed:0,backlogEstimate:$backlog,baseLimit:$baseLimit,effectiveLimit:$effectiveLimit,triaged:$triaged,markedRead:$markedRead,archived:$archived,message:"backlog alto sem card; triagem executada automaticamente"}'
-    else
-      save_batch_state "idle" "${LIMIT}" "${BACKLOG_ESTIMATE}" 0
-      jq -n \
-        --arg profile "${PROFILE}" \
-        --arg agent "${AGENT_NAME}" \
-        --arg mailbox "${MAILBOX}" \
-        --argjson backlog "${BACKLOG_ESTIMATE}" \
-        --argjson baseLimit "${LIMIT}" \
-        --argjson effectiveLimit "${EFFECTIVE_LIMIT}" \
-        '{profile:$profile,agent:$agent,mailbox:$mailbox,cardsFound:0,processed:0,success:0,partial:0,failed:1,backlogEstimate:$backlog,baseLimit:$baseLimit,effectiveLimit:$effectiveLimit,message:"backlog alto sem card; falha ao executar triagem automatica"}'
+    # Dedup: evita criar múltiplos cards iguais enquanto já existe card aberto na cadeia.
+    q1="$(NOTION_CACHE_ENABLED=false "${NOTION_HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${DEMAND_AGENT}" "Aguardando" "Priorizado" 2>/dev/null || echo '{"results":[]}')"
+    q2="$(NOTION_CACHE_ENABLED=false "${NOTION_HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${DEMAND_AGENT}" "Em andamento" "Em andamento" 2>/dev/null || echo '{"results":[]}')"
+    dedup_open="$(jq -rn --argjson a "${q1}" --argjson b "${q2}" --arg p "${DEMAND_TITLE_PREFIX}" '
+      ((($a.results // []) + ($b.results // []))
+      | map(select((.properties.Name.title[0].plain_text // "") | startswith($p)))
+      | length)
+    ' 2>/dev/null || echo 0)"
+    [[ ! "${dedup_open}" =~ ^[0-9]+$ ]] && dedup_open=0
+
+    if (( dedup_open == 0 )); then
+      body_file="/tmp/mail-${PROFILE}-autocard-body-$$.md"
+      cat > "${body_file}" <<EOF
+## Contexto
+Backlog detectado na caixa ${MAILBOX}: ${BACKLOG_ESTIMATE} não lidos.
+
+## Regra operacional
+- Não executar sem card no Notion.
+- Notion é a central de tarefas.
+
+## Ação necessária
+- Diretor deve priorizar e encaminhar para ${AGENT_NAME}.
+- ${AGENT_NAME} executa 1 card por rodada com evidências.
+
+## Critério de sucesso
+- Card em execução e redução progressiva do backlog.
+EOF
+      created_json="$(NOTION_CACHE_ENABLED=false "${NOTION_HELPER}" create-card "${DB_ID}" "${API_KEY_VAR}" "${DEMAND_TITLE_PREFIX} (${BACKLOG_ESTIMATE} não lidos)" "Aguardando" "OpenClaw" "${DEMAND_AGENT}" "Alta" "Mail System" "${body_file}" 2>/dev/null || true)"
+      created_card_id="$(jq -r '.id // empty' <<<"${created_json}" 2>/dev/null || true)"
+      [[ -n "${created_card_id}" ]] && created_card=1
+      rm -f "${body_file}" 2>/dev/null || true
     fi
-    rm -f "${RESULT_FILE}" 2>/dev/null || true
+
+    save_batch_state "idle" "${LIMIT}" "${BACKLOG_ESTIMATE}" 0
+    jq -n \
+      --arg profile "${PROFILE}" \
+      --arg agent "${AGENT_NAME}" \
+      --arg mailbox "${MAILBOX}" \
+      --argjson backlog "${BACKLOG_ESTIMATE}" \
+      --argjson baseLimit "${LIMIT}" \
+      --argjson effectiveLimit "${EFFECTIVE_LIMIT}" \
+      --arg demandAgent "${DEMAND_AGENT}" \
+      --arg demandPrefix "${DEMAND_TITLE_PREFIX}" \
+      --arg createdCardId "${created_card_id}" \
+      --argjson createdCard "${created_card}" \
+      --argjson dedupOpen "${dedup_open}" \
+      '{profile:$profile,agent:$agent,mailbox:$mailbox,cardsFound:0,processed:0,success:0,partial:0,failed:0,backlogEstimate:$backlog,baseLimit:$baseLimit,effectiveLimit:$effectiveLimit,createdCard:$createdCard,createdCardId:$createdCardId,demandAgent:$demandAgent,demandPrefix:$demandPrefix,dedupOpen:$dedupOpen,message:"execução bloqueada: sem card no Notion; card de demanda garantido/validado"}'
     exit 0
   fi
 
@@ -320,7 +385,7 @@ if [[ "${CARDS_FOUND}" == "0" ]]; then
     --argjson backlog "${BACKLOG_ESTIMATE}" \
     --argjson baseLimit "${LIMIT}" \
     --argjson effectiveLimit "${EFFECTIVE_LIMIT}" \
-    '{profile:$profile,agent:$agent,mailbox:$mailbox,cardsFound:0,processed:0,success:0,partial:0,failed:0,backlogEstimate:$backlog,baseLimit:$baseLimit,effectiveLimit:$effectiveLimit,message:"nenhum card encontrado"}'
+    '{profile:$profile,agent:$agent,mailbox:$mailbox,cardsFound:0,processed:0,success:0,partial:0,failed:0,backlogEstimate:$backlog,baseLimit:$baseLimit,effectiveLimit:$effectiveLimit,message:"nenhum card encontrado (sem backlog relevante)"}'
   exit 0
 fi
 
@@ -336,15 +401,66 @@ while IFS= read -r CARD; do
   PAGE_ID="$(echo "${CARD}" | jq -r '.id')"
   CARD_TITLE="$(echo "${CARD}" | jq -r '.properties.Name.title[0].plain_text // "Sem título"')"
   CARD_STATUS="$(echo "${CARD}" | jq -r '.properties.Status.select.name // ""')"
+  CARD_PRIORITY="$(echo "${CARD}" | jq -r '.properties.Prioridade.select.name // "Média"')"
   RESULT_FILE="/tmp/mail-${PROFILE}-${PAGE_ID//-/}.json"
   CARD_RESULT="failed"
   NOTE=""
+  CARD_TITLE_LC="$(printf '%s' "${CARD_TITLE}" | tr '[:upper:]' '[:lower:]')"
+  IS_MICRO_CARD=0
+  [[ "${CARD_TITLE}" =~ ^[[:space:]]*\[[Mm][Ii][Cc][Rr][Oo] ]] && IS_MICRO_CARD=1
   LIMIT_INFO="$(resolve_effective_limit "${LIMIT}")"
   EFFECTIVE_LIMIT="${LIMIT_INFO%%|*}"
   BACKLOG_ESTIMATE="${LIMIT_INFO##*|}"
 
   if [[ "${CARD_STATUS}" == "Priorizado" ]]; then
     "${NOTION_HELPER}" update-status "${PAGE_ID}" "${API_KEY_VAR}" "Em andamento" >/dev/null
+  fi
+
+  if (( IS_MICRO_CARD == 0 )) && is_complex_mail_card "${CARD_TITLE_LC}" && [[ "${CARD_TITLE}" != "${DEMAND_TITLE_PREFIX}"* ]]; then
+    blocks_json="$("${NOTION_HELPER}" get-blocks "${PAGE_ID}" "${API_KEY_VAR}" 2>/dev/null || echo '{"results":[]}')"
+    has_microplan=0
+    if jq -r '
+      .results[]?
+      | .type as $t
+      | if ($t == "paragraph" or $t == "heading_1" or $t == "heading_2" or $t == "heading_3" or $t == "bulleted_list_item" or $t == "numbered_list_item" or $t == "to_do")
+        then (.[ $t ].rich_text[]?.plain_text // empty)
+        else empty
+        end
+    ' <<<"${blocks_json}" 2>/dev/null | grep -qi 'MICROPLAN_V1_PARENT'; then
+      has_microplan=1
+    fi
+
+    if (( has_microplan == 0 )); then
+      micro_ids=()
+      while IFS= read -r _cid; do
+        [[ -n "${_cid}" ]] && micro_ids+=("${_cid}")
+      done < <(create_mail_microcards "${PAGE_ID}" "${CARD_TITLE}" "${CARD_PRIORITY}")
+
+      if (( ${#micro_ids[@]} > 0 )); then
+        marker_file="/tmp/mail_micro_parent_${PROFILE}_${PAGE_ID}.md"
+        {
+          echo "MICROPLAN_V1_PARENT=true"
+          echo "MICROPLAN_TARGET_SECONDS=${MAIL_MICRO_TARGET_SEC}"
+          printf 'MICROPLAN_CHILDREN=%s\n' "$(IFS=,; echo "${micro_ids[*]}")"
+          echo "MICROPLAN_CREATED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+        } > "${marker_file}"
+        "${NOTION_HELPER}" append-body "${PAGE_ID}" "${API_KEY_VAR}" "${marker_file}" >/dev/null || true
+        rm -f "${marker_file}" 2>/dev/null || true
+        "${NOTION_HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Planejamento concluído: card fatiado em ${#micro_ids[@]} micro-cards (<=${MAIL_MICRO_TARGET_SEC}s/fatia). Próximas rodadas executarão as fatias por prioridade." "${AGENT_NAME}" >/dev/null || true
+        CARD_RESULT="partial"
+        NOTE="demanda complexa fatiada em micro-cards; execução seguirá nas próximas rodadas"
+        PARTIAL=$((PARTIAL + 1))
+        PROCESSED=$((PROCESSED + 1))
+        CARDS_SUMMARY="$(echo "${CARDS_SUMMARY}" | jq \
+          --arg id "${PAGE_ID}" \
+          --arg title "${CARD_TITLE}" \
+          --arg result "${CARD_RESULT}" \
+          --arg note "${NOTE}" \
+          '. + [{id:$id,title:$title,result:$result,note:$note}]')"
+        save_batch_state "partial" "${EFFECTIVE_LIMIT}" "${BACKLOG_ESTIMATE}" 1
+        continue
+      fi
+    fi
   fi
 
   "${NOTION_HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Início da execução: triagem unificada com labels, leitura, rascunhos e arquivamento (lote base=${LIMIT}, lote efetivo=${EFFECTIVE_LIMIT}, backlog estimado=${BACKLOG_ESTIMATE})." "${AGENT_NAME}" >/dev/null
@@ -429,7 +545,17 @@ while IFS= read -r CARD; do
     '. + [{id:$id,title:$title,result:$result,note:$note}]')"
 done < <(echo "${QUERY_OUT}" | jq -c --argjson maxCards "${PROCESS_MAX_CARDS}" '
   (.results // [])
-  | sort_by(.created_time // "9999-12-31T23:59:59.000Z")
+  | map(. + {
+      _status: (.properties.Status.select.name // ""),
+      _title: (.properties.Name.title[0].plain_text // "")
+    })
+  | sort_by(
+      (if (._status == "Em andamento" and (._title | test("^\\s*\\[micro\\b"; "i"))) then 0
+       elif (._status == "Priorizado" and (._title | test("^\\s*\\[micro\\b"; "i"))) then 1
+       elif (._status == "Em andamento") then 2
+       else 3 end),
+      (.created_time // "9999-12-31T23:59:59.000Z")
+    )
   | .[:$maxCards]
   | .[]
 ')

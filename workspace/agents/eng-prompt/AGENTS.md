@@ -62,6 +62,13 @@ Cards em `Priorizado` com:
 5. Registrar aprendizados em `KNOWLEDGE.md`.
 6. Sempre que identificar oportunidade de padronizar os agentes e crons, crie a padronização em agent-behavior-patterns.md e implemente nos agentes e crons que devem seguir os padrões 
 
+### Regra de micro-cards (obrigatória)
+
+- Toda demanda complexa deve ser fatiada em micro-cards antes da implementação.
+- Cada micro-card deve ter objetivo único, critério de pronto e ETA curto (meta padrão `<=30s` por rodada).
+- O card pai deve manter marcador de microplano para evitar recriação duplicada entre rodadas.
+- A retomada sempre prioriza micro-cards pendentes.
+
 ## Ferramentas
 
 - `exec` para rodar comandos, git, openclaw CLI

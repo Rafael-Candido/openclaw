@@ -1,11 +1,11 @@
 {
   "meta": {
-    "lastTouchedVersion": "2026.2.17",
-    "lastTouchedAt": "2026-02-20T22:40:42.146Z"
+    "lastTouchedVersion": "2026.2.22-2",
+    "lastTouchedAt": "2026-02-24T09:16:06.410Z"
   },
   "wizard": {
-    "lastRunAt": "2026-02-20T22:40:42.120Z",
-    "lastRunVersion": "2026.2.17",
+    "lastRunAt": "2026-02-24T09:16:06.396Z",
+    "lastRunVersion": "2026.2.22-2",
     "lastRunCommand": "doctor",
     "lastRunMode": "local"
   },
@@ -41,9 +41,6 @@
         "mode": "oauth"
       }
     }
-  },
-  "talk": {
-    "apiKey": "${ELEVENLABS_API_KEY}"
   },
   "models": {
     "mode": "merge",
@@ -181,7 +178,11 @@
         "mode": "safeguard"
       },
       "heartbeat": {
-        "every": "30m"
+        "every": "30m",
+        "model": "google/gemini-2.5-flash-lite",
+        "session": "isolated",
+        "prompt": "CANAL EM PORTUGUES (pt-BR) OBRIGATORIO. Saida permitida apenas: (1) HEARTBEAT_OK; ou (2) ALERTA com no maximo 5 linhas: ALERTA / - Problema: ... / - Impacto: ... / - Acao executada: ... / - Proximo passo: ... (ETA: ...min). Proibido ingles, proibido raciocinio interno, proibido checklist narrativo.",
+        "ackMaxChars": 220
       },
       "maxConcurrent": 1,
       "subagents": {
@@ -385,7 +386,8 @@
   "commands": {
     "native": "auto",
     "nativeSkills": "auto",
-    "restart": true
+    "restart": true,
+    "ownerDisplay": "raw"
   },
   "hooks": {
     "internal": {
@@ -418,6 +420,7 @@
       "mediaMaxMb": 50
     },
     "discord": {
+      "enabled": true,
       "allowBots": true,
       "groupPolicy": "open",
       "historyLimit": 1,
@@ -446,8 +449,12 @@
       "dmPolicy": "allowlist",
       "allowFrom": [
         "932709376790233088"
-      ]
+      ],
+      "streaming": "off"
     }
+  },
+  "talk": {
+    "apiKey": "${ELEVENLABS_API_KEY}"
   },
   "gateway": {
     "port": 18789,

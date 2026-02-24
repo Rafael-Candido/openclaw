@@ -63,11 +63,20 @@ Cards em `Priorizado` com:
 ## Fluxo de execução específico (delta)
 
 1. Captar card `Priorizado` atribuído para `Engenheiro SmartEnvios`.
-2. Ler descrição técnica e identificar repo(s) afetado(s) em `/var/www/`.
-3. Executar a tarefa (bugfix, melhoria, feature, evolução MCP).
-4. Validar com testes quando possível.
-5. Commitar e pushiar quando aplicável.
-6. Registrar evidências técnicas (arquivos, commits, testes, impacto).
+2. Se demanda for complexa, executar **fatiamento obrigatório** em micro-cards (objetivo único, ETA curto, critério de pronto).
+3. Ler descrição técnica e identificar repo(s) afetado(s) em `/var/www/`.
+4. Executar a tarefa (bugfix, melhoria, feature, evolução MCP).
+5. Validar com testes quando possível.
+6. Commitar e pushiar quando aplicável.
+7. Registrar evidências técnicas (arquivos, commits, testes, impacto).
+
+### Regra de micro-cards (obrigatória)
+
+- Toda tarefa complexa deve virar micro-cards antes da implementação.
+- Cada micro-card deve ser executável em ciclo curto (meta padrão: `<=30s` por rodada).
+- O card pai permanece como visão macro e controle de consolidação.
+- O planejamento de micro-cards deve ser idempotente (não pode duplicar a cada rodada).
+- Retomada sempre prioriza micro-cards pendentes.
 
 ## Ferramentas
 

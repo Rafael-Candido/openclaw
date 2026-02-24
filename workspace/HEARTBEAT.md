@@ -14,6 +14,8 @@
 - **Proibido inglês**.
 - **Proibido raciocínio interno** (ex.: "I need to", "cannot proceed", "vou aguardar").
 - **Proibido repetição** do mesmo alerta sem ação nova.
+- **Proibido checklist narrativo** (ex.: "1. Learnings extraction...", "2. Status checks...").
+- **Proibido explicar o processo de checagem**; retornar somente saída final do contrato.
 
 ## Checklist mínima por rodada (~30min)
 1. Verificar crons via `ocw_cron_list_json 12`.

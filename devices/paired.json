@@ -12,22 +12,27 @@
     "scopes": [
       "operator.admin",
       "operator.approvals",
-      "operator.pairing"
+      "operator.pairing",
+      "operator.read",
+      "operator.write"
     ],
     "tokens": {
       "operator": {
-        "token": "Ik_pgM42X7Z4EZ8h5WDQYKRPt2PHLI2slLaGc0TrsEc",
+        "token": "N0yRMrbRsrsNKeSmylfsXLlmYvrc2PpPt2-g4F2osBQ",
         "role": "operator",
         "scopes": [
           "operator.admin",
           "operator.approvals",
-          "operator.pairing"
+          "operator.pairing",
+          "operator.read",
+          "operator.write"
         ],
-        "createdAtMs": 1771509414436
+        "createdAtMs": 1771509414436,
+        "rotatedAtMs": 1771887330690
       }
     },
     "createdAtMs": 1771509414436,
-    "approvedAtMs": 1771509414436
+    "approvedAtMs": 1771887330690
   },
   "2666ab202714de320485d63ab080c2cf745b432c2011ec146477b65887782e47": {
     "deviceId": "2666ab202714de320485d63ab080c2cf745b432c2011ec146477b65887782e47",
@@ -116,7 +121,7 @@
           "operator.pairing"
         ],
         "createdAtMs": 1771568886777,
-        "lastUsedAtMs": 1771885788555
+        "lastUsedAtMs": 1771942458095
       }
     },
     "createdAtMs": 1771568886777,
@@ -149,14 +154,14 @@
           "operator.pairing"
         ],
         "createdAtMs": 1771614918191,
-        "lastUsedAtMs": 1771884265306
+        "lastUsedAtMs": 1771888726446
       },
       "node": {
         "token": "vqccsbqoQX4wEbVk6TAQ5nLGYfQaH_J74DKTFtyxSzg",
         "role": "node",
         "scopes": [],
         "createdAtMs": 1771614931340,
-        "lastUsedAtMs": 1771884264510
+        "lastUsedAtMs": 1771888726444
       }
     },
     "createdAtMs": 1771614918191,

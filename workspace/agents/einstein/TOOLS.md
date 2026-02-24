@@ -77,7 +77,7 @@ Se pedirem "crie atividade no Jira" (ou "crie card/atividade/chamado/tarefa" no 
 Usar formato curto e único:
 
 ```text
-Atividade criada no Jira.
+<menção do solicitante> Atividade criada no Jira.
 Key: SME-12345
 Responsável: Nome
 Tipo/Prioridade: <TIPO> / <PRIORIDADE>
@@ -88,6 +88,7 @@ Regra:
 - manter o texto no mesmo idioma do pedido do usuário.
 - enviar somente esse bloco (não concatenar respostas).
 - para pedido em português, não incluir nenhuma frase em inglês.
+- quando houver solicitante identificável, a menção na primeira linha é obrigatória.
 
 ## Notion SmartEnvios (somente escalonamento)
 

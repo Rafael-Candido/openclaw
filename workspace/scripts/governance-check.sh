@@ -758,7 +758,7 @@ def stage(job):
     if running_at > 0:
         elapsed = max(0, (now_ms - running_at) // 60000)
         return f"rodando {elapsed}m"
-    last = (st.get("lastStatus") or "-").lower()
+    last = (st.get("lastRunStatus") or st.get("lastStatus") or "-").lower()
     errs = int(st.get("consecutiveErrors") or 0)
     if last in {"error", "failed", "timeout"}:
         return f"{last} e{errs}"
@@ -2716,7 +2716,7 @@ compute_operational_health() {
     fi
   fi
 
-  # Crons críticos com lastStatus = error (Presidente, Mail-Pro, Mail-Person, Eng. Prompt, Eng. SmartEnvios)
+  # Crons críticos em erro de execução (lastRunStatus = execução; lastStatus = compatibilidade com gateway < 2026.2.22)
   local key_crons="${PRESIDENT_CRON}|Presidente,${MAIL_PRO_CRON}|Mail-Pro,${MAIL_PERSON_CRON}|Mail-Person,${ENG_PROMPT_CRON}|Eng. de Prompt,${ENG_SMARTENVIOS_CRON}|Eng. SmartEnvios"
   local cron_errors
   cron_errors="$(echo "$CRON_JSON" | python3 -c "
@@ -2728,7 +2728,9 @@ for pair in key_list:
     for j in data.get('jobs', []):
         if j.get('id') == cid:
             st = (j.get('state') or {})
-            if (st.get('lastStatus') or '').lower() == 'error':
+            # Prefer lastRunStatus (2026.2.22+), fallback to lastStatus for older gateway
+            run_status = (st.get('lastRunStatus') or st.get('lastStatus') or '').lower()
+            if run_status == 'error':
                 err = (st.get('lastError') or '')[:80]
                 print(f\"{label}|{err}\")
             break
@@ -3468,7 +3470,7 @@ for job in data.get('jobs', []):
     except (TypeError, ValueError):
         timeout = DEFAULT_TIMEOUT
     ratio = (duration_ms / 1000.0) / timeout if timeout else 0
-    last_status = (state.get('lastStatus') or '').lower()
+    last_status = (state.get('lastRunStatus') or state.get('lastStatus') or '').lower()
     if ratio >= THRESHOLD or last_status == 'timeout':
         name = (job.get('name') or '?')[:50]
         out.append(f"{job['id']}|{name}|{int(duration_ms/1000)}s|{int(timeout)}s|{int(ratio*100)}%")
@@ -3658,7 +3660,7 @@ for job in store.get('jobs', []):
     state = job.get('state', {})
     current_every = job.get('schedule', {}).get('everyMs', 0)
     last_dur = state.get('lastDurationMs', 0)
-    last_status = state.get('lastStatus', '')
+    last_status = state.get('lastRunStatus') or state.get('lastStatus', '')
 
     # Heurística: duração curta (<30s) = sem trabalho, duração longa (>60s) = teve trabalho
     if last_status != 'ok':

@@ -64,7 +64,7 @@ echo "=== Recomendações ==="
 if (( BACKLOG > THROUGHPUT_NORMAL )); then
   echo "1. Backlog ($BACKLOG) > throughput normal ($THROUGHPUT_NORMAL emails/hora)"
   echo "   → Sistema já está em modo emergencial"
-elif (( BACKLOG > THROUGHPUT_NORMAL * 0.8 )); then
+elif (( BACKLOG > (THROUGHPUT_NORMAL * 8 / 10) )); then
   echo "1. Backlog ($BACKLOG) próximo do throughput máximo"
   echo "   → Monitorar de perto"
 else

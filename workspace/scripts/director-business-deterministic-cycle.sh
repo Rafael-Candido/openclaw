@@ -8,6 +8,7 @@ DB_ID="14abf9163c9680ff822bc2e32f6bec4b"
 API_KEY_VAR="NOTION_CANPER_API_KEY"
 DIRECTOR="Diretor Negócios"
 TARGET_AGENT="Especialista de Negócios"
+REQUIRES_MICROPLAN=0
 
 if [[ -f "${ROOT_DIR}/../.env" ]]; then
   # shellcheck disable=SC1091
@@ -19,17 +20,16 @@ if [[ ! -x "${HELPER}" ]]; then
   exit 2
 fi
 
-q_ag="$(NOTION_CACHE_ENABLED=false "${HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${DIRECTOR}" "Aguardando" "Priorizado" 2>/dev/null || echo '{"results":[]}')"
-q_run="$(NOTION_CACHE_ENABLED=false "${HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${DIRECTOR}" "Em andamento" "Em andamento" 2>/dev/null || echo '{"results":[]}')"
+q_all="$(NOTION_CACHE_ENABLED=false "${HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${DIRECTOR}" "Aguardando" "Em andamento" 2>/dev/null || echo '{"results":[]}')"
 
-line="$(jq -r -n --argjson a "${q_ag}" --argjson b "${q_run}" '
-  (($a.results // []) + ($b.results // []))
+line="$(jq -r -n --argjson all "${q_all}" '
+  ($all.results // [])
   | map({
       id: .id,
       created: (.created_time // "9999-12-31T23:59:59.000Z"),
       status: (.properties.Status.select.name // ""),
       title: (.properties.Name.title[0].plain_text // "(sem título)"),
-      rank: (if (.properties.Status.select.name // "") == "Aguardando" then 0 else 1 end)
+      rank: (if (.properties.Status.select.name // "") == "Em andamento" then 0 else 1 end)
     })
   | sort_by(.rank, .created)
   | .[0]
@@ -50,11 +50,31 @@ if [[ "${CUR_STATUS}" != "Em andamento" ]]; then
   "${HELPER}" update-status "${PAGE_ID}" "${API_KEY_VAR}" "Em andamento" >/dev/null || true
 fi
 
+title_lc="$(printf '%s' "${TITLE}" | tr '[:upper:]' '[:lower:]')"
+if [[ "${title_lc}" == *"novo projeto"* || "${title_lc}" == *"projeto"* || "${title_lc}" == *"arquitet"* || "${title_lc}" == *"integra"* || "${title_lc}" == *"refator"* || "${title_lc}" == *"migr"* ]]; then
+  REQUIRES_MICROPLAN=1
+fi
+
 "${HELPER}" update-agent "${PAGE_ID}" "${API_KEY_VAR}" "${TARGET_AGENT}" >/dev/null || true
-"${HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Triagem determinística concluída pelo Diretor Negócios. Card roteado para ${TARGET_AGENT} (execução generalista inicial, 1 card mais antigo da fila)." "${DIRECTOR}" >/dev/null || true
+if (( REQUIRES_MICROPLAN == 1 )); then
+  micro_file="/tmp/director_business_microplan_${PAGE_ID}.md"
+  cat > "${micro_file}" <<EOF
+REQUIRES_MICROPLAN=true
+MICROPLAN_TARGET_SECONDS=30
+MICROPLAN_OWNER=${TARGET_AGENT}
+MICROPLAN_REASON=escopo_complexo_detectado_na_triagem
+EOF
+  "${HELPER}" append-body "${PAGE_ID}" "${API_KEY_VAR}" "${micro_file}" >/dev/null || true
+  rm -f "${micro_file}" 2>/dev/null || true
+  MICRO_NOTE=" Execução deve iniciar com fatiamento em micro-cards (<=30s/fatia)."
+else
+  MICRO_NOTE=""
+fi
+"${HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Triagem determinística concluída pelo Diretor Negócios. Card roteado para ${TARGET_AGENT} (execução generalista inicial, 1 card mais antigo da fila).${MICRO_NOTE}" "${DIRECTOR}" >/dev/null || true
 "${HELPER}" update-status "${PAGE_ID}" "${API_KEY_VAR}" "Priorizado" >/dev/null || true
 
-verify_status="$("${HELPER}" get-page "${PAGE_ID}" "${API_KEY_VAR}" | jq -r '.properties.Status.select.name // ""' 2>/dev/null || true)"
-verify_agent="$("${HELPER}" get-page "${PAGE_ID}" "${API_KEY_VAR}" | jq -r '.properties.Agente.select.name // ""' 2>/dev/null || true)"
+final_page="$("${HELPER}" get-page "${PAGE_ID}" "${API_KEY_VAR}" 2>/dev/null || echo '{}')"
+verify_status="$(jq -r '.properties.Status.select.name // ""' <<<"${final_page}" 2>/dev/null || true)"
+verify_agent="$(jq -r '.properties.Agente.select.name // ""' <<<"${final_page}" 2>/dev/null || true)"
 
 echo "{\"ok\":true,\"action\":\"routed\",\"page_id\":\"${PAGE_ID}\",\"title\":$(printf '%s' "${TITLE}" | jq -Rs .),\"created_at\":\"${CREATED_AT}\",\"status\":\"${verify_status}\",\"agent\":\"${verify_agent}\"}"

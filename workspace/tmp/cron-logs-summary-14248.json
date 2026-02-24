@@ -1,0 +1,78 @@
+{
+  "jobs": {
+    "59c24991-af6c-4df2-95fe-bbf012cd73c0": {
+      "name": "Otimizador - performance e custo 6h",
+      "count": 3,
+      "ok": 3,
+      "error": 0,
+      "avgDurationMs": 40056.666666666664,
+      "maxDurationMs": 44104
+    },
+    "6bdd82c7-081d-486b-9700-0572b9fce72e": {
+      "name": "Engenheiro de Prompt - execução 10min (drenagem)",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 21704.85,
+      "maxDurationMs": 45154
+    },
+    "7fba5b1f-2ee9-4b1e-aae0-bd211c32b925": {
+      "name": "Diretor Tech - varredura 30min",
+      "count": 20,
+      "ok": 19,
+      "error": 1,
+      "avgDurationMs": 48364.45,
+      "maxDurationMs": 624220
+    },
+    "985165be-59eb-46e7-8715-17571c8e8227": {
+      "name": "Presidente - criar demandas 30min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 28820.45,
+      "maxDurationMs": 133056
+    },
+    "99de71d1-97b0-48d0-933e-7fcacfda2184": {
+      "name": "Mail-Pro especialista - execução 15min",
+      "count": 12,
+      "ok": 11,
+      "error": 1,
+      "avgDurationMs": 77441.25,
+      "maxDurationMs": 521679
+    },
+    "a71c2958-e52f-4f37-9876-bedf6dcb9434": {
+      "name": "Diretor Pessoal - varredura 30min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 23930.15,
+      "maxDurationMs": 44812
+    },
+    "a7b8c9d0-e1f2-3456-7890-abcdef123401": {
+      "name": "Engenheiro SmartEnvios - execução 60min",
+      "count": 14,
+      "ok": 14,
+      "error": 0,
+      "avgDurationMs": 24641.5,
+      "maxDurationMs": 42802
+    },
+    "cf343b94-0816-42e5-b3dc-d40ecf12786e": {
+      "name": "Diretor Negócios - varredura 30min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 7147.4,
+      "maxDurationMs": 14466
+    },
+    "e4cd9635-efdd-4588-8ecc-523a4a50ea20": {
+      "name": "Mail-Person especialista - execução 15min",
+      "count": 12,
+      "ok": 11,
+      "error": 1,
+      "avgDurationMs": 90167.16666666667,
+      "maxDurationMs": 902986
+    }
+  },
+  "gargalos": [],
+  "totals": {}
+}

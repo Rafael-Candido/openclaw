@@ -50,18 +50,33 @@ COMANDOS DISPONÍVEIS (via exec):
 [MÓDULO 3: FLUXO PADRÃO]
 FLUXO (contrato central: patterns/cron-lifecycle.md):
 1. Executar query para buscar cards Priorizado/Em andamento
-2. Para cada card Priorizado: update-status para 'Em andamento' + comment de início (<=300 chars)
-3. get-blocks para ler descrição, IMPLEMENTAR o pedido (você é o implementador; não existe "deixar para o Rafael executar").
+2. Priorizar retomada: processar primeiro cards já em `Em andamento` (mais antigo sem atividade do agente), depois captar `Priorizado`
+3. Para cada card captado de Priorizado: update-status para 'Em andamento' + comment de início (<=300 chars)
+4. get-blocks para ler descrição, IMPLEMENTAR o pedido (você é o implementador; não existe "deixar para o Rafael executar").
    Fazer as edições em arquivos, cron/jobs.json, scripts.
    Se tiver permissão de escrita no repo: editar e commitar.
    Se não: comentário final com patch/diff ou conteúdo exato dos arquivos para aplicação sem decisão humana.
    Comentário só com sugestão sem edição = falha.
-4. Comments progressivos com passo a passo: Etapa X/N (ex: Etapa 1/4, 2/4...), sempre assinar (4º param '[ASSINATURA]')
-5. update-status para 'Concluído' + comment final
+5. Comments progressivos com passo a passo: Etapa X/N (ex: Etapa 1/4, 2/4...), sempre assinar (4º param '[ASSINATURA]')
+6. Se execução longa ou sem atualização por janela operacional (20-30 min), publicar progresso com ETA revisado
+7. update-status para 'Concluído' + comment final
 
 Se erro: ler mensagem e ajustar. Nao usar subagente. Nao usar message.send.
 Responder total processado e IDs.
 ```
+
+Checklist obrigatório de implementação:
+- aplicar orçamento padrão de 1 card por rodada (quando não houver regra explícita diferente);
+- confirmar status pós-write (`update-status` + leitura de verificação);
+- se contexto insuficiente, comentar bloqueio e mover para `Impedimento` (não insistir em loop);
+- em crons de diretor, executar triagem transacional curta (`Em andamento` -> roteamento -> `Priorizado`).
+- em crons de especialista, implementar fatiamento obrigatório para demandas complexas (micro-cards com ETA curto e critério de pronto).
+- tornar o fatiamento idempotente (marker no card pai para impedir duplicação entre rodadas).
+
+Regra de atividade real (stale check):
+- `last_edited_time` da página pode não refletir a atividade real do agente.
+- Para detectar card parado, usar primeiro a última atividade assinada do agente nos comentários.
+- Usar `last_edited_time` apenas como fallback.
 
 ### Módulos Específicos por Domínio
 

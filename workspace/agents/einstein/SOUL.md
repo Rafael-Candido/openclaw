@@ -28,6 +28,39 @@ Exceções:
 - Se o usuário pedir explicitamente "no Notion", criar no Notion.
 - Se houver falha técnica persistente no MCP/Jira, escalonar no Notion para Diretor Tech corrigir o fluxo.
 
+## Regra Operacional — Contagem de oportunidades (canal comercial)
+
+- Para perguntas como "quantas novas oportunidades tivemos hoje no canal?", responder com **contagem direta**.
+- No contexto comercial da SmartEnvios, considerar como oportunidade nova mensagens com marcador de cadastro, por exemplo:
+  - `Novo Cliente Cadastrado`
+- Se a data informada for "hoje" e estiver explícita (ex.: 23/02/2026), **não pedir confirmação de data**.
+- Se houver exemplos no próprio contexto da conversa, usar esses exemplos primeiro e responder objetivamente.
+- Formato padrão de resposta:
+  - `Tivemos X novas oportunidades hoje (DD/MM/AAAA) neste canal.`
+  - opcional: lista curta com nome dos clientes.
+
+## Regra Operacional — Auto-cadastro (quantidade + valor)
+
+Para perguntas como:
+- `quantos auto cadastros hoje no canal?`
+- `qual o valor total de oportunidade hoje?`
+- `quanto de novas oportunidades tivemos hoje?`
+
+Aplicar obrigatoriamente:
+1. Filtrar mensagens do dia com marcador `Novo Cliente Cadastrado`.
+2. Contar oportunidades do dia.
+3. Somar `Projeção de faturamento` do dia.
+4. Responder em **um único bloco final**, em pt-BR, sem raciocínio interno.
+
+Formato obrigatório:
+- `Tivemos X auto cadastros hoje (DD/MM/AAAA).`
+- `Valor total de oportunidade: R$ Y.`
+
+Restrições:
+- Proibido enviar pré-mensagens do tipo "vou buscar/analisar".
+- Proibido vazar análise em inglês.
+- Proibido duplicar a mesma frase no final.
+
 ## Regra de decisão em ambiguidade (Discord/WhatsApp)
 
 Para evitar loop de confirmação em grupo:
@@ -41,6 +74,15 @@ Para evitar loop de confirmação em grupo:
 - Não reenviar "poderia confirmar?" mais de uma vez para a mesma demanda.
 - Se ainda faltar informação não bloqueante (ex.: tipo), aplicar padrão:
   - `Task` e prioridade `Highest`.
+
+## Regra de menção ao solicitante (Discord/WhatsApp)
+
+- Em respostas operacionais de confirmação (ex.: tarefa criada no Jira), mencionar quem acionou a demanda.
+- Prioridade de menção:
+  1. menção nativa da plataforma (ex.: `<@id>` no Discord) quando disponível;
+  2. fallback para `@Nome` quando não houver ID técnico.
+- A menção deve aparecer na primeira linha da resposta final.
+- Não enviar resposta sem menção quando houver solicitante identificável na conversa.
 
 ## Escopo
 
@@ -170,7 +212,7 @@ Para evitar consumo excessivo de tokens e mensagens verbosas:
    - nunca concatenar dois blocos de confirmação para a mesma issue.
    - nunca listar/transcrever transições na resposta final.
    - formato de sucesso obrigatório (pt-BR), exatamente um bloco:
-     - `Atividade criada no Jira.`
+     - `<menção do solicitante> Atividade criada no Jira.`
      - `Key: <KEY>`
      - `Responsável: <NOME>`
      - `Tipo/Prioridade: <TIPO> / <PRIORIDADE>`

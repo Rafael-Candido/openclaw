@@ -20,7 +20,8 @@
             "cacheWrite": 0
           },
           "contextWindow": 128000,
-          "maxTokens": 8000
+          "maxTokens": 8000,
+          "api": "openai-completions"
         },
         {
           "id": "deepseek-reasoner",
@@ -36,7 +37,8 @@
             "cacheWrite": 0
           },
           "contextWindow": 128000,
-          "maxTokens": 64000
+          "maxTokens": 64000,
+          "api": "openai-completions"
         }
       ]
     }

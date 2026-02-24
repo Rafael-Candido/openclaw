@@ -50,17 +50,17 @@ for run_file in "${RUNS_DIR}"/*.jsonl; do
         count: length,
         ok: [.[] | select(.status == "ok")] | length,
         error: [.[] | select(.status == "error" or .status == "failed" or .status == "timeout")] | length,
-        durationMs: (([.[] | .durationMs] | add) / length),
-        durationMin: ([.[] | .durationMs] | min / 60000),
-        durationMax: ([.[] | .durationMs] | max / 60000)
+        durationAvgMs: (([.[] | .durationMs] | add) / length),
+        durationMinMs: ([.[] | .durationMs] | min),
+        durationMaxMs: ([.[] | .durationMs] | max)
       }
   ' 2>/dev/null || echo '{}')"
 
   count="$(echo "$stats" | jq -r '.count // 0')"
   ok="$(echo "$stats" | jq -r '.ok // 0')"
   err="$(echo "$stats" | jq -r '.error // 0')"
-  avg_ms="$(echo "$stats" | jq -r '.durationMs // 0')"
-  max_ms="$(echo "$stats" | jq -r '.durationMax // 0')"
+  avg_ms="$(echo "$stats" | jq -r '.durationAvgMs // 0')"
+  max_ms="$(echo "$stats" | jq -r '.durationMaxMs // 0')"
   avg_sec="$(echo "scale=2; ${avg_ms}/1000" | bc 2>/dev/null || echo "0")"
   max_sec="$(echo "scale=2; ${max_ms}/1000" | bc 2>/dev/null || echo "0")"
 

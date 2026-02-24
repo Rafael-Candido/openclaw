@@ -3,33 +3,36 @@
   "jobs": [
     {
       "id": "e4cd9635-efdd-4588-8ecc-523a4a50ea20",
-      "name": "Mail-Person especialista - execução 60min",
+      "name": "Mail-Person especialista - execução 15min",
       "enabled": true,
       "createdAtMs": 1771800244262,
-      "updatedAtMs": 1771886502793,
+      "updatedAtMs": 1771972414726,
       "schedule": {
         "kind": "every",
-        "everyMs": 3600000,
-        "anchorMs": 1771810440000
+        "everyMs": 900000,
+        "anchorMs": 1771963898300
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando: ./scripts/gmail/process-notion-cards.sh personal 15. Use o JSON/resultado real como fonte de verdade. Regras: processar 1 card mais antigo por rodada; se falha, comentar bloqueio e nao concluir; sem simulacao.",
-        "model": "xai/grok-3-mini",
-        "timeoutSeconds": 300
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/gmail/process-notion-cards.sh personal 15. Responda somente em pt-BR, em no máximo 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO. Sem inglês, sem raciocínio, sem blocos duplicados. Regra adicional: se tarefa não for backlog padrão e for complexa, fatiar em micro-cards (<=30s por fatia).",
+        "model": "google/gemini-2.5-flash-lite",
+        "timeoutSeconds": 180
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771889640000,
-        "lastRunAtMs": 1771886487891,
+        "nextRunAtMs": 1771973290380,
+        "lastRunAtMs": 1771972390380,
         "lastStatus": "ok",
-        "lastDurationMs": 14902,
-        "consecutiveErrors": 0
+        "lastDurationMs": 24346,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-delivered",
+        "lastDelivered": false
       }
     },
     {
@@ -37,7 +40,7 @@
       "name": "Presidente - criar demandas 30min",
       "enabled": true,
       "createdAtMs": 1771802119702,
-      "updatedAtMs": 1771886554379,
+      "updatedAtMs": 1771972330788,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -47,7 +50,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando em foreground e sem process/background: ./scripts/president-mail-demand-cycle.sh. Saída permitida APENAS em pt-BR: (1) HEARTBEAT_OK quando estável; ou (2) ALERTA em no máximo 5 linhas no formato padronizado. Nunca responder em inglês. Nunca expor raciocínio interno.",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando em foreground e sem process/background: ./scripts/president-mail-demand-cycle.sh. Responda somente em pt-BR, em até 4 linhas, no formato: STATUS, BACKLOG, ACAO, PROXIMO PASSO. Nunca responder HEARTBEAT_OK. Nunca responder em inglês. Nunca expor raciocínio interno.",
         "model": "google/gemini-2.5-flash",
         "timeoutSeconds": 180
       },
@@ -56,11 +59,14 @@
         "channel": "last"
       },
       "state": {
-        "lastRunAtMs": 1771886520838,
+        "lastRunAtMs": 1771972296999,
         "lastStatus": "ok",
-        "lastDurationMs": 33541,
+        "lastDurationMs": 33789,
         "consecutiveErrors": 0,
-        "nextRunAtMs": 1771887720000
+        "nextRunAtMs": 1771974096999,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-delivered",
+        "lastDelivered": false
       }
     },
     {
@@ -68,7 +74,7 @@
       "name": "Diretor Tech - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771802125258,
-      "updatedAtMs": 1771886587933,
+      "updatedAtMs": 1771972352418,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -78,20 +84,23 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/director-tech-deterministic-cycle.sh. Regras: 1 card mais antigo por rodada; diretor só tria/roteia; não concluir no lugar de especialista; se erro, comentar no card e manter rastreabilidade.",
-        "model": "xai/grok-3-mini",
-        "timeoutSeconds": 150
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/director-tech-deterministic-cycle.sh. Regras: 1 card mais antigo por rodada; diretor só tria/roteia; não concluir no lugar de especialista; se erro, comentar no card e manter rastreabilidade. Em escopo complexo, anotar marker de microplanejamento no card ao rotear.",
+        "model": "google/gemini-2.5-flash-lite",
+        "timeoutSeconds": 120
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771888020000,
-        "lastRunAtMs": 1771886571659,
+        "nextRunAtMs": 1771974130797,
+        "lastRunAtMs": 1771972330797,
         "lastStatus": "ok",
-        "lastDurationMs": 16274,
-        "consecutiveErrors": 0
+        "lastDurationMs": 21621,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-delivered",
+        "lastDelivered": false
       }
     },
     {
@@ -99,7 +108,7 @@
       "name": "Diretor Pessoal - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771802131232,
-      "updatedAtMs": 1771886626332,
+      "updatedAtMs": 1771972370999,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -109,20 +118,23 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/director-personal-deterministic-cycle.sh. Regras: 1 card mais antigo por rodada; diretor só tria/roteia; não concluir no lugar de especialista.",
-        "model": "xai/grok-3-mini",
-        "timeoutSeconds": 150
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/director-personal-deterministic-cycle.sh. Regras: 1 card mais antigo por rodada; diretor só tria/roteia; não concluir no lugar de especialista. Em escopo complexo, anotar marker de microplanejamento no card ao rotear.",
+        "model": "google/gemini-2.5-flash-lite",
+        "timeoutSeconds": 120
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771888320000,
-        "lastRunAtMs": 1771886614120,
+        "nextRunAtMs": 1771974152418,
+        "lastRunAtMs": 1771972352418,
         "lastStatus": "ok",
-        "lastDurationMs": 12212,
-        "consecutiveErrors": 0
+        "lastDurationMs": 18581,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered"
       }
     },
     {
@@ -130,7 +142,7 @@
       "name": "Diretor Negócios - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771802136467,
-      "updatedAtMs": 1771886666231,
+      "updatedAtMs": 1771971580725,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -140,51 +152,57 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/director-business-deterministic-cycle.sh. Regras: processar 1 card mais antigo por rodada; diretor apenas tria/roteia; sem conclusão manual.",
-        "model": "xai/grok-3-mini",
-        "timeoutSeconds": 150
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/director-business-deterministic-cycle.sh. Regras: processar 1 card mais antigo por rodada; diretor apenas tria/roteia; sem conclusão manual. Em escopo complexo, anotar marker de microplanejamento no card ao rotear.",
+        "model": "google/gemini-2.5-flash-lite",
+        "timeoutSeconds": 120
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771886820000,
-        "lastRunAtMs": 1771886647926,
+        "nextRunAtMs": 1771973368482,
+        "lastRunAtMs": 1771971568482,
         "lastStatus": "ok",
-        "lastDurationMs": 18305,
-        "consecutiveErrors": 0
+        "lastDurationMs": 12243,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered"
       }
     },
     {
       "id": "99de71d1-97b0-48d0-933e-7fcacfda2184",
-      "name": "Mail-Pro especialista - execução 60min",
+      "name": "Mail-Pro especialista - execução 15min",
       "enabled": true,
       "createdAtMs": 1771802143478,
-      "updatedAtMs": 1771886647924,
+      "updatedAtMs": 1771972390366,
       "schedule": {
         "kind": "every",
-        "everyMs": 3600000,
-        "anchorMs": 1771813320000
+        "everyMs": 900000,
+        "anchorMs": 1771963899124
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando: ./scripts/gmail/process-notion-cards.sh pro 15. Use o JSON/resultado real como fonte de verdade. Regras: processar 1 card mais antigo por rodada; se falha, comentar bloqueio e nao concluir; sem simulacao.",
-        "model": "xai/grok-3-mini",
-        "timeoutSeconds": 300
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/gmail/process-notion-cards.sh pro 15. Responda somente em pt-BR, em no máximo 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO. Sem inglês, sem raciocínio, sem blocos duplicados. Regra adicional: se tarefa não for backlog padrão e for complexa, fatiar em micro-cards (<=30s por fatia).",
+        "model": "google/gemini-2.5-flash-lite",
+        "timeoutSeconds": 180
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771888920000,
-        "lastRunAtMs": 1771886626334,
+        "nextRunAtMs": 1771973270999,
+        "lastRunAtMs": 1771972370999,
         "lastStatus": "ok",
-        "lastDurationMs": 21590,
-        "consecutiveErrors": 0
+        "lastDurationMs": 19367,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-delivered",
+        "lastDelivered": false
       }
     },
     {
@@ -192,7 +210,7 @@
       "name": "Otimizador - performance e custo 6h",
       "enabled": true,
       "createdAtMs": 1771812501384,
-      "updatedAtMs": 1771886682776,
+      "updatedAtMs": 1771972326526,
       "schedule": {
         "kind": "every",
         "everyMs": 21600000,
@@ -211,11 +229,14 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771894020000,
-        "lastRunAtMs": 1771886666234,
+        "nextRunAtMs": 1771989799574,
+        "lastRunAtMs": 1771968199574,
         "lastStatus": "ok",
-        "lastDurationMs": 16542,
-        "consecutiveErrors": 0
+        "lastDurationMs": 33626,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered"
       }
     },
     {
@@ -223,7 +244,7 @@
       "name": "Engenheiro de Prompt - execução 10min (drenagem)",
       "enabled": true,
       "createdAtMs": 1771815285058,
-      "updatedAtMs": 1771886432137,
+      "updatedAtMs": 1771972515090,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -233,51 +254,57 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/eng-prompt-deterministic-cycle.sh. Regras: 1 card por rodada; se blocked_no_context, mover para Impedimento; só concluir com evidência real (arquivo alterado/comando/teste/validação de status).",
-        "model": "xai/grok-3-mini",
-        "timeoutSeconds": 240
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/eng-prompt-deterministic-cycle.sh. Responda somente em pt-BR, em no máximo 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO. Sem inglês, sem raciocínio, sem JSON duplicado. Regra adicional: em demanda complexa, fatiar em micro-cards (<=30s por fatia) com retomada por prioridade.",
+        "model": "google/gemini-2.5-flash-lite",
+        "timeoutSeconds": 180
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771887120000,
-        "lastRunAtMs": 1771886410827,
+        "nextRunAtMs": 1771973101378,
+        "lastRunAtMs": 1771972501378,
         "lastStatus": "ok",
-        "lastDurationMs": 21310,
-        "consecutiveErrors": 0
+        "lastDurationMs": 13712,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-delivered",
+        "lastDelivered": false
       }
     },
     {
       "id": "a7b8c9d0-e1f2-3456-7890-abcdef123401",
-      "name": "Engenheiro SmartEnvios - execução 60min",
+      "name": "Engenheiro SmartEnvios - execução 10min",
       "enabled": true,
       "createdAtMs": 1771815285058,
-      "updatedAtMs": 1771886448627,
+      "updatedAtMs": 1771972023333,
       "schedule": {
         "kind": "every",
-        "everyMs": 3600000,
-        "anchorMs": 1771811820000
+        "everyMs": 600000,
+        "anchorMs": 1771972006486
       },
       "sessionTarget": "isolated",
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/eng-smartenvios-deterministic-cycle.sh. Regras: 1 card por rodada; se blocked_no_context, mover para Impedimento; só concluir com evidência real.",
-        "model": "xai/grok-3-mini",
-        "timeoutSeconds": 300
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/eng-smartenvios-deterministic-cycle.sh e use o JSON como fonte de verdade. Regras: 1 card por rodada; nunca deixar card estagnado em Em andamento; se faltar contexto, devolver para Diretor Tech em Priorizado com pendência objetiva (não usar Impedimento automático); só concluir com evidência real; em demanda complexa, fatiar em micro-cards (<=30s por fatia) e retomar por prioridade.",
+        "model": "google/gemini-2.5-flash-lite",
+        "timeoutSeconds": 180
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1771887420000,
-        "lastRunAtMs": 1771886433638,
+        "nextRunAtMs": 1771972606486,
+        "lastRunAtMs": 1771970606446,
         "lastStatus": "ok",
-        "lastDurationMs": 14989,
-        "consecutiveErrors": 0
+        "lastDurationMs": 13662,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered"
       }
     }
   ]
