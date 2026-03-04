@@ -3,13 +3,26 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HELPER="${SCRIPT_DIR}/notion-helper.sh"
+RUNTIME_GUARD="${SCRIPT_DIR}/runtime-guard.sh"
 DB_ID="adec12e735dc41a3bb7c274b287f3a10"
 API_KEY_VAR="NOTION_SMARTENVIOS_API_KEY"
 DIRECTOR="Diretor Tech"
 
 if [[ -f "${SCRIPT_DIR}/../../.env" ]]; then
+  set +e +u
   # shellcheck disable=SC1091
-  source "${SCRIPT_DIR}/../../.env" 2>/dev/null || true
+  source "${SCRIPT_DIR}/../../.env" >/dev/null 2>&1
+  set -euo pipefail
+fi
+
+if [[ -x "${RUNTIME_GUARD}" ]]; then
+  # shellcheck disable=SC1090
+  source "${RUNTIME_GUARD}"
+  if ! ocw_guard_acquire_lock "director-tech-deterministic" "${CRON_LOCK_STALE_SEC:-1200}"; then
+    echo '{"ok":true,"action":"skipped_already_running","lock":"director-tech-deterministic"}'
+    exit 0
+  fi
+  trap 'ocw_guard_release_lock' EXIT
 fi
 
 [[ -x "${HELPER}" ]] || { echo '{"ok":false,"error":"helper_not_found"}'; exit 2; }
@@ -51,6 +64,18 @@ REQUIRES_MICROPLAN=0
 if [[ "$TITLE_LC" == *"mail"* || "$TITLE_LC" == *"email"* || "$TITLE_LC" == *"inbox"* || "$TITLE_LC" == *"triagem"* || "$TITLE_LC" == *"scoring"* ]]; then
   TARGET_AGENT="Mail-Pro"
   REASON="demanda de esteira de e-mail profissional"
+fi
+
+# Demandas de automação/n8n devem ir para o especialista correto.
+if [[ "$TITLE_LC" == *"n8n"* || "$TITLE_LC" == *"workflow"* || "$TITLE_LC" == *"automação"* || "$TITLE_LC" == *"automacao"* ]]; then
+  TARGET_AGENT="Engenheiro de Automação"
+  REASON="demanda de automação/n8n"
+fi
+
+# Demandas de infraestrutura de capability MCP são responsabilidade do Diretor Tech.
+if [[ "$TITLE_LC" == *"mcp n8n"* || "$TITLE_LC" == *"habilitar escrita"* || "$TITLE_LC" == *"[infra]"* ]]; then
+  TARGET_AGENT="Diretor Tech"
+  REASON="demanda de infraestrutura/capability MCP"
 fi
 
 if [[ "$TITLE_LC" == *"novo projeto"* || "$TITLE_LC" == *"projeto"* || "$TITLE_LC" == *"arquitet"* || "$TITLE_LC" == *"integra"* || "$TITLE_LC" == *"refator"* || "$TITLE_LC" == *"migr"* ]]; then

@@ -19,7 +19,7 @@ esac
 TRIAGE_JSON="$(cat)"
 TOTAL="$(echo "$TRIAGE_JSON" | jq -r '.unread // 0')"
 if [[ "$TOTAL" == "0" ]]; then
-  echo '{"profile":"'"$PROFILE"'","total":0,"processed":[],"summary":{"needsDraft":0,"needsReview":0,"needsLabel":0,"shouldIgnore":0}}'
+  echo '{"profile":"'"$PROFILE"'","total":0,"processed":[],"summary":{"needsDraft":0,"needsImportant":0,"needsReview":0,"needsLabel":0,"shouldIgnore":0}}'
   exit 0
 fi
 
@@ -41,6 +41,7 @@ OUTPUT="$(echo "$TRIAGE_JSON" | jq -c --arg profile "$PROFILE" --arg to_check "$
     | (if ($subject | test("notification|notificação|alert|alerta|status|update|atualização|confirmação|confirmation"; "i"))
           and ($from | test("noreply|no-reply|donotreply|notifications?@|alerts?@|status@"; "i")) then true else false end) as $is_notification
     | (if (($subject + " " + $snippet) | test("newsletter|boletim|oferta|promo|cupom|desconto|inscreva-se|webinar|evento|convite"; "i")) then true else false end) as $is_promotional
+    | (if (($subject + " " + $snippet) | test("planilha compartilhada com voc[eê]|documento compartilhado com voc[eê]|arquivo compartilhado com voc[eê]|shared with you|compartilhou .* com voc[eê]"; "i")) then true else false end) as $is_shared_asset
     | ($to | index($to_check) != null) as $has_direct_mention
     | (if ($cc | index($to_check) != null) then true else false end) as $in_cc
     | (if $has_direct_mention and ($cc == "" or ($to | index($to_check) != null)) then true else false end) as $direct_mention
@@ -58,7 +59,8 @@ OUTPUT="$(echo "$TRIAGE_JSON" | jq -c --arg profile "$PROFILE" --arg to_check "$
        elif $score >= 20 then "review"
        elif $score >= 0 then "label"
        else "ignore" end) as $action
-    | (if $action == "draft" then
+    | (if $is_shared_asset and ($has_request_signal | not) then "important"
+       elif $action == "draft" then
          if $is_notification or $is_bulk or $is_promotional then "label"
          elif ($direct_mention | not) then "review"
          elif ($has_request_signal | not) then "review"
@@ -73,7 +75,7 @@ OUTPUT="$(echo "$TRIAGE_JSON" | jq -c --arg profile "$PROFILE" --arg to_check "$
         to: $to,
         date: ($m.date // ""),
         snippet: $snippet,
-        flags: { isAutoReply: $is_auto_reply, isBulkMail: $is_bulk, isNotification: $is_notification, isPromotional: $is_promotional, hasDirectMention: $direct_mention, hasRequestSignal: $has_request_signal },
+        flags: { isAutoReply: $is_auto_reply, isBulkMail: $is_bulk, isNotification: $is_notification, isPromotional: $is_promotional, isSharedAsset: $is_shared_asset, hasDirectMention: $direct_mention, hasRequestSignal: $has_request_signal },
         priority: { score: $score, action: $final_action },
         thread: { size: 0, context: [] }
       }
@@ -85,6 +87,7 @@ OUTPUT="$(echo "$TRIAGE_JSON" | jq -c --arg profile "$PROFILE" --arg to_check "$
       processed: .,
       summary: {
         needsDraft: ([.[] | select(.priority.action == "draft")] | length),
+        needsImportant: ([.[] | select(.priority.action == "important")] | length),
         needsReview: ([.[] | select(.priority.action == "review")] | length),
         needsLabel: ([.[] | select(.priority.action == "label")] | length),
         shouldIgnore: ([.[] | select(.priority.action == "ignore")] | length)

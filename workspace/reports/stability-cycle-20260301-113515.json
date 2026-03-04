@@ -1,0 +1,8 @@
+{
+  "ts": "20260301-113515",
+  "gatewayOk": true,
+  "criticalTotal": 5,
+  "criticalFail": 0,
+  "unstable": true,
+  "recoveryAction": "mail-self-heal"
+}

@@ -23,10 +23,21 @@ OPERATIONAL_HEALTH_STATUS="OK"   # OK | ALERTA | CRÍTICO — reflete resultado 
 OPERATIONAL_HEALTH_ISSUES=""
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+RUNTIME_GUARD="${PROJECT_ROOT}/workspace/scripts/runtime-guard.sh"
 
 if [[ -f "${PROJECT_ROOT}/.env" ]]; then
   # shellcheck disable=SC1091
   source "${PROJECT_ROOT}/.env" 2>/dev/null || true
+fi
+
+if [[ -x "${RUNTIME_GUARD}" ]]; then
+  # shellcheck disable=SC1090
+  source "${RUNTIME_GUARD}"
+  if ! ocw_guard_acquire_lock "governance-check" "${CRON_LOCK_STALE_SEC:-1800}"; then
+    echo "{\"ok\":true,\"action\":\"skipped_already_running\",\"lock\":\"governance-check\"}"
+    exit 0
+  fi
+  trap 'ocw_guard_release_lock' EXIT
 fi
 
 # Resilience wrapper for OpenClaw CLI operations (cron run/edit, gateway restart, session reset).
@@ -51,6 +62,7 @@ GOV_STAGE_TIMEOUT_NOTION_SEC="${GOV_STAGE_TIMEOUT_NOTION_SEC:-75}"
 GOV_STAGE_TIMEOUT_GENERAL_SEC="${GOV_STAGE_TIMEOUT_GENERAL_SEC:-45}"
 GOV_NOTION_HTTP_TIMEOUT_SEC="${GOV_NOTION_HTTP_TIMEOUT_SEC:-12}"
 GOV_NOTION_RECOVERY_LIMIT="${GOV_NOTION_RECOVERY_LIMIT:-1}"                 # processar 1 card mais velho por rodada/status
+GOV_PAUSED_RECOVERY_LIMIT="${GOV_PAUSED_RECOVERY_LIMIT:-2}"                 # quantidade máxima de cards Pausado recuperados por rodada (global)
 GOV_ENG_PROMPT_STUCK_MIN="${GOV_ENG_PROMPT_STUCK_MIN:-20}"                  # minutos para considerar Em andamento do Eng. Prompt como travado
 GOV_ENG_PROMPT_IMPEDIMENTO_MIN="${GOV_ENG_PROMPT_IMPEDIMENTO_MIN:-240}"     # acima disso, mover para Impedimento
 GOV_ENG_SMART_STUCK_MIN="${GOV_ENG_SMART_STUCK_MIN:-30}"                    # minutos para considerar Em andamento do Eng. SmartEnvios como travado
@@ -104,12 +116,17 @@ GOV_WAKE_BUDGET_PER_ROUND="${GOV_WAKE_BUDGET_PER_ROUND:-8}"                  # l
 GOV_WAKE_TIMEOUT_MS="${GOV_WAKE_TIMEOUT_MS:-6000}"                           # timeout curto para evitar bloqueio
 GOV_USE_SAFE_RUN_FALLBACK="${GOV_USE_SAFE_RUN_FALLBACK:-true}"               # fallback para cron-safe-run em falha de wake/run direto
 GOV_MAIL_CHAIN_FORCE_COOLDOWN_SEC="${GOV_MAIL_CHAIN_FORCE_COOLDOWN_SEC:-900}" # evita tempestade de forçar cadeia (15min)
+GOV_GATEWAY_TOKEN_MISMATCH_THRESHOLD="${GOV_GATEWAY_TOKEN_MISMATCH_THRESHOLD:-8}" # eventos por janela
+GOV_GATEWAY_DISCORD_CLOSE_THRESHOLD="${GOV_GATEWAY_DISCORD_CLOSE_THRESHOLD:-8}"    # eventos por janela
+GOV_GATEWAY_RECOVERY_WINDOW_MIN="${GOV_GATEWAY_RECOVERY_WINDOW_MIN:-15}"           # janela de análise dos eventos
+GOV_GATEWAY_RECOVERY_COOLDOWN_SEC="${GOV_GATEWAY_RECOVERY_COOLDOWN_SEC:-900}"      # evita restart em loop (15min)
 GATEWAY_RESTART_REQUESTED="false"
 WOKEN_CRONS="|"
 WAKES_USED=0
 WAKES_DROPPED=0
 GOV_WAKE_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-wake-state.json"
 GOV_MAIL_CHAIN_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-mail-chain-state.json"
+GOV_GATEWAY_RECOVERY_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-gateway-recovery-state.json"
 PRESIDENT_FORCE_FILE="/tmp/openclaw-president-force-governance.json"
 CRON_SAFE_RUNNER="${PROJECT_ROOT}/workspace/scripts/cron-safe-run.sh"
 
@@ -2472,6 +2489,93 @@ PY
   fi
 }
 
+recover_paused_cards() {
+  [[ -x "${NOTION_HELPER_SCRIPT}" ]] || return 0
+  local max_cards="${GOV_PAUSED_RECOVERY_LIMIT:-2}"
+  [[ "${max_cards}" =~ ^[0-9]+$ ]] || max_cards=2
+  (( max_cards > 0 )) || return 0
+
+  local db_entries=(
+    "${NOTION_PERSONAL_API_KEY:-}|${NOTION_PERSONAL_DB_ID}|Pessoal|NOTION_PERSONAL_API_KEY"
+    "${NOTION_SMARTENVIOS_API_KEY:-}|adec12e735dc41a3bb7c274b287f3a10|Tech|NOTION_SMARTENVIOS_API_KEY"
+  )
+
+  local recovered=0
+  local entry api_key db_id label api_var paused_rows
+
+  for entry in "${db_entries[@]}"; do
+    IFS='|' read -r api_key db_id label api_var <<< "${entry}"
+    [[ -n "${api_key:-}" ]] || continue
+    (( recovered >= max_cards )) && break
+
+    paused_rows="$(curl -sS --connect-timeout 5 --max-time "${GOV_STAGE_TIMEOUT_GENERAL_SEC}" -X POST "https://api.notion.com/v1/databases/${db_id}/query" \
+      -H "Authorization: Bearer ${api_key}" \
+      -H "Notion-Version: 2022-06-28" \
+      -H "Content-Type: application/json" \
+      -d '{"filter":{"and":[{"property":"Tipo","select":{"equals":"OpenClaw"}},{"property":"Status","select":{"equals":"Pausado"}}]}}' 2>/dev/null | python3 - <<'PY'
+import datetime
+import json
+import sys
+
+now = datetime.datetime.now(datetime.timezone.utc)
+data = json.load(sys.stdin)
+rows = []
+for page in data.get("results", []):
+    page_id = page.get("id", "")
+    if not page_id:
+        continue
+    props = page.get("properties", {})
+    title = ""
+    try:
+        title = props["Name"]["title"][0].get("plain_text", "")
+    except Exception:
+        title = "(sem título)"
+    agent = ""
+    try:
+        agent = (props.get("Agente", {}).get("select") or {}).get("name", "")
+    except Exception:
+        agent = ""
+    edited = page.get("last_edited_time", "")
+    mins = 0
+    if edited:
+        dt = datetime.datetime.fromisoformat(edited.replace("Z", "+00:00"))
+        mins = int((now - dt).total_seconds() / 60)
+    rows.append((mins, page_id, title[:120], agent))
+
+rows.sort(key=lambda x: x[0], reverse=True)
+for mins, pid, title, agent in rows:
+    print(f"{pid}|{title}|{agent}|{mins}")
+PY
+)" || paused_rows=""
+
+    [[ -n "${paused_rows//[[:space:]]/}" ]] || continue
+    while IFS='|' read -r page_id title agent mins; do
+      [[ -n "${page_id:-}" ]] || continue
+      (( recovered >= max_cards )) && break
+
+      "${NOTION_HELPER_SCRIPT}" comment "${page_id}" "${api_var}" "Governança: card encontrado em Pausado (${mins}min). Retornando para Priorizado para retomada automática do fluxo." "Governança" >/dev/null 2>&1 || true
+      "${NOTION_HELPER_SCRIPT}" update-status "${page_id}" "${api_var}" "Priorizado" >/dev/null 2>&1 || true
+
+      local verify_status
+      verify_status="$("${NOTION_HELPER_SCRIPT}" get-page "${page_id}" "${api_var}" | jq -r '.properties.Status.select.name // ""' 2>/dev/null || true)"
+      if [[ "${verify_status}" == "Priorizado" ]]; then
+        recovered=$((recovered + 1))
+        report "🧯 [${label}] Card Pausado recuperado: '${title}' -> Priorizado (Agente=${agent:-sem-agente})"
+        register_bottleneck "notion-paused-recovered-${label}-${page_id}" "high" "Card Pausado recuperado (${label})" "Card '${title}' estava em Pausado e foi reativado para Priorizado automaticamente." "Eliminar causa raiz que move cards para Pausado sem retomada e manter wake automático do agente responsável."
+        if [[ -n "${agent:-}" ]]; then
+          wake_for_agent "${agent}" "recuperação de pausado" || true
+        fi
+      else
+        report "⚠️ [${label}] Falha ao recuperar card Pausado: '${title}' (id=${page_id})"
+      fi
+    done <<< "${paused_rows}"
+  done
+
+  if (( recovered == 0 )); then
+    report "✅ Recuperação de Pausado: nenhum card elegível nesta rodada"
+  fi
+}
+
 rebind_critical_cron_ids_from_runtime() {
   [[ -z "${CRON_JSON:-}" ]] && return 0
 
@@ -3247,6 +3351,131 @@ PY
   fi
 }
 
+recover_on_gateway_token_mismatch() {
+  local log_file="${OPENCLAW_CONFIG_DIR}/logs/gateway.log"
+  [[ -f "$log_file" ]] || {
+    report "ℹ️ Gateway token mismatch: log indisponível"
+    return 0
+  }
+
+  local analysis
+  analysis="$(python3 - "$log_file" "${GOV_GATEWAY_RECOVERY_WINDOW_MIN}" <<'PY'
+import re
+import sys
+import time
+from pathlib import Path
+
+path = Path(sys.argv[1])
+window_min = int(sys.argv[2])
+window_sec = max(60, window_min * 60)
+now = int(time.time())
+cutoff = now - window_sec
+
+raw = path.read_bytes()[-3_000_000:]
+txt = raw.decode("utf-8", errors="ignore")
+
+ts_patterns = [
+    re.compile(r'time":"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})'),
+    re.compile(r'(\d{2}:\d{2}:\d{2}) \[.*?\]'),
+]
+
+token_mismatch = 0
+discord_closed = 0
+lines = txt.splitlines()
+for ln in lines:
+    if "token_mismatch" not in ln and "WebSocket connection closed with code 1005" not in ln and "WebSocket connection closed with code 1006" not in ln:
+        continue
+    ts = None
+    m = ts_patterns[0].search(ln)
+    if m:
+        try:
+            ts = int(time.mktime(time.strptime(m.group(1), "%Y-%m-%dT%H:%M:%S")))
+        except Exception:
+            ts = None
+    if ts is None:
+        m = ts_patterns[1].search(ln)
+        if m:
+            try:
+                hh, mm, ss = map(int, m.group(1).split(":"))
+                lt = time.localtime(now)
+                ts = int(time.mktime((lt.tm_year, lt.tm_mon, lt.tm_mday, hh, mm, ss, lt.tm_wday, lt.tm_yday, lt.tm_isdst)))
+                if ts > now + 60:
+                    ts -= 86400
+            except Exception:
+                ts = None
+    if ts is not None and ts < cutoff:
+        continue
+    if "token_mismatch" in ln:
+        token_mismatch += 1
+    if "WebSocket connection closed with code 1005" in ln or "WebSocket connection closed with code 1006" in ln:
+        discord_closed += 1
+
+print(f"{token_mismatch}|{discord_closed}")
+PY
+)"
+
+  local mismatch_count close_count
+  mismatch_count="${analysis%%|*}"
+  close_count="${analysis##*|}"
+  [[ "${mismatch_count:-}" =~ ^[0-9]+$ ]] || mismatch_count=0
+  [[ "${close_count:-}" =~ ^[0-9]+$ ]] || close_count=0
+
+  if (( mismatch_count < GOV_GATEWAY_TOKEN_MISMATCH_THRESHOLD && close_count < GOV_GATEWAY_DISCORD_CLOSE_THRESHOLD )); then
+    report "✅ Gateway sessão/Discord: estável (token_mismatch=${mismatch_count}, ws_close=${close_count})"
+    return 0
+  fi
+
+  local decision
+  decision="$(python3 - "${GOV_GATEWAY_RECOVERY_STATE_FILE}" "${GOV_GATEWAY_RECOVERY_COOLDOWN_SEC}" <<'PY'
+import json
+import sys
+import time
+from pathlib import Path
+
+state_path = Path(sys.argv[1])
+cooldown = int(sys.argv[2])
+now = int(time.time())
+
+last = 0
+if state_path.exists():
+    try:
+        st = json.loads(state_path.read_text(encoding="utf-8"))
+        last = int(st.get("lastGatewayRecoveryTs") or 0)
+    except Exception:
+        last = 0
+
+elapsed = (now - last) if last > 0 else (cooldown + 1)
+if elapsed >= cooldown:
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(json.dumps({"lastGatewayRecoveryTs": now}, ensure_ascii=False, indent=2), encoding="utf-8")
+    print("allow|0")
+else:
+    print(f"deny|{max(1, cooldown - elapsed)}")
+PY
+)"
+
+  local action wait_sec
+  action="${decision%%|*}"
+  wait_sec="${decision##*|}"
+  [[ "${wait_sec:-}" =~ ^[0-9]+$ ]] || wait_sec=0
+
+  if [[ "${action}" != "allow" ]]; then
+    report "⏸️ Gateway autocura em cooldown: token_mismatch=${mismatch_count}, ws_close=${close_count}, aguardar=${wait_sec}s"
+    register_bottleneck "gateway-token-mismatch-cooldown" "medium" "Autocura de gateway em cooldown" "Padrão de token_mismatch/ws_close detectado, mas restart automático aguardando cooldown (${wait_sec}s)." "Fechar sessões clientes antigas e validar token único do WebSocket para reduzir reconexões inválidas."
+    return 0
+  fi
+
+  report "⚠️ Gateway instável por sessão/Discord: token_mismatch=${mismatch_count}, ws_close=${close_count} (janela=${GOV_GATEWAY_RECOVERY_WINDOW_MIN}m)"
+  register_bottleneck "gateway-token-mismatch" "high" "Instabilidade por token_mismatch / reconexão Discord" "Detectados ${mismatch_count} token_mismatch e ${close_count} websocket close (1005/1006) na janela recente." "Reiniciar gateway automaticamente com cooldown e orientar fechamento de clientes/sessões antigas com token desatualizado."
+
+  if ocw_gateway_restart >/dev/null 2>&1; then
+    report "✅ Gateway recuperado automaticamente após token_mismatch/Discord loop"
+  else
+    report "❌ Falha no restart automático após token_mismatch/Discord loop"
+    register_bottleneck "gateway-token-mismatch-restart-failed" "critical" "Falha na autocura de gateway após token_mismatch" "Governança detectou padrão de token_mismatch/ws_close e falhou ao reiniciar gateway." "Executar recovery manual (restart + limpeza de sessões clientes) e revisar credenciais/token do canal Discord."
+  fi
+}
+
 # 1) Health check do gateway
 log "Checando saúde do gateway..."
 if ocw_gateway_health >/dev/null 2>&1; then
@@ -3279,6 +3508,10 @@ check_mail_processing_locks
 # 3) Detecta e recupera pressão de modelos/cooldown
 log "Checando pressão de modelos e cooldown..."
 recover_on_model_pressure
+
+# 3a) Detecta token mismatch/loop de Discord e faz autocura com cooldown
+log "Checando token mismatch e reconexões Discord..."
+recover_on_gateway_token_mismatch
 
 # 4) Detecta crons com erros consecutivos
 log "Checando crons com erros consecutivos..."
@@ -3826,6 +4059,8 @@ for mins, page_id, title, agent in rows[:limit]:
 recover_stuck_eng_prompt_card
 # Recuperação específica do Engenheiro SmartEnvios (evita card preso em Em andamento por longo período).
 recover_stuck_eng_smartenvios_card
+# Recuperação de cards em status Pausado (reativa para Priorizado com wake do agente).
+recover_paused_cards
 
 if [[ -s "${NOTION_RECOVERY_CANDIDATES_FILE}" ]]; then
   # Use sed instead of head to avoid SIGPIPE(141) under `set -o pipefail`.

@@ -149,18 +149,22 @@ ensure_notion_card() {
   [[ -n "${NOTION_SMARTENVIOS_API_KEY:-}" ]] || return 0
 
   local title="[Governança][MCP] Falhas Jira/Grafana detectadas automaticamente"
-  local existing_json existing_id all_ids
+  local existing_id all_ids combined_json='[]' q
+  local agents=("Diretor Tech" "Engenheiro SmartEnvios")
+  local statuses=("Aguardando:Aguardando" "Aguardando:Priorizado" "Priorizado:Em andamento" "Em andamento:Em andamento" "Impedimento:Impedimento")
 
-  existing_json="$("${NOTION_HELPER}" query "${SMART_DB_ID}" NOTION_SMARTENVIOS_API_KEY "Diretor Tech" Priorizado "Em andamento" 2>/dev/null || echo '{"results":[]}' )"
-  all_ids="$(echo "${existing_json}" | jq -r '.results[]? | select(((.properties.Name.title[0].plain_text // "") | startswith("[Governança][MCP] Falhas Jira/Grafana"))) | .id')"
+  local agent pair s1 s2
+  for agent in "${agents[@]}"; do
+    for pair in "${statuses[@]}"; do
+      s1="${pair%%:*}"
+      s2="${pair##*:}"
+      q="$("${NOTION_HELPER}" query "${SMART_DB_ID}" NOTION_SMARTENVIOS_API_KEY "${agent}" "${s1}" "${s2}" 2>/dev/null || echo '{"results":[]}' )"
+      combined_json="$(jq -cn --argjson cur "${combined_json}" --argjson add "${q}" '$cur + ($add.results // [])')"
+    done
+  done
+
+  all_ids="$(echo "${combined_json}" | jq -r '.[]? | select(((.properties.Name.title[0].plain_text // "") | startswith("[Governança][MCP] Falhas Jira/Grafana"))) | .id')"
   existing_id="$(printf '%s\n' "${all_ids}" | sed '/^$/d' | head -n 1)"
-
-  if [[ -z "${existing_id}" ]]; then
-    local waiting_json
-    waiting_json="$("${NOTION_HELPER}" query "${SMART_DB_ID}" NOTION_SMARTENVIOS_API_KEY "Diretor Tech" Aguardando "Aguardando" 2>/dev/null || echo '{"results":[]}' )"
-    all_ids="$(echo "${waiting_json}" | jq -r '.results[]? | select(((.properties.Name.title[0].plain_text // "") | startswith("[Governança][MCP] Falhas Jira/Grafana"))) | .id')"
-    existing_id="$(printf '%s\n' "${all_ids}" | sed '/^$/d' | head -n 1)"
-  fi
 
   if [[ -n "${existing_id}" ]]; then
     while IFS= read -r dup_id; do

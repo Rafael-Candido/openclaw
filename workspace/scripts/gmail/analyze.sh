@@ -34,6 +34,7 @@ PRECEDENCE=$(echo "$MSG" | jq -r '.payload.headers[] | select(.name == "Preceden
 IS_AUTO_REPLY="false"
 IS_BULK_MAIL="false"
 IS_PROMOTIONAL="false"
+IS_SHARED_ASSET="false"
 
 # Strong auto-reply indicators
 if [[ -n "$AUTO_SUBMITTED" && "$AUTO_SUBMITTED" != "no" ]]; then
@@ -67,6 +68,11 @@ fi
 # Promotional/commercial outreach patterns (avoid drafting by default)
 if echo "$SUBJECT $SNIPPET" | grep -qEi "(newsletter|boletim|oferta|promo(ção)?|cupom|desconto|inscreva-se|webinar|evento|convite|agenda|horários|horarios|últimos horários|ultimos horarios|demonstração|demonstracao|vamos conversar|conversar sobre)"; then
   IS_PROMOTIONAL="true"
+fi
+
+# Shared files/docs usually need visibility, not reply
+if echo "$SUBJECT $SNIPPET" | grep -qEi "(planilha compartilhada com voc[eê]|documento compartilhado com voc[eê]|arquivo compartilhado com voc[eê]|shared with you|compartilhou .* com voc[eê])"; then
+  IS_SHARED_ASSET="true"
 fi
 
 # Check for direct mention (profile-specific)
@@ -174,6 +180,8 @@ if [[ "$ACTION" == "draft" ]]; then
     ACTION="label"
   elif [[ "$IS_PROMOTIONAL" == "true" ]]; then
     ACTION="review"
+  elif [[ "$IS_SHARED_ASSET" == "true" && "$HAS_REQUEST_SIGNAL" != "true" ]]; then
+    ACTION="important"
   elif [[ "$HAS_DIRECT_MENTION" != "true" ]]; then
     # Inclui: não está em To; ou está apenas em Cc (informativo) — nunca draft
     ACTION="review"
@@ -182,6 +190,10 @@ if [[ "$ACTION" == "draft" ]]; then
   elif echo "$FROM" | grep -qEi "noreply@|no-reply@|donotreply@|do-not-reply@|notifications?@|alerts?@|status@|mailer-daemon@|bounce@"; then
     ACTION="label"
   fi
+fi
+
+if [[ "$ACTION" == "review" && "$IS_SHARED_ASSET" == "true" && "$HAS_REQUEST_SIGNAL" != "true" ]]; then
+  ACTION="important"
 fi
 
 # Build analysis JSON
@@ -197,6 +209,7 @@ jq -n \
   --arg bulk "$IS_BULK_MAIL" \
   --arg notif "$IS_NOTIFICATION" \
   --arg promo "$IS_PROMOTIONAL" \
+  --arg sharedAsset "$IS_SHARED_ASSET" \
   --arg mention "$HAS_DIRECT_MENTION" \
   --arg requestSignal "$HAS_REQUEST_SIGNAL" \
   --argjson score "$PRIORITY_SCORE" \
@@ -216,6 +229,7 @@ jq -n \
       isBulkMail: $bulk,
       isNotification: $notif,
       isPromotional: $promo,
+      isSharedAsset: $sharedAsset,
       hasDirectMention: $mention,
       hasRequestSignal: $requestSignal
     },

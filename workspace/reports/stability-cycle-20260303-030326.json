@@ -1,0 +1,8 @@
+{
+  "ts": "20260303-030326",
+  "gatewayOk": true,
+  "criticalTotal": 5,
+  "criticalFail": 2,
+  "unstable": true,
+  "recoveryAction": "queue-burst-drain"
+}

@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "ts": "2026-02-26T05:23:48Z",
+  "total": 6,
+  "okCount": 6,
+  "failCount": 0,
+  "checks": [
+    {
+      "name": "syntax_guard",
+      "rc": 0,
+      "elapsedSec": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "syntax_president",
+      "rc": 0,
+      "elapsedSec": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "syntax_runner",
+      "rc": 0,
+      "elapsedSec": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "eng_automacao_cycle",
+      "rc": 0,
+      "elapsedSec": 0,
+      "stdout": "{\"ok\":true,\"action\":\"no_card\"}",
+      "stderr": ""
+    },
+    {
+      "name": "optimizer_cycle",
+      "rc": 0,
+      "elapsedSec": 0,
+      "stdout": "{\"ok\": true, \"action\": \"cost_scan_24h\", \"totalRuns24h\": 869, \"totalTokens24h\": 30188410, \"topJobsByTokens\": [{\"jobId\": \"6bdd82c7-081d-486b-9700-0572b9fce72e\", \"runs\": 122, \"tokens\": 4762730}, {\"jobId\": \"a7b8c9d0-e1f2-3456-7890-abcdef123401\", \"runs\": 117, \"tokens\": 4620292}, {\"jobId\": \"99de71d1-97b0-48d0-933e-7fcacfda2184\", \"runs\": 94, \"tokens\": 3834255}]}",
+      "stderr": ""
+    },
+    {
+      "name": "president_cycle_dry",
+      "rc": 0,
+      "elapsedSec": 0,
+      "stdout": "{\"ok\":true,\"action\":\"president_mail_backlog_guard\",\"unreadPro\":0,\"unreadPersonal\":0,\"thresholdPro\":1,\"thresholdPersonal\":1,\"activeDirectorTech\":0,\"activeDirectorPersonal\":0,\"activeChainTech\":0,\"activeChainPersonal\":0,\"createdPro\":0,\"createdPersonal\":0,\"forceChainTriggered\":0,\"presidentDirectWakeEnabled\":\"true\",\"forcedCrons\":[],\"migrationAudit\":{\"ok\":false,\"enabled\":false,\"reason\":\"disabled\"},\"migrationCardAction\":\"none\",\"migrationCardId\":\"\",\"createdCards\":[]}",
+      "stderr": ""
+    }
+  ]
+}

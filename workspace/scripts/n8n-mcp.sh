@@ -5,30 +5,61 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 ENV_FILE="${PROJECT_ROOT}/.env"
 
-if [[ -f "${ENV_FILE}" ]]; then
-  # shellcheck disable=SC1090
-  source "${ENV_FILE}"
+read_env_var() {
+  local key="$1"
+  local file="$2"
+  [[ -f "${file}" ]] || return 0
+  local line
+  line="$(grep -E "^${key}=" "${file}" | head -n 1 || true)"
+  [[ -n "${line}" ]] || return 0
+  local value="${line#*=}"
+  if [[ "${value}" =~ ^\".*\"$ ]]; then
+    value="${value:1:${#value}-2}"
+  elif [[ "${value}" =~ ^\'.*\'$ ]]; then
+    value="${value:1:${#value}-2}"
+  fi
+  printf '%s' "${value}"
+}
+
+resolve_context_key() {
+  local context="${1:-product}"
+  case "${context}" in
+    sales) printf '%s' "${N8N_SALES_API_KEY:-$(read_env_var N8N_SALES_API_KEY "${ENV_FILE}")}" ;;
+    product) printf '%s' "${N8N_PRODUCT_API_KEY:-$(read_env_var N8N_PRODUCT_API_KEY "${ENV_FILE}")}" ;;
+    finance) printf '%s' "${N8N_FINANCE_API_KEY:-$(read_env_var N8N_FINANCE_API_KEY "${ENV_FILE}")}" ;;
+    success-client|sucess-client|customer-success) printf '%s' "${N8N_SUCESS_CLIENT_API_KEY:-$(read_env_var N8N_SUCESS_CLIENT_API_KEY "${ENV_FILE}")}" ;;
+    support) printf '%s' "${N8N_SUPPORT_API_KEY:-$(read_env_var N8N_SUPPORT_API_KEY "${ENV_FILE}")}" ;;
+    engineering|engineer) printf '%s' "${N8N_ENGINEERING_API_KEY:-$(read_env_var N8N_ENGINEERING_API_KEY "${ENV_FILE}")}" ;;
+    marketing) printf '%s' "${N8N_MARKETING_API_KEY:-$(read_env_var N8N_MARKETING_API_KEY "${ENV_FILE}")}" ;;
+    admin) printf '%s' "${N8N_ADMIN_API_KEY:-$(read_env_var N8N_ADMIN_API_KEY "${ENV_FILE}")}" ;;
+    old|legacy) printf '%s' "${OLD_N8N_API_KEY:-$(read_env_var OLD_N8N_API_KEY "${ENV_FILE}")}" ;;
+    *) printf '%s' "${N8N_API_KEY:-$(read_env_var N8N_API_KEY "${ENV_FILE}")}" ;;
+  esac
+}
+
+CONTEXT="${N8N_CONTEXT:-$(read_env_var N8N_CONTEXT "${ENV_FILE}")}"
+if [[ "${1:-}" == "--context" ]]; then
+  CONTEXT="${2:-product}"
+  shift 2
 fi
 
+N8N_MCP_URL="${N8N_MCP_URL:-$(read_env_var N8N_MCP_URL "${ENV_FILE}")}"
 N8N_MCP_URL="${N8N_MCP_URL:-https://n8n.smartenvios.tec.br/mcp-server/http}"
-N8N_MCP_BEARER_TOKEN="${N8N_MCP_BEARER_TOKEN:-}"
+N8N_MCP_BEARER_TOKEN="${N8N_MCP_BEARER_TOKEN:-$(read_env_var N8N_MCP_BEARER_TOKEN "${ENV_FILE}")}"
+N8N_CONTEXT_API_KEY="$(resolve_context_key "${CONTEXT}")"
+N8N_AUTH_TOKEN="${N8N_MCP_BEARER_TOKEN:-${N8N_CONTEXT_API_KEY:-}}"
 
 usage() {
   cat <<USAGE
 Uso:
-  $0 tools
-  $0 call <tool_name> '<json_args>'
-
-Exemplos:
-  $0 tools
-  $0 call search_workflows '{"limit":10,"query":"crm"}'
-  $0 call get_workflow_details '{"workflowId":"abc123"}'
+  $0 [--context sales|product|finance|success-client|support|engineering|marketing|admin|old] tools
+  $0 [--context sales|product|finance|success-client|support|engineering|marketing|admin|old] call <tool_name> '<json_args>'
 USAGE
 }
 
 require_auth() {
-  if [[ -z "${N8N_MCP_BEARER_TOKEN}" ]]; then
-    echo "Erro: N8N_MCP_BEARER_TOKEN ausente no .env" >&2
+  if [[ -z "${N8N_AUTH_TOKEN}" ]]; then
+    echo "Erro: token ausente no .env para contexto '${CONTEXT}'" >&2
     exit 1
   fi
 }
@@ -41,7 +72,8 @@ rpc_post() {
   response="$(curl -sS -X POST "${N8N_MCP_URL}" \
     -H "content-type: application/json" \
     -H "accept: application/json, text/event-stream" \
-    -H "authorization:Bearer ${N8N_MCP_BEARER_TOKEN}" \
+    -H "authorization:Bearer ${N8N_AUTH_TOKEN}" \
+    -H "x-n8n-api-key: ${N8N_CONTEXT_API_KEY}" \
     --data "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"${method}\",\"params\":${params}}")"
 
   if [[ "${response}" == event:* || "${response}" == data:* ]]; then

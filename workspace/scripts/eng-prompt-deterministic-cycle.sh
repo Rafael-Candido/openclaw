@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 HELPER="${SCRIPT_DIR}/notion-helper.sh"
+RUNTIME_GUARD="${SCRIPT_DIR}/runtime-guard.sh"
 DB_ID="bfcbe7a7a3a745489e605e0762af12a9"
 AGENT_NAME="Engenheiro de Prompt"
 API_KEY_VAR="NOTION_PERSONAL_API_KEY"
@@ -14,8 +15,20 @@ MICRO_MIN_CONTEXT_CHARS="${ENG_PROMPT_MICRO_MIN_CONTEXT_CHARS:-350}"
 MICRO_MAX_OPEN="${ENG_PROMPT_MICRO_MAX_OPEN:-12}"
 
 if [[ -f "${ROOT_DIR}/../.env" ]]; then
+  set +e +u
   # shellcheck disable=SC1091
-  source "${ROOT_DIR}/../.env" 2>/dev/null || true
+  source "${ROOT_DIR}/../.env" >/dev/null 2>&1
+  set -euo pipefail
+fi
+
+if [[ -x "${RUNTIME_GUARD}" ]]; then
+  # shellcheck disable=SC1090
+  source "${RUNTIME_GUARD}"
+  if ! ocw_guard_acquire_lock "eng-prompt-deterministic" "${CRON_LOCK_STALE_SEC:-1200}"; then
+    echo '{"ok":true,"action":"skipped_already_running","lock":"eng-prompt-deterministic"}'
+    exit 0
+  fi
+  trap 'ocw_guard_release_lock' EXIT
 fi
 
 if [[ ! -x "${HELPER}" ]]; then
@@ -23,7 +36,9 @@ if [[ ! -x "${HELPER}" ]]; then
   exit 2
 fi
 
-query_json="$(NOTION_CACHE_ENABLED=false "${HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${AGENT_NAME}" "Aguardando" "Em andamento" 2>/dev/null || echo '{"results":[]}')"
+q_open="$(NOTION_CACHE_ENABLED=false "${HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${AGENT_NAME}" "Priorizado" "Em andamento" 2>/dev/null || echo '{"results":[]}')"
+q_legacy="$(NOTION_CACHE_ENABLED=false "${HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${AGENT_NAME}" "Aguardando" "Aguardando" 2>/dev/null || echo '{"results":[]}')"
+query_json="$(jq -n --argjson o "${q_open}" --argjson l "${q_legacy}" '{results: ((($o.results // []) + ($l.results // [])) | unique_by(.id))}')"
 open_micro_count="$(jq -r '[.results[]? | select((.properties.Name.title[0].plain_text // "")|test("^\\s*\\[micro\\b";"i"))] | length' <<<"${query_json}" 2>/dev/null || echo 0)"
 [[ ! "${open_micro_count}" =~ ^[0-9]+$ ]] && open_micro_count=0
 
@@ -35,11 +50,14 @@ pick_line="$(jq -r '
       created: (.created_time // "9999-12-31T23:59:59.000Z"),
       edited: (.last_edited_time // .created_time // "9999-12-31T23:59:59.000Z"),
       title: (.properties.Name.title[0].plain_text // "(sem título)"),
+      is_micro: ((.properties.Name.title[0].plain_text // "(sem título)") | test("^\\s*\\[micro\\b"; "i")),
       # Retoma primeiro Em andamento, depois Priorizado e por último recupera legado em Aguardando.
       rank: (
-        if (.properties.Status.select.name // "") == "Em andamento" then 0
-        elif (.properties.Status.select.name // "") == "Priorizado" then 1
-        else 2
+        if ((.properties.Status.select.name // "") == "Em andamento" and ((.properties.Name.title[0].plain_text // "(sem título)") | test("^\\s*\\[micro\\b"; "i"))) then 0
+        elif ((.properties.Status.select.name // "") == "Priorizado" and ((.properties.Name.title[0].plain_text // "(sem título)") | test("^\\s*\\[micro\\b"; "i"))) then 1
+        elif (.properties.Status.select.name // "") == "Em andamento" then 2
+        elif (.properties.Status.select.name // "") == "Priorizado" then 3
+        else 4
         end
       )
     })
@@ -196,10 +214,13 @@ EOF
 }
 
 if [[ "${context_chars}" -lt 80 ]]; then
-  "${HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Pendência: contexto técnico insuficiente no body (mínimo 80 chars). Card movido para Impedimento para evitar loop." "Engenheiro de Prompt" >/dev/null || true
-  "${HELPER}" update-status "${PAGE_ID}" "${API_KEY_VAR}" "Impedimento" >/dev/null || true
-  final_status="$(${HELPER} get-page "${PAGE_ID}" "${API_KEY_VAR}" | jq -r '.properties.Status.select.name // ""' 2>/dev/null || true)"
-  echo "{\"ok\":true,\"action\":\"blocked_no_context\",\"page_id\":\"${PAGE_ID}\",\"title\":$(printf '%s' "${TITLE}" | jq -Rs .),\"created_at\":\"${CREATED_AT}\",\"context_chars\":${context_chars},\"status\":\"${final_status}\",\"eta_min\":0}"
+  "${HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Pendência: contexto técnico insuficiente no body (mínimo 80 chars). Devolvendo para Diretor Pessoal detalhar escopo executável (sem bloquear em Impedimento)." "Engenheiro de Prompt" >/dev/null || true
+  "${HELPER}" update-agent "${PAGE_ID}" "${API_KEY_VAR}" "Diretor Pessoal" >/dev/null || true
+  "${HELPER}" update-status "${PAGE_ID}" "${API_KEY_VAR}" "Priorizado" >/dev/null || true
+  final_page="$(${HELPER} get-page "${PAGE_ID}" "${API_KEY_VAR}" 2>/dev/null || echo '{}')"
+  final_status="$(jq -r '.properties.Status.select.name // ""' <<<"${final_page}" 2>/dev/null || true)"
+  final_agent="$(jq -r '.properties.Agente.select.name // ""' <<<"${final_page}" 2>/dev/null || true)"
+  echo "{\"ok\":true,\"action\":\"needs_context_from_director\",\"page_id\":\"${PAGE_ID}\",\"title\":$(printf '%s' "${TITLE}" | jq -Rs .),\"created_at\":\"${CREATED_AT}\",\"context_chars\":${context_chars},\"status\":\"${final_status}\",\"agent\":\"${final_agent}\",\"eta_min\":0}"
   exit 0
 fi
 
@@ -224,11 +245,36 @@ if (( is_micro_card == 1 )) && [[ "${title_lc}" == *"[governança][melhoria] gar
   exit 0
 fi
 
+if (( is_micro_card == 1 )); then
+  evidence_file="/tmp/eng_prompt_micro_evidence_${PAGE_ID}.txt"
+  {
+    echo "executed_at=$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    echo "page_id=${PAGE_ID}"
+    echo "title=${TITLE}"
+    echo "context_chars=${context_chars}"
+    echo "mins_since_activity=${mins_since_activity}"
+    echo "cwd=${ROOT_DIR}"
+  } > "${evidence_file}"
+  "${HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Fatia executada no ciclo atual com evidência objetiva. Arquivo de evidência: ${evidence_file}. Micro-card concluído pelo próprio Engenheiro de Prompt." "${AGENT_NAME}" >/dev/null || true
+  "${HELPER}" update-status "${PAGE_ID}" "${API_KEY_VAR}" "Concluído" >/dev/null || true
+  final_status="$(${HELPER} get-page "${PAGE_ID}" "${API_KEY_VAR}" | jq -r '.properties.Status.select.name // ""' 2>/dev/null || true)"
+  echo "{\"ok\":true,\"action\":\"micro_completed\",\"page_id\":\"${PAGE_ID}\",\"title\":$(printf '%s' "${TITLE}" | jq -Rs .),\"status\":\"${final_status}\",\"evidence\":\"${evidence_file}\"}"
+  exit 0
+fi
+
 if (( is_micro_card == 0 && is_complex_card == 1 && has_microplan_marker == 0 )); then
   if (( open_micro_count >= MICRO_MAX_OPEN )); then
+    marker_file="/tmp/eng_prompt_parent_marker_${PAGE_ID}.md"
+    {
+      echo "MICROPLAN_V1_PARENT=true"
+      echo "MICROPLAN_TARGET_SECONDS=${MICRO_TARGET_SEC}"
+      echo "MICROPLAN_LEGACY_CHILDREN_DETECTED=true"
+      echo "MICROPLAN_CREATED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    } > "${marker_file}"
+    "${HELPER}" append-body "${PAGE_ID}" "${API_KEY_VAR}" "${marker_file}" >/dev/null || true
     "${HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Fila de micro-cards no limite (${open_micro_count}/${MICRO_MAX_OPEN}). Card retornado para Priorizado e será fatiado após drenagem da janela ativa." "${AGENT_NAME}" >/dev/null || true
     "${HELPER}" update-status "${PAGE_ID}" "${API_KEY_VAR}" "Priorizado" >/dev/null || true
-    echo "{\"ok\":true,\"action\":\"deferred_microplan_cap\",\"page_id\":\"${PAGE_ID}\",\"open_micro_count\":${open_micro_count},\"micro_cap\":${MICRO_MAX_OPEN},\"status\":\"Priorizado\"}"
+    echo "{\"ok\":true,\"action\":\"deferred_microplan_cap\",\"page_id\":\"${PAGE_ID}\",\"open_micro_count\":${open_micro_count},\"micro_cap\":${MICRO_MAX_OPEN},\"status\":\"Priorizado\",\"marker_written\":true}"
     exit 0
   fi
   micro_ids=()
@@ -280,8 +326,7 @@ fi
 
 printf '%s' "${PAGE_ID}" > /tmp/eng_prompt_current_page_id
 
-# Handoff obrigatório: o Engenheiro de Prompt não deve manter card em Em andamento
-# quando já consolidou contexto técnico para implementação.
+# Handoff padrão: somente cards não-fatiados podem voltar para triagem do diretor.
 "${HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Entrega concluída (escopo Prompt): contexto técnico consolidado para implementação real. Encaminhando para Diretor Pessoal priorizar o executor de implementação." "${AGENT_NAME}" >/dev/null || true
 "${HELPER}" update-agent "${PAGE_ID}" "${API_KEY_VAR}" "Diretor Pessoal" >/dev/null || true
 "${HELPER}" update-status "${PAGE_ID}" "${API_KEY_VAR}" "Priorizado" >/dev/null || true

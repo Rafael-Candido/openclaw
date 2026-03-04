@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 HELPER="${SCRIPT_DIR}/notion-helper.sh"
+RUNTIME_GUARD="${SCRIPT_DIR}/runtime-guard.sh"
 DB_ID="adec12e735dc41a3bb7c274b287f3a10"
 AGENT_NAME="Engenheiro SmartEnvios"
 API_KEY_VAR="NOTION_SMARTENVIOS_API_KEY"
@@ -14,8 +15,20 @@ MICRO_MIN_CONTEXT_CHARS="${ENG_SMART_MICRO_MIN_CONTEXT_CHARS:-350}"
 MICRO_MAX_OPEN="${ENG_SMART_MICRO_MAX_OPEN:-12}"
 
 if [[ -f "${ROOT_DIR}/../.env" ]]; then
+  set +e +u
   # shellcheck disable=SC1091
-  source "${ROOT_DIR}/../.env" 2>/dev/null || true
+  source "${ROOT_DIR}/../.env" >/dev/null 2>&1
+  set -euo pipefail
+fi
+
+if [[ -x "${RUNTIME_GUARD}" ]]; then
+  # shellcheck disable=SC1090
+  source "${RUNTIME_GUARD}"
+  if ! ocw_guard_acquire_lock "eng-smartenvios-deterministic" "${CRON_LOCK_STALE_SEC:-1200}"; then
+    echo '{"ok":true,"action":"skipped_already_running","lock":"eng-smartenvios-deterministic"}'
+    exit 0
+  fi
+  trap 'ocw_guard_release_lock' EXIT
 fi
 
 if [[ ! -x "${HELPER}" ]]; then
@@ -150,6 +163,18 @@ if (( context_chars >= MICRO_MIN_CONTEXT_CHARS )); then
   is_complex_card=1
 elif [[ "${title_lc}" == *"novo projeto"* || "${title_lc}" == *"projeto"* || "${title_lc}" == *"arquitet"* || "${title_lc}" == *"integra"* || "${title_lc}" == *"refator"* || "${title_lc}" == *"migr"* || "${title_lc}" == *"atendimento ao cliente"* ]]; then
   is_complex_card=1
+fi
+
+# Evita starvation da fila por incidente legado já repetido em múltiplas rodadas.
+if [[ "${title_lc}" == *"mcp .env linha 77"* || "${title_lc}" == *"d unbound variable"* ]]; then
+  "${HELPER}" comment "${PAGE_ID}" "${API_KEY_VAR}" "Card legado removido da frente da fila automática: incidente repetido sem avanço objetivo em múltiplas rodadas. Devolvido para Diretor Tech em Impedimento para tratamento manual/estrutural, liberando a fila do especialista." "${AGENT_NAME}" >/dev/null || true
+  "${HELPER}" update-agent "${PAGE_ID}" "${API_KEY_VAR}" "Diretor Tech" >/dev/null || true
+  "${HELPER}" update-status "${PAGE_ID}" "${API_KEY_VAR}" "Impedimento" >/dev/null || true
+  final_page="$("${HELPER}" get-page "${PAGE_ID}" "${API_KEY_VAR}" 2>/dev/null || echo '{}')"
+  final_status="$(jq -r '.properties.Status.select.name // ""' <<<"${final_page}" 2>/dev/null || true)"
+  final_agent="$(jq -r '.properties.Agente.select.name // ""' <<<"${final_page}" 2>/dev/null || true)"
+  echo "{\"ok\":true,\"action\":\"legacy_incident_parked\",\"page_id\":\"${PAGE_ID}\",\"title\":$(printf '%s' "${TITLE}" | jq -Rs .),\"status\":\"${final_status}\",\"agent\":\"${final_agent}\"}"
+  exit 0
 fi
 
 parent_priority="$("${HELPER}" get-page "${PAGE_ID}" "${API_KEY_VAR}" 2>/dev/null | jq -r '.properties.Prioridade.select.name // "Média"' 2>/dev/null || echo "Média")"

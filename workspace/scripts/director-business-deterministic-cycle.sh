@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 HELPER="${SCRIPT_DIR}/notion-helper.sh"
+RUNTIME_GUARD="${SCRIPT_DIR}/runtime-guard.sh"
 DB_ID="14abf9163c9680ff822bc2e32f6bec4b"
 API_KEY_VAR="NOTION_CANPER_API_KEY"
 DIRECTOR="Diretor Negócios"
@@ -11,8 +12,20 @@ TARGET_AGENT="Especialista de Negócios"
 REQUIRES_MICROPLAN=0
 
 if [[ -f "${ROOT_DIR}/../.env" ]]; then
+  set +e +u
   # shellcheck disable=SC1091
-  source "${ROOT_DIR}/../.env" 2>/dev/null || true
+  source "${ROOT_DIR}/../.env" >/dev/null 2>&1
+  set -euo pipefail
+fi
+
+if [[ -x "${RUNTIME_GUARD}" ]]; then
+  # shellcheck disable=SC1090
+  source "${RUNTIME_GUARD}"
+  if ! ocw_guard_acquire_lock "director-business-deterministic" "${CRON_LOCK_STALE_SEC:-1200}"; then
+    echo '{"ok":true,"action":"skipped_already_running","lock":"director-business-deterministic"}'
+    exit 0
+  fi
+  trap 'ocw_guard_release_lock' EXIT
 fi
 
 if [[ ! -x "${HELPER}" ]]; then

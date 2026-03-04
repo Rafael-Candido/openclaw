@@ -1,0 +1,8 @@
+{
+  "ts": "20260302-161006",
+  "gatewayOk": true,
+  "criticalTotal": 5,
+  "criticalFail": 1,
+  "unstable": true,
+  "recoveryAction": "governance-check"
+}

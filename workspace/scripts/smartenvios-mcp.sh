@@ -6,15 +6,39 @@ PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 ENV_FILE="${PROJECT_ROOT}/.env"
 STATE_DIR="${PROJECT_ROOT}/workspace/.state"
 TOKEN_FILE="${STATE_DIR}/smartenvios_mcp_session_token"
+DEFAULT_MCP_URL="https://staging.smartenvios.tec.br/mcp"
 
-if [[ -f "${ENV_FILE}" ]]; then
-  # shellcheck disable=SC1090
-  source "${ENV_FILE}"
+read_env_var() {
+  local key="$1"
+  local file="$2"
+  [[ -f "${file}" ]] || return 0
+  local line
+  line="$(grep -E "^${key}=" "${file}" | head -n 1 || true)"
+  [[ -n "${line}" ]] || return 0
+  local value="${line#*=}"
+  if [[ "${value}" =~ ^\".*\"$ ]]; then
+    value="${value:1:${#value}-2}"
+  elif [[ "${value}" =~ ^\'.*\'$ ]]; then
+    value="${value:1:${#value}-2}"
+  fi
+  printf '%s' "${value}"
+}
+
+MCP_URL="${SMARTENVIOS_MCP_URL:-$(read_env_var SMARTENVIOS_MCP_URL "${ENV_FILE}")}"
+MCP_URL="${MCP_URL:-${DEFAULT_MCP_URL}}"
+MCP_FALLBACK_URL="${SMARTENVIOS_MCP_FALLBACK_URL:-$(read_env_var SMARTENVIOS_MCP_FALLBACK_URL "${ENV_FILE}")}"
+MCP_EMAIL="${SMARTENVIOS_MCP_EMAIL:-$(read_env_var SMARTENVIOS_MCP_EMAIL "${ENV_FILE}")}"
+MCP_PASSWORD="${SMARTENVIOS_MCP_PASSWORD:-$(read_env_var SMARTENVIOS_MCP_PASSWORD "${ENV_FILE}")}"
+
+if [[ -z "${MCP_FALLBACK_URL}" ]]; then
+  case "${MCP_URL}" in
+    http://localhost:*|https://localhost:*|http://127.0.0.1:*|https://127.0.0.1:*|http://[::1]:*|https://[::1]:*)
+      if [[ "${MCP_URL}" != "${DEFAULT_MCP_URL}" ]]; then
+        MCP_FALLBACK_URL="${DEFAULT_MCP_URL}"
+      fi
+      ;;
+  esac
 fi
-
-MCP_URL="${SMARTENVIOS_MCP_URL:-https://staging.smartenvios.tec.br/mcp}"
-MCP_EMAIL="${SMARTENVIOS_MCP_EMAIL:-}"
-MCP_PASSWORD="${SMARTENVIOS_MCP_PASSWORD:-}"
 
 mkdir -p "${STATE_DIR}"
 
@@ -35,19 +59,70 @@ EOF
 rpc_post() {
   local method="$1"
   local params="$2"
-  python3 - "$MCP_URL" "$method" "$params" <<'PY'
-import json, sys, urllib.request
-url = sys.argv[1]
-method = sys.argv[2]
-params = json.loads(sys.argv[3])
-payload = {"jsonrpc":"2.0","id":1,"method":method,"params":params}
-req = urllib.request.Request(
-    url,
-    data=json.dumps(payload).encode(),
-    headers={"Content-Type":"application/json"}
-)
-with urllib.request.urlopen(req, timeout=45) as resp:
-    print(resp.read().decode())
+  python3 - "$MCP_URL" "$MCP_FALLBACK_URL" "$method" "$params" <<'PY'
+import json
+import socket
+import sys
+import urllib.error
+import urllib.request
+
+primary_url = sys.argv[1]
+fallback_url = sys.argv[2]
+method = sys.argv[3]
+params = json.loads(sys.argv[4])
+
+payload = {"jsonrpc": "2.0", "id": 1, "method": method, "params": params}
+urls = []
+for candidate in (primary_url, fallback_url):
+    if candidate and candidate not in urls:
+        urls.append(candidate)
+
+last_http_error = None
+attempt_errors = []
+
+for index, url in enumerate(urls):
+    try:
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode(),
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=45) as resp:
+            print(resp.read().decode())
+            sys.exit(0)
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode(errors="replace")
+        attempt_errors.append(f"{url} -> HTTP {exc.code}")
+        last_http_error = (exc, body)
+        should_retry = index == 0 and fallback_url and 500 <= exc.code < 600
+        if should_retry:
+            continue
+        sys.stderr.write(f"Erro MCP em {url}: HTTP {exc.code}\n{body}\n")
+        sys.exit(1)
+    except (urllib.error.URLError, socket.timeout, TimeoutError) as exc:
+        attempt_errors.append(f"{url} -> {exc}")
+        should_retry = index == 0 and fallback_url
+        if should_retry:
+            continue
+        sys.stderr.write(f"Erro MCP em {url}: {exc}\n")
+        sys.exit(1)
+
+if last_http_error is not None:
+    exc, body = last_http_error
+    sys.stderr.write(
+        "Erro MCP em todos os endpoints configurados: "
+        + " | ".join(attempt_errors)
+        + "\n"
+        + body
+        + "\n"
+    )
+else:
+    sys.stderr.write(
+        "Erro MCP em todos os endpoints configurados: "
+        + " | ".join(attempt_errors)
+        + "\n"
+    )
+sys.exit(1)
 PY
 }
 

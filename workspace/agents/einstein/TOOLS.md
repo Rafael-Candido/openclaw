@@ -37,6 +37,18 @@ NÃO usar `mcporter`, `mcp`, ou qualquer outro comando. O ÚNICO caminho é o sc
 4. **Para criação de demanda (card/atividade/chamado/tarefa):** usar Jira por padrão via MCP.
 5. Se `jira_*` falhar no MCP, escalar correção no Notion profissional para Diretor Tech (MCP-only; sem fallback local).
 
+### Validação antes de declarar indisponibilidade
+
+- `Approval required`, `approval-pending` ou `updates will arrive after completion` significam que a execução ainda não terminou.
+- Isso não autoriza responder `MCP indisponível` e não equivale a erro 503.
+- Nessa situação, aguarde o resultado final ou informe bloqueio operacional/execução pendente.
+- Não declarar `MCP indisponível` só porque uma tentativa falhou.
+- Repetir uma checagem objetiva com o mesmo script:
+  - `./smartenvios-mcp.sh tools`
+  - para Jira: `./smartenvios-mcp.sh call jira_get_myself '{}'`
+- Se `tools` falhar, mas `jira_get_myself` ou a tool final responder, tratar como degradação parcial e seguir.
+- Só usar mensagem de indisponibilidade quando a checagem objetiva também falhar.
+
 ### Exemplo real — Jira (via MCP)
 
 Se pedirem "crie atividade no Jira" (ou "crie card/atividade/chamado/tarefa" no contexto SmartEnvios):

@@ -1,12 +1,12 @@
 {
   "meta": {
-    "lastTouchedVersion": "2026.2.22-2",
-    "lastTouchedAt": "2026-02-24T09:16:06.410Z"
+    "lastTouchedVersion": "2026.2.26",
+    "lastTouchedAt": "2026-02-28T19:20:24.678Z"
   },
   "wizard": {
-    "lastRunAt": "2026-02-24T09:16:06.396Z",
-    "lastRunVersion": "2026.2.22-2",
-    "lastRunCommand": "doctor",
+    "lastRunAt": "2026-02-28T19:20:24.665Z",
+    "lastRunVersion": "2026.2.26",
+    "lastRunCommand": "onboard",
     "lastRunMode": "local"
   },
   "diagnostics": {
@@ -172,7 +172,7 @@
       "workspace": "/var/www/openclaw/workspace",
       "contextPruning": {
         "mode": "cache-ttl",
-        "ttl": "20m"
+        "ttl": "2h"
       },
       "compaction": {
         "mode": "safeguard"
@@ -181,6 +181,7 @@
         "every": "30m",
         "model": "google/gemini-2.5-flash-lite",
         "session": "isolated",
+        "directPolicy": "block",
         "prompt": "CANAL EM PORTUGUES (pt-BR) OBRIGATORIO. Saida permitida apenas: (1) HEARTBEAT_OK; ou (2) ALERTA com no maximo 5 linhas: ALERTA / - Problema: ... / - Impacto: ... / - Acao executada: ... / - Proximo passo: ... (ETA: ...min). Proibido ingles, proibido raciocinio interno, proibido checklist narrativo.",
         "ackMaxChars": 220
       },
@@ -255,10 +256,11 @@
         "name": "Einstein (SmartEnvios)",
         "workspace": "/var/www/openclaw/workspace/agents/einstein",
         "model": {
-          "primary": "google/gemini-2.5-flash",
+          "primary": "xai/grok-4-1-fast-non-reasoning",
           "fallbacks": [
-            "google/gemini-2.5-flash-lite",
             "google/gemini-2.5-pro",
+            "google/gemini-2.5-flash",
+            "google/gemini-2.5-flash-lite",
             "xai/grok-3-mini",
             "xai/grok-3",
             "openai/gpt-4-turbo"
@@ -379,7 +381,7 @@
   ],
   "messages": {
     "groupChat": {
-      "historyLimit": 1
+      "historyLimit": 30
     },
     "ackReactionScope": "group-mentions"
   },
@@ -389,18 +391,21 @@
     "restart": true,
     "ownerDisplay": "raw"
   },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
   "hooks": {
     "internal": {
-      "enabled": true,
+      "enabled": false,
       "entries": {
         "boot-md": {
-          "enabled": true
+          "enabled": false
         },
         "bootstrap-extra-files": {
-          "enabled": true
+          "enabled": false
         },
         "command-logger": {
-          "enabled": true
+          "enabled": false
         },
         "session-memory": {
           "enabled": false
@@ -410,6 +415,7 @@
   },
   "channels": {
     "whatsapp": {
+      "enabled": true,
       "dmPolicy": "allowlist",
       "selfChatMode": true,
       "allowFrom": [
@@ -421,10 +427,11 @@
     },
     "discord": {
       "enabled": true,
-      "allowBots": true,
+      "allowBots": false,
       "groupPolicy": "open",
-      "historyLimit": 1,
-      "dmHistoryLimit": 0,
+      "historyLimit": 30,
+      "dmHistoryLimit": 10,
+      "streaming": "off",
       "actions": {
         "reactions": true,
         "stickers": true,
@@ -449,8 +456,7 @@
       "dmPolicy": "allowlist",
       "allowFrom": [
         "932709376790233088"
-      ],
-      "streaming": "off"
+      ]
     }
   },
   "talk": {
@@ -498,16 +504,6 @@
       },
       "sag": {
         "apiKey": "${SAG_API_KEY}"
-      }
-    }
-  },
-  "plugins": {
-    "entries": {
-      "whatsapp": {
-        "enabled": true
-      },
-      "discord": {
-        "enabled": true
       }
     }
   }

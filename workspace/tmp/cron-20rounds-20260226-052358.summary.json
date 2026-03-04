@@ -1,0 +1,110 @@
+{
+  "ok": true,
+  "action": "cron_20rounds_summary",
+  "rows": 11,
+  "roundsSeen": 1,
+  "totalFail": 0,
+  "slowThresholdSec": 45,
+  "jobs": [
+    {
+      "jobId": "0633c77a-4e3f-47fa-82be-35767e806836",
+      "total": 1,
+      "ok": 1,
+      "fail": 0,
+      "avgSec": 26.0,
+      "p95Sec": 26,
+      "maxSec": 26
+    },
+    {
+      "jobId": "59c24991-af6c-4df2-95fe-bbf012cd73c0",
+      "total": 1,
+      "ok": 1,
+      "fail": 0,
+      "avgSec": 10.0,
+      "p95Sec": 10,
+      "maxSec": 10
+    },
+    {
+      "jobId": "6bdd82c7-081d-486b-9700-0572b9fce72e",
+      "total": 1,
+      "ok": 1,
+      "fail": 0,
+      "avgSec": 6.0,
+      "p95Sec": 6,
+      "maxSec": 6
+    },
+    {
+      "jobId": "79672496-e2c8-4851-9f19-98b5efafa2ff",
+      "total": 1,
+      "ok": 1,
+      "fail": 0,
+      "avgSec": 2.0,
+      "p95Sec": 2,
+      "maxSec": 2
+    },
+    {
+      "jobId": "7fba5b1f-2ee9-4b1e-aae0-bd211c32b925",
+      "total": 1,
+      "ok": 1,
+      "fail": 0,
+      "avgSec": 8.0,
+      "p95Sec": 8,
+      "maxSec": 8
+    },
+    {
+      "jobId": "985165be-59eb-46e7-8715-17571c8e8227",
+      "total": 1,
+      "ok": 1,
+      "fail": 0,
+      "avgSec": 22.0,
+      "p95Sec": 22,
+      "maxSec": 22
+    },
+    {
+      "jobId": "99de71d1-97b0-48d0-933e-7fcacfda2184",
+      "total": 1,
+      "ok": 1,
+      "fail": 0,
+      "avgSec": 9.0,
+      "p95Sec": 9,
+      "maxSec": 9
+    },
+    {
+      "jobId": "a71c2958-e52f-4f37-9876-bedf6dcb9434",
+      "total": 1,
+      "ok": 1,
+      "fail": 0,
+      "avgSec": 7.0,
+      "p95Sec": 7,
+      "maxSec": 7
+    },
+    {
+      "jobId": "a7b8c9d0-e1f2-3456-7890-abcdef123401",
+      "total": 1,
+      "ok": 1,
+      "fail": 0,
+      "avgSec": 7.0,
+      "p95Sec": 7,
+      "maxSec": 7
+    },
+    {
+      "jobId": "cf343b94-0816-42e5-b3dc-d40ecf12786e",
+      "total": 1,
+      "ok": 1,
+      "fail": 0,
+      "avgSec": 8.0,
+      "p95Sec": 8,
+      "maxSec": 8
+    },
+    {
+      "jobId": "e4cd9635-efdd-4588-8ecc-523a4a50ea20",
+      "total": 1,
+      "ok": 1,
+      "fail": 0,
+      "avgSec": 10.0,
+      "p95Sec": 10,
+      "maxSec": 10
+    }
+  ],
+  "slowJobs": []
+}

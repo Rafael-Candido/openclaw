@@ -61,6 +61,8 @@ Regras de idempotência:
 Regra de retomada:
 - quando houver micro-cards pendentes, o especialista retoma primeiro a menor fatia pendente de maior prioridade;
 - somente após concluir as fatias obrigatórias o fluxo volta ao card pai para consolidação final.
+- propriedade operacional do micro-card: deve permanecer com o especialista que fez o fatiamento (sem reatribuição ao diretor durante a execução das fatias).
+- diretor só volta ao fluxo no card pai (triagem/roteamento macro), não como dono de micro-cards do fatiamento técnico.
 
 Escopo de consulta por papel:
 - Presidente: cria em `Aguardando` e não opera execução técnica;
@@ -256,6 +258,57 @@ Restrições:
 
 Notion:
 - usar `workspace/scripts/notion-helper.sh` (query, update-status, comment, append-body, create-card);
+
+## 6) Padrão de Resiliência Operacional (obrigatório)
+
+### 6.1 Saúde do Gateway
+- considerar `gateway` como dependência crítica de execução dos crons;
+- ao detectar `gateway timeout`, `1006`, `1012` ou `token_mismatch` em sequência:
+- registrar incidente com evidência objetiva (timestamp + amostra de log);
+- reduzir execução forçada na rodada (evitar tempestade de `cron run`);
+- priorizar estabilização do gateway antes de continuar drenagem.
+
+Regra prática:
+- em degradação, preferir `wake` seletivo e não disparar todos os crons.
+- somente retomar execução massiva quando `openclaw gateway health` estiver estável.
+
+### 6.2 Testes de Operação Contínua
+- toda mudança de comportamento em agentes/crons deve passar por bateria de checks;
+- padrão mínimo recomendado:
+- checks históricos (runs `finished`) + checks ao vivo em crons críticos;
+- relatório com taxa de sucesso, p95, picos e causa-raiz;
+- geração de demandas para agentes responsáveis pelos gargalos.
+
+Regra de qualidade:
+- evitar declarar “ecossistema saudável” com base só em `lastStatus=ok`;
+- validar também cauda longa (p95/picos), backlog e frequência de `already-running`.
+
+## 5.1) Padrão de Runtime Resiliente (obrigatório para cron)
+
+Todo script executado por cron deve:
+- usar lock anti-sobreposição;
+- recuperar lock órfão (PID morto/lock antigo);
+- responder com saída determinística em caso de execução concorrente;
+- evitar processar duas rodadas em paralelo do mesmo papel.
+
+Implementação padrão:
+- source de `workspace/scripts/runtime-guard.sh`;
+- lock por chave única do papel (ex.: `eng-prompt-deterministic`);
+- em lock ocupado: retorno curto com `action=skipped_already_running`.
+
+Exemplo mínimo:
+```bash
+source "workspace/scripts/runtime-guard.sh"
+if ! ocw_guard_acquire_lock "nome-do-cron" "${CRON_LOCK_STALE_SEC:-1200}"; then
+  echo '{"ok":true,"action":"skipped_already_running"}'
+  exit 0
+fi
+trap 'ocw_guard_release_lock' EXIT
+```
+
+Regra de consistência:
+- cron com side effect externo (Notion, WhatsApp, n8n) sem lock é considerado não conforme;
+- novo agente só entra em produção com lock implementado.
 - sempre caminho absoluto em automação;
 - comentário com assinatura obrigatória (4º parâmetro).
 - `notion-helper.sh comment` aplica dedupe anti-spam de comentário idêntico no mesmo card.
@@ -289,6 +342,19 @@ Regras transversais de execução:
 
 - Frases curtas e diretas.
 - Evitar texto promocional.
+
+## 7) Roteamento por Repositório (obrigatório para Presidente e Diretor Tech)
+
+Objetivo:
+- garantir delegação consistente para especialistas por código-fonte e domínio.
+
+Regra:
+- usar `workspace/agents/repo-index.json` como fonte única de mapeamento `repo -> agente`.
+- ao receber demanda técnica com indicação de repositório (ex.: `/var/www/ms.crm` ou `ms.crm`), atribuir para o agente correspondente no índice.
+- em demanda cross-repo, criar subtarefas por repositório com dono explícito e critério de aceite por integração.
+
+Fallback:
+- se o repositório não estiver no índice, atribuir ao `Engenheiro SmartEnvios` como triagem técnica inicial e abrir ação de atualização do índice.
 - Sem ambiguidade temporal: usar timestamp quando útil.
 - Não duplicar conteúdo: corpo para especificação, comentário para execução.
 

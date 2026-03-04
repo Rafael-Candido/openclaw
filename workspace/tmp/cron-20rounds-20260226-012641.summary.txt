@@ -1,0 +1,12 @@
+Resumo por job:
+0633c77a-4e3f-47fa-82be-35767e806836 total=1 ok=1 fail=0 avg=44.00s max=44s
+59c24991-af6c-4df2-95fe-bbf012cd73c0 total=1 ok=1 fail=0 avg=24.00s max=24s
+6bdd82c7-081d-486b-9700-0572b9fce72e total=1 ok=1 fail=0 avg=15.00s max=15s
+79672496-e2c8-4851-9f19-98b5efafa2ff total=1 ok=1 fail=0 avg=4.00s max=4s
+7fba5b1f-2ee9-4b1e-aae0-bd211c32b925 total=1 ok=1 fail=0 avg=10.00s max=10s
+985165be-59eb-46e7-8715-17571c8e8227 total=1 ok=1 fail=0 avg=21.00s max=21s
+99de71d1-97b0-48d0-933e-7fcacfda2184 total=1 ok=1 fail=0 avg=10.00s max=10s
+a71c2958-e52f-4f37-9876-bedf6dcb9434 total=1 ok=1 fail=0 avg=6.00s max=6s
+a7b8c9d0-e1f2-3456-7890-abcdef123401 total=1 ok=1 fail=0 avg=11.00s max=11s
+cf343b94-0816-42e5-b3dc-d40ecf12786e total=1 ok=1 fail=0 avg=9.00s max=9s
+e4cd9635-efdd-4588-8ecc-523a4a50ea20 total=1 ok=1 fail=0 avg=9.00s max=9s

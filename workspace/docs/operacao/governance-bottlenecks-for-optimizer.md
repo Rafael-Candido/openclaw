@@ -9,3 +9,6305 @@ Formato sugerido:
 - Gargalo identificado
 - Recomendação
 - Status
+
+## 2026-02-26 21:44 UTC
+- **gateway-token-mismatch-cooldown** [medium]: Autocura de gateway em cooldown
+  - Recomendação: Fechar sessões clientes antigas e validar token único do WebSocket para reduzir reconexões inválidas.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-26 21:54 UTC
+- **gateway-token-mismatch-cooldown** [medium]: Autocura de gateway em cooldown
+  - Recomendação: Fechar sessões clientes antigas e validar token único do WebSocket para reduzir reconexões inválidas.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-26 22:10 UTC
+- **gateway-token-mismatch-cooldown** [medium]: Autocura de gateway em cooldown
+  - Recomendação: Fechar sessões clientes antigas e validar token único do WebSocket para reduzir reconexões inválidas.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-26 22:29 UTC
+- **gateway-token-mismatch-cooldown** [medium]: Autocura de gateway em cooldown
+  - Recomendação: Fechar sessões clientes antigas e validar token único do WebSocket para reduzir reconexões inválidas.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 01:00 UTC
+- **gateway-token-mismatch-cooldown** [medium]: Autocura de gateway em cooldown
+  - Recomendação: Fechar sessões clientes antigas e validar token único do WebSocket para reduzir reconexões inválidas.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-985165be-59eb-46e7-8715-17571c8e8227** [high]: Cron com erros consecutivos: Presidente - criar demandas 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Cron com erros consecutivos: Diretor Tech - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Cron próximo do timeout: Presidente - criar demandas 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Cron próximo do timeout: Main - relatório WhatsApp 60min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Cron próximo do timeout: Diretor Tech - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 01:06 UTC
+- **gateway-token-mismatch-cooldown** [medium]: Autocura de gateway em cooldown
+  - Recomendação: Fechar sessões clientes antigas e validar token único do WebSocket para reduzir reconexões inválidas.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-timeout-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Cron próximo do timeout: Main - relatório WhatsApp 60min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-02-27 01:12 UTC
+- **gateway-token-mismatch-cooldown** [medium]: Autocura de gateway em cooldown
+  - Recomendação: Fechar sessões clientes antigas e validar token único do WebSocket para reduzir reconexões inválidas.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-timeout-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Cron próximo do timeout: Main - relatório WhatsApp 60min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-02-27 01:15 UTC
+- **gateway-token-mismatch** [high]: Instabilidade por token_mismatch / reconexão Discord
+  - Recomendação: Reiniciar gateway automaticamente com cooldown e orientar fechamento de clientes/sessões antigas com token desatualizado.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-timeout-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Cron próximo do timeout: Main - relatório WhatsApp 60min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-27 02:05 UTC
+- **gateway-token-mismatch-cooldown** [medium]: Autocura de gateway em cooldown
+  - Recomendação: Fechar sessões clientes antigas e validar token único do WebSocket para reduzir reconexões inválidas.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 02:43 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 03:23 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 03:44 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 04:03 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 04:23 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 04:43 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 05:03 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 05:43 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 06:04 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 06:23 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 06:44 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 07:04 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 07:23 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 07:44 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 08:04 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 08:33 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Pessoal-31436384-585c-814a-8315-d80dc10f258b** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **weak-conclusion-Pessoal-31436384-585c-814e-99a1-ff0d3765e3db** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+- **cron-starvation-c408ba92-a26a-420d-844f-64448f983d93** [high]: Starvation de cron: Governança - health/recovery 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+
+## 2026-02-27 12:54 UTC
+- **gateway-token-mismatch** [high]: Instabilidade por token_mismatch / reconexão Discord
+  - Recomendação: Reiniciar gateway automaticamente com cooldown e orientar fechamento de clientes/sessões antigas com token desatualizado.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **notion-quality-time-budget** [medium]: Auditoria de qualidade Notion parcial por timeout de etapa
+  - Recomendação: Manter paginação limitada e timeout por etapa para não travar a rodada completa.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **notion-cleanup-enrichment-timeout** [medium]: Enriquecimento de cards sem descrição interrompido por timeout
+  - Recomendação: Continuar em rodadas seguintes e manter limite por etapa.
+- **eng-prompt-cards-empty-body** [high]: Cards antigos sem descrição no Notion Pessoal
+  - Recomendação: Garantir body_file obrigatório e descrição mínima em todos os fluxos que criam card para Engenheiro de Prompt/Governança.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-985165be-59eb-46e7-8715-17571c8e8227** [high]: Cron com erros consecutivos: Presidente - criar demandas 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Cron com erros consecutivos: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Cron próximo do timeout: Mail-Person especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Cron próximo do timeout: Presidente - criar demandas 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Cron próximo do timeout: Diretor Tech - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Cron próximo do timeout: Diretor Negócios - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Cron próximo do timeout: Mail-Pro especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Cron próximo do timeout: Engenheiro de Prompt - execução 10min (drenagem)
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Cron próximo do timeout: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Cron próximo do timeout: Engenheiro de Automação - execução 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-stuck-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Cron travado por tempo excessivo: Codex - stability monitor 10min
+  - Recomendação: Revisar timeout, prompt e efeitos colaterais para impedir travamento recorrente.
+- **cron-ghost-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Running fantasma em cron: Codex - stability monitor 10min
+  - Recomendação: Fortalecer encerramento de execução e limpeza de estado ao final de cada rodada.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+- **cron-starvation-0633c77a-4e3f-47fa-82be-35767e806836** [high]: Starvation de cron: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-c408ba92-a26a-420d-844f-64448f983d93** [high]: Starvation de cron: Governança - health/recovery 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Starvation de cron: Mail-Person especialista - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-985165be-59eb-46e7-8715-17571c8e8227** [high]: Starvation de cron: Presidente - criar demandas 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Starvation de cron: Diretor Tech - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Starvation de cron: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-cf343b94-0816-42e5-b3dc-d40ecf12786e** [high]: Starvation de cron: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Starvation de cron: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-6bdd82c7-081d-486b-9700-0572b9fce72e** [high]: Starvation de cron: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Starvation de cron: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Starvation de cron: Engenheiro de Automação - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Starvation de cron: Codex - stability monitor 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+
+## 2026-02-27 12:58 UTC
+- **gateway-token-mismatch** [high]: Instabilidade por token_mismatch / reconexão Discord
+  - Recomendação: Reiniciar gateway automaticamente com cooldown e orientar fechamento de clientes/sessões antigas com token desatualizado.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Cron com erros consecutivos: Codex - stability monitor 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Cron com erros consecutivos: Mail-Person especialista - execução 15mi
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-6bdd82c7-081d-486b-9700-0572b9fce72e** [high]: Cron com erros consecutivos: Engenheiro de Prompt - execução 10min (d
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Cron com erros consecutivos: Mail-Pro especialista - execução 15min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Cron com erros consecutivos: Diretor Tech - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Cron com erros consecutivos: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-985165be-59eb-46e7-8715-17571c8e8227** [high]: Cron com erros consecutivos: Presidente - criar demandas 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Cron próximo do timeout: Mail-Person especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Cron próximo do timeout: Engenheiro de Prompt - execução 10min (drenagem)
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Cron próximo do timeout: Mail-Pro especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Cron próximo do timeout: Diretor Tech - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Cron próximo do timeout: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Cron próximo do timeout: Presidente - criar demandas 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+- **cron-starvation-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Starvation de cron: Codex - stability monitor 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Starvation de cron: Mail-Person especialista - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-6bdd82c7-081d-486b-9700-0572b9fce72e** [high]: Starvation de cron: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Starvation de cron: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Starvation de cron: Diretor Tech - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Starvation de cron: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-cf343b94-0816-42e5-b3dc-d40ecf12786e** [high]: Starvation de cron: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+
+## 2026-02-27 13:05 UTC
+- **gateway-token-mismatch-cooldown** [medium]: Autocura de gateway em cooldown
+  - Recomendação: Fechar sessões clientes antigas e validar token único do WebSocket para reduzir reconexões inválidas.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Cron com erros consecutivos: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Cron próximo do timeout: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 13:24 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 13:45 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **notion-quality-audit-failed** [high]: Falha na auditoria de qualidade Notion
+  - Recomendação: Verificar disponibilidade da API Notion e robustez da consulta.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 14:06 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 14:25 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 14:46 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 15:06 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 15:26 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **notion-quality-audit-failed** [high]: Falha na auditoria de qualidade Notion
+  - Recomendação: Verificar disponibilidade da API Notion e robustez da consulta.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 15:46 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 16:06 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 16:27 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 16:46 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **notion-quality-audit-failed** [high]: Falha na auditoria de qualidade Notion
+  - Recomendação: Verificar disponibilidade da API Notion e robustez da consulta.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 17:07 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 17:23 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 17:26 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 17:47 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 18:33 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 18:36 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 19:03 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 19:55 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-audit-error-Tech** [medium]: Falha ao auditar assinatura de triagem (Tech)
+  - Recomendação: Reforçar robustez da auditoria e adicionar retry/fallback para leitura de comentários.
+- **concluded-audit-error-Tech** [medium]: Falha na auditoria de conclusões (Tech)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 20:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 21:00 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **concluded-audit-error-Tech** [medium]: Falha na auditoria de conclusões (Tech)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 21:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **notion-quality-audit-failed** [high]: Falha na auditoria de qualidade Notion
+  - Recomendação: Verificar disponibilidade da API Notion e robustez da consulta.
+- **notion-cleanup-time-budget** [medium]: Limpeza de cards sem descrição parcialmente executada
+  - Recomendação: Ajustar paginação/timeout para manter execução completa sem travar rodada.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-audit-error-Tech** [medium]: Falha ao auditar assinatura de triagem (Tech)
+  - Recomendação: Reforçar robustez da auditoria e adicionar retry/fallback para leitura de comentários.
+- **concluded-audit-error-Tech** [medium]: Falha na auditoria de conclusões (Tech)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **triage-signature-audit-error-Pessoal** [medium]: Falha ao auditar assinatura de triagem (Pessoal)
+  - Recomendação: Reforçar robustez da auditoria e adicionar retry/fallback para leitura de comentários.
+- **concluded-audit-error-Pessoal** [medium]: Falha na auditoria de conclusões (Pessoal)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **cron-starvation-c408ba92-a26a-420d-844f-64448f983d93** [high]: Starvation de cron: Governança - health/recovery 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **governance-created-card-no-context** [high]: Card criado pela Governança sem contexto técnico suficiente
+  - Recomendação: Garantir corpo mínimo obrigatório com objetivo, escopo e critérios antes de priorizar cards técnicos.
+
+## 2026-02-27 22:01 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Cron próximo do timeout: Diretor Negócios - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Tech-31421016-bd48-8151-ad17-cd5cf5ae50d3** [high]: Card concluído sem evidência mínima (Tech)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 22:22 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-27 22:42 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **weak-conclusion-Pessoal-31436384-585c-81ee-9253-d6db2d26b745** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 00:46 UTC
+- **session-locks-stale** [medium]: Session locks obsoletos recorrentes
+  - Recomendação: Revisar encerramento de sessão dos crons para evitar lock residual recorrente.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **eng-prompt-cards-empty-body** [high]: Cards antigos sem descrição no Notion Pessoal
+  - Recomendação: Garantir body_file obrigatório e descrição mínima em todos os fluxos que criam card para Engenheiro de Prompt/Governança.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Cron próximo do timeout: Mail-Person especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Cron próximo do timeout: Diretor Tech - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Cron próximo do timeout: Diretor Negócios - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Cron próximo do timeout: Mail-Pro especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Cron próximo do timeout: Engenheiro de Prompt - execução 10min (drenagem)
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Cron próximo do timeout: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Cron próximo do timeout: Engenheiro de Automação - execução 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+- **cron-starvation-985165be-59eb-46e7-8715-17571c8e8227** [high]: Starvation de cron: Presidente - criar demandas 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Starvation de cron: Codex - stability monitor 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Starvation de cron: Mail-Person especialista - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-0633c77a-4e3f-47fa-82be-35767e806836** [high]: Starvation de cron: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Starvation de cron: Diretor Tech - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Starvation de cron: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-cf343b94-0816-42e5-b3dc-d40ecf12786e** [high]: Starvation de cron: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Starvation de cron: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-6bdd82c7-081d-486b-9700-0572b9fce72e** [high]: Starvation de cron: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Starvation de cron: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+
+## 2026-02-28 00:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Cron próximo do timeout: Mail-Person especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 01:20 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 01:39 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 01:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 02:21 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 02:40 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 03:01 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 03:21 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **eng-prompt-cards-empty-body** [high]: Cards antigos sem descrição no Notion Pessoal
+  - Recomendação: Garantir body_file obrigatório e descrição mínima em todos os fluxos que criam card para Engenheiro de Prompt/Governança.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 12:43 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+- **cron-starvation-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Starvation de cron: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Starvation de cron: Engenheiro de Automação - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Starvation de cron: Mail-Person especialista - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Starvation de cron: Codex - stability monitor 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-6bdd82c7-081d-486b-9700-0572b9fce72e** [high]: Starvation de cron: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Starvation de cron: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-985165be-59eb-46e7-8715-17571c8e8227** [high]: Starvation de cron: Presidente - criar demandas 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Starvation de cron: Diretor Tech - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Starvation de cron: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-cf343b94-0816-42e5-b3dc-d40ecf12786e** [high]: Starvation de cron: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-c408ba92-a26a-420d-844f-64448f983d93** [high]: Starvation de cron: Governança - health/recovery 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-0633c77a-4e3f-47fa-82be-35767e806836** [high]: Starvation de cron: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Starvation de cron: Otimizador - performance e custo 6h
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+
+## 2026-02-28 13:45 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Tech-31521016-bd48-8113-9e58-dfec2006e2a6** [high]: Card concluído sem evidência mínima (Tech)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 14:17 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Tech-31521016-bd48-81c2-bee0-c46d497b3172** [high]: Card concluído sem evidência mínima (Tech)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 14:41 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **patterns-adoption-drift** [medium]: Desvios/oportunidades no patterns central
+  - Recomendação: Atualizar prompts e contratos de agente para consumir o patterns central e reduzir divergência operacional.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 14:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **eng-prompt-cards-empty-body** [high]: Cards antigos sem descrição no Notion Pessoal
+  - Recomendação: Garantir body_file obrigatório e descrição mínima em todos os fluxos que criam card para Engenheiro de Prompt/Governança.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 15:02 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Tech-31521016-bd48-8103-99a5-e6ebf1d55a66** [high]: Card concluído sem evidência mínima (Tech)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 15:17 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Cron próximo do timeout: Presidente - criar demandas 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 15:20 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Cron próximo do timeout: Presidente - criar demandas 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 15:26 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Cron próximo do timeout: Presidente - criar demandas 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 15:37 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Cron próximo do timeout: Presidente - criar demandas 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 15:41 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **smartenvios-open-duplicates** [critical]: Duplicidade de cards abertos no SmartEnvios
+  - Recomendação: Aplicar dedupe por título+fluxo antes de create-card e consolidar card duplicado automaticamente.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Tech-31321016-bd48-8146-b087-f29280ae22fc** [high]: Card travado em Em andamento (Tech)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 16:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Cron próximo do timeout: Main - relatório WhatsApp 60min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 16:17 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Cron próximo do timeout: Main - relatório WhatsApp 60min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-audit-error-Tech** [medium]: Falha ao auditar assinatura de triagem (Tech)
+  - Recomendação: Reforçar robustez da auditoria e adicionar retry/fallback para leitura de comentários.
+
+## 2026-02-28 16:37 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Cron próximo do timeout: Main - relatório WhatsApp 60min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 16:47 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 16:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-02-28 17:17 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 17:27 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 17:37 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 18:18 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 18:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Tech-31521016-bd48-81b8-9593-d4db4267203e** [high]: Card concluído sem evidência mínima (Tech)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 19:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 19:39 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Tech-31521016-bd48-814d-8ff5-d4aab8612567** [high]: Card concluído sem evidência mínima (Tech)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 19:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-02-28 20:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 20:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-02-28 20:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 21:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 21:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 21:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 22:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 22:39 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 22:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 23:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-02-28 23:39 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-02-28 23:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 00:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 00:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 01:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 01:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 01:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 02:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 02:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 02:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 03:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31636384-585c-81ba-8de7-d6753910540f** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-01 03:39 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 03:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-01 04:18 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 04:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 04:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 05:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 05:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-audit-error-Tech** [medium]: Falha ao auditar assinatura de triagem (Tech)
+  - Recomendação: Reforçar robustez da auditoria e adicionar retry/fallback para leitura de comentários.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 06:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 06:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-01 06:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 07:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 07:39 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 07:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-01 08:39 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31636384-585c-81bc-ac2a-c8b265de4402** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-01 08:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-01 09:18 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 09:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 10:20 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **weak-conclusion-Pessoal-31636384-585c-81c8-88f7-e81201f055a7** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+
+## 2026-03-01 10:39 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **eng-prompt-cards-empty-body** [high]: Cards antigos sem descrição no Notion Pessoal
+  - Recomendação: Garantir body_file obrigatório e descrição mínima em todos os fluxos que criam card para Engenheiro de Prompt/Governança.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 10:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Pessoal-31636384-585c-8106-8ad2-c73274f3aca0** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+
+## 2026-03-01 11:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 11:39 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 11:59 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 13:46 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 14:06 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **concluded-audit-error-Tech** [medium]: Falha na auditoria de conclusões (Tech)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 14:26 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31636384-585c-81f7-bfb9-ed99b6e02db7** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-01 14:47 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Pessoal-31636384-585c-81f7-bfb9-ed99b6e02db7** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+
+## 2026-03-01 15:06 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 15:27 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 15:46 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 16:06 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 16:26 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 17:06 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 17:26 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-errors-6bdd82c7-081d-486b-9700-0572b9fce72e** [high]: Cron com erros consecutivos: Engenheiro de Prompt - execução 10min (d
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 17:46 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 18:07 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 18:27 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 18:46 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-01 19:06 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 19:26 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 19:46 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 20:07 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 20:27 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 20:47 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 21:07 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 21:26 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-01 21:47 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 22:47 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-01 23:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **eng-prompt-cards-empty-body** [high]: Cards antigos sem descrição no Notion Pessoal
+  - Recomendação: Garantir body_file obrigatório e descrição mínima em todos os fluxos que criam card para Engenheiro de Prompt/Governança.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-01 23:48 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 00:07 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 00:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 00:47 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 01:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 01:49 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 02:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 02:30 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **main-heartbeat-language-drift** [high]: Main respondeu heartbeat fora de pt-BR
+  - Recomendação: Resetar sessão main e reforçar HEARTBEAT.md para saída binária (HEARTBEAT_OK/ALERTA).
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 02:48 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 03:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 03:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-02 04:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 04:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-02 04:48 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **concluded-audit-error-Tech** [medium]: Falha na auditoria de conclusões (Tech)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 05:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31736384-585c-81e3-9bec-eff074f34277** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-02 05:29 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 06:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 06:48 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 07:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 07:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-02 07:49 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 08:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 08:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 08:48 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 09:09 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **weak-conclusion-Pessoal-31736384-585c-813c-a96b-dc6703093d75** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+
+## 2026-03-02 09:22 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31736384-585c-81e1-83e7-f89b2a5bb057** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-02 09:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-02 09:48 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 10:09 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-02 10:29 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Tech-31721016-bd48-813b-ac7f-c91eaa4f4758** [high]: Card concluído sem evidência mínima (Tech)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 12:15 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Tech-31721016-bd48-816b-9478-d276fe67b000** [high]: Card concluído sem evidência mínima (Tech)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31736384-585c-81a1-9af3-f9be13f45e01** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+- **cron-starvation-c408ba92-a26a-420d-844f-64448f983d93** [high]: Starvation de cron: Governança - health/recovery 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Starvation de cron: Codex - stability monitor 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Starvation de cron: Mail-Person especialista - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Starvation de cron: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-985165be-59eb-46e7-8715-17571c8e8227** [high]: Starvation de cron: Presidente - criar demandas 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+
+## 2026-03-02 12:22 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31736384-585c-81a1-9af3-f9be13f45e01** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-02 12:41 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 13:03 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **eng-prompt-cards-empty-body** [high]: Cards antigos sem descrição no Notion Pessoal
+  - Recomendação: Garantir body_file obrigatório e descrição mínima em todos os fluxos que criam card para Engenheiro de Prompt/Governança.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 13:57 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-02 14:17 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Tech-31721016-bd48-8181-93c0-c76c2504c1b0** [high]: Card concluído sem evidência mínima (Tech)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 14:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-02 14:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 15:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **weak-conclusion-Pessoal-31736384-585c-8122-8cc6-de80599b1ea5** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **notion-priorizado-abandonado-Pessoal-31736384-585c-8188-8de6-c4daac0a6095** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-02 15:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31736384-585c-8188-8de6-c4daac0a6095** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-02 15:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 16:14 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-02 16:17 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-02 16:40 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **weak-conclusion-Pessoal-31736384-585c-81d4-bd75-c96b9779461b** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+
+## 2026-03-02 17:00 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **concluded-audit-error-Tech** [medium]: Falha na auditoria de conclusões (Tech)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **weak-conclusion-Pessoal-31736384-585c-8193-93ac-cdae578520c1** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+
+## 2026-03-02 17:20 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **eng-prompt-cards-empty-body** [high]: Cards antigos sem descrição no Notion Pessoal
+  - Recomendação: Garantir body_file obrigatório e descrição mínima em todos os fluxos que criam card para Engenheiro de Prompt/Governança.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Cron próximo do timeout: Mail-Pro especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 17:40 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31736384-585c-81f0-9623-ca1b4c689ccc** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-02 18:01 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Tech-31721016-bd48-81b2-9611-ef9d353a646d** [high]: Card concluído sem evidência mínima (Tech)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 18:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 19:01 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **weak-conclusion-Tech-31721016-bd48-8189-91ed-dfd620251eab** [high]: Card concluído sem evidência mínima (Tech)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31736384-585c-81fb-ac57-c9801abd75bf** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-02 19:19 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 19:36 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **notion-quality-audit-failed** [high]: Falha na auditoria de qualidade Notion
+  - Recomendação: Verificar disponibilidade da API Notion e robustez da consulta.
+- **eng-prompt-cards-empty-body** [high]: Cards antigos sem descrição no Notion Pessoal
+  - Recomendação: Garantir body_file obrigatório e descrição mínima em todos os fluxos que criam card para Engenheiro de Prompt/Governança.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-audit-error-Tech** [medium]: Falha ao auditar assinatura de triagem (Tech)
+  - Recomendação: Reforçar robustez da auditoria e adicionar retry/fallback para leitura de comentários.
+- **concluded-audit-error-Tech** [medium]: Falha na auditoria de conclusões (Tech)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **triage-signature-audit-error-Pessoal** [medium]: Falha ao auditar assinatura de triagem (Pessoal)
+  - Recomendação: Reforçar robustez da auditoria e adicionar retry/fallback para leitura de comentários.
+- **concluded-audit-error-Pessoal** [medium]: Falha na auditoria de conclusões (Pessoal)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+
+## 2026-03-02 19:57 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **weak-conclusion-Pessoal-31736384-585c-81b7-84d9-cc21d8790495** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-02 20:17 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-02 20:37 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 20:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 21:18 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 21:37 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-02 21:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-02 22:35 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **notion-quality-audit-failed** [high]: Falha na auditoria de qualidade Notion
+  - Recomendação: Verificar disponibilidade da API Notion e robustez da consulta.
+- **notion-cleanup-time-budget** [medium]: Limpeza de cards sem descrição parcialmente executada
+  - Recomendação: Ajustar paginação/timeout para manter execução completa sem travar rodada.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Cron próximo do timeout: Engenheiro de Prompt - execução 10min (drenagem)
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Cron próximo do timeout: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Cron próximo do timeout: Engenheiro de Automação - execução 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Cron próximo do timeout: Diretor Tech - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-audit-error-Tech** [medium]: Falha ao auditar assinatura de triagem (Tech)
+  - Recomendação: Reforçar robustez da auditoria e adicionar retry/fallback para leitura de comentários.
+- **concluded-audit-error-Tech** [medium]: Falha na auditoria de conclusões (Tech)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **triage-signature-audit-error-Pessoal** [medium]: Falha ao auditar assinatura de triagem (Pessoal)
+  - Recomendação: Reforçar robustez da auditoria e adicionar retry/fallback para leitura de comentários.
+- **concluded-audit-error-Pessoal** [medium]: Falha na auditoria de conclusões (Pessoal)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **cron-starvation-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Starvation de cron: Mail-Person especialista - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Starvation de cron: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Starvation de cron: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-c408ba92-a26a-420d-844f-64448f983d93** [high]: Starvation de cron: Governança - health/recovery 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-0633c77a-4e3f-47fa-82be-35767e806836** [high]: Starvation de cron: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+
+## 2026-03-03 00:31 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Cron com erros consecutivos: Mail-Person especialista - execução 15mi
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Cron com erros consecutivos: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Cron próximo do timeout: Presidente - criar demandas 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Cron próximo do timeout: Diretor Pessoal - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Cron próximo do timeout: Main - relatório WhatsApp 60min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 00:48 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Cron próximo do timeout: Main - relatório WhatsApp 60min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 01:11 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Cron próximo do timeout: Mail-Pro especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 01:31 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 01:46 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-03 01:51 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 02:11 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-03 02:16 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-03 02:31 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 03:17 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-03 03:26 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-03 03:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 03:57 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 04:17 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **notion-cleanup-time-budget** [medium]: Limpeza de cards sem descrição parcialmente executada
+  - Recomendação: Ajustar paginação/timeout para manter execução completa sem travar rodada.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-03 04:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **weak-conclusion-Pessoal-31836384-585c-8127-9982-faad04201100** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+
+## 2026-03-03 04:58 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31836384-585c-8195-8659-ec2e7906416c** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-03 05:17 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 05:38 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-03 06:18 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 14:24 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-cf343b94-0816-42e5-b3dc-d40ecf12786e** [high]: Cron com erros consecutivos: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0633c77a-4e3f-47fa-82be-35767e806836** [high]: Cron com erros consecutivos: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Cron com erros consecutivos: Diretor Tech - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Cron com erros consecutivos: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Cron com erros consecutivos: Mail-Person especialista - execução 15mi
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Cron com erros consecutivos: Mail-Pro especialista - execução 15min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Cron com erros consecutivos: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-985165be-59eb-46e7-8715-17571c8e8227** [high]: Cron com erros consecutivos: Presidente - criar demandas 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-6bdd82c7-081d-486b-9700-0572b9fce72e** [high]: Cron com erros consecutivos: Engenheiro de Prompt - execução 10min (d
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Cron próximo do timeout: Main - relatório WhatsApp 60min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Cron próximo do timeout: Diretor Tech - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Cron próximo do timeout: Diretor Pessoal - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Cron próximo do timeout: Mail-Person especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Cron próximo do timeout: Mail-Pro especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Cron próximo do timeout: Presidente - criar demandas 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Cron próximo do timeout: Engenheiro de Prompt - execução 10min (drenagem)
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Pessoal-31836384-585c-817e-be4c-fd394389cd41** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+- **cron-starvation-cf343b94-0816-42e5-b3dc-d40ecf12786e** [high]: Starvation de cron: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-c408ba92-a26a-420d-844f-64448f983d93** [high]: Starvation de cron: Governança - health/recovery 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-0633c77a-4e3f-47fa-82be-35767e806836** [high]: Starvation de cron: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Starvation de cron: Diretor Tech - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+
+## 2026-03-03 14:46 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 15:06 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 17:57 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31836384-585c-8112-892d-c7aee19cd2d8** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-03 18:37 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-03 18:57 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 19:17 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Pessoal-31836384-585c-8156-8e4a-d35b49948749** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-03-03 19:37 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Cron próximo do timeout: Engenheiro de Prompt - execução 10min (drenagem)
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 20:23 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **weak-conclusion-Pessoal-31836384-585c-8104-ab06-e7de9e2d3693** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+- **notion-priorizado-abandonado-Pessoal-31836384-585c-81fa-b336-d7666bc88ab1** [high]: Card Priorizado sem execução (Pessoal)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+- **cron-starvation-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Starvation de cron: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Starvation de cron: Engenheiro de Automação - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Starvation de cron: Codex - stability monitor 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-985165be-59eb-46e7-8715-17571c8e8227** [high]: Starvation de cron: Presidente - criar demandas 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Starvation de cron: Diretor Tech - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Starvation de cron: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+
+## 2026-03-03 20:42 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+
+## 2026-03-03 21:25 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-03 21:45 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-03 22:24 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-audit-error-Pessoal** [medium]: Falha ao auditar assinatura de triagem (Pessoal)
+  - Recomendação: Reforçar robustez da auditoria e adicionar retry/fallback para leitura de comentários.
+- **concluded-audit-error-Pessoal** [medium]: Falha na auditoria de conclusões (Pessoal)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+- **cron-starvation-6bdd82c7-081d-486b-9700-0572b9fce72e** [high]: Starvation de cron: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Starvation de cron: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-c408ba92-a26a-420d-844f-64448f983d93** [high]: Starvation de cron: Governança - health/recovery 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Starvation de cron: Engenheiro de Automação - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Starvation de cron: Mail-Person especialista - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Starvation de cron: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+
+## 2026-03-04 12:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-pro** [high]: Backlog alto no Mail-Pro
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-cf343b94-0816-42e5-b3dc-d40ecf12786e** [high]: Cron com erros consecutivos: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Cron com erros consecutivos: Mail-Pro especialista - execução 15min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Cron com erros consecutivos: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Cron com erros consecutivos: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Cron com erros consecutivos: Mail-Person especialista - execução 15mi
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-985165be-59eb-46e7-8715-17571c8e8227** [high]: Cron com erros consecutivos: Presidente - criar demandas 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Cron com erros consecutivos: Diretor Tech - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Cron com erros consecutivos: Codex - stability monitor 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-6bdd82c7-081d-486b-9700-0572b9fce72e** [high]: Cron com erros consecutivos: Engenheiro de Prompt - execução 10min (d
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0633c77a-4e3f-47fa-82be-35767e806836** [high]: Cron com erros consecutivos: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Cron próximo do timeout: Diretor Negócios - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Cron próximo do timeout: Otimizador - performance e custo 6h
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Cron próximo do timeout: Mail-Pro especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Cron próximo do timeout: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Cron próximo do timeout: Diretor Pessoal - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Cron próximo do timeout: Mail-Person especialista - execução 15min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Cron próximo do timeout: Presidente - criar demandas 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Cron próximo do timeout: Diretor Tech - varredura 30min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Cron próximo do timeout: Engenheiro de Prompt - execução 10min (drenagem)
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Cron próximo do timeout: Main - relatório WhatsApp 60min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-stuck-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Cron travado por tempo excessivo: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar timeout, prompt e efeitos colaterais para impedir travamento recorrente.
+- **cron-stuck-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Cron travado por tempo excessivo: Mail-Person especialista - execução 15mi
+  - Recomendação: Revisar timeout, prompt e efeitos colaterais para impedir travamento recorrente.
+- **cron-stuck-985165be-59eb-46e7-8715-17571c8e8227** [high]: Cron travado por tempo excessivo: Presidente - criar demandas 30min
+  - Recomendação: Revisar timeout, prompt e efeitos colaterais para impedir travamento recorrente.
+- **cron-ghost-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Running fantasma em cron: Mail-Person especialista - execução 15mi
+  - Recomendação: Fortalecer encerramento de execução e limpeza de estado ao final de cada rodada.
+- **cron-ghost-985165be-59eb-46e7-8715-17571c8e8227** [high]: Running fantasma em cron: Presidente - criar demandas 30min
+  - Recomendação: Fortalecer encerramento de execução e limpeza de estado ao final de cada rodada.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Colisão de grade entre crons: Otimizador - performance e custo 6h
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+- **cron-starvation-c408ba92-a26a-420d-844f-64448f983d93** [high]: Starvation de cron: Governança - health/recovery 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-cf343b94-0816-42e5-b3dc-d40ecf12786e** [high]: Starvation de cron: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Starvation de cron: Otimizador - performance e custo 6h
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Starvation de cron: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Starvation de cron: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Starvation de cron: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Starvation de cron: Engenheiro de Automação - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Starvation de cron: Mail-Person especialista - execução
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-985165be-59eb-46e7-8715-17571c8e8227** [high]: Starvation de cron: Presidente - criar demandas 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Starvation de cron: Diretor Tech - varredura 30min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+- **cron-starvation-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Starvation de cron: Codex - stability monitor 10min
+  - Recomendação: Revisar grade de execução (anchor/every) e concorrência para impedir filas permanentes.
+
+## 2026-03-04 13:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Cron próximo do timeout: Otimizador - performance e custo 6h
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-04 13:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-59c24991-af6c-4df2-95fe-bbf012cd73c0** [medium]: Cron próximo do timeout: Otimizador - performance e custo 6h
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-04 13:49 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **weak-conclusion-Pessoal-31936384-585c-81e1-a4b5-cf56cd22b026** [high]: Card concluído sem evidência mínima (Pessoal)
+  - Recomendação: Reabrir para Priorizado, processar 1 card por vez com evidências de comando/resultado e só então concluir.
+
+## 2026-03-04 14:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-04 14:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-04 14:49 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **concluded-audit-error-Tech** [medium]: Falha na auditoria de conclusões (Tech)
+  - Recomendação: Reforçar robustez da auditoria de comentários Notion (retry/timeout/fallback).
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-04 15:08 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-04 15:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-04 16:09 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **eng-prompt-cards-empty-body** [high]: Cards antigos sem descrição no Notion Pessoal
+  - Recomendação: Garantir body_file obrigatório e descrição mínima em todos os fluxos que criam card para Engenheiro de Prompt/Governança.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-04 16:28 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-04 16:49 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-stuck-Pessoal-31436384-585c-810c-bc40-cb6d5abd0f0e** [high]: Card travado em Em andamento (Pessoal)
+  - Recomendação: Padronizar timeout de execução + heartbeat de progresso e fallback automático para não deixar card preso.
+
+## 2026-03-04 17:09 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+
+## 2026-03-04 17:49 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **president-force-chain** [high]: Presidente solicitou forçar cadeia de execução
+  - Recomendação: Drenar backlog em ondas curtas e validar queda sustentada dos não lidos.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.

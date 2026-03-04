@@ -30,10 +30,13 @@ fi
 
 # Load environment
 if [[ -f "${OPENCLAW_CONFIG_DIR}/.env" ]]; then
+  # Avoid breaking on "$" characters inside quoted secrets while sourcing .env.
+  set +u
   set -a
   # shellcheck disable=SC1090,SC1091
   source "${OPENCLAW_CONFIG_DIR}/.env"
   set +a
+  set -u
 fi
 
 # Select credentials by profile
@@ -233,8 +236,8 @@ $BODY"
     ;;
 
   batch-mark-read)
-    # Uso: $0 $PROFILE batch-mark-read id1 id2 ...  Processa em paralelo (GMAIL_BATCH_PARALLEL, default 8).
-    PARALLEL="${GMAIL_BATCH_PARALLEL:-8}"
+    # Uso: $0 $PROFILE batch-mark-read id1 id2 ...
+    # Usa endpoint batchModify para reduzir round-trips e garantir resultado consistente.
     shift 2
     ids=()
     for a in "$@"; do [[ -n "$a" ]] && ids+=("$a"); done
@@ -242,16 +245,18 @@ $BODY"
       echo '{"modified":0}' | jq .
       exit 0
     fi
-    for id in "${ids[@]}"; do
-      while [[ $(jobs -r 2>/dev/null | wc -l) -ge "$PARALLEL" ]]; do sleep 0.1; done
-      gmail_api POST "messages/${id}/modify" -d '{"removeLabelIds": ["UNREAD"]}' >/dev/null 2>&1 &
-    done
-    wait
+    BODY="$(printf '%s\n' "${ids[@]}" | jq -R . | jq -s '{ids: ., removeLabelIds: ["UNREAD"]}')"
+    RESP="$(gmail_api POST "messages/batchModify" -d "${BODY}" || true)"
+    # Gmail returns 204 on success (empty body). If not empty and contains error, report failure.
+    if [[ -n "${RESP}" ]] && echo "${RESP}" | jq -e '.error' >/dev/null 2>&1; then
+      echo "{\"modified\":0,\"error\":${RESP}}" | jq .
+      exit 1
+    fi
     echo "{\"modified\": ${#ids[@]}}" | jq .
     ;;
 
   batch-archive)
-    PARALLEL="${GMAIL_BATCH_PARALLEL:-8}"
+    # Usa endpoint batchModify para reduzir round-trips e garantir resultado consistente.
     shift 2
     ids=()
     for a in "$@"; do [[ -n "$a" ]] && ids+=("$a"); done
@@ -259,11 +264,12 @@ $BODY"
       echo '{"archived":0}' | jq .
       exit 0
     fi
-    for id in "${ids[@]}"; do
-      while [[ $(jobs -r 2>/dev/null | wc -l) -ge "$PARALLEL" ]]; do sleep 0.1; done
-      gmail_api POST "messages/${id}/modify" -d '{"removeLabelIds": ["INBOX"]}' >/dev/null 2>&1 &
-    done
-    wait
+    BODY="$(printf '%s\n' "${ids[@]}" | jq -R . | jq -s '{ids: ., removeLabelIds: ["INBOX"]}')"
+    RESP="$(gmail_api POST "messages/batchModify" -d "${BODY}" || true)"
+    if [[ -n "${RESP}" ]] && echo "${RESP}" | jq -e '.error' >/dev/null 2>&1; then
+      echo "{\"archived\":0,\"error\":${RESP}}" | jq .
+      exit 1
+    fi
     echo "{\"archived\": ${#ids[@]}}" | jq .
     ;;
 

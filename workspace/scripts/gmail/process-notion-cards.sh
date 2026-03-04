@@ -221,7 +221,7 @@ save_batch_state() {
 resolve_effective_limit() {
   local base_limit="$1"
   local effective_limit unread_estimate raw_count
-  local min_limit max_limit step_up step_down success_streak_needed slow_run_sec
+  local min_limit max_limit step_up step_down success_streak_needed slow_run_sec hard_cap
   local target_limit
 
   base_limit="$(normalize_positive_int "${base_limit}" 15)"
@@ -236,6 +236,8 @@ resolve_effective_limit() {
   # Configurações de modo emergencial
   emergency_threshold="$(normalize_positive_int "${MAIL_BACKLOG_EMERGENCY_THRESHOLD:-40}" 40)"
   emergency_limit="$(normalize_positive_int "${MAIL_EMERGENCY_BATCH_LIMIT:-25}" 25)"
+  # Limite rígido de segurança operacional para evitar rodadas excessivamente longas.
+  hard_cap="$(normalize_positive_int "${MAIL_BATCH_HARD_CAP:-60}" 60)"
 
   if (( max_limit < min_limit )); then
     max_limit="${min_limit}"
@@ -304,10 +306,21 @@ resolve_effective_limit() {
     fi
   fi
 
+  # Corta qualquer configuração agressiva acima do cap de segurança.
+  if (( hard_cap > 0 )) && (( effective_limit > hard_cap )); then
+    effective_limit="${hard_cap}"
+    if [[ "${MAIL_BATCH_LOGGING:-false}" == "true" ]]; then
+      echo "{\"log\":\"mail-batch: limite efetivo capado em ${hard_cap} para preservar continuidade\"}" >&2
+    fi
+  fi
+
   echo "${effective_limit}|${unread_estimate}"
 }
 
-QUERY_OUT="$(NOTION_CACHE_ENABLED=false "${NOTION_HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${AGENT_NAME}" Priorizado "Em andamento")"
+QUERY_OUT="$(NOTION_CACHE_ENABLED=false "${NOTION_HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${AGENT_NAME}" Priorizado "Em andamento" 2>/dev/null || echo '{"results":[],"_query_error":true}')"
+if ! jq -e . >/dev/null 2>&1 <<<"${QUERY_OUT}"; then
+  QUERY_OUT='{"results":[],"_query_error":true}'
+fi
 CARDS_FOUND="$(echo "${QUERY_OUT}" | jq -r '.results | length')"
 PROCESS_MAX_CARDS="${MAIL_PROCESS_MAX_CARDS:-3}"
 if [[ ! "${PROCESS_MAX_CARDS}" =~ ^[0-9]+$ ]] || (( PROCESS_MAX_CARDS < 1 )); then
@@ -315,7 +328,11 @@ if [[ ! "${PROCESS_MAX_CARDS}" =~ ^[0-9]+$ ]] || (( PROCESS_MAX_CARDS < 1 )); th
 fi
 
 # Sem card no Notion: não executar e-mail; garantir criação de card (Notion é a central).
+# Regra endurecida: qualquer backlog > 0 deve gerar/rotear card de demanda.
 RUN_WITHOUT_CARD_THRESHOLD="${MAIL_BACKLOG_RUN_WITHOUT_CARD_THRESHOLD:-1}"
+if [[ ! "${RUN_WITHOUT_CARD_THRESHOLD}" =~ ^[0-9]+$ ]] || (( RUN_WITHOUT_CARD_THRESHOLD < 1 )); then
+  RUN_WITHOUT_CARD_THRESHOLD=1
+fi
 
 if [[ "${CARDS_FOUND}" == "0" ]]; then
   LIMIT_INFO="$(resolve_effective_limit "${LIMIT}")"
@@ -325,8 +342,10 @@ if [[ "${CARDS_FOUND}" == "0" ]]; then
   created_card=0
   dedup_open=0
   created_card_id=""
+  auto_routed=0
+  auto_routed_card_id=""
 
-  if [[ "${BACKLOG_ESTIMATE}" =~ ^[0-9]+$ ]] && (( BACKLOG_ESTIMATE >= RUN_WITHOUT_CARD_THRESHOLD )); then
+  if [[ "${BACKLOG_ESTIMATE}" =~ ^[0-9]+$ ]] && (( BACKLOG_ESTIMATE > 0 )); then
     # Dedup: evita criar múltiplos cards iguais enquanto já existe card aberto na cadeia.
     q1="$(NOTION_CACHE_ENABLED=false "${NOTION_HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${DEMAND_AGENT}" "Aguardando" "Priorizado" 2>/dev/null || echo '{"results":[]}')"
     q2="$(NOTION_CACHE_ENABLED=false "${NOTION_HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${DEMAND_AGENT}" "Em andamento" "Em andamento" 2>/dev/null || echo '{"results":[]}')"
@@ -358,9 +377,58 @@ EOF
       created_card_id="$(jq -r '.id // empty' <<<"${created_json}" 2>/dev/null || true)"
       [[ -n "${created_card_id}" ]] && created_card=1
       rm -f "${body_file}" 2>/dev/null || true
+    else
+      # Auto-heal de roteamento: se já existe card da cadeia parado com diretor,
+      # mover para o especialista de mail em Priorizado para destravar a execução.
+      AUTO_ROUTE_DEMAND="${MAIL_AUTO_ROUTE_DEMAND:-true}"
+      if [[ "${AUTO_ROUTE_DEMAND}" == "true" ]]; then
+        candidate_id="$(jq -rn --argjson a "${q1}" --argjson b "${q2}" --arg p "${DEMAND_TITLE_PREFIX}" '
+          ((($a.results // []) + ($b.results // []))
+          | map(select((.properties.Name.title[0].plain_text // "") | startswith($p)))
+          | sort_by(.created_time // "9999-12-31T23:59:59.000Z")
+          | .[0].id // "")
+        ' 2>/dev/null || true)"
+        if [[ -n "${candidate_id}" && "${candidate_id}" != "null" ]]; then
+          "${NOTION_HELPER}" update-agent "${candidate_id}" "${API_KEY_VAR}" "${AGENT_NAME}" >/dev/null 2>&1 || true
+          "${NOTION_HELPER}" update-status "${candidate_id}" "${API_KEY_VAR}" "Priorizado" >/dev/null 2>&1 || true
+          "${NOTION_HELPER}" comment "${candidate_id}" "${API_KEY_VAR}" "Auto-roteamento aplicado para destravar backlog de e-mail: card movido para ${AGENT_NAME} em Priorizado." "${AGENT_NAME}" >/dev/null 2>&1 || true
+          auto_routed=1
+          auto_routed_card_id="${candidate_id}"
+        fi
+      fi
     fi
 
-    save_batch_state "idle" "${LIMIT}" "${BACKLOG_ESTIMATE}" 0
+    if (( auto_routed == 1 )); then
+      QUERY_OUT="$(NOTION_CACHE_ENABLED=false "${NOTION_HELPER}" query "${DB_ID}" "${API_KEY_VAR}" "${AGENT_NAME}" Priorizado "Em andamento" 2>/dev/null || echo '{"results":[],"_query_error":true}')"
+      if ! jq -e . >/dev/null 2>&1 <<<"${QUERY_OUT}"; then
+        QUERY_OUT='{"results":[],"_query_error":true}'
+      fi
+      CARDS_FOUND="$(echo "${QUERY_OUT}" | jq -r '.results | length')"
+    fi
+
+    if [[ "${CARDS_FOUND}" == "0" ]]; then
+      save_batch_state "blocked_no_card" "${LIMIT}" "${BACKLOG_ESTIMATE}" 0
+      jq -n \
+        --arg profile "${PROFILE}" \
+        --arg agent "${AGENT_NAME}" \
+        --arg mailbox "${MAILBOX}" \
+        --argjson backlog "${BACKLOG_ESTIMATE}" \
+        --argjson baseLimit "${LIMIT}" \
+        --argjson effectiveLimit "${EFFECTIVE_LIMIT}" \
+        --arg demandAgent "${DEMAND_AGENT}" \
+        --arg demandPrefix "${DEMAND_TITLE_PREFIX}" \
+        --arg createdCardId "${created_card_id}" \
+        --arg autoRoutedCardId "${auto_routed_card_id}" \
+        --argjson createdCard "${created_card}" \
+        --argjson dedupOpen "${dedup_open}" \
+        --argjson autoRouted "${auto_routed}" \
+        '{profile:$profile,agent:$agent,mailbox:$mailbox,cardsFound:0,processed:0,success:0,partial:0,failed:0,backlogEstimate:$backlog,baseLimit:$baseLimit,effectiveLimit:$effectiveLimit,createdCard:$createdCard,createdCardId:$createdCardId,autoRouted:$autoRouted,autoRoutedCardId:$autoRoutedCardId,demandAgent:$demandAgent,demandPrefix:$demandPrefix,dedupOpen:$dedupOpen,message:"execução bloqueada: sem card no Notion; card de demanda garantido/validado"}'
+      exit 0
+    fi
+  fi
+
+  if [[ "${BACKLOG_ESTIMATE}" =~ ^[0-9]+$ ]] && (( BACKLOG_ESTIMATE >= RUN_WITHOUT_CARD_THRESHOLD )); then
+    save_batch_state "blocked_no_card" "${LIMIT}" "${BACKLOG_ESTIMATE}" 0
     jq -n \
       --arg profile "${PROFILE}" \
       --arg agent "${AGENT_NAME}" \
@@ -368,12 +436,7 @@ EOF
       --argjson backlog "${BACKLOG_ESTIMATE}" \
       --argjson baseLimit "${LIMIT}" \
       --argjson effectiveLimit "${EFFECTIVE_LIMIT}" \
-      --arg demandAgent "${DEMAND_AGENT}" \
-      --arg demandPrefix "${DEMAND_TITLE_PREFIX}" \
-      --arg createdCardId "${created_card_id}" \
-      --argjson createdCard "${created_card}" \
-      --argjson dedupOpen "${dedup_open}" \
-      '{profile:$profile,agent:$agent,mailbox:$mailbox,cardsFound:0,processed:0,success:0,partial:0,failed:0,backlogEstimate:$backlog,baseLimit:$baseLimit,effectiveLimit:$effectiveLimit,createdCard:$createdCard,createdCardId:$createdCardId,demandAgent:$demandAgent,demandPrefix:$demandPrefix,dedupOpen:$dedupOpen,message:"execução bloqueada: sem card no Notion; card de demanda garantido/validado"}'
+      '{profile:$profile,agent:$agent,mailbox:$mailbox,cardsFound:0,processed:0,success:0,partial:0,failed:0,backlogEstimate:$backlog,baseLimit:$baseLimit,effectiveLimit:$effectiveLimit,message:"execução bloqueada: backlog detectado sem card executável no Notion"}'
     exit 0
   fi
 
@@ -513,7 +576,7 @@ while IFS= read -r CARD; do
       "- Backlog estimado antes da rodada: " + $backlogEstimate + "\n" +
       "- Lote executado: base=" + $baseLimit + " / efetivo=" + $effectiveLimit + "\n" +
       "- E-mails lidos com histórico: " + (.triaged|tostring) + "\n" +
-      "- Triados: " + (.triaged|tostring) + " (Importante=" + (.counts.draft|tostring) + ", Aguardando=" + (.counts.review|tostring) + ", BaixoValor=" + (.counts.label|tostring) + ")\n" +
+      "- Triados: " + (.triaged|tostring) + " (Rascunho=" + (.counts.draft|tostring) + ", Importante sem resposta=" + ((.counts.important // 0)|tostring) + ", Aguardando=" + (.counts.review|tostring) + ", BaixoValor=" + (.counts.label|tostring) + ")\n" +
       "- Labels reaproveitadas: " + ((.labelsReused // [])|tostring) + "\n" +
       "- Labels criadas: " + ((.labelsCreated // [])|tostring) + "\n" +
       "- E-mails marcados como lidos: " + (.markedRead|tostring) + "\n" +
@@ -521,7 +584,7 @@ while IFS= read -r CARD; do
       "- Rascunhos criados: " + (.draftsCreated|tostring) + "\n" +
       "## Evidências\n" + evidence_lines + "\n" +
       "## Decisões e próximos passos\n" +
-      "- Critérios aplicados: classificação por action draft/review/label/ignore com execução real no Gmail.\n" +
+      "- Critérios aplicados: classificação por action draft/important/review/label/ignore com execução real no Gmail.\n" +
       "- Pendências: " + (if (.errors|length)==0 then "sem bloqueios nesta rodada." else "verificar erros registrados no lote atual." end)
     ' "${RESULT_FILE}")"
 

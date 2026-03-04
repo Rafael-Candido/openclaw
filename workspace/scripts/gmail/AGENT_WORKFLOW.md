@@ -12,8 +12,9 @@ Fluxo completo para especialistas processarem emails com contexto e priorizaçã
 **Output:** JSON com emails analisados, ordenados por prioridade (score DESC).
 
 **Campos importantes:**
-- `summary.needsDraft` - Emails que merecem rascunho (score >= 50)
-- `summary.needsReview` - Emails para revisar (score >= 20)
+- `summary.needsDraft` - Emails que merecem rascunho
+- `summary.needsImportant` - Emails importantes para leitura, sem resposta
+- `summary.needsReview` - Emails para revisar
 - `summary.needsLabel` - Emails para apenas labelar (score >= 0)
 - `summary.shouldIgnore` - Auto-replies e notificações (score < 0)
 
@@ -32,17 +33,16 @@ Fluxo completo para especialistas processarem emails com contexto e priorizaçã
 3. Aplicar label `Mail-{Pro|Person}-Importante`
 4. Arquivar
 
-**Exemplo de rascunho contextualizado:**
+**Exemplo de rascunho contextualizado (tom Rafael):**
 ```
 Subject: Re: [assunto original]
 
-Olá [nome extraído do from],
+Olá [nome],
 
-[Referência específica ao contexto da thread]
+Vi sua mensagem sobre [assunto].
+Vou revisar isso aqui e te volto com viabilidade e próximo passo.
 
-[Resposta relevante baseada no histórico]
-
-Att,
+Abs,
 Rafael
 ```
 
@@ -59,6 +59,18 @@ Rafael
 3. Se sim: criar rascunho contextualizado
 4. Aplicar label `Mail-{Pro|Person}-Aguardando`
 5. Arquivar
+
+### B2. Emails com `action: "important"`
+
+**Critérios:**
+- Importante para o Rafael ver
+- Não pede resposta
+- Ex.: arquivo ou planilha compartilhada, envio informativo relevante
+
+**Ação:**
+1. Aplicar label `Mail-{Pro|Person}-Importante`
+2. Arquivar
+3. **Não criar rascunho**
 
 ### C. Emails com `action: "label"` (score 0-19)
 
@@ -97,35 +109,36 @@ Rafael
 **Template de rascunho (use o agente para gerar):**
 
 ```
-Olá [Nome],
+[Nome],
 
-[Referência específica: "Vi que você mencionou X no dia Y..."]
+[Contexto em uma linha: "Sobre [assunto]." ou "Vi sua mensagem sobre [assunto]."]
+[Próximo passo curto e objetivo: causa e ação, viabilidade e próximo passo, melhor janela, confirmação de decisão.]
 
-[Resposta relevante baseada no contexto da thread]
-
-[Próximos passos ou call-to-action se necessário]
-
-Att,
+Abs,
 Rafael
 ```
 
 **Importante:**
+- Ler `workspace/docs/rafael-dna.md` antes de criar rascunho manual.
 - **SEMPRE incluir `threadId`** para manter contexto da conversa
 - Extrair nome do remetente do campo `from`
-- Referenciar pontos específicos da thread (datas, assuntos, decisões)
+- Referenciar o assunto ou ponto central da thread
 - Ser objetivo e direto
+- Para remetente interno, preferir abertura curta: `Su,`, `Rafa,`, `João,`
+- Evitar `Recebi sua mensagem`, `retorno em breve`, `Fico à disposição`, `seguiremos acompanhando`, resumo burocrático
+- Se ficar genérico, cortar e reescrever
 
 ## 4. Aplicar Labels
 
 **Labels padrão (criar se não existir):**
 
 **Mail-Pro:**
-- `Mail-Pro-Importante` (action: draft)
+- `Mail-Pro-Importante` (action: draft/important)
 - `Mail-Pro-Aguardando` (action: review)
 - `Mail-Pro-BaixoValor` (action: label)
 
 **Mail-Person:**
-- `Mail-Person-Importante` (action: draft)
+- `Mail-Person-Importante` (action: draft/important)
 - `Mail-Person-Aguardando` (action: review)
 - `Mail-Person-BaixoValor` (action: label)
 
@@ -159,21 +172,24 @@ Remove label `INBOX` mas mantém o email (não deleta).
 ## Métricas
 - Não lidos encontrados: 20
 - Triados: 20
-  - Importantes (draft): 2
+  - Rascunho: 2
+  - Importantes sem resposta: 1
   - Aguardando (review): 5
   - BaixoValor (label): 10
   - Ignorados (auto-reply): 3
-- Labels aplicadas: Mail-Pro-Importante (2), Mail-Pro-Aguardando (5), Mail-Pro-BaixoValor (10)
+- Labels aplicadas: Mail-Pro-Importante (3), Mail-Pro-Aguardando (5), Mail-Pro-BaixoValor (10)
 - Rascunhos criados: 2
 - Arquivados: 20
 
 ## Evidências (IDs/assuntos)
 - [19c796afb11f9001] AWS ElastiCache Update → BaixoValor, arquivado
+- [19c796afb11f9002] Planilha compartilhada com você: Gestão de cartões.xlsx → Importante sem resposta, arquivado
 - [19baea64cb0c3e41] Solicitação Pedido SM8189985192P02 → Aguardando, arquivado
 - [19xxxxx] Cliente urgente → Rascunho criado, Importante, arquivado
 
 ## Decisões e próximos passos
 - Rascunhos criados: 2 emails de clientes diretos aguardando revisão humana
+- Itens importantes sem resposta: 1 email informativo relevante ficou visível em `Importante`
 - Pendências: 5 emails em "Aguardando" precisam de acompanhamento manual
 - Aprendizados: Emails de infraestrutura AWS podem ir direto para BaixoValor
 ```

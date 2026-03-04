@@ -1,0 +1,110 @@
+{
+  "jobs": {
+    "0633c77a-4e3f-47fa-82be-35767e806836": {
+      "name": "Main - relatório WhatsApp 60min",
+      "count": 20,
+      "ok": 19,
+      "error": 1,
+      "avgDurationMs": 10528,
+      "maxDurationMs": 50149
+    },
+    "0a145dca-9bb4-46a6-be5b-d15ee4ae30ef": {
+      "name": "Codex - stability monitor 10min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 40018.2,
+      "maxDurationMs": 75297
+    },
+    "59c24991-af6c-4df2-95fe-bbf012cd73c0": {
+      "name": "Otimizador - performance e custo 6h",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 20820.05,
+      "maxDurationMs": 26803
+    },
+    "6bdd82c7-081d-486b-9700-0572b9fce72e": {
+      "name": "Engenheiro de Prompt - execução 10min (drenagem)",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 26316.75,
+      "maxDurationMs": 62508
+    },
+    "79672496-e2c8-4851-9f19-98b5efafa2ff": {
+      "name": "Engenheiro de Automação - execução 10min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 5438.75,
+      "maxDurationMs": 12939
+    },
+    "7fba5b1f-2ee9-4b1e-aae0-bd211c32b925": {
+      "name": "Diretor Tech - varredura 30min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 12183.95,
+      "maxDurationMs": 24814
+    },
+    "985165be-59eb-46e7-8715-17571c8e8227": {
+      "name": "Presidente - criar demandas 30min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 38107.15,
+      "maxDurationMs": 70401
+    },
+    "99de71d1-97b0-48d0-933e-7fcacfda2184": {
+      "name": "Mail-Pro especialista - execução 15min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 14759.05,
+      "maxDurationMs": 34510
+    },
+    "a71c2958-e52f-4f37-9876-bedf6dcb9434": {
+      "name": "Diretor Pessoal - varredura 30min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 8475.15,
+      "maxDurationMs": 17036
+    },
+    "a7b8c9d0-e1f2-3456-7890-abcdef123401": {
+      "name": "Engenheiro SmartEnvios - execução 10min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 6881.1,
+      "maxDurationMs": 9100
+    },
+    "c408ba92-a26a-420d-844f-64448f983d93": {
+      "name": "Governança - health/recovery 10min",
+      "count": 20,
+      "ok": 19,
+      "error": 1,
+      "avgDurationMs": 91004.3,
+      "maxDurationMs": 180070
+    },
+    "cf343b94-0816-42e5-b3dc-d40ecf12786e": {
+      "name": "Diretor Negócios - varredura 30min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 6384.4,
+      "maxDurationMs": 9211
+    },
+    "e4cd9635-efdd-4588-8ecc-523a4a50ea20": {
+      "name": "Mail-Person especialista - execução 15min",
+      "count": 20,
+      "ok": 20,
+      "error": 0,
+      "avgDurationMs": 14130,
+      "maxDurationMs": 29575
+    }
+  },
+  "gargalos": [],
+  "totals": {}
+}

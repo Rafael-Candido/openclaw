@@ -3,13 +3,26 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HELPER="${SCRIPT_DIR}/notion-helper.sh"
+RUNTIME_GUARD="${SCRIPT_DIR}/runtime-guard.sh"
 DB_ID="bfcbe7a7a3a745489e605e0762af12a9"
 API_KEY_VAR="NOTION_PERSONAL_API_KEY"
 DIRECTOR="Diretor Pessoal"
 
 if [[ -f "${SCRIPT_DIR}/../../.env" ]]; then
+  set +e +u
   # shellcheck disable=SC1091
-  source "${SCRIPT_DIR}/../../.env" 2>/dev/null || true
+  source "${SCRIPT_DIR}/../../.env" >/dev/null 2>&1
+  set -euo pipefail
+fi
+
+if [[ -x "${RUNTIME_GUARD}" ]]; then
+  # shellcheck disable=SC1090
+  source "${RUNTIME_GUARD}"
+  if ! ocw_guard_acquire_lock "director-personal-deterministic" "${CRON_LOCK_STALE_SEC:-1200}"; then
+    echo '{"ok":true,"action":"skipped_already_running","lock":"director-personal-deterministic"}'
+    exit 0
+  fi
+  trap 'ocw_guard_release_lock' EXIT
 fi
 
 [[ -x "${HELPER}" ]] || { echo '{"ok":false,"error":"helper_not_found"}'; exit 2; }

@@ -57,23 +57,120 @@ extract_email() {
   printf '%s' "${parsed}"
 }
 
+extract_display_name() {
+  local raw="$1"
+  local name=""
+  name="$(printf '%s' "${raw}" | sed -n 's/^\s*"\{0,1\}\([^"<][^<"]*\)"\{0,1\}\s*<.*$/\1/p' | sed 's/[[:space:]]*$//')"
+  if [[ -z "${name}" ]]; then
+    printf '%s' ""
+    return
+  fi
+  printf '%s' "${name}" | awk '{print $1}'
+}
+
+extract_domain() {
+  local raw="$1"
+  local email=""
+  email="$(extract_email "${raw}")"
+  if [[ "${email}" == *"@"* ]]; then
+    printf '%s' "${email##*@}" | tr '[:upper:]' '[:lower:]'
+  else
+    printf '%s' ""
+  fi
+}
+
+subject_hint() {
+  local raw="$1"
+  local cleaned=""
+  cleaned="$(printf '%s' "${raw}" \
+    | sed -E 's/^[[:space:]]*(Re:|RES:|Fw:|Fwd:)+[[:space:]]*//Ig' \
+    | tr '\n' ' ' \
+    | sed -E 's/[[:space:]]+/ /g; s/^[[:space:]]+//; s/[[:space:]]+$//')"
+  printf '%.90s' "${cleaned}"
+}
+
 # Rascunho alinhado ao rafael-dna: frases curtas, sem floreio, sem "obrigado pela mensagem" nem resumo de contexto.
 # Ref: workspace/docs/rafael-dna.md (Estilo de Comunicação), communication-patterns-from-samples.md
 build_draft_body() {
   local subject="$1"
   local snippet="$2"
-  # Corpo mínimo: confirmação e próximo passo. O thread já tem o contexto; não repetir snippet.
-  cat <<EOF
-Recebi. Retorno em breve.
+  local sender="${3:-}"
+  local greeting="Olá,"
+  local sender_name=""
+  local sender_domain=""
+  local topic=""
+  local combined=""
+  local next_step=""
+  local context_line=""
+  local internal_sender="false"
 
+  sender_name="$(extract_display_name "${sender}")"
+  sender_domain="$(extract_domain "${sender}")"
+  case "${sender_domain}" in
+    smartenvios.com|canper.com|canper.com.br)
+      internal_sender="true"
+      ;;
+  esac
+
+  if [[ -n "${sender_name}" ]]; then
+    if [[ "${internal_sender}" == "true" ]]; then
+      greeting="${sender_name},"
+    else
+      greeting="Olá ${sender_name},"
+    fi
+  fi
+
+  topic="$(subject_hint "${subject}")"
+  combined="$(printf '%s %s' "${subject}" "${snippet}" | tr '[:upper:]' '[:lower:]')"
+  if [[ -n "${topic}" ]]; then
+    if [[ "${internal_sender}" == "true" ]]; then
+      context_line="Sobre ${topic}."
+    else
+      context_line="Vi sua mensagem sobre ${topic}."
+    fi
+  elif [[ "${internal_sender}" != "true" ]]; then
+    context_line="Vi sua mensagem."
+  fi
+
+  if [[ "${combined}" =~ reuni|agenda|agendar|horario|horário|call|alinhamento|semana\ que\ vem ]]; then
+    next_step="Vou olhar agenda aqui e te mando a melhor janela."
+  elif [[ "${combined}" =~ erro|problema|falha|bug|incidente|suporte|ajuda ]]; then
+    next_step="Vou checar isso aqui e te retorno com causa e ação."
+  elif [[ "${combined}" =~ aprova|aprovar|aprovado|seguir|liberar|autoriz ]]; then
+    next_step="Vou validar isso aqui e te confirmo a decisão."
+  elif [[ "${combined}" =~ contrato|proposta|comercial|roadmap|integracao|integração|parceria ]]; then
+    next_step="Vou revisar isso aqui e te volto com viabilidade e próximo passo."
+  else
+    next_step="Vou checar isso aqui e te falo o próximo passo."
+  fi
+
+  if [[ -n "${context_line}" ]]; then
+    cat <<EOF
+${greeting}
+
+${context_line}
+${next_step}
+
+Abs,
 Rafael
 EOF
+  else
+    cat <<EOF
+${greeting}
+
+${next_step}
+
+Abs,
+Rafael
+EOF
+  fi
 }
 
 WORKFLOW_OUT="$("${WORKFLOW}" "${PROFILE}" "${LIMIT}")"
 TOTAL="$(echo "${WORKFLOW_OUT}" | jq -r '.total // 0')"
 TRIAGED="$(echo "${WORKFLOW_OUT}" | jq -r '.processed | length')"
 COUNT_DRAFT="$(echo "${WORKFLOW_OUT}" | jq -r '[.processed[] | select(.priority.action == "draft")] | length')"
+COUNT_IMPORTANT="$(echo "${WORKFLOW_OUT}" | jq -r '[.processed[] | select(.priority.action == "important")] | length')"
 COUNT_REVIEW="$(echo "${WORKFLOW_OUT}" | jq -r '[.processed[] | select(.priority.action == "review")] | length')"
 COUNT_LABEL="$(echo "${WORKFLOW_OUT}" | jq -r '[.processed[] | select(.priority.action == "label")] | length')"
 COUNT_IGNORE="$(echo "${WORKFLOW_OUT}" | jq -r '[.processed[] | select(.priority.action == "ignore")] | length')"
@@ -144,7 +241,7 @@ if [[ "${TOTAL}" != "0" ]]; then
         if [[ -z "${to_email}" ]]; then
           add_error "draft-create" "${msg_id}" "could not parse sender email"
         else
-          draft_body="$(build_draft_body "${subject}" "${snippet}")"
+          draft_body="$(build_draft_body "${subject}" "${snippet}" "${sender}")"
           if "${GMAIL}" "${PROFILE}" draft-create "${to_email}" "Re: ${subject}" "${draft_body}" "${thread_id}" >/dev/null 2>&1; then
             DRAFTS_CREATED=$((DRAFTS_CREATED + 1))
           else
@@ -165,6 +262,15 @@ if [[ "${TOTAL}" != "0" ]]; then
             APPLIED_AGUARDANDO=$((APPLIED_AGUARDANDO + 1))
           else
             add_error "label-apply" "${msg_id}" "${LABEL_PREFIX}-Aguardando"
+          fi
+        fi
+        ;;
+      important)
+        if [[ -n "${LABEL_IMPORTANT_ID}" ]]; then
+          if "${GMAIL}" "${PROFILE}" label-apply "${msg_id}" "${LABEL_IMPORTANT_ID}" >/dev/null 2>&1; then
+            APPLIED_IMPORTANT=$((APPLIED_IMPORTANT + 1))
+          else
+            add_error "label-apply" "${msg_id}" "${LABEL_PREFIX}-Importante"
           fi
         fi
         ;;
@@ -203,6 +309,7 @@ jq -n \
   --argjson totalUnread "${TOTAL}" \
   --argjson triaged "${TRIAGED}" \
   --argjson needsDraft "${COUNT_DRAFT}" \
+  --argjson needsImportant "${COUNT_IMPORTANT}" \
   --argjson needsReview "${COUNT_REVIEW}" \
   --argjson needsLabel "${COUNT_LABEL}" \
   --argjson shouldIgnore "${COUNT_IGNORE}" \
@@ -231,6 +338,7 @@ jq -n \
     triaged: $triaged,
     counts: {
       draft: $needsDraft,
+      important: $needsImportant,
       review: $needsReview,
       label: $needsLabel,
       ignore: $shouldIgnore

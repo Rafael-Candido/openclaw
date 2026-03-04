@@ -4,6 +4,18 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 RUNS_DIR="${ROOT_DIR}/../cron/runs"
+RUNTIME_GUARD="${SCRIPT_DIR}/runtime-guard.sh"
+
+if [[ -x "${RUNTIME_GUARD}" ]]; then
+  # shellcheck disable=SC1090
+  source "${RUNTIME_GUARD}"
+  if ! ocw_guard_acquire_lock "optimizer-deterministic-cycle" "${CRON_LOCK_STALE_SEC:-1200}"; then
+    echo '{"ok":true,"action":"skipped_already_running","lock":"optimizer-deterministic-cycle"}'
+    exit 0
+  fi
+  trap 'ocw_guard_release_lock' EXIT
+fi
+
 if [[ ! -d "${RUNS_DIR}" ]]; then
   RUNS_DIR="${HOME}/.openclaw/cron/runs"
 fi
