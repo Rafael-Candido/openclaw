@@ -65,7 +65,8 @@ Rafael
 **Critérios:**
 - Importante para o Rafael ver
 - Não pede resposta
-- Ex.: arquivo ou planilha compartilhada, envio informativo relevante
+- Ex.: arquivo ou planilha compartilhada, envio informativo relevante, notificação Jira operacional/comentário
+  - Ex.: `Artur Longo commented in ...`, `[JIRA] (...) Não teve atualização... comprovante de entrega`
 
 **Ação:**
 1. Aplicar label `Mail-{Pro|Person}-Importante`
@@ -78,6 +79,10 @@ Rafael
 - Não tem urgência clara
 - Pode ser notificação de baixo valor
 - Bulk/list mail sem keywords críticos
+- Campanhas comerciais/newsletter sem pedido operacional explícito
+  - Ex.: `Dia do Consumidor`, `ROI de IA`, `Weekly Kickoff`, `Novidades no SAP Business One`, `A IA está dominando o e-commerce brasileiro`, `Nippur 10 anos: uma nova etapa da nossa jornada`
+- Notificações que não pedem resposta
+  - Ex.: `requested access to ...`, `[JIRA] (SME-12345) ...`, `Pronto para Google AI Essentials?`
 
 **Ação:**
 1. Aplicar label `Mail-{Pro|Person}-BaixoValor`

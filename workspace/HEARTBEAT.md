@@ -19,6 +19,7 @@
 
 ## Checklist mínima por rodada (~30min)
 1. Verificar crons via `ocw_cron_list_json 12`.
-2. Se falhar, fallback com timeout curto.
-3. Se tudo estável e sem mudança relevante -> `HEARTBEAT_OK`.
-4. Só enviar `ALERTA` quando houver mudança real de estado.
+2. Verificar Discord do Einstein via `./scripts/discord-gateway-health.sh` (se `issue=true`, não pode responder `HEARTBEAT_OK`).
+3. Se `ocw_cron_list_json` falhar, usar fallback com timeout curto.
+4. Se tudo estável e sem mudança relevante -> `HEARTBEAT_OK`.
+5. Só enviar `ALERTA` quando houver mudança real de estado.

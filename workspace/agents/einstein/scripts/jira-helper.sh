@@ -6,6 +6,8 @@ AGENT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 STATE_DIR="${AGENT_DIR}/.pi"
 ASSIGNEE_CACHE="${STATE_DIR}/jira-assignees.json"
 FIELD_CACHE="${STATE_DIR}/jira-field-cache.json"
+LEARNING_CACHE="${STATE_DIR}/jira-classification-learning.json"
+LEARNING_EVENTS="${STATE_DIR}/jira-classification-events.jsonl"
 # Usar config dir do projeto; fallback para deploy padrão
 OPENCLAW_ROOT="${OPENCLAW_CONFIG_DIR:-$(cd "${SCRIPT_DIR}/../../../.." 2>/dev/null && pwd)}"
 [[ -z "$OPENCLAW_ROOT" ]] && OPENCLAW_ROOT="/var/www/openclaw"
@@ -42,8 +44,147 @@ print(text)
 PY
 }
 
+is_not_applicable_value() {
+  local normalized
+  normalized="$(normalize_alias "$1")"
+  case "$normalized" in
+    ""|"nao se aplica"|"n/a"|"none"|"null"|"sem classificacao"|"na"|"nenhum"|"nenhuma")
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
 urlencode() {
   jq -rn --arg v "$1" '$v|@uri'
+}
+
+build_adf_description() {
+  local raw="${1:-}"
+  python3 - "$raw" <<'PY'
+import json
+import re
+import sys
+
+raw = sys.argv[1] if len(sys.argv) > 1 else ""
+text = raw.replace("\r\n", "\n").replace("\r", "\n").replace("\\n", "\n")
+lines = text.split("\n")
+
+nodes = []
+bullet_items = []
+ordered_items = []
+
+def paragraph(text_value: str):
+    text_value = text_value.strip()
+    if not text_value:
+        return None
+    if re.fullmatch(r"https?://\S+", text_value):
+        return {
+            "type": "paragraph",
+            "content": [
+                {
+                    "type": "text",
+                    "text": text_value,
+                    "marks": [{"type": "link", "attrs": {"href": text_value}}],
+                }
+            ],
+        }
+    return {"type": "paragraph", "content": [{"type": "text", "text": text_value}]}
+
+def flush_bullets():
+    global bullet_items
+    if not bullet_items:
+        return
+    nodes.append(
+        {
+            "type": "bulletList",
+            "content": [
+                {
+                    "type": "listItem",
+                    "content": [
+                        {
+                            "type": "paragraph",
+                            "content": [{"type": "text", "text": item}],
+                        }
+                    ],
+                }
+                for item in bullet_items
+            ],
+        }
+    )
+    bullet_items = []
+
+def flush_ordered():
+    global ordered_items
+    if not ordered_items:
+        return
+    nodes.append(
+        {
+            "type": "orderedList",
+            "attrs": {"order": 1},
+            "content": [
+                {
+                    "type": "listItem",
+                    "content": [
+                        {
+                            "type": "paragraph",
+                            "content": [{"type": "text", "text": item}],
+                        }
+                    ],
+                }
+                for item in ordered_items
+            ],
+        }
+    )
+    ordered_items = []
+
+for line in lines:
+    line = line.rstrip()
+    if not line.strip():
+        flush_bullets()
+        flush_ordered()
+        continue
+    heading_match = re.match(r"^\s*#{1,6}\s+(.+?)\s*$", line)
+    if heading_match:
+        flush_bullets()
+        flush_ordered()
+        nodes.append(
+            {
+                "type": "heading",
+                "attrs": {"level": 2},
+                "content": [{"type": "text", "text": heading_match.group(1).strip()}],
+            }
+        )
+        continue
+
+    bullet_match = re.match(r"^\s*[-*]\s+(.+?)\s*$", line)
+    if bullet_match:
+        flush_ordered()
+        bullet_items.append(bullet_match.group(1).strip())
+        continue
+
+    ordered_match = re.match(r"^\s*\d+\.\s+(.+?)\s*$", line)
+    if ordered_match:
+        flush_bullets()
+        ordered_items.append(ordered_match.group(1).strip())
+        continue
+
+    flush_bullets()
+    flush_ordered()
+    node = paragraph(line)
+    if node:
+        nodes.append(node)
+
+flush_bullets()
+flush_ordered()
+
+if not nodes:
+    nodes = [{"type": "paragraph"}]
+
+print(json.dumps({"type": "doc", "version": 1, "content": nodes}, ensure_ascii=False))
+PY
 }
 
 is_file_stale() {
@@ -83,6 +224,33 @@ JSON
   }
 }
 JSON
+  fi
+
+  if [[ ! -f "$LEARNING_CACHE" ]]; then
+    cat > "$LEARNING_CACHE" <<'JSON'
+{
+  "updatedAt": null,
+  "minScore": 2,
+  "globalCounts": {
+    "product": {},
+    "integration": {},
+    "category": {},
+    "projectLabel": {},
+    "component": {}
+  },
+  "tokensByField": {
+    "product": {},
+    "integration": {},
+    "category": {},
+    "projectLabel": {},
+    "component": {}
+  }
+}
+JSON
+  fi
+
+  if [[ ! -f "$LEARNING_EVENTS" ]]; then
+    : > "$LEARNING_EVENTS"
   fi
 }
 
@@ -340,6 +508,267 @@ maybe_sync_field_ids() {
   fi
 }
 
+learn_field_value() {
+  local field="$1"
+  local value="$2"
+  local context="$3"
+  local now_ts context_excerpt value_norm
+
+  now_ts="$(now_iso)"
+  value_norm="$(normalize_alias "$value")"
+  if [[ -z "$value_norm" ]]; then
+    return 0
+  fi
+  if [[ "$value_norm" =~ ^(nao\ se\ aplica|n/a|none|sem\ classificacao|na|null|nenhum|nenhuma)$ ]]; then
+    return 0
+  fi
+
+  python3 - "$LEARNING_CACHE" "$field" "$value" "$context" "$now_ts" <<'PY' >/dev/null
+import json
+import os
+import re
+import sys
+import unicodedata
+from pathlib import Path
+
+cache_path = Path(sys.argv[1])
+field = (sys.argv[2] or "").strip()
+value = (sys.argv[3] or "").strip()
+context = sys.argv[4] or ""
+now_ts = sys.argv[5] or ""
+
+valid_fields = {"product", "integration", "category", "projectLabel", "component"}
+if field not in valid_fields:
+    raise SystemExit(0)
+
+def default_payload():
+    return {
+        "updatedAt": None,
+        "minScore": 2,
+        "globalCounts": {k: {} for k in valid_fields},
+        "tokensByField": {k: {} for k in valid_fields},
+    }
+
+def norm(text: str) -> str:
+    text = text.lower()
+    text = "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+def tokenize(text: str):
+    stopwords = {
+        "para","com","sem","por","das","dos","que","uma","uns","uma","de","da","do","no","na","nos","nas",
+        "em","ao","aos","e","ou","se","ser","sao","foi","tem","ter","como","mais","menos","muito","muita",
+        "muitas","muitos","sobre","entre","apos","antes","quando","onde","qual","quais","isso","isto","esse",
+        "essa","esse","essa","ele","ela","eles","elas","nosso","nossa","suas","seus","ja","ainda","pra",
+        "favor","cliente","solicitacao","atividade","tarefa","jira","criar","crie","issue","task","story",
+        "bug","melhoria","ajuste","demanda","status","todo","high","highest","medium","low","pendente",
+    }
+    text = norm(text)
+    text = re.sub(r"[^a-z0-9._-]+", " ", text)
+    parts = [p.strip("._-") for p in text.split()]
+    out = []
+    seen = set()
+    for token in parts:
+        if not token:
+            continue
+        if token in stopwords:
+            continue
+        if token.isdigit():
+            continue
+        if len(token) < 3 and "." not in token:
+            continue
+        if token in seen:
+            continue
+        seen.add(token)
+        out.append(token)
+    return out
+
+if not value:
+    raise SystemExit(0)
+
+value_norm = norm(value)
+if value_norm in {"nao se aplica", "n/a", "none", "sem classificacao", "na", "null", "nenhum", "nenhuma"}:
+    raise SystemExit(0)
+
+try:
+    data = json.loads(cache_path.read_text(encoding="utf-8"))
+except Exception:
+    data = default_payload()
+
+if not isinstance(data, dict):
+    data = default_payload()
+
+global_counts = data.setdefault("globalCounts", {})
+tokens_by_field = data.setdefault("tokensByField", {})
+field_globals = global_counts.setdefault(field, {})
+field_tokens = tokens_by_field.setdefault(field, {})
+
+field_globals[value] = int(field_globals.get(value, 0)) + 1
+
+for token in tokenize(context):
+    token_bucket = field_tokens.setdefault(token, {})
+    token_bucket[value] = int(token_bucket.get(value, 0)) + 1
+
+data["updatedAt"] = now_ts or data.get("updatedAt")
+
+tmp_path = cache_path.with_suffix(cache_path.suffix + ".tmp")
+tmp_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+os.replace(tmp_path, cache_path)
+PY
+
+  context_excerpt="${context:0:600}"
+  jq -cn \
+    --arg at "$now_ts" \
+    --arg field "$field" \
+    --arg value "$value" \
+    --arg context "$context_excerpt" \
+    '{at: $at, field: $field, value: $value, context: $context}' >> "$LEARNING_EVENTS"
+}
+
+predict_field_from_learning() {
+  local field="$1"
+  local context="$2"
+  [[ -f "$LEARNING_CACHE" ]] || return 0
+
+  python3 - "$LEARNING_CACHE" "$field" "$context" <<'PY'
+import json
+import re
+import sys
+import unicodedata
+from collections import defaultdict
+from pathlib import Path
+
+cache_path = Path(sys.argv[1])
+field = (sys.argv[2] or "").strip()
+context = sys.argv[3] or ""
+
+valid_fields = {"product", "integration", "category", "projectLabel", "component"}
+if field not in valid_fields:
+    print("")
+    raise SystemExit(0)
+
+def norm(text: str) -> str:
+    text = text.lower()
+    text = "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+def tokenize(text: str):
+    stopwords = {
+        "para","com","sem","por","das","dos","que","uma","uns","de","da","do","no","na","nos","nas",
+        "em","ao","aos","e","ou","se","ser","sao","foi","tem","ter","como","mais","menos","muito","muita",
+        "muitas","muitos","sobre","entre","apos","antes","quando","onde","qual","quais","isso","isto","esse",
+        "essa","ele","ela","eles","elas","nosso","nossa","suas","seus","ja","ainda","pra","favor","cliente",
+        "solicitacao","atividade","tarefa","jira","criar","crie","issue","task","story","bug","melhoria",
+        "ajuste","demanda","status","todo","high","highest","medium","low","pendente",
+    }
+    text = norm(text)
+    text = re.sub(r"[^a-z0-9._-]+", " ", text)
+    parts = [p.strip("._-") for p in text.split()]
+    seen = set()
+    out = []
+    for token in parts:
+        if not token:
+            continue
+        if token in stopwords:
+            continue
+        if token.isdigit():
+            continue
+        if len(token) < 3 and "." not in token:
+            continue
+        if token in seen:
+            continue
+        seen.add(token)
+        out.append(token)
+    return out
+
+try:
+    data = json.loads(cache_path.read_text(encoding="utf-8"))
+except Exception:
+    print("")
+    raise SystemExit(0)
+
+tokens_by_field = ((data or {}).get("tokensByField") or {}).get(field) or {}
+global_counts = ((data or {}).get("globalCounts") or {}).get(field) or {}
+min_score = int((data or {}).get("minScore", 2) or 2)
+
+scores = defaultdict(int)
+for token in tokenize(context):
+    raw = tokens_by_field.get(token) or {}
+    if isinstance(raw, dict):
+        for value, count in raw.items():
+            if not value:
+                continue
+            try:
+                n = int(count)
+            except Exception:
+                continue
+            if n > 0:
+                scores[value] += n
+
+if not scores:
+    if isinstance(global_counts, dict) and global_counts:
+        ordered = sorted(
+            ((k, int(v)) for k, v in global_counts.items() if k),
+            key=lambda item: item[1],
+            reverse=True,
+        )
+        if ordered and ordered[0][1] >= 6:
+            print(ordered[0][0])
+            raise SystemExit(0)
+    print("")
+    raise SystemExit(0)
+
+ordered_scores = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+top_value, top_score = ordered_scores[0]
+second_score = ordered_scores[1][1] if len(ordered_scores) > 1 else 0
+
+if top_score < min_score:
+    print("")
+elif top_score == second_score:
+    print("")
+else:
+    print(top_value)
+PY
+}
+
+extract_issue_field_value() {
+  local issue_json="$1"
+  local field_id="$2"
+  [[ -n "$field_id" ]] || { echo ""; return; }
+
+  jq -r --arg field "$field_id" '
+    .fields[$field] as $value
+    | if $value == null then ""
+      elif ($value | type) == "string" then $value
+      elif ($value | type) == "object" then ($value.value // $value.name // "")
+      elif ($value | type) == "array" then
+        if ($value | length) == 0 then ""
+        elif ($value[0] | type) == "string" then ($value | join(", "))
+        elif ($value[0] | type) == "object" then ($value[0].value // $value[0].name // "")
+        else ""
+        end
+      else ""
+      end
+  ' <<<"$issue_json"
+}
+
+learn_classification_set() {
+  local context="$1"
+  local product="$2"
+  local project_label="$3"
+  local integration="$4"
+  local category="$5"
+  local component="$6"
+
+  learn_field_value "product" "$product" "$context"
+  learn_field_value "projectLabel" "$project_label" "$context"
+  learn_field_value "integration" "$integration" "$context"
+  learn_field_value "category" "$category" "$context"
+  learn_field_value "component" "$component" "$context"
+}
+
 infer_issue_type() {
   local text
   text="$(normalize_alias "$1")"
@@ -365,6 +794,8 @@ infer_integration() {
   if [[ "$text" =~ correios ]]; then echo "Correios"; return; fi
   if [[ "$text" =~ jadlog ]]; then echo "Jadlog"; return; fi
   if [[ "$text" =~ loggi ]]; then echo "Loggi"; return; fi
+  if [[ "$text" =~ magalog ]]; then echo "Magalog"; return; fi
+  if [[ "$text" =~ total\ express|pedidos?\ da\ total|transportadora\ total ]]; then echo "Total Express"; return; fi
   if [[ "$text" =~ azul ]]; then echo "Azul Cargo"; return; fi
   if [[ "$text" =~ melhor\ envio ]]; then echo "Melhor Envio"; return; fi
   echo ""
@@ -374,9 +805,11 @@ infer_category() {
   local text
   text="$(normalize_alias "$1")"
 
+  if [[ "$text" =~ zendesk|ticket|chamado|atendimento ]]; then echo "Operacao"; return; fi
+  if [[ "$text" =~ loggi|correios|jadlog|magalog|dhl|total\ express|transportadora ]]; then echo "Tracking"; return; fi
   if [[ "$text" =~ tracking|rastreio|rastreamento ]]; then echo "Tracking"; return; fi
   if [[ "$text" =~ etiqueta|label ]]; then echo "Etiqueta"; return; fi
-  if [[ "$text" =~ cotacao|cotacao|frete|quote ]]; then echo "Cotacao"; return; fi
+  if [[ "$text" =~ cotacao|frete|quote ]]; then echo "Cotacao"; return; fi
   if [[ "$text" =~ integracao|integration|webhook ]]; then echo "Integracao"; return; fi
   if [[ "$text" =~ financeiro|fatura|cobranca ]]; then echo "Financeiro"; return; fi
   if [[ "$text" =~ login|acesso|senha ]]; then echo "Acesso"; return; fi
@@ -387,6 +820,8 @@ infer_product() {
   local text
   text="$(normalize_alias "$1")"
 
+  if [[ "$text" =~ zendesk|ticket|chamado|atendimento ]]; then echo "Atendimento"; return; fi
+  if [[ "$text" =~ loggi|correios|jadlog|magalog|dhl|total\ express|transportadora ]]; then echo "Tracking"; return; fi
   if [[ "$text" =~ magento|connector|integracao|integration|plataforma ]]; then echo "Integração Plataformas"; return; fi
   if [[ "$text" =~ tracking|rastreio|rastreamento ]]; then echo "Tracking"; return; fi
   if [[ "$text" =~ dashboard|painel ]]; then echo "Dashboard"; return; fi
@@ -397,6 +832,12 @@ infer_project_label() {
   local text
   text="$(normalize_alias "$1")"
 
+  if [[ "$text" =~ zendesk|ticket|chamado|atendimento ]]; then echo "Zendesk"; return; fi
+  if [[ "$text" =~ total\ express|pedidos?\ da\ total|transportadora\ total ]]; then echo "Connector Total Express"; return; fi
+  if [[ "$text" =~ correios ]]; then echo "Connector Correios"; return; fi
+  if [[ "$text" =~ loggi ]]; then echo "Connector loggi"; return; fi
+  if [[ "$text" =~ jadlog ]]; then echo "Connector Jadlog"; return; fi
+  if [[ "$text" =~ magalog ]]; then echo "Não se aplica"; return; fi
   if [[ "$text" =~ magento\ 2|magento2|magento ]]; then echo "Connector Magento 2"; return; fi
   if [[ "$text" =~ vtex ]]; then echo "Connector VTEX"; return; fi
   if [[ "$text" =~ shopify ]]; then echo "Connector Shopify"; return; fi
@@ -410,6 +851,8 @@ infer_component() {
   local text
   text="$(normalize_alias "$1")"
 
+  if [[ "$text" =~ zendesk|ticket|chamado|atendimento ]]; then echo "ms.atendimento"; return; fi
+  if [[ "$text" =~ loggi|correios|jadlog|magalog|dhl|total\ express|tracking|rastreio|rastreamento ]]; then echo "ms.tracking"; return; fi
   if [[ "$text" =~ magento|connector|integracao|integration ]]; then echo "ms.connectors"; return; fi
   if [[ "$text" =~ tracking|rastreio|rastreamento ]]; then echo "ms.tracking"; return; fi
   echo "Não se aplica"
@@ -455,15 +898,24 @@ candidate_values_for_kind() {
       ;;
     product)
       if [[ "$normalized" == "integracao plataformas" || "$normalized" == "integracao" || "$normalized" == "integration" || "$normalized" == "magento" || "$normalized" == "magento 2" ]]; then echo "Integração Plataformas"; fi
+      if [[ "$normalized" == "atendimento" || "$normalized" == "zendesk" ]]; then echo "Atendimento"; fi
       if [[ "$normalized" == "tracking" || "$normalized" == "rastreio" || "$normalized" == "rastreamento" ]]; then echo "Tracking"; fi
       if [[ "$normalized" == "nao se aplica" ]]; then echo "Não se aplica"; fi
       ;;
     projectLabel)
       if [[ "$normalized" == "magento 2" || "$normalized" == "magento" || "$normalized" == "connector magento 2" ]]; then echo "Connector Magento 2"; fi
+      if [[ "$normalized" == "zendesk" || "$normalized" == "atendimento" ]]; then echo "Zendesk"; fi
+      if [[ "$normalized" == "connector total express" || "$normalized" == "total express" || "$normalized" == "total" ]]; then echo "Connector Total Express"; fi
+      if [[ "$normalized" == "connector correios" || "$normalized" == "correios" ]]; then echo "Connector Correios"; fi
+      if [[ "$normalized" == "connector loggi" || "$normalized" == "loggi" ]]; then echo "Connector loggi"; fi
+      if [[ "$normalized" == "connector jadlog" || "$normalized" == "jadlog" ]]; then echo "Connector Jadlog"; fi
+      if [[ "$normalized" == "magalog" || "$normalized" == "connector magalog" ]]; then echo "Não se aplica"; fi
       if [[ "$normalized" == "nao se aplica" ]]; then echo "Não se aplica"; fi
       ;;
     component)
       if [[ "$normalized" == "ms connectors" || "$normalized" == "connectors" || "$normalized" == "connector" || "$normalized" == "magento" || "$normalized" == "magento 2" ]]; then echo "ms.connectors"; fi
+      if [[ "$normalized" == "ms atendimento" || "$normalized" == "atendimento" || "$normalized" == "zendesk" ]]; then echo "ms.atendimento"; fi
+      if [[ "$normalized" == "ms tracking" || "$normalized" == "tracking" || "$normalized" == "loggi" || "$normalized" == "correios" || "$normalized" == "jadlog" || "$normalized" == "magalog" || "$normalized" == "total express" ]]; then echo "ms.tracking"; fi
       if [[ "$normalized" == "nao se aplica" ]]; then echo "Não se aplica"; fi
       ;;
   esac
@@ -509,7 +961,16 @@ pick_allowed_value() {
   done
 
   if [[ -z "$chosen" && "$required" == "true" ]]; then
-    chosen="${allowed_values[0]}"
+    if [[ "$kind" == "projectLabel" ]]; then
+      for allowed in "${allowed_values[@]}"; do
+        allowed_l="$(normalize_alias "$allowed")"
+        if [[ "$allowed_l" == "nao se aplica" || "$allowed_l" == "nao aplicavel" || "$allowed_l" == "n/a" ]]; then
+          chosen="$allowed"
+          break
+        fi
+      done
+    fi
+    [[ -n "$chosen" ]] || chosen="${allowed_values[0]}"
   fi
 
   echo "$chosen"
@@ -589,6 +1050,126 @@ cmd_sync_fields() {
   jq -c '.' "$FIELD_CACHE"
 }
 
+cmd_learn_from_issue() {
+  local issue_key=""
+  local context=""
+  local fields_query="summary,description,status,components"
+  local issue_json summary_text description_text
+  local product_field integration_field category_field project_label_field
+  local learned_product learned_project_label learned_integration learned_category learned_component
+
+  load_env
+  init_state
+  maybe_sync_field_ids
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --issue-key)
+        issue_key="${2:-}"
+        shift 2
+        ;;
+      --context)
+        context="${2:-}"
+        shift 2
+        ;;
+      *)
+        die "Argumento desconhecido em learn-from-issue: $1"
+        ;;
+    esac
+  done
+
+  [[ -n "$issue_key" ]] || die "Parametro obrigatorio ausente: --issue-key"
+
+  product_field="$(jq -r '.fieldIds.product // empty' "$FIELD_CACHE")"
+  integration_field="$(jq -r '.fieldIds.integration // empty' "$FIELD_CACHE")"
+  category_field="$(jq -r '.fieldIds.category // empty' "$FIELD_CACHE")"
+  project_label_field="$(jq -r '.fieldIds.projectLabel // empty' "$FIELD_CACHE")"
+  if [[ -n "$product_field" ]]; then fields_query+=",${product_field}"; fi
+  if [[ -n "$integration_field" ]]; then fields_query+=",${integration_field}"; fi
+  if [[ -n "$category_field" ]]; then fields_query+=",${category_field}"; fi
+  if [[ -n "$project_label_field" ]]; then fields_query+=",${project_label_field}"; fi
+
+  issue_json="$(jira_get "rest/api/3/issue/${issue_key}?fields=$(urlencode "$fields_query")" || echo '{}')"
+
+  if [[ -z "$context" ]]; then
+    summary_text="$(jq -r '.fields.summary // ""' <<<"$issue_json")"
+    description_text="$(jq -r '[.. | objects | .text? // empty] | join(" ")' <<<"$issue_json")"
+    context="$summary_text"$'\n'"$description_text"
+  fi
+
+  learned_product="$(extract_issue_field_value "$issue_json" "$product_field")"
+  learned_project_label="$(extract_issue_field_value "$issue_json" "$project_label_field")"
+  learned_integration="$(extract_issue_field_value "$issue_json" "$integration_field")"
+  learned_category="$(extract_issue_field_value "$issue_json" "$category_field")"
+  learned_component="$(extract_issue_field_value "$issue_json" "components")"
+
+  learn_classification_set \
+    "$context" \
+    "$learned_product" \
+    "$learned_project_label" \
+    "$learned_integration" \
+    "$learned_category" \
+    "$learned_component"
+
+  jq -n \
+    --arg issueKey "$issue_key" \
+    --arg product "$learned_product" \
+    --arg projectLabel "$learned_project_label" \
+    --arg integration "$learned_integration" \
+    --arg category "$learned_category" \
+    --arg component "$learned_component" \
+    '{
+      ok: true,
+      issueKey: $issueKey,
+      learned: {
+        product: $product,
+        projectLabel: $projectLabel,
+        integration: $integration,
+        category: $category,
+        component: $component
+      }
+    }'
+}
+
+cmd_learning_report() {
+  init_state
+  jq '
+    def top_values($obj):
+      (($obj // {}) | to_entries | sort_by(-(.value // 0)) | .[:5]);
+    def top_tokens($obj):
+      (($obj // {})
+      | to_entries
+      | map({
+          token: .key,
+          total: ((.value // {}) | to_entries | map(.value // 0) | add // 0)
+        })
+      | sort_by(-(.total // 0))
+      | .[:10]);
+    {
+      updatedAt,
+      minScore,
+      topValues: {
+        product: top_values(.globalCounts.product),
+        projectLabel: top_values(.globalCounts.projectLabel),
+        integration: top_values(.globalCounts.integration),
+        category: top_values(.globalCounts.category),
+        component: top_values(.globalCounts.component)
+      },
+      topTokens: {
+        product: top_tokens(.tokensByField.product),
+        projectLabel: top_tokens(.tokensByField.projectLabel),
+        integration: top_tokens(.tokensByField.integration),
+        category: top_tokens(.tokensByField.category),
+        component: top_tokens(.tokensByField.component)
+      }
+    }
+  ' "$LEARNING_CACHE"
+}
+
+cmd_classify() {
+  cmd_create --dry-run "$@"
+}
+
 cmd_create() {
   local summary=""
   local description=""
@@ -616,8 +1197,12 @@ cmd_create() {
   local product_required integration_required category_required project_label_required component_required
   local product_allowed integration_allowed category_allowed project_label_allowed component_allowed
   local selected_product selected_integration selected_category selected_project_label selected_component
+  local learned_product learned_integration learned_category learned_project_label learned_component
   local description_text description_doc payload payload_component_json labels_json category_label
+  local issue_fields_query="status,components"
+  local issue_fields_json final_product final_project_label final_integration final_category final_component
   local links=()
+  local append_classification_in_desc="${JIRA_HELPER_APPEND_CLASSIFICATION_IN_DESCRIPTION:-false}"
 
   load_env
   init_state
@@ -709,11 +1294,58 @@ cmd_create() {
   fi
 
   issue_type="$(infer_issue_type "$reason $context_text")"
-  [[ -n "$product" ]] || product="$(infer_product "$context_text")"
-  [[ -n "$integration" ]] || integration="$(infer_integration "$context_text")"
-  [[ -n "$category" ]] || category="$(infer_category "$context_text")"
-  [[ -n "$project_label" ]] || project_label="$(infer_project_label "$context_text")"
-  [[ -n "$component" ]] || component="$(infer_component "$context_text $integration $project_label")"
+  local inferred_product inferred_integration inferred_category inferred_project_label inferred_component
+  inferred_product="$(infer_product "$context_text")"
+  inferred_integration="$(infer_integration "$context_text")"
+  inferred_category="$(infer_category "$context_text")"
+  inferred_project_label="$(infer_project_label "$context_text")"
+  inferred_component="$(infer_component "$context_text $inferred_integration $inferred_project_label")"
+
+  if [[ -z "$product" ]]; then
+    learned_product="$(predict_field_from_learning "product" "$context_text" || true)"
+    if ! is_not_applicable_value "$inferred_product"; then
+      product="$inferred_product"
+    elif [[ -n "$learned_product" ]]; then
+      product="$learned_product"
+    else
+      product="$inferred_product"
+    fi
+  fi
+  if [[ -z "$integration" ]]; then
+    learned_integration="$(predict_field_from_learning "integration" "$context_text" || true)"
+    if [[ -n "$inferred_integration" ]]; then
+      integration="$inferred_integration"
+    elif [[ -n "$learned_integration" ]]; then
+      integration="$learned_integration"
+    fi
+  fi
+  if [[ -z "$category" ]]; then
+    learned_category="$(predict_field_from_learning "category" "$context_text" || true)"
+    if ! is_not_applicable_value "$inferred_category"; then
+      category="$inferred_category"
+    elif [[ -n "$learned_category" ]]; then
+      category="$learned_category"
+    else
+      category="$inferred_category"
+    fi
+  fi
+  if [[ -z "$project_label" ]]; then
+    if ! is_not_applicable_value "$inferred_project_label"; then
+      project_label="$inferred_project_label"
+    else
+      project_label="$inferred_project_label"
+    fi
+  fi
+  if [[ -z "$component" ]]; then
+    learned_component="$(predict_field_from_learning "component" "$context_text" || true)"
+    if ! is_not_applicable_value "$inferred_component"; then
+      component="$inferred_component"
+    elif [[ -n "$learned_component" ]]; then
+      component="$learned_component"
+    else
+      component="$inferred_component"
+    fi
+  fi
 
   if [[ -n "$assignee_name" ]]; then
     if [[ "$dry_run" == "true" ]]; then
@@ -741,6 +1373,10 @@ cmd_create() {
   category_field="$(jq -r '.fieldIds.category // empty' "$FIELD_CACHE")"
   project_label_field="$(jq -r '.fieldIds.projectLabel // empty' "$FIELD_CACHE")"
   component_field="components"
+  if [[ -n "$product_field" ]]; then issue_fields_query+=",${product_field}"; fi
+  if [[ -n "$integration_field" ]]; then issue_fields_query+=",${integration_field}"; fi
+  if [[ -n "$category_field" ]]; then issue_fields_query+=",${category_field}"; fi
+  if [[ -n "$project_label_field" ]]; then issue_fields_query+=",${project_label_field}"; fi
 
   if [[ "$dry_run" != "true" ]]; then
     createmeta_json="$(jira_get "rest/api/3/issue/createmeta?projectKeys=$(urlencode "$project_key")&expand=projects.issuetypes.fields" || echo '{}')"
@@ -875,43 +1511,39 @@ cmd_create() {
 
   description_text=""
   if [[ -n "$description" ]]; then
-    description_text+="$description"$'\n\n'
+    description_text+="$description"
   fi
 
   if [[ "${#links[@]-0}" -gt 0 ]]; then
-    description_text+="Links relevantes:"$'\n'
+    if [[ -n "${description_text//[[:space:]]/}" ]]; then
+      description_text+=$'\n\n'
+    fi
     for link in "${links[@]-}"; do
       [[ -n "$link" ]] || continue
-      description_text+="- $link"$'\n'
+      description_text+="$link"$'\n'
     done
-    description_text+=$'\n'
   fi
 
-  description_text+="Classificacao aplicada automaticamente:"$'\n'
-  description_text+="- Motivo: ${reason}"$'\n'
-  description_text+="- Tipo Jira: ${issue_type}"$'\n'
-  description_text+="- Produto: ${product}"$'\n'
-  description_text+="- Projeto: ${project_label}"$'\n'
-  description_text+="- Integracao: ${integration:-N/A}"$'\n'
-  description_text+="- Categoria: ${category}"$'\n'
-  description_text+="- Prioridade: ${priority}"$'\n'
-  if [[ -n "$assignee_display_name" ]]; then
-    description_text+="- Assignee: ${assignee_display_name}"$'\n'
-  elif [[ -n "$assignee_name" ]]; then
-    description_text+="- Assignee solicitado: ${assignee_name}"$'\n'
+  if [[ "$append_classification_in_desc" == "true" || -z "${description//[[:space:]]/}" ]]; then
+    if [[ -n "${description_text//[[:space:]]/}" ]]; then
+      description_text+=$'\n\n'
+    fi
+    description_text+="## Classificacao aplicada automaticamente"$'\n'
+    description_text+="- Motivo: ${reason}"$'\n'
+    description_text+="- Tipo Jira: ${issue_type}"$'\n'
+    description_text+="- Produto: ${product}"$'\n'
+    description_text+="- Projeto: ${project_label}"$'\n'
+    description_text+="- Integracao: ${integration:-N/A}"$'\n'
+    description_text+="- Categoria: ${category}"$'\n'
+    description_text+="- Prioridade: ${priority}"$'\n'
+    if [[ -n "$assignee_display_name" ]]; then
+      description_text+="- Assignee: ${assignee_display_name}"$'\n'
+    elif [[ -n "$assignee_name" ]]; then
+      description_text+="- Assignee solicitado: ${assignee_name}"$'\n'
+    fi
   fi
 
-  description_doc="$(jq -n --arg txt "$description_text" '
-    {
-      type: "doc",
-      version: 1,
-      content: (
-        $txt
-        | split("\n")
-        | map(select(length > 0) | {type: "paragraph", content: [{type: "text", text: .}]})
-      )
-    }
-  ')"
+  description_doc="$(build_adf_description "$description_text")"
 
   payload="$(jq -n \
     --arg projectKey "$project_key" \
@@ -985,8 +1617,42 @@ cmd_create() {
   [[ -n "$issue_key" ]] || die "Falha ao criar issue no Jira: resposta sem key"
 
   transitioned_to_todo="$(ensure_todo_status "$issue_key")"
-  status_name="$(jira_get "rest/api/3/issue/${issue_key}?fields=status" | jq -r '.fields.status.name // empty')"
+  issue_fields_json="$(jira_get "rest/api/3/issue/${issue_key}?fields=$(urlencode "$issue_fields_query")" || echo '{}')"
+  status_name="$(jq -r '.fields.status.name // empty' <<<"$issue_fields_json")"
   issue_url="${JIRA_BASE_URL}browse/${issue_key}"
+
+  final_product="$product"
+  final_project_label="$project_label"
+  final_integration="$integration"
+  final_category="$category"
+  final_component="$component"
+
+  if [[ -n "$product_field" ]]; then
+    final_product="$(extract_issue_field_value "$issue_fields_json" "$product_field")"
+    [[ -n "$final_product" ]] || final_product="$product"
+  fi
+  if [[ -n "$project_label_field" ]]; then
+    final_project_label="$(extract_issue_field_value "$issue_fields_json" "$project_label_field")"
+    [[ -n "$final_project_label" ]] || final_project_label="$project_label"
+  fi
+  if [[ -n "$integration_field" ]]; then
+    final_integration="$(extract_issue_field_value "$issue_fields_json" "$integration_field")"
+    [[ -n "$final_integration" ]] || final_integration="$integration"
+  fi
+  if [[ -n "$category_field" ]]; then
+    final_category="$(extract_issue_field_value "$issue_fields_json" "$category_field")"
+    [[ -n "$final_category" ]] || final_category="$category"
+  fi
+  final_component="$(extract_issue_field_value "$issue_fields_json" "components")"
+  [[ -n "$final_component" ]] || final_component="$component"
+
+  learn_classification_set \
+    "$context_text" \
+    "$final_product" \
+    "$final_project_label" \
+    "$final_integration" \
+    "$final_category" \
+    "$final_component"
 
   jq -n \
     --arg issueKey "$issue_key" \
@@ -999,11 +1665,11 @@ cmd_create() {
     --arg priority "$priority" \
     --arg assigneeName "$assignee_display_name" \
     --arg assigneeAccountId "$assignee_account_id" \
-    --arg product "$product" \
-    --arg projectLabel "$project_label" \
-    --arg integration "${integration:-}" \
-    --arg category "$category" \
-    --arg component "$component" \
+    --arg product "$final_product" \
+    --arg projectLabel "$final_project_label" \
+    --arg integration "${final_integration:-}" \
+    --arg category "$final_category" \
+    --arg component "$final_component" \
     '{
       ok: true,
       issue: {
@@ -1034,6 +1700,9 @@ Uso:
   jira-helper.sh assignee-resolve "Nome"
   jira-helper.sh assignee-list
   jira-helper.sh sync-fields
+  jira-helper.sh learning-report
+  jira-helper.sh learn-from-issue --issue-key "SME-123" [--context "..."]
+  jira-helper.sh classify --summary "..." [opcoes]
   jira-helper.sh create --summary "..." [opcoes]
 
 Comando create:
@@ -1066,6 +1735,15 @@ main() {
       ;;
     sync-fields)
       cmd_sync_fields
+      ;;
+    learning-report)
+      cmd_learning_report
+      ;;
+    learn-from-issue)
+      cmd_learn_from_issue "$@"
+      ;;
+    classify)
+      cmd_classify "$@"
       ;;
     create)
       cmd_create "$@"

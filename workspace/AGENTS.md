@@ -243,6 +243,7 @@ Regras obrigatórias:
 
 - Nunca enviar texto longo com parágrafos repetidos.
 - Máximo de 8 linhas por envio.
+- Antes de responder `HEARTBEAT_OK`, validar `./scripts/discord-gateway-health.sh`; com `issue=true`, obrigatoriamente responder `ALERTA`.
 - Se não houve mudança relevante desde o último heartbeat: responder apenas `HEARTBEAT_OK`.
 - Nunca expor raciocínio interno no WhatsApp (ex.: "não consigo prosseguir", "vou aguardar o comando").
 - Se um comando falhar/timeout, responder apenas no formato: problema, impacto, ação executada, próximo passo (ETA).

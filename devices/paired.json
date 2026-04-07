@@ -14,7 +14,8 @@
       "operator.approvals",
       "operator.pairing",
       "operator.read",
-      "operator.write"
+      "operator.write",
+      "operator.talk.secrets"
     ],
     "tokens": {
       "operator": {
@@ -109,7 +110,9 @@
     "scopes": [
       "operator.admin",
       "operator.approvals",
-      "operator.pairing"
+      "operator.pairing",
+      "operator.read",
+      "operator.write"
     ],
     "tokens": {
       "operator": {
@@ -121,7 +124,7 @@
           "operator.pairing"
         ],
         "createdAtMs": 1771568886777,
-        "lastUsedAtMs": 1772646776436
+        "lastUsedAtMs": 1775552345609
       }
     },
     "createdAtMs": 1771568886777,

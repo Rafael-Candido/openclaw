@@ -24,6 +24,7 @@ OPERATIONAL_HEALTH_ISSUES=""
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 RUNTIME_GUARD="${PROJECT_ROOT}/workspace/scripts/runtime-guard.sh"
+PRUNE_LOGS_SCRIPT="${PROJECT_ROOT}/workspace/scripts/prune-generated-logs.sh"
 
 if [[ -f "${PROJECT_ROOT}/.env" ]]; then
   # shellcheck disable=SC1091
@@ -47,6 +48,7 @@ source "${PROJECT_ROOT}/workspace/scripts/openclaw-helper.sh" 2>/dev/null || tru
 OPENCLAW_CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}"
 NOTION_HELPER_SCRIPT="${PROJECT_ROOT}/workspace/scripts/notion-helper.sh"
 GMAIL_SCRIPT="${PROJECT_ROOT}/workspace/scripts/gmail/gmail.sh"
+DISCORD_GATEWAY_HEALTH_SCRIPT="${PROJECT_ROOT}/workspace/scripts/discord-gateway-health.sh"
 NOTION_PERSONAL_DB_ID="bfcbe7a7a3a745489e605e0762af12a9"
 BOTTLENECK_COOLDOWN_SEC="${GOV_BOTTLENECK_COOLDOWN_SEC:-21600}"
 RUNTIME_TMP_DIR="${OPENCLAW_CONFIG_DIR}/workspace/tmp"
@@ -120,6 +122,22 @@ GOV_GATEWAY_TOKEN_MISMATCH_THRESHOLD="${GOV_GATEWAY_TOKEN_MISMATCH_THRESHOLD:-8}
 GOV_GATEWAY_DISCORD_CLOSE_THRESHOLD="${GOV_GATEWAY_DISCORD_CLOSE_THRESHOLD:-8}"    # eventos por janela
 GOV_GATEWAY_RECOVERY_WINDOW_MIN="${GOV_GATEWAY_RECOVERY_WINDOW_MIN:-15}"           # janela de análise dos eventos
 GOV_GATEWAY_RECOVERY_COOLDOWN_SEC="${GOV_GATEWAY_RECOVERY_COOLDOWN_SEC:-900}"      # evita restart em loop (15min)
+GOV_DISCORD_HEALTH_WINDOW_MIN="${GOV_DISCORD_HEALTH_WINDOW_MIN:-20}"                # janela de análise do checker Discord
+GOV_DISCORD_LOGIN_STALE_MIN="${GOV_DISCORD_LOGIN_STALE_MIN:-15}"                    # login acima disso vira stale
+GOV_DISCORD_ERROR_SCORE_THRESHOLD="${GOV_DISCORD_ERROR_SCORE_THRESHOLD:-3}"          # score para considerar indisponibilidade Discord
+GOV_DISCORD_RECOVERY_COOLDOWN_SEC="${GOV_DISCORD_RECOVERY_COOLDOWN_SEC:-900}"       # evita restart em loop da recuperação Discord
+GOV_EINSTEIN_CHANNEL_IDS="${GOV_EINSTEIN_CHANNEL_IDS:-690598219587256420}"          # canais Discord monitorados (CSV) para autocura do Einstein
+GOV_EINSTEIN_BOT_ID="${GOV_EINSTEIN_BOT_ID:-1439351480514646087}"                   # user id do bot no Discord
+GOV_EINSTEIN_RECOVERY_WINDOW_MIN="${GOV_EINSTEIN_RECOVERY_WINDOW_MIN:-1440}"        # janela de análise de menções sem resposta (24h)
+GOV_EINSTEIN_RECOVERY_COOLDOWN_SEC="${GOV_EINSTEIN_RECOVERY_COOLDOWN_SEC:-900}"     # evita reprocessamento em loop da mesma menção
+GOV_EINSTEIN_PENDING_GRACE_SEC="${GOV_EINSTEIN_PENDING_GRACE_SEC:-120}"             # tolerância antes de acionar autocura
+GOV_EINSTEIN_HISTORY_LIMIT="${GOV_EINSTEIN_HISTORY_LIMIT:-150}"                      # limite de mensagens lidas por canal
+GOV_EINSTEIN_RECOVERY_TIMEOUT_SEC="${GOV_EINSTEIN_RECOVERY_TIMEOUT_SEC:-240}"       # timeout do agente Einstein na autocura
+GOV_EINSTEIN_BACKUP_AGENT_ID="${GOV_EINSTEIN_BACKUP_AGENT_ID:-einstein-backup}"      # agente de contingência para redundância
+GOV_EINSTEIN_RECOVERY_RETRY_DELAY_SEC="${GOV_EINSTEIN_RECOVERY_RETRY_DELAY_SEC:-3}"  # pausa curta entre tentativa primária e fallback
+GOV_EINSTEIN_RECOVERY_THINKING="${GOV_EINSTEIN_RECOVERY_THINKING:-minimal}"          # thinking level nas tentativas de autocura
+GOV_EINSTEIN_FAILURE_NOTIFY="${GOV_EINSTEIN_FAILURE_NOTIFY:-true}"                    # envia aviso no canal quando ambas tentativas falham
+GOV_EINSTEIN_RECOVERY_MAX_PER_ROUND="${GOV_EINSTEIN_RECOVERY_MAX_PER_ROUND:-12}"    # limite de menções reprocessadas por rodada
 GATEWAY_RESTART_REQUESTED="false"
 WOKEN_CRONS="|"
 WAKES_USED=0
@@ -127,6 +145,8 @@ WAKES_DROPPED=0
 GOV_WAKE_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-wake-state.json"
 GOV_MAIL_CHAIN_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-mail-chain-state.json"
 GOV_GATEWAY_RECOVERY_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-gateway-recovery-state.json"
+GOV_DISCORD_RECOVERY_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-discord-recovery-state.json"
+GOV_EINSTEIN_RECOVERY_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-einstein-recovery-state.json"
 PRESIDENT_FORCE_FILE="/tmp/openclaw-president-force-governance.json"
 CRON_SAFE_RUNNER="${PROJECT_ROOT}/workspace/scripts/cron-safe-run.sh"
 
@@ -137,6 +157,10 @@ export OCW_MAX_DELAY_SEC="${OCW_MAX_DELAY_SEC:-4}"
 
 mkdir -p "${RUNTIME_TMP_DIR}" 2>/dev/null || true
 : > "${BOTTLENECK_EVENTS_FILE}"
+
+if [[ -x "${PRUNE_LOGS_SCRIPT}" ]]; then
+  "${PRUNE_LOGS_SCRIPT}" "${OPENCLAW_LOG_RETENTION_DAYS:-2}" >/dev/null 2>&1 || true
+fi
 
 cleanup_governance_tmp() {
   rm -f "${BOTTLENECK_EVENTS_FILE}" "${BOTTLENECK_SELECTION_FILE}" "${BOTTLENECK_BODY_FILE}" "${NOTION_RECOVERY_CANDIDATES_FILE:-}" 2>/dev/null || true
@@ -3351,6 +3375,102 @@ PY
   fi
 }
 
+recover_on_discord_gateway_outage() {
+  local health_script="${DISCORD_GATEWAY_HEALTH_SCRIPT}"
+  if [[ ! -x "${health_script}" ]]; then
+    report "⚠️ Discord gateway health: checker ausente (${health_script})"
+    register_bottleneck "discord-health-script-missing" "high" "Checker de saúde Discord ausente" "Governança não encontrou ${health_script} para validar disponibilidade do bot no Discord." "Restaurar workspace/scripts/discord-gateway-health.sh e manter esse check na rodada."
+    return 0
+  fi
+
+  local health_json
+  health_json="$(
+    DISCORD_HEALTH_WINDOW_MIN="${GOV_DISCORD_HEALTH_WINDOW_MIN}" \
+    DISCORD_LOGIN_STALE_MIN="${GOV_DISCORD_LOGIN_STALE_MIN}" \
+    DISCORD_ERROR_SCORE_THRESHOLD="${GOV_DISCORD_ERROR_SCORE_THRESHOLD}" \
+      "${health_script}" 2>/dev/null || true
+  )"
+
+  if ! echo "${health_json}" | jq -e . >/dev/null 2>&1; then
+    report "⚠️ Discord gateway health: checker retornou saída inválida"
+    register_bottleneck "discord-health-check-invalid" "medium" "Saída inválida do checker Discord" "Governança recebeu payload inválido ao executar ${health_script}." "Revisar parser/logs do checker e garantir JSON válido em toda execução."
+    return 0
+  fi
+
+  local issue reason score dns_errors reconnect_errors preclose_errors login_age
+  issue="$(echo "${health_json}" | jq -r '.issue // false' 2>/dev/null || echo false)"
+  reason="$(echo "${health_json}" | jq -r '.reason // "unknown"' 2>/dev/null || echo unknown)"
+  score="$(echo "${health_json}" | jq -r '.errorScore // 0' 2>/dev/null || echo 0)"
+  dns_errors="$(echo "${health_json}" | jq -r '.dnsErrors // 0' 2>/dev/null || echo 0)"
+  reconnect_errors="$(echo "${health_json}" | jq -r '.maxReconnectErrors // 0' 2>/dev/null || echo 0)"
+  preclose_errors="$(echo "${health_json}" | jq -r '.websocketPrecloseErrors // 0' 2>/dev/null || echo 0)"
+  login_age="$(echo "${health_json}" | jq -r '.lastDiscordLoginAgeMin // -1' 2>/dev/null || echo -1)"
+
+  [[ "${score}" =~ ^-?[0-9]+$ ]] || score=0
+  [[ "${dns_errors}" =~ ^-?[0-9]+$ ]] || dns_errors=0
+  [[ "${reconnect_errors}" =~ ^-?[0-9]+$ ]] || reconnect_errors=0
+  [[ "${preclose_errors}" =~ ^-?[0-9]+$ ]] || preclose_errors=0
+  [[ "${login_age}" =~ ^-?[0-9]+$ ]] || login_age=-1
+
+  if [[ "${issue}" != "true" ]]; then
+    report "✅ Discord gateway: estável (score=${score}, dns=${dns_errors}, reconnect=${reconnect_errors}, ws_preclose=${preclose_errors})"
+    return 0
+  fi
+
+  report "⚠️ Discord gateway: instável (reason=${reason}, score=${score}, dns=${dns_errors}, reconnect=${reconnect_errors}, ws_preclose=${preclose_errors}, login_age=${login_age}min)"
+  register_bottleneck "discord-gateway-instability" "high" "Bot Discord com sinais de indisponibilidade" "Checker detectou reason=${reason}, score=${score}, dns=${dns_errors}, reconnect=${reconnect_errors}, ws_preclose=${preclose_errors}, last_login_age_min=${login_age}." "Aplicar restart automático com cooldown e revisar resolução DNS/rede do host para gateway.discord.gg."
+
+  local decision
+  decision="$(python3 - "${GOV_DISCORD_RECOVERY_STATE_FILE}" "${GOV_DISCORD_RECOVERY_COOLDOWN_SEC}" <<'PY'
+import json
+import sys
+import time
+from pathlib import Path
+
+state_path = Path(sys.argv[1])
+cooldown = int(sys.argv[2])
+now = int(time.time())
+
+state = {}
+if state_path.exists():
+    try:
+        raw = json.loads(state_path.read_text(encoding="utf-8"))
+        if isinstance(raw, dict):
+            state = raw
+    except Exception:
+        state = {}
+
+last = int(state.get("lastDiscordRecoveryTs") or 0)
+elapsed = (now - last) if last > 0 else (cooldown + 1)
+if elapsed >= cooldown:
+    state["lastDiscordRecoveryTs"] = now
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    print("allow|0")
+else:
+    print(f"deny|{max(1, cooldown - elapsed)}")
+PY
+)"
+
+  local action wait_sec
+  action="${decision%%|*}"
+  wait_sec="${decision##*|}"
+  [[ "${wait_sec}" =~ ^[0-9]+$ ]] || wait_sec=0
+
+  if [[ "${action}" != "allow" ]]; then
+    report "⏸️ Discord autocura em cooldown: aguardar=${wait_sec}s (reason=${reason})"
+    register_bottleneck "discord-gateway-instability-cooldown" "medium" "Autocura do Discord em cooldown" "Instabilidade Discord detectada, mas restart automático ainda em cooldown (${wait_sec}s)." "Confirmar se o bot voltou a ficar online no Discord e revisar origem da falha de DNS/rede."
+    return 0
+  fi
+
+  if ocw_gateway_restart >/dev/null 2>&1; then
+    report "✅ Discord autocura: gateway reiniciado com sucesso após instabilidade"
+  else
+    report "❌ Discord autocura: falha ao reiniciar gateway"
+    register_bottleneck "discord-gateway-restart-failed" "critical" "Falha na autocura após indisponibilidade Discord" "Governança detectou instabilidade do bot Discord e falhou ao reiniciar o gateway." "Executar recovery manual imediato (restart do serviço + validação de DNS/rede) e abrir card de correção estrutural."
+  fi
+}
+
 recover_on_gateway_token_mismatch() {
   local log_file="${OPENCLAW_CONFIG_DIR}/logs/gateway.log"
   [[ -f "$log_file" ]] || {
@@ -3420,7 +3540,9 @@ PY
   [[ "${mismatch_count:-}" =~ ^[0-9]+$ ]] || mismatch_count=0
   [[ "${close_count:-}" =~ ^[0-9]+$ ]] || close_count=0
 
-  if (( mismatch_count < GOV_GATEWAY_TOKEN_MISMATCH_THRESHOLD && close_count < GOV_GATEWAY_DISCORD_CLOSE_THRESHOLD )); then
+  # Evita restart agressivo por 1005/1006 transitório do Discord.
+  # Restart aqui só quando houver sinal forte de token_mismatch real.
+  if (( mismatch_count < GOV_GATEWAY_TOKEN_MISMATCH_THRESHOLD )); then
     report "✅ Gateway sessão/Discord: estável (token_mismatch=${mismatch_count}, ws_close=${close_count})"
     return 0
   fi
@@ -3465,14 +3587,517 @@ PY
     return 0
   fi
 
-  report "⚠️ Gateway instável por sessão/Discord: token_mismatch=${mismatch_count}, ws_close=${close_count} (janela=${GOV_GATEWAY_RECOVERY_WINDOW_MIN}m)"
-  register_bottleneck "gateway-token-mismatch" "high" "Instabilidade por token_mismatch / reconexão Discord" "Detectados ${mismatch_count} token_mismatch e ${close_count} websocket close (1005/1006) na janela recente." "Reiniciar gateway automaticamente com cooldown e orientar fechamento de clientes/sessões antigas com token desatualizado."
+  report "⚠️ Gateway instável por token_mismatch: token_mismatch=${mismatch_count}, ws_close=${close_count} (janela=${GOV_GATEWAY_RECOVERY_WINDOW_MIN}m)"
+  register_bottleneck "gateway-token-mismatch" "high" "Instabilidade por token_mismatch" "Detectados ${mismatch_count} token_mismatch (ws_close=${close_count}) na janela recente." "Reiniciar gateway automaticamente com cooldown e orientar fechamento de clientes/sessões antigas com token desatualizado."
 
   if ocw_gateway_restart >/dev/null 2>&1; then
     report "✅ Gateway recuperado automaticamente após token_mismatch/Discord loop"
   else
     report "❌ Falha no restart automático após token_mismatch/Discord loop"
     register_bottleneck "gateway-token-mismatch-restart-failed" "critical" "Falha na autocura de gateway após token_mismatch" "Governança detectou padrão de token_mismatch/ws_close e falhou ao reiniciar gateway." "Executar recovery manual (restart + limpeza de sessões clientes) e revisar credenciais/token do canal Discord."
+  fi
+}
+
+recover_einstein_unanswered_mentions() {
+  local channels_raw="${GOV_EINSTEIN_CHANNEL_IDS:-}"
+  local bot_id="${GOV_EINSTEIN_BOT_ID:-}"
+  local history_limit="${GOV_EINSTEIN_HISTORY_LIMIT:-150}"
+  local window_min="${GOV_EINSTEIN_RECOVERY_WINDOW_MIN:-1440}"
+  local pending_grace_sec="${GOV_EINSTEIN_PENDING_GRACE_SEC:-120}"
+  local recovery_timeout_sec="${GOV_EINSTEIN_RECOVERY_TIMEOUT_SEC:-240}"
+  local cooldown_sec="${GOV_EINSTEIN_RECOVERY_COOLDOWN_SEC:-900}"
+  local backup_agent_id="${GOV_EINSTEIN_BACKUP_AGENT_ID:-einstein-backup}"
+  local retry_delay_sec="${GOV_EINSTEIN_RECOVERY_RETRY_DELAY_SEC:-3}"
+  local thinking_level="${GOV_EINSTEIN_RECOVERY_THINKING:-minimal}"
+  local failure_notify="${GOV_EINSTEIN_FAILURE_NOTIFY:-true}"
+  local max_per_round="${GOV_EINSTEIN_RECOVERY_MAX_PER_ROUND:-12}"
+  local max_pending_per_channel="${GOV_EINSTEIN_RECOVERY_MAX_PENDING_PER_CHANNEL:-1}"
+
+  if [[ -z "${channels_raw//[[:space:]]/}" ]] || [[ -z "${bot_id//[[:space:]]/}" ]]; then
+    report "ℹ️ Einstein autocura: configuração de canais/bot ausente"
+    return 0
+  fi
+
+  local -a channels
+  IFS=',' read -r -a channels <<<"${channels_raw}"
+
+  local pending_found=0
+  local recovered=0
+  local recovered_with_backup=0
+  local failed_mentions=0
+  local failure_notices=0
+  local skipped_grace=0
+  local skipped_cooldown=0
+  local attempts=0
+  local round_limit_hit=0
+  local channel_id
+
+  [[ "${retry_delay_sec}" =~ ^[0-9]+$ ]] || retry_delay_sec=3
+  [[ "${max_per_round}" =~ ^[0-9]+$ ]] || max_per_round=12
+  (( max_per_round > 0 )) || max_per_round=12
+  [[ "${max_pending_per_channel}" =~ ^[0-9]+$ ]] || max_pending_per_channel=1
+  (( max_pending_per_channel > 0 )) || max_pending_per_channel=1
+
+  for channel_id in "${channels[@]}"; do
+    if (( round_limit_hit == 1 )); then
+      break
+    fi
+
+    channel_id="$(echo "${channel_id}" | tr -d '[:space:]')"
+    [[ -z "${channel_id}" ]] && continue
+
+    local read_json
+    read_json="$(openclaw message read --channel discord --target "${channel_id}" --limit "${history_limit}" --json 2>/dev/null || echo '{}')"
+
+    local analysis_json
+    analysis_json="$(
+      python3 - "${bot_id}" "${window_min}" "${max_pending_per_channel}" <<'PY' <<<"${read_json}" 2>/dev/null || echo '{"pendingMentions":[]}'
+import json
+import re
+import sys
+import time
+
+bot_id = str(sys.argv[1]).strip()
+window_min = max(1, int(float(sys.argv[2])))
+max_pending = max(1, int(float(sys.argv[3])))
+window_ms = window_min * 60 * 1000
+now_ms = int(time.time() * 1000)
+
+try:
+    data = json.loads(sys.stdin.read() or "{}")
+except Exception:
+    data = {}
+
+payload = data.get("payload") if isinstance(data, dict) else {}
+messages = payload.get("messages") if isinstance(payload, dict) else []
+if not isinstance(messages, list):
+    messages = []
+
+def msg_ts(msg):
+    try:
+        return int(msg.get("timestampMs") or 0)
+    except Exception:
+        return 0
+
+def is_from_bot(msg):
+    author = msg.get("author") or {}
+    author_id = str(author.get("id") or "")
+    return (author_id == bot_id) or bool(author.get("bot"))
+
+def content_text(msg):
+    value = msg.get("content")
+    return value if isinstance(value, str) else ""
+
+def has_bot_mention(msg):
+    mentions = msg.get("mentions") or []
+    if not isinstance(mentions, list):
+        mentions = []
+    for mention in mentions:
+        if isinstance(mention, dict) and str(mention.get("id") or "") == bot_id:
+            return True
+    content = content_text(msg)
+    if content:
+        if f"<@{bot_id}>" in content or f"<@!{bot_id}>" in content:
+            return True
+    return False
+
+def normalize_text(text):
+    text = (text or "").strip()
+    text = re.sub(r"<@!?[0-9]+>", " ", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+request_re = re.compile(
+    r"\?|(?:\b(?:pode|poderia|consegue|conseguiria|ajuda|favor|por favor|please|"
+    r"crie|criar|abra|abrir|gere|gerar|registre|registrar|verifique|verifica|"
+    r"analise|analisa|analisar|cotar|cota|consulta|consulte|responda|responde|"
+    r"preciso|precisamos)\b)",
+    re.I,
+)
+low_value_re = re.compile(
+    r"^(oi|ol[áa]|bom dia|boa tarde|boa noite|kk+|rs+|haha+|valeu|obrigad[oa])[\s!,.?]*$",
+    re.I,
+)
+handoff_re = re.compile(
+    r"\b(vou\s+(verificar|ver|analisar|retornar|retorno|cuidar)|deixa\s+comigo|"
+    r"j[aá]\s+(criei|abri|acionei|resolvi)|acionamos|encaminhei|retorno\s+at[eé]|"
+    r"nova\s+tentativa)\b",
+    re.I,
+)
+tracking_re = re.compile(r"\b(?:SM|BR|PK|TRK)[A-Z0-9]{8,24}\b", re.I)
+uuid_re = re.compile(r"\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b", re.I)
+order_ref_re = re.compile(r"\b(?:pedido|order|freight[_\s-]?order)\s*[:#-]?\s*([A-Z0-9-]{5,36})\b", re.I)
+
+filtered = []
+for msg in messages:
+    if not isinstance(msg, dict):
+        continue
+    ts = msg_ts(msg)
+    if ts <= 0:
+        continue
+    if (now_ms - ts) <= window_ms:
+        filtered.append(msg)
+
+filtered.sort(key=msg_ts)
+
+latest_bot_ts = 0
+for msg in filtered:
+    ts = msg_ts(msg)
+    if is_from_bot(msg) and ts > latest_bot_ts:
+        latest_bot_ts = ts
+
+def author_label(msg):
+    author = msg.get("author") or {}
+    return str(author.get("global_name") or author.get("username") or "usuario")
+
+def find_recent_entities(idx):
+    tracking = ""
+    order_ref = ""
+    for prev in reversed(filtered[:idx]):
+        if is_from_bot(prev):
+            continue
+        txt = normalize_text(content_text(prev))
+        if not txt:
+            continue
+        if not tracking:
+            m = tracking_re.search(txt)
+            if m:
+                tracking = m.group(0).upper()
+        if not order_ref:
+            m_uuid = uuid_re.search(txt)
+            if m_uuid:
+                order_ref = m_uuid.group(0)
+            else:
+                m_ref = order_ref_re.search(txt)
+                if m_ref:
+                    order_ref = m_ref.group(1)
+        if tracking and order_ref:
+            break
+    return tracking, order_ref
+
+def build_recent_context(idx, max_msgs=8, max_chars=900):
+    start = max(0, idx - max_msgs)
+    lines = []
+    total = 0
+    for prev in filtered[start:idx]:
+        if is_from_bot(prev):
+            continue
+        txt = normalize_text(content_text(prev))
+        if not txt:
+            continue
+        line = f"- {author_label(prev)}: {txt}"
+        if total + len(line) + 1 > max_chars:
+            if not lines:
+                lines.append(line[:max_chars])
+            break
+        lines.append(line)
+        total += len(line) + 1
+    return "\n".join(lines)
+
+pending_mentions = []
+for idx, msg in enumerate(filtered):
+    ts = msg_ts(msg)
+    if ts <= int(latest_bot_ts or 0):
+        continue
+    if is_from_bot(msg):
+        continue
+    if not has_bot_mention(msg):
+        continue
+
+    content = content_text(msg)
+    norm = normalize_text(content)
+    if not norm:
+        continue
+    if low_value_re.search(norm):
+        continue
+    if not request_re.search(norm):
+        # Autocura só para pedido explícito; evita atravessar conversa em andamento.
+        continue
+
+    stale = False
+    nonbot_after = 0
+    for nxt in filtered[idx + 1 :]:
+        nts = msg_ts(nxt)
+        if nts <= ts:
+            continue
+        if is_from_bot(nxt):
+            continue
+        if has_bot_mention(nxt):
+            # Menção mais nova substitui a anterior.
+            stale = True
+            break
+        nonbot_after += 1
+        nxt_norm = normalize_text(content_text(nxt))
+        if handoff_re.search(nxt_norm):
+            # Outro humano já assumiu o contexto.
+            stale = True
+            break
+        if nonbot_after >= 3:
+            # Conversa humana seguiu sem cobrar o Einstein novamente.
+            stale = True
+            break
+    if stale:
+        continue
+
+    author = msg.get("author") or {}
+    author_id = str(author.get("id") or "")
+    inferred_tracking, inferred_order_ref = find_recent_entities(idx)
+    recent_context = build_recent_context(idx)
+    pending_mentions.append({
+        "messageId": str(msg.get("id") or ""),
+        "timestampMs": int(ts),
+        "pendingAgeSec": int(max(0, (now_ms - ts) // 1000)),
+        "content": content if isinstance(content, str) else "",
+        "authorId": author_id,
+        "authorName": str(author.get("global_name") or author.get("username") or ""),
+        "inferredTracking": inferred_tracking,
+        "inferredOrderRef": inferred_order_ref,
+        "context": recent_context,
+    })
+
+if pending_mentions:
+    pending_mentions.sort(key=lambda item: int(item.get("timestampMs") or 0))
+    pending_mentions = pending_mentions[-max_pending:]
+
+print(json.dumps({
+    "pendingMentions": pending_mentions,
+    "pendingCount": int(len(pending_mentions)),
+    "latestBotTs": int(latest_bot_ts),
+    "windowMin": int(window_min),
+}, ensure_ascii=False))
+PY
+    )"
+
+    local pending_count
+    pending_count="$(echo "${analysis_json}" | jq -r '.pendingCount // 0' 2>/dev/null || echo 0)"
+    [[ "${pending_count}" =~ ^[0-9]+$ ]] || pending_count=0
+    (( pending_count > 0 )) || continue
+
+    pending_found=$((pending_found + pending_count))
+
+    local pending_item_b64 pending_item
+    while IFS= read -r pending_item_b64; do
+      [[ -n "${pending_item_b64}" ]] || continue
+
+      if (( attempts >= max_per_round )); then
+        round_limit_hit=1
+        break
+      fi
+
+      pending_item="$(python3 - "${pending_item_b64}" <<'PY'
+import base64
+import sys
+
+try:
+    print(base64.b64decode(sys.argv[1]).decode("utf-8"))
+except Exception:
+    print("{}")
+PY
+)"
+
+      local pending_age_sec pending_message_id pending_content pending_author_id pending_author_name
+      local pending_context pending_tracking pending_order_ref recovery_input
+      pending_age_sec="$(echo "${pending_item}" | jq -r '.pendingAgeSec // 0' 2>/dev/null || echo 0)"
+      pending_message_id="$(echo "${pending_item}" | jq -r '.messageId // ""' 2>/dev/null || echo "")"
+      pending_content="$(echo "${pending_item}" | jq -r '.content // ""' 2>/dev/null || echo "")"
+      pending_author_id="$(echo "${pending_item}" | jq -r '.authorId // ""' 2>/dev/null || echo "")"
+      pending_author_name="$(echo "${pending_item}" | jq -r '.authorName // ""' 2>/dev/null || echo "")"
+      pending_context="$(echo "${pending_item}" | jq -r '.context // ""' 2>/dev/null || echo "")"
+      pending_tracking="$(echo "${pending_item}" | jq -r '.inferredTracking // ""' 2>/dev/null || echo "")"
+      pending_order_ref="$(echo "${pending_item}" | jq -r '.inferredOrderRef // ""' 2>/dev/null || echo "")"
+      [[ "${pending_age_sec}" =~ ^[0-9]+$ ]] || pending_age_sec=0
+
+      if (( pending_age_sec < pending_grace_sec )); then
+        skipped_grace=$((skipped_grace + 1))
+        report "⏳ Einstein autocura: menção recente aguardando janela de graça (${pending_age_sec}s/${pending_grace_sec}s) no canal ${channel_id} (msg=${pending_message_id})"
+        continue
+      fi
+
+      if [[ -z "${pending_content//[[:space:]]/}" ]]; then
+        report "⚠️ Einstein autocura: menção pendente sem conteúdo útil no canal ${channel_id} (msg=${pending_message_id})"
+        register_bottleneck "einstein-empty-pending-content" "medium" "Menção pendente do Einstein sem conteúdo utilizável" "Governança detectou menção pendente ao Einstein sem texto para reprocessamento (canal=${channel_id}, msg=${pending_message_id})." "Padronizar solicitação com texto explícito no Discord para permitir autocura determinística."
+        continue
+      fi
+
+      recovery_input="${pending_content}"
+      if [[ -n "${pending_tracking//[[:space:]]/}" || -n "${pending_order_ref//[[:space:]]/}" || -n "${pending_context//[[:space:]]/}" ]]; then
+        recovery_input+=$'\n\nContexto recente do canal (evitar pedir novamente dados já informados):'
+        if [[ -n "${pending_tracking//[[:space:]]/}" ]]; then
+          recovery_input+=$'\n'"- Tracking já informado: ${pending_tracking}"
+        fi
+        if [[ -n "${pending_order_ref//[[:space:]]/}" ]]; then
+          recovery_input+=$'\n'"- Referência de pedido já informada: ${pending_order_ref}"
+        fi
+        if [[ -n "${pending_context//[[:space:]]/}" ]]; then
+          recovery_input+=$'\n'"${pending_context}"
+        fi
+        recovery_input+=$'\n\n'"Instrução: se o dado já estiver no contexto, não pedir novamente; responda com status objetivo e próximo passo."
+      fi
+      recovery_input="${recovery_input:0:3200}"
+
+      local decision
+      decision="$(
+        python3 - "${GOV_EINSTEIN_RECOVERY_STATE_FILE}" "${cooldown_sec}" "${channel_id}" "${pending_message_id}" <<'PY'
+import json
+import sys
+import time
+from pathlib import Path
+
+state_path = Path(sys.argv[1])
+cooldown = int(sys.argv[2])
+channel_id = str(sys.argv[3])
+message_id = str(sys.argv[4])
+now = int(time.time())
+
+state = {}
+if state_path.exists():
+    try:
+        raw = json.loads(state_path.read_text(encoding="utf-8"))
+        if isinstance(raw, dict):
+            state = raw
+    except Exception:
+        state = {}
+
+channels = state.get("channels")
+if not isinstance(channels, dict):
+    channels = {}
+
+entry = channels.get(channel_id)
+if not isinstance(entry, dict):
+    entry = {}
+
+processed = entry.get("processedMessages")
+if not isinstance(processed, dict):
+    processed = {}
+
+last_ts = int(processed.get(message_id) or 0)
+elapsed = (now - last_ts) if last_ts > 0 else (cooldown + 1)
+
+if elapsed < cooldown:
+    print(f"deny|{max(1, cooldown - elapsed)}|cooldown")
+    raise SystemExit(0)
+
+processed[message_id] = now
+ttl = max(cooldown * 6, 86400)
+processed = {
+    str(mid): int(ts)
+    for mid, ts in processed.items()
+    if str(mid).strip() and (now - int(ts or 0)) <= ttl
+}
+
+entry["processedMessages"] = processed
+entry["lastRecoveryTs"] = now
+entry["lastMessageId"] = message_id
+channels[channel_id] = entry
+state["channels"] = channels
+state_path.parent.mkdir(parents=True, exist_ok=True)
+state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+print("allow|0|ok")
+PY
+      )"
+
+      local action wait_sec deny_reason
+      action="${decision%%|*}"
+      wait_sec="$(echo "${decision}" | awk -F'|' '{print $2}')"
+      deny_reason="$(echo "${decision}" | awk -F'|' '{print $3}')"
+      [[ "${wait_sec}" =~ ^[0-9]+$ ]] || wait_sec=0
+
+      if [[ "${action}" != "allow" ]]; then
+        skipped_cooldown=$((skipped_cooldown + 1))
+        report "⏸️ Einstein autocura em cooldown: canal=${channel_id} msg=${pending_message_id} aguardar=${wait_sec}s (${deny_reason:-cooldown})"
+        register_bottleneck "einstein-mention-stuck-cooldown" "medium" "Autocura do Einstein em cooldown" "Governança detectou menção pendente (canal=${channel_id}, msg=${pending_message_id}), mas a autocura está em cooldown (${wait_sec}s)." "Evitar duplicidade de resposta e ajustar cooldown se backlog de menções pendentes persistir."
+        continue
+      fi
+
+      local pending_excerpt
+      pending_excerpt="${pending_content//$'\n'/ }"
+      pending_excerpt="${pending_excerpt//$'\r'/ }"
+      pending_excerpt="${pending_excerpt:0:240}"
+
+      report "⚠️ Einstein sem resposta detectado: canal=${channel_id} msg=${pending_message_id} pendente há ${pending_age_sec}s. Acionando autocura."
+      register_bottleneck "einstein-mention-stuck" "high" "Einstein sem resposta em menção do Discord" "Menção ao Einstein ficou pendente por ${pending_age_sec}s (canal=${channel_id}, autor=${pending_author_name:-unknown}, msg=${pending_message_id}). Trecho: ${pending_excerpt}" "Manter autocura automática (gateway + reprocessamento do pedido) para eliminar silêncio operacional do Einstein."
+
+      if ! ocw_gateway_health >/dev/null 2>&1; then
+        ocw_gateway_restart >/dev/null 2>&1 || true
+      fi
+      openclaw channels add --channel discord --use-env >/dev/null 2>&1 || true
+
+      attempts=$((attempts + 1))
+
+      local recovery_json recovery_status recovery_error
+      recovery_json="$(openclaw agent --agent einstein --channel discord --message "${recovery_input}" --deliver --reply-channel discord --reply-to "${channel_id}" --thinking "${thinking_level}" --timeout "${recovery_timeout_sec}" --json 2>/dev/null || echo '{}')"
+      recovery_status="$(echo "${recovery_json}" | jq -r '.status // "error"' 2>/dev/null || echo "error")"
+      recovery_error="$(echo "${recovery_json}" | jq -r '(.error.message // .error // .message // .summary // "") | tostring' 2>/dev/null || echo "")"
+
+      if [[ "${recovery_status}" == "ok" ]]; then
+        recovered=$((recovered + 1))
+        report "✅ Einstein autocura: menção reprocessada com sucesso (canal=${channel_id}, msg=${pending_message_id}, tentativa=primaria)"
+      else
+        local recovered_here="false"
+        report "⚠️ Einstein autocura: tentativa primária falhou (canal=${channel_id}, msg=${pending_message_id}, erro=${recovery_error:-unknown})"
+
+        if [[ -n "${backup_agent_id//[[:space:]]/}" ]] && [[ "${backup_agent_id}" != "einstein" ]]; then
+          if (( retry_delay_sec > 0 )); then
+            sleep "${retry_delay_sec}"
+          fi
+
+          local backup_json backup_status backup_error
+          backup_json="$(openclaw agent --agent "${backup_agent_id}" --channel discord --message "${recovery_input}" --deliver --reply-channel discord --reply-to "${channel_id}" --thinking "${thinking_level}" --timeout "${recovery_timeout_sec}" --json 2>/dev/null || echo '{}')"
+          backup_status="$(echo "${backup_json}" | jq -r '.status // "error"' 2>/dev/null || echo "error")"
+          backup_error="$(echo "${backup_json}" | jq -r '(.error.message // .error // .message // .summary // "") | tostring' 2>/dev/null || echo "")"
+
+          if [[ "${backup_status}" == "ok" ]]; then
+            recovered=$((recovered + 1))
+            recovered_with_backup=$((recovered_with_backup + 1))
+            recovered_here="true"
+            report "✅ Einstein autocura: recuperação via contingência (${backup_agent_id}) concluída (canal=${channel_id}, msg=${pending_message_id})"
+          else
+            report "❌ Einstein autocura: fallback ${backup_agent_id} também falhou (canal=${channel_id}, msg=${pending_message_id}, erro=${backup_error:-unknown})"
+          fi
+        fi
+
+        if [[ "${recovered_here}" != "true" ]]; then
+          failed_mentions=$((failed_mentions + 1))
+
+          if [[ "${failure_notify}" == "true" ]]; then
+            local mention_prefix failure_msg
+            mention_prefix=""
+            if [[ "${pending_author_id}" =~ ^[0-9]+$ ]]; then
+              mention_prefix="<@${pending_author_id}> "
+            elif [[ -n "${pending_author_name//[[:space:]]/}" ]]; then
+              mention_prefix="@${pending_author_name} "
+            fi
+            failure_msg="${mention_prefix}instabilidade temporária no Einstein. A contingência automática foi acionada e vou retentar. Se for urgente, repita a solicitação em 1-2 minutos."
+            if openclaw message send --channel discord --target "${channel_id}" --message "${failure_msg}" >/dev/null 2>&1; then
+              failure_notices=$((failure_notices + 1))
+              report "📣 Einstein contingência: aviso automático publicado no canal ${channel_id} (msg=${pending_message_id})"
+            else
+              report "⚠️ Einstein contingência: falha ao publicar aviso no canal ${channel_id} (msg=${pending_message_id})"
+            fi
+          fi
+
+          register_bottleneck "einstein-recovery-failed" "critical" "Falha na autocura do Einstein" "Governança detectou menção pendente no canal ${channel_id} (msg=${pending_message_id}) e falhou nas tentativas primária+contingência." "Revisar rota agent->discord/Jira, validar credenciais e manter runbook para recuperação sem intervenção manual."
+        fi
+      fi
+    done < <(echo "${analysis_json}" | jq -r '.pendingMentions[]? | @base64' 2>/dev/null)
+  done
+
+  if (( round_limit_hit == 1 )); then
+    report "⏭️ Einstein autocura: limite por rodada atingido (max=${max_per_round}, tentativas=${attempts}). Pendências restantes serão tratadas nas próximas rodadas."
+  fi
+
+  if (( pending_found == 0 )); then
+    report "✅ Einstein autonomia: sem menções pendentes na janela (${window_min}min)"
+  elif (( failed_mentions == 0 )); then
+    if (( recovered_with_backup > 0 )); then
+      report "✅ Einstein autonomia: ${recovered} menção(ões) recuperada(s), incluindo ${recovered_with_backup} via contingência (${backup_agent_id})"
+    elif (( recovered > 0 )); then
+      report "✅ Einstein autonomia: ${recovered} menção(ões) recuperada(s) automaticamente"
+    else
+      report "⏳ Einstein autonomia: ${pending_found} menção(ões) detectada(s), aguardando grace/cooldown (grace=${skipped_grace}, cooldown=${skipped_cooldown})"
+    fi
+  else
+    report "⚠️ Einstein autonomia: ${failed_mentions} menção(ões) sem recuperação total nesta rodada (avisos enviados=${failure_notices})"
   fi
 }
 
@@ -3509,9 +4134,17 @@ check_mail_processing_locks
 log "Checando pressão de modelos e cooldown..."
 recover_on_model_pressure
 
-# 3a) Detecta token mismatch/loop de Discord e faz autocura com cooldown
+# 3a) Detecta indisponibilidade real do Discord (DNS/login) e faz autocura com cooldown
+log "Checando disponibilidade do bot no Discord..."
+recover_on_discord_gateway_outage
+
+# 3b) Detecta token mismatch/loop de Discord e faz autocura com cooldown
 log "Checando token mismatch e reconexões Discord..."
 recover_on_gateway_token_mismatch
+
+# 3c) Detecta menções sem resposta do Einstein e reprocessa automaticamente
+log "Checando autonomia do Einstein (menções pendentes no Discord)..."
+recover_einstein_unanswered_mentions
 
 # 4) Detecta crons com erros consecutivos
 log "Checando crons com erros consecutivos..."

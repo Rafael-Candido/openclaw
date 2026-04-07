@@ -1,12 +1,12 @@
 {
   "meta": {
-    "lastTouchedVersion": "2026.2.26",
-    "lastTouchedAt": "2026-02-28T19:20:24.678Z"
+    "lastTouchedVersion": "2026.4.5",
+    "lastTouchedAt": "2026-04-07T08:58:17.831Z"
   },
   "wizard": {
-    "lastRunAt": "2026-02-28T19:20:24.665Z",
-    "lastRunVersion": "2026.2.26",
-    "lastRunCommand": "onboard",
+    "lastRunAt": "2026-04-07T08:58:17.765Z",
+    "lastRunVersion": "2026.4.5",
+    "lastRunCommand": "doctor",
     "lastRunMode": "local"
   },
   "diagnostics": {
@@ -22,9 +22,9 @@
     ]
   },
   "logging": {
-    "level": "debug",
+    "level": "info",
     "file": "/var/www/openclaw/logs/gateway.log",
-    "consoleLevel": "debug",
+    "consoleLevel": "info",
     "consoleStyle": "pretty"
   },
   "browser": {
@@ -84,6 +84,11 @@
             "maxTokens": 64000
           }
         ]
+      },
+      "google": {
+        "apiKey": "AIzaSyDMDl7-FIoQrdE5oRsM1EvqhNBL3VrcFdw",
+        "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
+        "models": []
       }
     }
   },
@@ -188,6 +193,9 @@
       "maxConcurrent": 1,
       "subagents": {
         "maxConcurrent": 2
+      },
+      "imageGenerationModel": {
+        "primary": "google/gemini-3-pro-image-preview"
       }
     },
     "list": [
@@ -311,6 +319,56 @@
         }
       },
       {
+        "id": "einstein-backup",
+        "name": "Einstein Backup (Contingência)",
+        "workspace": "/var/www/openclaw/workspace/agents/einstein",
+        "model": {
+          "primary": "google/gemini-2.5-pro",
+          "fallbacks": [
+            "google/gemini-2.5-flash",
+            "google/gemini-2.5-flash-lite",
+            "xai/grok-3-mini",
+            "xai/grok-3",
+            "openai/gpt-4-turbo"
+          ]
+        },
+        "skills": [
+          "notion"
+        ],
+        "identity": {
+          "name": "Einstein Backup",
+          "theme": "SmartEnvios Support Contingency",
+          "emoji": "🛟"
+        },
+        "sandbox": {
+          "mode": "off"
+        },
+        "tools": {
+          "allow": [
+            "read",
+            "write",
+            "edit",
+            "web_search",
+            "web_fetch",
+            "message",
+            "exec",
+            "sessions_history"
+          ],
+          "deny": [
+            "gateway",
+            "sessions_send",
+            "sessions_spawn",
+            "sessions_list",
+            "subagents",
+            "cron",
+            "process",
+            "nodes",
+            "browser",
+            "canvas"
+          ]
+        }
+      },
+      {
         "id": "eng-automacao",
         "name": "Engenheiro de Automação",
         "workspace": "/var/www/openclaw/workspace/agents/eng-automacao",
@@ -363,8 +421,7 @@
   "tools": {
     "web": {
       "search": {
-        "enabled": true,
-        "apiKey": "${BRAVE_API_KEY}"
+        "enabled": true
       },
       "fetch": {
         "enabled": true
@@ -381,7 +438,7 @@
   ],
   "messages": {
     "groupChat": {
-      "historyLimit": 30
+      "historyLimit": 80
     },
     "ackReactionScope": "group-mentions"
   },
@@ -428,9 +485,9 @@
     "discord": {
       "enabled": true,
       "allowBots": false,
-      "groupPolicy": "open",
-      "historyLimit": 30,
-      "dmHistoryLimit": 10,
+      "groupPolicy": "allowlist",
+      "historyLimit": 80,
+      "dmHistoryLimit": 20,
       "streaming": "off",
       "actions": {
         "reactions": true,
@@ -456,11 +513,24 @@
       "dmPolicy": "allowlist",
       "allowFrom": [
         "932709376790233088"
-      ]
+      ],
+      "guilds": {
+        "690598219146723358": {
+          "requireMention": true,
+          "ignoreOtherMentions": true
+        }
+      },
+      "execApprovals": {
+        "enabled": false
+      }
     }
   },
   "talk": {
-    "apiKey": "${ELEVENLABS_API_KEY}"
+    "providers": {
+      "elevenlabs": {
+        "apiKey": "sk_92f90a773458ad45b8b7bb5c8b84ec40f34bccd4e931a676"
+      }
+    }
   },
   "gateway": {
     "port": 18789,
@@ -490,9 +560,6 @@
       "nodeManager": "npm"
     },
     "entries": {
-      "nano-banana-pro": {
-        "apiKey": "${GEMINI_API_KEY}"
-      },
       "notion": {
         "apiKey": "${NOTION_SMARTENVIOS_API_KEY}"
       },
@@ -504,6 +571,28 @@
       },
       "sag": {
         "apiKey": "${SAG_API_KEY}"
+      }
+    }
+  },
+  "plugins": {
+    "entries": {
+      "google": {
+        "enabled": true
+      },
+      "xai": {
+        "enabled": true
+      },
+      "openai": {
+        "enabled": true
+      },
+      "anthropic": {
+        "enabled": true
+      },
+      "deepseek": {
+        "enabled": true
+      },
+      "browser": {
+        "enabled": true
       }
     }
   }

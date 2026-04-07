@@ -34,7 +34,13 @@ PRECEDENCE=$(echo "$MSG" | jq -r '.payload.headers[] | select(.name == "Preceden
 IS_AUTO_REPLY="false"
 IS_BULK_MAIL="false"
 IS_PROMOTIONAL="false"
+IS_LOW_VALUE_COMMERCIAL="false"
 IS_SHARED_ASSET="false"
+IS_JIRA_NOTIFICATION="false"
+IS_JIRA_COMMENT_NOTIFICATION="false"
+IS_JIRA_OPERATIONAL="false"
+IS_ACCESS_NOTIFICATION="false"
+IS_MANUAL_IGNORE_SUBJECT="false"
 
 # Strong auto-reply indicators
 if [[ -n "$AUTO_SUBMITTED" && "$AUTO_SUBMITTED" != "no" ]]; then
@@ -65,9 +71,51 @@ if [[ "$SUBJECT" =~ (notification|notificação|alert|alerta|status|update|atual
   IS_NOTIFICATION="true"
 fi
 
+# Access/share notifications should not create draft replies
+if echo "$SUBJECT $SNIPPET" | grep -qEi "(requested access to|solicitou acesso|pediu acesso|compartilhou .* com voc[eê]|shared with you|access request)"; then
+  IS_ACCESS_NOTIFICATION="true"
+  IS_NOTIFICATION="true"
+fi
+
+# Jira email notifications should never generate reply drafts
+if echo "$SUBJECT" | grep -qEi '^\[JIRA\][[:space:]]*\([A-Z]+-[0-9]+\)'; then
+  IS_JIRA_NOTIFICATION="true"
+  IS_NOTIFICATION="true"
+elif echo "$FROM" | grep -qEi 'atlassian\.net|atlassian\.com|jira@'; then
+  if echo "$SUBJECT" | grep -qEi '\([A-Z]+-[0-9]+\)'; then
+    IS_JIRA_NOTIFICATION="true"
+    IS_NOTIFICATION="true"
+  fi
+fi
+
+if echo "$SUBJECT" | grep -qEi "(commented in|comentou em)" && echo "$FROM" | grep -qEi 'atlassian\.net|atlassian\.com|jira@'; then
+  IS_JIRA_COMMENT_NOTIFICATION="true"
+  IS_NOTIFICATION="true"
+fi
+
 # Promotional/commercial outreach patterns (avoid drafting by default)
 if echo "$SUBJECT $SNIPPET" | grep -qEi "(newsletter|boletim|oferta|promo(ção)?|cupom|desconto|inscreva-se|webinar|evento|convite|agenda|horários|horarios|últimos horários|ultimos horarios|demonstração|demonstracao|vamos conversar|conversar sobre)"; then
   IS_PROMOTIONAL="true"
+fi
+
+# Commercial low-value patterns (label only)
+if echo "$SUBJECT $SNIPPET" | grep -qEi "(dia do consumidor|intensivo do sucesso|dados exclusivos|should you invest|roi de ia|google ai essentials|weekly kickoff|novidades no|sap business one|oscar[[:space:]]*20[0-9]{2}|metodologias ag[eé]is|fiscaliza[cç][aã]o da nr-1|nr-1|sua empresa est[aá] pronta|sua marca est[aá] preparada|dominando o e-?commerce brasileiro|nippur[[:space:]]*10[[:space:]]*anos|nova etapa da nossa jornada)"; then
+  IS_LOW_VALUE_COMMERCIAL="true"
+fi
+
+# Manual subject denylist (mail-pro): never draft/reply for these known cases.
+if [[ "$PROFILE" == "pro" ]] && echo "$SUBJECT" | grep -qEi '^(rafael,[[:space:]]*)?sua loja j[aá] usa tiktok shop\?.*$|^\[ganex\][[:space:]]*\[smartenvios\][[:space:]]*atualiza[cç][aã]o de vers[aã]o rds postgresql[[:space:]]*\(cda-50390\)[[:space:]]*$'; then
+  IS_MANUAL_IGNORE_SUBJECT="true"
+fi
+
+# Jira notifications with operational signal should be important (no draft)
+if [[ "$IS_JIRA_NOTIFICATION" == "true" ]]; then
+  if echo "$SUBJECT $SNIPPET" | grep -qEi "(commented in|comentou|mencionou|não teve atualização|nao teve atualizacao|sem atualiza[cç][aã]o|comprovante de entrega|proof of delivery|pod)"; then
+    IS_JIRA_OPERATIONAL="true"
+  fi
+fi
+if [[ "$IS_JIRA_COMMENT_NOTIFICATION" == "true" ]]; then
+  IS_JIRA_OPERATIONAL="true"
 fi
 
 # Shared files/docs usually need visibility, not reply
@@ -125,9 +173,19 @@ if [[ "$IS_AUTO_REPLY" == "true" ]]; then
   PRIORITY_SCORE=-100
 fi
 
+# Jira notifications are explicit no-reply class
+if [[ "$IS_JIRA_NOTIFICATION" == "true" ]]; then
+  PRIORITY_SCORE=-90
+fi
+
 # Notification? (penalize heavily but not disqualify)
-if [[ "$IS_NOTIFICATION" == "true" ]]; then
-  PRIORITY_SCORE=-50
+if [[ "$IS_NOTIFICATION" == "true" || "$IS_ACCESS_NOTIFICATION" == "true" ]]; then
+  PRIORITY_SCORE=-60
+fi
+
+# Commercial low-value content should not become important/draft
+if [[ "$IS_PROMOTIONAL" == "true" || "$IS_LOW_VALUE_COMMERCIAL" == "true" ]]; then
+  PRIORITY_SCORE=-40
 fi
 
 # Bulk/List mail? (slight penalty)
@@ -172,6 +230,19 @@ elif [[ $PRIORITY_SCORE -ge 0 ]]; then
   ACTION="label"
 fi
 
+# Notification/commercial classes should not trigger draft/important
+if [[ "$IS_NOTIFICATION" == "true" || "$IS_ACCESS_NOTIFICATION" == "true" || "$IS_PROMOTIONAL" == "true" || "$IS_LOW_VALUE_COMMERCIAL" == "true" ]]; then
+  ACTION="label"
+fi
+
+if [[ "$IS_JIRA_NOTIFICATION" == "true" ]]; then
+  ACTION="ignore"
+fi
+
+if [[ "$IS_JIRA_OPERATIONAL" == "true" ]]; then
+  ACTION="important"
+fi
+
 # Never create draft for no-reply / notifications / bulk / or when Rafael is only in Cc (informativo)
 if [[ "$ACTION" == "draft" ]]; then
   if [[ "$IS_NOTIFICATION" == "true" ]]; then
@@ -192,8 +263,13 @@ if [[ "$ACTION" == "draft" ]]; then
   fi
 fi
 
-if [[ "$ACTION" == "review" && "$IS_SHARED_ASSET" == "true" && "$HAS_REQUEST_SIGNAL" != "true" ]]; then
+if [[ "$ACTION" == "review" && "$IS_SHARED_ASSET" == "true" && "$HAS_REQUEST_SIGNAL" != "true" && "$IS_NOTIFICATION" != "true" && "$IS_ACCESS_NOTIFICATION" != "true" && "$IS_PROMOTIONAL" != "true" && "$IS_LOW_VALUE_COMMERCIAL" != "true" ]]; then
   ACTION="important"
+fi
+
+if [[ "$IS_MANUAL_IGNORE_SUBJECT" == "true" ]]; then
+  PRIORITY_SCORE=-95
+  ACTION="ignore"
 fi
 
 # Build analysis JSON
@@ -209,7 +285,13 @@ jq -n \
   --arg bulk "$IS_BULK_MAIL" \
   --arg notif "$IS_NOTIFICATION" \
   --arg promo "$IS_PROMOTIONAL" \
+  --arg lowValueCommercial "$IS_LOW_VALUE_COMMERCIAL" \
   --arg sharedAsset "$IS_SHARED_ASSET" \
+  --arg jiraNotif "$IS_JIRA_NOTIFICATION" \
+  --arg jiraCommentNotif "$IS_JIRA_COMMENT_NOTIFICATION" \
+  --arg jiraOperational "$IS_JIRA_OPERATIONAL" \
+  --arg accessNotif "$IS_ACCESS_NOTIFICATION" \
+  --arg manualIgnoreSubject "$IS_MANUAL_IGNORE_SUBJECT" \
   --arg mention "$HAS_DIRECT_MENTION" \
   --arg requestSignal "$HAS_REQUEST_SIGNAL" \
   --argjson score "$PRIORITY_SCORE" \
@@ -229,7 +311,13 @@ jq -n \
       isBulkMail: $bulk,
       isNotification: $notif,
       isPromotional: $promo,
+      isLowValueCommercial: $lowValueCommercial,
       isSharedAsset: $sharedAsset,
+      isJiraNotification: $jiraNotif,
+      isJiraCommentNotification: $jiraCommentNotif,
+      isJiraOperational: $jiraOperational,
+      isAccessNotification: $accessNotif,
+      isManualIgnoreSubject: $manualIgnoreSubject,
       hasDirectMention: $mention,
       hasRequestSignal: $requestSignal
     },

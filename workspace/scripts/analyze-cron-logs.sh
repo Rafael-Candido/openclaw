@@ -10,6 +10,7 @@ ROUNDS="${1:-20}"
 RUNS_DIR="${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}/cron/runs"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+PRUNE_SCRIPT="${SCRIPT_DIR}/prune-generated-logs.sh"
 
 if [[ ! -d "${RUNS_DIR}" ]]; then
   echo "Diretório de runs não encontrado: ${RUNS_DIR}" >&2
@@ -19,6 +20,10 @@ fi
 echo "=== Análise de logs dos crons (últimas ${ROUNDS} rodadas por job) ==="
 echo "Data: $(date -u '+%Y-%m-%d %H:%M UTC')"
 echo ""
+
+if [[ -x "${PRUNE_SCRIPT}" ]]; then
+  "${PRUNE_SCRIPT}" "${OPENCLAW_LOG_RETENTION_DAYS:-2}" >/dev/null 2>&1 || true
+fi
 
 # Nomes: extrair do jobs.json
 JOBS_JSON="${PROJECT_ROOT}/cron/jobs.json"

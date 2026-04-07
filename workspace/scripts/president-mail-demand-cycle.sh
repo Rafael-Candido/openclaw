@@ -7,12 +7,26 @@ HELPER="${SCRIPT_DIR}/notion-helper.sh"
 GMAIL="${ROOT_DIR}/scripts/gmail/gmail.sh"
 OPENCLAW_HELPER="${SCRIPT_DIR}/openclaw-helper.sh"
 RUNTIME_GUARD="${SCRIPT_DIR}/runtime-guard.sh"
+MAIL_AUTOMATION_DISABLED="${MAIL_AUTOMATION_DISABLED:-false}"
+MAIL_AUTOMATION_DISABLE_FILE="${MAIL_AUTOMATION_DISABLE_FILE:-${ROOT_DIR}/.state/mail-automation.disabled}"
 
 if [[ -f "${ROOT_DIR}/../.env" ]]; then
   set +e +u
   # shellcheck disable=SC1091
   source "${ROOT_DIR}/../.env" >/dev/null 2>&1
   set -euo pipefail
+fi
+
+is_truthy() {
+  case "${1:-}" in
+    1|true|TRUE|yes|YES|on|ON|sim|SIM) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+if is_truthy "${MAIL_AUTOMATION_DISABLED}" || [[ -f "${MAIL_AUTOMATION_DISABLE_FILE}" ]]; then
+  echo '{"ok":true,"disabled":true,"action":"mail_automation_disabled"}'
+  exit 0
 fi
 
 if [[ -x "${RUNTIME_GUARD}" ]]; then

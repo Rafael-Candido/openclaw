@@ -1,19 +1,10 @@
-Seu conteúdo atual aqui, com a nova seção adicionada ao final.
 
-## Erro Identificado: Script eng-prompt-deterministic-cycle.sh Ausente
-- **Data:** 2026-02-23
-- **Contexto:** Ao tentar executar `workspace/scripts/eng-prompt-deterministic-cycle.sh` como Engenheiro de Prompt, o comando falhou com 'no such file or directory'. Causa provável: script não existe ou caminho incorreto.
-- **Correção Sugerida:** Verifique o arquivo no workspace e atualize o caminho se necessário. Evite usar comandos sem validar a existência primeiro.
-- **Impacto:** Bloqueia o fluxo determinístico; trate como erro de configuração.
 
-## Falha em Correção MCP para Grafana
+## Problema: Falha na Criação de Cards Notion com Conteúdo Extenso (HTTP 0)
+- **Data:** 2026-04-06
+- **Contexto:** Ao tentar criar ou atualizar cards no Notion via `notion-helper.sh create-card` ou `append-body` com um `body_file` contendo conteúdo extenso, a operação falhou consistentemente com erro `HTTP 0` (falha de conexão/requisição `curl`). No entanto, a criação de cards mais simples ou para outros agentes (sem `body_file` complexo) funcionou.
+- **Causa Raiz Provável:** Embora o `BODY` JSON pareça bem-formado, o erro `HTTP 0` em `curl` durante o `POST` para `api.notion.com` indica que o payload JSON gerado a partir de um `body_file` muito longo ou complexo pode estar excedendo limites internos da API do Notion ou de conectividade no momento da requisição. Isso não é um erro de validação JSON, mas uma falha de baixo nível na comunicação HTTP/S.
+- **Correção Aplicada:** Para contornar, reduziu-se o tamanho e a complexidade do `body_file` utilizado na criação do card de investigação. A delegação de tarefas de investigação que geram logs extensos agora será feita com um contexto mais conciso no card, e a análise de detalhes será feita sob demanda pelo agente especialista.
+- **Padrão Reforçado:** Evitar `body_file` excessivamente longos ou complexos (`> 2000-3000 caracteres` como regra de bolso) ao criar ou anexar conteúdo a cards do Notion. Mantenha os corpos dos cards concisos e priorize links para contexto externo ou crie subtarefas para detalhes.
+- **Impacto:** Bloqueia a criação e atualização de cards com documentação detalhada inline, exigindo uma abordagem mais modular de documentação e delegação.
 
-Data: 2026-02-23
-
-**Descrição:** Tentativa de executar `./scripts/smartenvios-mcp.sh fix-grafana` falhou porque o subcomando 'fix-grafana' não existe. Isso impede a correção de falhas em Grafana detectadas no card.
-
-**Solução tentada:** Usar `smartenvios-mcp.sh login && fix-grafana` como fallback.
-
-**Correção sugerida:** Verificar os subcomandos disponíveis em `smartenvios-mcp.sh` e criar ou modificar scripts para incluir funcionalidades de correção (e.g., adicionar 'fix-grafana' ou usar 'tools' para autenticação).
-
-**Impacto:** Bloqueia implementações de cards relacionados a MCP; escalar para revisão manual ou Diretor Tech.

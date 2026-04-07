@@ -13,6 +13,8 @@ if [[ -f "/var/www/openclaw/workspace/scripts/gmail/batch-config.sh" ]]; then
 fi
 
 ROOT="/var/www/openclaw/workspace"
+MAIL_AUTOMATION_DISABLED="${MAIL_AUTOMATION_DISABLED:-false}"
+MAIL_AUTOMATION_DISABLE_FILE="${MAIL_AUTOMATION_DISABLE_FILE:-${ROOT}/.state/mail-automation.disabled}"
 NOTION_HELPER="${ROOT}/scripts/notion-helper.sh"
 PROCESS_WORKFLOW="${ROOT}/scripts/gmail/process-workflow.sh"
 GMAIL_SCRIPT="${ROOT}/scripts/gmail/gmail.sh"
@@ -21,6 +23,21 @@ BATCH_STATE_FILE="/tmp/openclaw-mail-${PROFILE}-batch-state.json"
 LOCK_PID_FILE="${LOCK_DIR}/pid"
 LOCK_TS_FILE="${LOCK_DIR}/created_at"
 LOCK_MAX_AGE_SEC="${MAIL_LOCK_MAX_AGE_SEC:-1800}"
+
+is_truthy() {
+  case "${1:-}" in
+    1|true|TRUE|yes|YES|on|ON|sim|SIM) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+if is_truthy "${MAIL_AUTOMATION_DISABLED}" || [[ -f "${MAIL_AUTOMATION_DISABLE_FILE}" ]]; then
+  jq -n \
+    --arg profile "${PROFILE}" \
+    --arg message "mail_automation_disabled" \
+    '{profile:$profile,processed:0,success:0,partial:0,failed:0,disabled:true,message:$message}'
+  exit 0
+fi
 
 if [[ ! -x "${NOTION_HELPER}" || ! -x "${PROCESS_WORKFLOW}" || ! -x "${GMAIL_SCRIPT}" ]]; then
   echo '{"error":"required scripts not found"}'

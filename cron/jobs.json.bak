@@ -6,7 +6,7 @@
       "name": "Mail-Person especialista - execução 15min",
       "enabled": true,
       "createdAtMs": 1771800244262,
-      "updatedAtMs": 1772647088979,
+      "updatedAtMs": 1775553167491,
       "schedule": {
         "kind": "every",
         "everyMs": 900000,
@@ -18,21 +18,30 @@
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/gmail/process-notion-cards.sh personal 15. Responda somente em pt-BR, em no máximo 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO. Sem inglês, sem raciocínio, sem blocos duplicados. Regra adicional: se tarefa não for backlog padrão e for complexa, fatiar em micro-cards (<=30s por fatia). Se houver rascunho manual ou decisão textual, alinhar ao workspace/docs/rafael-dna.md e proibir resposta vaga/corporativa.",
         "model": "google/gemini-2.5-flash-lite",
-        "timeoutSeconds": 180
+        "timeoutSeconds": 180,
+        "toolsAllow": [
+          "exec"
+        ]
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772647975824,
-        "lastRunAtMs": 1772647075824,
+        "lastRunAtMs": 1775553151261,
         "lastStatus": "ok",
-        "lastDurationMs": 13155,
+        "lastDurationMs": 16230,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-delivered",
+        "nextRunAtMs": 1775554051261,
         "lastDelivered": false
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
       }
     },
     {
@@ -40,7 +49,7 @@
       "name": "Presidente - criar demandas 30min",
       "enabled": true,
       "createdAtMs": 1771802119702,
-      "updatedAtMs": 1772645551583,
+      "updatedAtMs": 1775552660119,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -60,14 +69,14 @@
         "bestEffort": true
       },
       "state": {
-        "lastRunAtMs": 1772645520423,
+        "lastRunAtMs": 1775552645440,
         "lastStatus": "ok",
-        "lastDurationMs": 31160,
+        "lastDurationMs": 14679,
         "consecutiveErrors": 0,
-        "nextRunAtMs": 1772647320423,
         "lastRunStatus": "ok",
-        "lastDeliveryStatus": "delivered",
-        "lastDelivered": true
+        "lastDeliveryStatus": "not-delivered",
+        "nextRunAtMs": 1775554445440,
+        "lastDelivered": false
       }
     },
     {
@@ -75,7 +84,7 @@
       "name": "Diretor Tech - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771802125258,
-      "updatedAtMs": 1772647097164,
+      "updatedAtMs": 1775552890902,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -94,10 +103,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772648890084,
-        "lastRunAtMs": 1772647090084,
+        "nextRunAtMs": 1775554675364,
+        "lastRunAtMs": 1775552875364,
         "lastStatus": "ok",
-        "lastDurationMs": 7080,
+        "lastDurationMs": 15538,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-delivered",
@@ -109,7 +118,7 @@
       "name": "Diretor Pessoal - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771802131232,
-      "updatedAtMs": 1772646391781,
+      "updatedAtMs": 1775553144618,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -121,21 +130,31 @@
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/director-personal-deterministic-cycle.sh. Regras: 1 card mais antigo por rodada; diretor só tria/roteia; não concluir no lugar de especialista. Em escopo complexo, anotar marker de microplanejamento no card ao rotear.",
         "model": "google/gemini-2.5-flash-lite",
-        "timeoutSeconds": 120
+        "timeoutSeconds": 120,
+        "toolsAllow": [
+          "exec"
+        ]
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772647783928,
-        "lastRunAtMs": 1772645983928,
+        "nextRunAtMs": 1775553172320,
+        "lastRunAtMs": 1775551372320,
         "lastStatus": "ok",
-        "lastDurationMs": 12995,
+        "lastDurationMs": 35468,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-delivered",
-        "lastDelivered": false
+        "lastDelivered": false,
+        "runningAtMs": 1775553172326
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
       }
     },
     {
@@ -143,7 +162,7 @@
       "name": "Diretor Negócios - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771802136467,
-      "updatedAtMs": 1772646175805,
+      "updatedAtMs": 1775551698123,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -162,10 +181,10 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772647966668,
-        "lastRunAtMs": 1772646166668,
+        "nextRunAtMs": 1775553466915,
+        "lastRunAtMs": 1775551666915,
         "lastStatus": "ok",
-        "lastDurationMs": 9137,
+        "lastDurationMs": 31208,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-delivered",
@@ -177,7 +196,7 @@
       "name": "Mail-Pro especialista - execução 15min",
       "enabled": true,
       "createdAtMs": 1771802143478,
-      "updatedAtMs": 1772647050890,
+      "updatedAtMs": 1775553179602,
       "schedule": {
         "kind": "every",
         "everyMs": 900000,
@@ -189,21 +208,30 @@
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/gmail/process-notion-cards.sh pro 15. Responda somente em pt-BR, em no máximo 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO. Sem inglês, sem raciocínio, sem blocos duplicados. Regra adicional: se tarefa não for backlog padrão e for complexa, fatiar em micro-cards (<=30s por fatia). Se houver rascunho manual ou decisão textual, alinhar ao workspace/docs/rafael-dna.md e proibir resposta vaga/corporativa.",
         "model": "google/gemini-2.5-flash-lite",
-        "timeoutSeconds": 180
+        "timeoutSeconds": 180,
+        "toolsAllow": [
+          "exec"
+        ]
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772647923589,
-        "lastRunAtMs": 1772647023589,
+        "lastRunAtMs": 1775552397849,
         "lastStatus": "ok",
-        "lastDurationMs": 27301,
+        "lastDurationMs": 14737,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-delivered",
+        "nextRunAtMs": 1775553297849,
         "lastDelivered": false
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
       }
     },
     {
@@ -211,7 +239,7 @@
       "name": "Otimizador - performance e custo 6h",
       "enabled": true,
       "createdAtMs": 1771812501384,
-      "updatedAtMs": 1772646449776,
+      "updatedAtMs": 1775544558298,
       "schedule": {
         "kind": "every",
         "everyMs": 21600000,
@@ -230,14 +258,14 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772648370960,
-        "lastRunAtMs": 1772626770960,
-        "lastStatus": "error",
-        "lastDurationMs": 282032,
-        "consecutiveErrors": 2,
-        "lastRunStatus": "error",
-        "lastDeliveryStatus": "not-requested",
-        "lastError": "cron: job execution timed out"
+        "nextRunAtMs": 1775566109599,
+        "lastRunAtMs": 1775544509599,
+        "lastStatus": "ok",
+        "lastDurationMs": 48699,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-delivered",
+        "lastDelivered": false
       }
     },
     {
@@ -245,7 +273,7 @@
       "name": "Engenheiro de Prompt - execução 10min (drenagem)",
       "enabled": true,
       "createdAtMs": 1771815285058,
-      "updatedAtMs": 1772646632939,
+      "updatedAtMs": 1775552959323,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -264,15 +292,14 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772647197286,
-        "lastRunAtMs": 1772646597286,
+        "nextRunAtMs": 1775553538305,
+        "lastRunAtMs": 1775552938305,
         "lastStatus": "ok",
-        "lastDurationMs": 35653,
+        "lastDurationMs": 21018,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-delivered",
-        "lastDelivered": false,
-        "runningAtMs": 1772647197297
+        "lastDelivered": false
       }
     },
     {
@@ -280,7 +307,7 @@
       "name": "Engenheiro SmartEnvios - execução 10min",
       "enabled": true,
       "createdAtMs": 1771815285058,
-      "updatedAtMs": 1772646945171,
+      "updatedAtMs": 1775553159970,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -292,21 +319,30 @@
         "kind": "agentTurn",
         "message": "EXECUCAO OBRIGATORIA: rode exatamente './scripts/eng-smartenvios-deterministic-cycle.sh' via exec síncrono, aguarde terminar e responda SOMENTE com o JSON bruto retornado pelo script. Ignore cards antigos sem contexto objetivo; não repetir diagnóstico legado. Proibido process/background e proibido responder sem executar.",
         "model": "google/gemini-2.5-flash-lite",
-        "timeoutSeconds": 180
+        "timeoutSeconds": 180,
+        "toolsAllow": [
+          "exec"
+        ]
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772647538401,
-        "lastRunAtMs": 1772646938401,
+        "nextRunAtMs": 1775553260119,
+        "lastRunAtMs": 1775552660119,
         "lastStatus": "ok",
-        "lastDurationMs": 6770,
+        "lastDurationMs": 12373,
         "consecutiveErrors": 0,
         "lastRunStatus": "ok",
         "lastDeliveryStatus": "not-delivered",
         "lastDelivered": false
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
       }
     },
     {
@@ -315,7 +351,7 @@
       "name": "Engenheiro de Automação - execução 10min",
       "enabled": true,
       "createdAtMs": 1772020256472,
-      "updatedAtMs": 1772646956073,
+      "updatedAtMs": 1775553166305,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -328,21 +364,30 @@
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente 'cd /var/www/openclaw/workspace && ./scripts/eng-automacao-deterministic-cycle.sh' via exec. Fluxo de automação deve usar API nativa do n8n por contexto (N8N_SALES_API_KEY, N8N_PRODUCT_API_KEY, N8N_FINANCE_API_KEY e N8N_ADMIN_API_KEY), sem dependência de MCP. Só finalize após obter a saída JSON do script. Nunca use process/background. Responda somente em pt-BR e no máximo 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO. Sem inglês, sem raciocínio, sem blocos de código. Regras de especialista: retomar Em andamento antes de Priorizado; fatiar demanda complexa em micro-cards <=30s; registrar evidência objetiva; evitar Impedimento automático por falta de contexto.",
         "model": "google/gemini-2.5-flash-lite",
         "timeoutSeconds": 180,
-        "thinking": "off"
+        "thinking": "off",
+        "toolsAllow": [
+          "exec"
+        ]
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772647552841,
-        "lastRunAtMs": 1772646952841,
+        "nextRunAtMs": 1775553272492,
+        "lastRunAtMs": 1775552672492,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 3232,
+        "lastDurationMs": 19878,
         "lastDeliveryStatus": "not-delivered",
         "consecutiveErrors": 0,
         "lastDelivered": false
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
       }
     },
     {
@@ -350,7 +395,7 @@
       "name": "Main - relatório WhatsApp 60min",
       "enabled": true,
       "createdAtMs": 1772065031709,
-      "updatedAtMs": 1772645318665,
+      "updatedAtMs": 1775549863071,
       "schedule": {
         "kind": "every",
         "everyMs": 3600000,
@@ -369,11 +414,11 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772648908604,
-        "lastRunAtMs": 1772645308604,
+        "nextRunAtMs": 1775553445932,
+        "lastRunAtMs": 1775549845932,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 10061,
+        "lastDurationMs": 17139,
         "lastDeliveryStatus": "not-delivered",
         "consecutiveErrors": 0,
         "lastDelivered": false
@@ -381,13 +426,13 @@
     },
     {
       "id": "c408ba92-a26a-420d-844f-64448f983d93",
-      "name": "Governança - health/recovery 10min",
+      "name": "Governança - health/recovery 5min",
       "enabled": true,
       "createdAtMs": 1772141908757,
-      "updatedAtMs": 1772646718362,
+      "updatedAtMs": 1775553153215,
       "schedule": {
         "kind": "every",
-        "everyMs": 1200000,
+        "everyMs": 300000,
         "anchorMs": 1772154880771
       },
       "sessionTarget": "isolated",
@@ -396,21 +441,30 @@
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente 'bash /private/var/www/openclaw/workspace/scripts/governance-check.sh' via exec, aguarde finalizar e use SOMENTE a saida real do comando. Formato pt-BR max 4 linhas: STATUS, ACAO, RESULTADO, PROXIMO. Proibido responder sem executar.",
         "model": "google/gemini-2.5-flash-lite",
-        "timeoutSeconds": 300
+        "timeoutSeconds": 300,
+        "toolsAllow": [
+          "exec"
+        ]
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772647576160,
-        "lastRunAtMs": 1772646376160,
+        "nextRunAtMs": 1775553190902,
+        "lastRunAtMs": 1775552890902,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 206680,
+        "lastDurationMs": 9376,
         "lastDeliveryStatus": "not-delivered",
         "consecutiveErrors": 0,
         "lastDelivered": false
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
       }
     },
     {
@@ -420,7 +474,7 @@
       "description": "Monitora gateway e crons críticos; aciona governança em instabilidade até estabilizar.",
       "enabled": true,
       "createdAtMs": 1772158376688,
-      "updatedAtMs": 1772646662822,
+      "updatedAtMs": 1775553175322,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -432,21 +486,31 @@
         "kind": "agentTurn",
         "message": "EXECUCAO OBRIGATORIA: rode exatamente 'bash /private/var/www/openclaw/workspace/scripts/codex-stability-cycle.sh' via exec síncrono e responda SOMENTE com as 4 linhas finais do script: STATUS, ACAO, RESULTADO, PROXIMO. Proibido explicar timeout, proibido raciocínio.",
         "model": "google/gemini-2.5-flash-lite",
-        "timeoutSeconds": 180
+        "timeoutSeconds": 180,
+        "toolsAllow": [
+          "exec"
+        ]
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1772647241128,
-        "lastRunAtMs": 1772646641128,
-        "lastRunStatus": "ok",
-        "lastStatus": "ok",
-        "lastDurationMs": 21694,
-        "lastDeliveryStatus": "not-delivered",
-        "consecutiveErrors": 0,
-        "lastDelivered": false
+        "nextRunAtMs": 1775553292370,
+        "lastRunAtMs": 1775552692370,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 180016,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 2,
+        "lastError": "cron: job execution timed out",
+        "lastErrorReason": "timeout"
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
       }
     }
   ]

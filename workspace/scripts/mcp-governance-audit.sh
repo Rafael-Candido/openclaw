@@ -11,6 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 MCP_SCRIPT="${PROJECT_ROOT}/workspace/scripts/smartenvios-mcp.sh"
 NOTION_HELPER="${PROJECT_ROOT}/workspace/scripts/notion-helper.sh"
+PRUNE_SCRIPT="${PROJECT_ROOT}/workspace/scripts/prune-generated-logs.sh"
 SMART_DB_ID="adec12e735dc41a3bb7c274b287f3a10"
 REPORT_DIR="${PROJECT_ROOT}/workspace/reports"
 NOW_TS="$(date '+%Y-%m-%d %H:%M:%S')"
@@ -24,6 +25,10 @@ if [[ -f "${PROJECT_ROOT}/.env" ]]; then
 fi
 
 mkdir -p "${REPORT_DIR}"
+
+if [[ -x "${PRUNE_SCRIPT}" ]]; then
+  "${PRUNE_SCRIPT}" "${OPENCLAW_LOG_RETENTION_DAYS:-2}" >/dev/null 2>&1 || true
+fi
 
 for arg in "$@"; do
   case "$arg" in

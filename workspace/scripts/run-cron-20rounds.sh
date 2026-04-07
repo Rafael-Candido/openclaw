@@ -7,6 +7,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RUNTIME_GUARD="${SCRIPT_DIR}/runtime-guard.sh"
+PRUNE_SCRIPT="${SCRIPT_DIR}/prune-generated-logs.sh"
 
 if [[ -x "${RUNTIME_GUARD}" ]]; then
   # shellcheck disable=SC1090
@@ -34,6 +35,10 @@ LOG="${CONFIG}/workspace/tmp/cron-20rounds-$(date +%Y%m%d-%H%M%S).log"
 SUMMARY="${LOG%.log}.summary.txt"
 SUMMARY_JSON="${LOG%.log}.summary.json"
 mkdir -p "$(dirname "${LOG}")"
+
+if [[ -x "${PRUNE_SCRIPT}" ]]; then
+  "${PRUNE_SCRIPT}" "${OPENCLAW_LOG_RETENTION_DAYS:-2}" >/dev/null 2>&1 || true
+fi
 
 CRONS="$(jq -r '.jobs[]? | select(.enabled==true) | .id' "${CONFIG}/cron/jobs.json")"
 CRON_COUNT="$(echo "${CRONS}" | wc -w | tr -d ' ')"

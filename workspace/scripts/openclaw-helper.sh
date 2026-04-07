@@ -22,7 +22,7 @@ ocw_log() {
 ocw_is_transient_gateway_error() {
   local msg="${1:-}"
   echo "${msg}" | grep -Eqi \
-    "gateway timeout|gateway closed|service restart|ECONNREFUSED|EPIPE|Bad request|WebSocket.*closed|connect ECONNREFUSED"
+    "gateway timeout|gateway closed|service restart|ECONNREFUSED|EPIPE|Bad request|WebSocket.*closed|connect ECONNREFUSED|getaddrinfo ENOTFOUND|ENOTFOUND.*discord\.gg|EAI_AGAIN"
 }
 
 ocw_retry() {
@@ -61,10 +61,26 @@ ocw_gateway_health() {
 
 ocw_gateway_restart() {
   # Best-effort restart, used by governance.
-  openclaw gateway stop >/dev/null 2>&1 || true
-  sleep 2
+  # Prefer a graceful restart path first to avoid leaving the LaunchAgent unloaded.
+  if openclaw gateway restart >/dev/null 2>&1; then
+    sleep 2
+    if ocw_gateway_health >/dev/null 2>&1; then
+      return 0
+    fi
+  fi
+
+  # Ensure plist exists and try launchd bootstrap/kickstart recovery.
   openclaw gateway install --force >/dev/null 2>&1 || openclaw gateway install >/dev/null 2>&1 || true
-  sleep 3
+  launchctl bootstrap "gui/${UID}" "${HOME}/Library/LaunchAgents/ai.openclaw.gateway.plist" >/dev/null 2>&1 || true
+  launchctl kickstart -k "gui/${UID}/ai.openclaw.gateway" >/dev/null 2>&1 || true
+  sleep 2
+  if ocw_gateway_health >/dev/null 2>&1; then
+    return 0
+  fi
+
+  # Final fallback: try start again without an explicit stop.
+  openclaw gateway start >/dev/null 2>&1 || true
+  sleep 2
   ocw_gateway_health
 }
 
