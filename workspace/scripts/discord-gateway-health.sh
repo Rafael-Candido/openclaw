@@ -166,6 +166,12 @@ for line in log_lines:
     if last_login_ts is None or ts > last_login_ts:
         last_login_ts = ts
 
+if last_login_ts is None and runtime_last_connected_at:
+    try:
+        last_login_ts = int(runtime_last_connected_at) / 1000.0
+    except (ValueError, TypeError):
+        pass
+
 if last_login_ts is None:
     last_login_age_min = -1
     last_login_iso = ""
@@ -211,6 +217,9 @@ error_score = (dns_errors * 2) + max_reconnect_errors + ws_preclose_errors
 issue = False
 reason = "stable"
 
+stale_login_threshold_min = max(login_stale_min * 3, 60)
+login_very_stale = last_login_age_min >= stale_login_threshold_min or last_login_age_min < 0
+
 # Fonte primária: runtime do gateway.
 # Se o runtime já reporta conexão ativa, tratamos como saudável mesmo com ruído de log histórico.
 if runtime_connected is True:
@@ -225,6 +234,9 @@ elif error_score >= score_threshold:
 elif error_score > 0 and not recent_login:
     issue = True
     reason = "errors-without-recent-login"
+elif login_very_stale and runtime_connected is not True:
+    issue = True
+    reason = "login-stale-no-runtime"
 
 status = "alert" if issue else "healthy"
 result = {
@@ -234,6 +246,8 @@ result = {
     "reason": reason,
     "windowMin": window_min,
     "loginStaleMin": login_stale_min,
+    "staleLoginThresholdMin": stale_login_threshold_min,
+    "loginVeryStale": login_very_stale,
     "threshold": score_threshold,
     "errorScore": error_score,
     "dnsErrors": dns_errors,

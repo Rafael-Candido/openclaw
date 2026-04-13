@@ -66,6 +66,12 @@ if [[ "$TITLE_LC" == *"mail"* || "$TITLE_LC" == *"email"* || "$TITLE_LC" == *"in
   REASON="demanda de esteira de e-mail profissional"
 fi
 
+# Demandas de atendimento operacional de software ficam com o especialista dedicado.
+if [[ "$TITLE_LC" == *"atendimento"* || "$TITLE_LC" == *"suporte"* || "$TITLE_LC" == *"ticket"* || "$TITLE_LC" == *"chamado"* || "$TITLE_LC" == *"central"* || "$TITLE_LC" == *"crm"* || "$TITLE_LC" == *"portal"* ]]; then
+  TARGET_AGENT="Especialista de Suporte de Software"
+  REASON="demanda operacional de suporte de software"
+fi
+
 # Demandas de automação/n8n devem ir para o especialista correto.
 if [[ "$TITLE_LC" == *"n8n"* || "$TITLE_LC" == *"workflow"* || "$TITLE_LC" == *"automação"* || "$TITLE_LC" == *"automacao"* ]]; then
   TARGET_AGENT="Engenheiro de Automação"

@@ -5,7 +5,7 @@
 ## Contrato Operacional do Codex, Cursor e Claude
 
 Este documento tem um complemento operacional obrigatorio para execucao no OpenClaw:
-- `workspace/docs/codex-protocolo-evolucao-dominio.md`
+- `workspace/docs/PRESIDENTE_PROTOCOL.md`
 
 Regra:
 - quando houver conflito entre "resposta bonita" e "avanco real", priorizar avanco real;

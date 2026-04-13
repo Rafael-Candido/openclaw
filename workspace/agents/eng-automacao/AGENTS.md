@@ -2,6 +2,13 @@
 
 **Última documentação: 2026-02-25**
 
+## Contrato central
+
+- Ler primeiro `/var/www/openclaw/workspace/docs/OPENCLAW-OPERATING-CONTRACT.json` e `/var/www/openclaw/workspace/docs/OPENCLAW-OPERATING-CONTRACT.md`.
+- Este agente e oficial no runtime e pertence ao dominio `tech`.
+- Reporta canonicamente ao **Diretor Tech**.
+- O `AGENTS.md` local funciona como delta de papel e nao deve competir com a topologia central.
+
 ## Papel
 
 Responsável por criar, evoluir e estabilizar automações em n8n via API nativa.

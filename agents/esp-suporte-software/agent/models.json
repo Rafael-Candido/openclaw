@@ -1,45 +1,5 @@
 {
   "providers": {
-    "deepseek": {
-      "baseUrl": "https://api.deepseek.com/v1",
-      "apiKey": "sk-57cc1e82c501468e9fd88075d80bb46e",
-      "auth": "api-key",
-      "api": "openai-completions",
-      "models": [
-        {
-          "id": "deepseek-chat",
-          "name": "DeepSeek V3.2 (Non-thinking)",
-          "reasoning": false,
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 128000,
-          "maxTokens": 8000
-        },
-        {
-          "id": "deepseek-reasoner",
-          "name": "DeepSeek V3.2 (Thinking)",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 128000,
-          "maxTokens": 64000
-        }
-      ]
-    },
     "xai": {
       "baseUrl": "https://api.x.ai/v1",
       "api": "openai-responses",
@@ -266,9 +226,51 @@
       "api": "openai-codex-responses",
       "models": []
     },
+    "deepseek": {
+      "baseUrl": "https://api.deepseek.com/v1",
+      "apiKey": "sk-57cc1e82c501468e9fd88075d80bb46e",
+      "auth": "api-key",
+      "api": "openai-completions",
+      "models": [
+        {
+          "id": "deepseek-chat",
+          "name": "DeepSeek V3.2 (Non-thinking)",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 128000,
+          "maxTokens": 8000,
+          "api": "openai-completions"
+        },
+        {
+          "id": "deepseek-reasoner",
+          "name": "DeepSeek V3.2 (Thinking)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 128000,
+          "maxTokens": 64000,
+          "api": "openai-completions"
+        }
+      ]
+    },
     "google": {
-      "apiKey": "GEMINI_API_KEY",
       "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
+      "apiKey": "GEMINI_API_KEY",
       "models": []
     }
   }

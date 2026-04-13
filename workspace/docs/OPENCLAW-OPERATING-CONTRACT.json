@@ -1,0 +1,314 @@
+{
+  "version": "2026.04.13-contract-v1",
+  "sourceOfTruth": {
+    "executable": "workspace/docs/OPENCLAW-OPERATING-CONTRACT.json",
+    "runtimeAgents": "openclaw.json#agents.list",
+    "runtimeBindings": "openclaw.json#bindings",
+    "humanReadableMirror": "workspace/docs/OPENCLAW-OPERATING-CONTRACT.md",
+    "notionLifecycle": "workspace/FLUXO_AGENTES.md",
+    "behaviorPatterns": "workspace/templates/agent-behavior-patterns.md",
+    "localDeltas": [
+      "workspace/AGENTS.md",
+      "workspace/agents/*/AGENTS.md"
+    ]
+  },
+  "contextProfiles": {
+    "interactive-main": {
+      "purpose": "Human-facing orchestration for main, local chat, WebChat, WhatsApp DM and development IDEs.",
+      "contextLoad": "strategic",
+      "responseStyle": "explanatory when useful, concise by default",
+      "allowedToDelegate": true
+    },
+    "interactive-support": {
+      "purpose": "Human-facing support operations, especially Einstein on Discord and support handoffs.",
+      "contextLoad": "operational",
+      "responseStyle": "objective, evidence-first, action-oriented",
+      "allowedToDelegate": true
+    },
+    "deterministic-cron": {
+      "purpose": "Isolated recurring jobs that execute one explicit command and trust structured output.",
+      "contextLoad": "minimal",
+      "responseStyle": "structured output only",
+      "allowedToDelegate": false
+    },
+    "heartbeat": {
+      "purpose": "Short health checks and recurring liveness/status signals.",
+      "contextLoad": "minimal",
+      "responseStyle": "fixed compact status",
+      "allowedToDelegate": false
+    }
+  },
+  "canonicalRoles": [
+    {
+      "roleId": "diretor-tech",
+      "status": "canonical-role",
+      "reportsTo": "main",
+      "domain": "tech",
+      "notionDb": "smartenvios",
+      "promptProfile": "deterministic-cron"
+    },
+    {
+      "roleId": "diretor-personal",
+      "status": "canonical-role",
+      "reportsTo": "main",
+      "domain": "personal",
+      "notionDb": "personal",
+      "promptProfile": "deterministic-cron"
+    },
+    {
+      "roleId": "diretor-business",
+      "status": "canonical-role",
+      "reportsTo": "main",
+      "domain": "business",
+      "notionDb": "canper",
+      "promptProfile": "deterministic-cron"
+    },
+    {
+      "roleId": "mail-pro",
+      "status": "canonical-routine",
+      "reportsTo": "diretor-tech",
+      "domain": "tech/professional-mail",
+      "notionDb": "smartenvios",
+      "promptProfile": "deterministic-cron"
+    },
+    {
+      "roleId": "mail-person",
+      "status": "canonical-routine",
+      "reportsTo": "diretor-personal",
+      "domain": "personal/mail",
+      "notionDb": "personal",
+      "promptProfile": "deterministic-cron"
+    },
+    {
+      "roleId": "governanca",
+      "status": "canonical-routine",
+      "reportsTo": "main",
+      "domain": "operations",
+      "notionDb": "personal",
+      "promptProfile": "deterministic-cron"
+    },
+    {
+      "roleId": "otimizador",
+      "status": "canonical-routine",
+      "reportsTo": "main",
+      "domain": "operations",
+      "notionDb": "personal",
+      "promptProfile": "deterministic-cron"
+    }
+  ],
+  "agents": [
+    {
+      "agentId": "main",
+      "status": "registered",
+      "role": "orchestrator",
+      "reportsTo": null,
+      "domain": "global",
+      "channelEntrypoint": [
+        "local-chat-main",
+        "webchat",
+        "whatsapp-dm",
+        "ide"
+      ],
+      "workspace": "/var/www/openclaw/workspace",
+      "notionDb": "multi",
+      "promptProfile": "interactive-main"
+    },
+    {
+      "agentId": "eng-smartenvios",
+      "status": "registered",
+      "role": "specialist",
+      "reportsTo": "diretor-tech",
+      "domain": "tech/smartenvios-engineering",
+      "channelEntrypoint": [
+        "notion"
+      ],
+      "workspace": "/var/www/openclaw/workspace/agents/eng-smartenvios",
+      "notionDb": "smartenvios",
+      "promptProfile": "deterministic-cron"
+    },
+    {
+      "agentId": "eng-prompt",
+      "status": "registered",
+      "role": "specialist",
+      "reportsTo": "diretor-personal",
+      "domain": "personal/openclaw-governance",
+      "channelEntrypoint": [
+        "notion"
+      ],
+      "workspace": "/var/www/openclaw/workspace/agents/eng-prompt",
+      "notionDb": "personal",
+      "promptProfile": "deterministic-cron"
+    },
+    {
+      "agentId": "einstein",
+      "status": "registered",
+      "role": "specialist",
+      "reportsTo": "diretor-tech",
+      "domain": "tech/smartenvios-support",
+      "channelEntrypoint": [
+        "discord"
+      ],
+      "workspace": "/var/www/openclaw/workspace/agents/einstein",
+      "notionDb": "smartenvios",
+      "promptProfile": "interactive-support"
+    },
+    {
+      "agentId": "einstein-backup",
+      "status": "backup",
+      "role": "contingency",
+      "reportsTo": "diretor-tech",
+      "backupOf": "einstein",
+      "domain": "tech/smartenvios-support",
+      "channelEntrypoint": [
+        "contingency"
+      ],
+      "workspace": "/var/www/openclaw/workspace/agents/einstein",
+      "notionDb": "smartenvios",
+      "promptProfile": "interactive-support"
+    },
+    {
+      "agentId": "eng-automacao",
+      "status": "registered",
+      "role": "specialist",
+      "reportsTo": "diretor-tech",
+      "domain": "tech/automation",
+      "channelEntrypoint": [
+        "notion"
+      ],
+      "workspace": "/var/www/openclaw/workspace/agents/eng-automacao",
+      "notionDb": "smartenvios",
+      "promptProfile": "deterministic-cron"
+    },
+    {
+      "agentId": "esp-suporte-software",
+      "status": "registered",
+      "role": "specialist",
+      "reportsTo": "diretor-tech",
+      "domain": "tech/software-support",
+      "channelEntrypoint": [
+        "notion",
+        "einstein-handoff"
+      ],
+      "workspace": "/var/www/openclaw/workspace/agents/esp-suporte-software",
+      "notionDb": "smartenvios",
+      "promptProfile": "deterministic-cron"
+    },
+    {
+      "agentId": "esp-negocios",
+      "status": "registered",
+      "role": "specialist",
+      "reportsTo": "diretor-business",
+      "domain": "business/general",
+      "channelEntrypoint": [
+        "notion"
+      ],
+      "workspace": "/var/www/openclaw/workspace/agents/esp-negocios",
+      "notionDb": "canper",
+      "promptProfile": "deterministic-cron"
+    },
+    {
+      "agentId": "business-news",
+      "status": "registered",
+      "role": "specialist",
+      "reportsTo": "diretor-business",
+      "domain": "business/intelligence",
+      "channelEntrypoint": [
+        "cron",
+        "whatsapp-delivery"
+      ],
+      "workspace": "/var/www/openclaw/workspace/agents/business-news",
+      "notionDb": "none",
+      "promptProfile": "deterministic-cron"
+    }
+  ],
+  "surfaceMatrix": [
+    {
+      "surface": "local-chat-main",
+      "entrypoint": "http://127.0.0.1:18789/chat?session=main",
+      "agentId": "main",
+      "workspace": "/var/www/openclaw/workspace",
+      "promptProfile": "interactive-main",
+      "responseFormat": "direct human chat",
+      "delegationAuthority": "may create or route Notion work through canonical directors"
+    },
+    {
+      "surface": "whatsapp-dm",
+      "entrypoint": "whatsapp",
+      "agentId": "main",
+      "workspace": "/var/www/openclaw/workspace",
+      "promptProfile": "interactive-main",
+      "responseFormat": "short pt-BR mobile response",
+      "delegationAuthority": "may create or route Notion work through canonical directors"
+    },
+    {
+      "surface": "discord",
+      "entrypoint": "discord",
+      "agentId": "einstein",
+      "workspace": "/var/www/openclaw/workspace/agents/einstein",
+      "promptProfile": "interactive-support",
+      "responseFormat": "public/support-safe channel response",
+      "delegationAuthority": "may hand off to Diretor Tech or support/software specialists by contract"
+    },
+    {
+      "surface": "webchat",
+      "entrypoint": "gateway-webchat",
+      "agentId": "main",
+      "workspace": "/var/www/openclaw/workspace",
+      "promptProfile": "interactive-main",
+      "responseFormat": "direct human chat",
+      "delegationAuthority": "same as local-chat-main"
+    },
+    {
+      "surface": "ide",
+      "entrypoint": "Cursor/VS Code/Codex/Claude Code",
+      "agentId": "main",
+      "workspace": "/var/www/openclaw/workspace",
+      "promptProfile": "interactive-main",
+      "responseFormat": "engineering collaboration",
+      "delegationAuthority": "same cognitive contract; toolset depends on IDE runtime"
+    }
+  ],
+  "agentExpansionProtocol": {
+    "requiredFields": [
+      "agentId",
+      "role",
+      "reportsTo",
+      "domain",
+      "channelEntrypoint",
+      "workspace",
+      "notionDb",
+      "promptProfile",
+      "existenceCriteria",
+      "differenceFromExistingAgent"
+    ],
+    "classifications": [
+      "existing-agent-adjustment",
+      "new-routine-for-existing-agent",
+      "new-surface-or-channel",
+      "new-canonical-role",
+      "new-official-agent",
+      "draft-artifact"
+    ],
+    "decisionRules": [
+      "Prefer extending an existing agent when domain and ownership already match.",
+      "Create a routine instead of an agent when only cadence or delivery changes.",
+      "Create a surface instead of an agent when only the channel envelope changes.",
+      "Register an official agent only after hierarchy, workspace, Notion flow and promptProfile are declared here."
+    ]
+  },
+  "cronPayloadContract": {
+    "policyVersion": "cron-deterministic-v1",
+    "requiredFields": [
+      "agentId",
+      "promptProfile",
+      "command",
+      "outputContract",
+      "policyVersion"
+    ],
+    "allowedPromptProfiles": [
+      "deterministic-cron",
+      "heartbeat"
+    ],
+    "rule": "Cron payloads must execute one explicit command and use structured command output as the source of truth."
+  }
+}

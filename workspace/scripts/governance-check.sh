@@ -78,6 +78,7 @@ MAIL_PRO_CRON="99de71d1-97b0-48d0-933e-7fcacfda2184"
 MAIL_PERSON_CRON="e4cd9635-efdd-4588-8ecc-523a4a50ea20"
 ENG_PROMPT_CRON="6bdd82c7-081d-486b-9700-0572b9fce72e"
 ENG_SMARTENVIOS_CRON="a7b8c9d0-e1f2-3456-7890-abcdef123401"
+ESP_SUPORTE_SOFTWARE_CRON="826653ae-7b20-43e2-adf0-90c96a60a6ec"
 PRESIDENT_CRON="985165be-59eb-46e7-8715-17571c8e8227"
 DIRECTOR_TECH_CRON="7fba5b1f-2ee9-4b1e-aae0-bd211c32b925"
 DIRECTOR_PERSONAL_CRON="a71c2958-e52f-4f37-9876-bedf6dcb9434"
@@ -1198,7 +1199,6 @@ required_refs = [
     "workspace/FLUXO_AGENTES.md",
     "workspace/agents/eng-prompt/AGENTS.md",
     "workspace/agents/eng-smartenvios/AGENTS.md",
-    "workspace/agents/backend-engineer/AGENTS.md",
     "workspace/agents/einstein/AGENTS.md",
 ]
 
@@ -2357,6 +2357,11 @@ wake_for_agent() {
       report "🔄 Wake enviado para cron Engenheiro SmartEnvios (${reason})"
       return 0
       ;;
+    "Especialista de Suporte de Software")
+      force_cron_wake "${ESP_SUPORTE_SOFTWARE_CRON}"
+      report "🔄 Wake enviado para cron Especialista de Suporte de Software (${reason})"
+      return 0
+      ;;
     "Diretor Tech")
       force_cron_wake "${DIRECTOR_TECH_CRON}"
       report "🔄 Wake enviado para cron Diretor Tech (${reason})"
@@ -2845,7 +2850,7 @@ compute_operational_health() {
   fi
 
   # Crons críticos em erro de execução (lastRunStatus = execução; lastStatus = compatibilidade com gateway < 2026.2.22)
-  local key_crons="${PRESIDENT_CRON}|Presidente,${MAIL_PRO_CRON}|Mail-Pro,${MAIL_PERSON_CRON}|Mail-Person,${ENG_PROMPT_CRON}|Eng. de Prompt,${ENG_SMARTENVIOS_CRON}|Eng. SmartEnvios"
+  local key_crons="${PRESIDENT_CRON}|Presidente,${MAIL_PRO_CRON}|Mail-Pro,${MAIL_PERSON_CRON}|Mail-Person,${ENG_PROMPT_CRON}|Eng. de Prompt,${ENG_SMARTENVIOS_CRON}|Eng. SmartEnvios,${ESP_SUPORTE_SOFTWARE_CRON}|Esp. Suporte Software"
   local cron_errors
   cron_errors="$(echo "$CRON_JSON" | python3 -c "
 import json, sys
@@ -3412,16 +3417,29 @@ recover_on_discord_gateway_outage() {
   [[ "${preclose_errors}" =~ ^-?[0-9]+$ ]] || preclose_errors=0
   [[ "${login_age}" =~ ^-?[0-9]+$ ]] || login_age=-1
 
+  local login_very_stale
+  login_very_stale="$(echo "${health_json}" | jq -r '.loginVeryStale // false' 2>/dev/null || echo false)"
+
   if [[ "${issue}" != "true" ]]; then
     report "✅ Discord gateway: estável (score=${score}, dns=${dns_errors}, reconnect=${reconnect_errors}, ws_preclose=${preclose_errors})"
     return 0
   fi
 
+  local severity="high"
+  [[ "${reason}" == "login-stale-no-runtime" ]] && severity="critical"
+
   report "⚠️ Discord gateway: instável (reason=${reason}, score=${score}, dns=${dns_errors}, reconnect=${reconnect_errors}, ws_preclose=${preclose_errors}, login_age=${login_age}min)"
-  register_bottleneck "discord-gateway-instability" "high" "Bot Discord com sinais de indisponibilidade" "Checker detectou reason=${reason}, score=${score}, dns=${dns_errors}, reconnect=${reconnect_errors}, ws_preclose=${preclose_errors}, last_login_age_min=${login_age}." "Aplicar restart automático com cooldown e revisar resolução DNS/rede do host para gateway.discord.gg."
+  register_bottleneck "discord-gateway-instability" "${severity}" "Bot Discord com sinais de indisponibilidade" "Checker detectou reason=${reason}, score=${score}, dns=${dns_errors}, reconnect=${reconnect_errors}, ws_preclose=${preclose_errors}, last_login_age_min=${login_age}." "Aplicar restart automático com cooldown e revisar resolução DNS/rede do host para gateway.discord.gg."
+
+  # Para login-stale-no-runtime, usar cooldown reduzido (5 min) para recuperar mais rápido
+  local effective_cooldown="${GOV_DISCORD_RECOVERY_COOLDOWN_SEC}"
+  if [[ "${reason}" == "login-stale-no-runtime" ]]; then
+    effective_cooldown=$(( GOV_DISCORD_RECOVERY_COOLDOWN_SEC / 3 ))
+    [[ "${effective_cooldown}" -lt 300 ]] && effective_cooldown=300
+  fi
 
   local decision
-  decision="$(python3 - "${GOV_DISCORD_RECOVERY_STATE_FILE}" "${GOV_DISCORD_RECOVERY_COOLDOWN_SEC}" <<'PY'
+  decision="$(python3 - "${GOV_DISCORD_RECOVERY_STATE_FILE}" "${effective_cooldown}" <<'PY'
 import json
 import sys
 import time
@@ -3444,18 +3462,21 @@ last = int(state.get("lastDiscordRecoveryTs") or 0)
 elapsed = (now - last) if last > 0 else (cooldown + 1)
 if elapsed >= cooldown:
     state["lastDiscordRecoveryTs"] = now
+    state["consecutiveRecoveries"] = int(state.get("consecutiveRecoveries") or 0) + 1
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
-    print("allow|0")
+    print(f"allow|0|{state['consecutiveRecoveries']}")
 else:
-    print(f"deny|{max(1, cooldown - elapsed)}")
+    print(f"deny|{max(1, cooldown - elapsed)}|{int(state.get('consecutiveRecoveries') or 0)}")
 PY
 )"
 
-  local action wait_sec
-  action="${decision%%|*}"
-  wait_sec="${decision##*|}"
+  local action wait_sec consecutive_recoveries
+  action="$(echo "${decision}" | cut -d'|' -f1)"
+  wait_sec="$(echo "${decision}" | cut -d'|' -f2)"
+  consecutive_recoveries="$(echo "${decision}" | cut -d'|' -f3)"
   [[ "${wait_sec}" =~ ^[0-9]+$ ]] || wait_sec=0
+  [[ "${consecutive_recoveries}" =~ ^[0-9]+$ ]] || consecutive_recoveries=0
 
   if [[ "${action}" != "allow" ]]; then
     report "⏸️ Discord autocura em cooldown: aguardar=${wait_sec}s (reason=${reason})"
@@ -3464,10 +3485,70 @@ PY
   fi
 
   if ocw_gateway_restart >/dev/null 2>&1; then
-    report "✅ Discord autocura: gateway reiniciado com sucesso após instabilidade"
+    report "✅ Discord autocura: gateway reiniciado com sucesso após instabilidade (tentativa #${consecutive_recoveries})"
+
+    # Verificar se o restart realmente reconectou (aguardar até 30s)
+    local verify_ok=false
+    for i in 1 2 3; do
+      sleep 10
+      local post_health
+      post_health="$(
+        DISCORD_HEALTH_WINDOW_MIN="${GOV_DISCORD_HEALTH_WINDOW_MIN}" \
+        DISCORD_LOGIN_STALE_MIN="${GOV_DISCORD_LOGIN_STALE_MIN}" \
+        DISCORD_ERROR_SCORE_THRESHOLD="${GOV_DISCORD_ERROR_SCORE_THRESHOLD}" \
+          "${health_script}" 2>/dev/null || true
+      )"
+      local post_issue
+      post_issue="$(echo "${post_health}" | jq -r '.issue // true' 2>/dev/null || echo true)"
+      if [[ "${post_issue}" != "true" ]]; then
+        verify_ok=true
+        break
+      fi
+    done
+
+    if [[ "${verify_ok}" == "true" ]]; then
+      report "✅ Discord pós-restart: verificação OK — bot reconectado"
+      # Zerar contador de recuperações consecutivas
+      python3 -c "
+import json; from pathlib import Path
+p = Path('${GOV_DISCORD_RECOVERY_STATE_FILE}')
+s = json.loads(p.read_text()) if p.exists() else {}
+s['consecutiveRecoveries'] = 0
+p.write_text(json.dumps(s, indent=2))
+" 2>/dev/null || true
+    else
+      report "⚠️ Discord pós-restart: verificação falhou — bot pode não ter reconectado"
+      register_bottleneck "discord-gateway-restart-no-reconnect" "critical" "Gateway reiniciado mas Discord não reconectou" "Restart executado (tentativa #${consecutive_recoveries}) mas checker ainda reporta issue após 30s." "Verificar DNS/rede, credenciais do bot Discord e logs do gateway manualmente."
+    fi
   else
     report "❌ Discord autocura: falha ao reiniciar gateway"
     register_bottleneck "discord-gateway-restart-failed" "critical" "Falha na autocura após indisponibilidade Discord" "Governança detectou instabilidade do bot Discord e falhou ao reiniciar o gateway." "Executar recovery manual imediato (restart do serviço + validação de DNS/rede) e abrir card de correção estrutural."
+  fi
+
+  # Alerta WhatsApp direto quando Discord fica prolongadamente down (login > 60min ou 3+ restarts consecutivos sem sucesso)
+  if [[ "${login_age}" -ge 60 ]] || [[ "${consecutive_recoveries}" -ge 3 ]]; then
+    local wa_target
+    wa_target="$(resolve_whatsapp_target)"
+    if [[ -n "${wa_target:-}" ]]; then
+      local alert_msg="ALERTA Discord offline"
+      alert_msg="${alert_msg}
+- Último login: ${login_age}min atrás"
+      alert_msg="${alert_msg}
+- Reason: ${reason}"
+      alert_msg="${alert_msg}
+- Restarts consecutivos: ${consecutive_recoveries}"
+      alert_msg="${alert_msg}
+- Ação: restart automático executado"
+      if [[ "${verify_ok:-false}" == "true" ]]; then
+        alert_msg="${alert_msg}
+- Status: reconectado com sucesso"
+      else
+        alert_msg="${alert_msg}
+- Status: NÃO reconectou — requer verificação manual"
+      fi
+      openclaw message send --channel whatsapp --to "${wa_target}" --message "${alert_msg}" >/dev/null 2>&1 || true
+      report "📱 Alerta WhatsApp enviado: Discord prolongadamente offline"
+    fi
   fi
 }
 

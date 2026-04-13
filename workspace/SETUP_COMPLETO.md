@@ -1,10 +1,12 @@
 # Setup Completo do Ambiente OpenClaw
 
-**Documento único de referência** consolidando todo o setup, arquitetura, fluxos operacionais e implementações do ambiente OpenClaw.
+**Documento derivado de referência** consolidando setup, arquitetura, fluxos operacionais e implementações do ambiente OpenClaw.
 
 **Última documentação: 2026-02-21 19:44**
 
 **Última atualização:** 2026-02-21 (documentação alinhada ao openclaw.json: agentes, canais, Einstein model/tools, bindings Discord)
+
+**Fonte executável do contrato operacional:** `workspace/docs/OPENCLAW-OPERATING-CONTRACT.json`. Este documento não deve competir com a topologia, os perfis de contexto, as superfícies ou o protocolo de criação/evolução de agentes definidos no contrato executável.
 
 ---
 
@@ -65,7 +67,6 @@ O OpenClaw é um sistema de agentes autônomos que opera através de:
 │   │   ├── einstein/          # KNOWLEDGE.md (5 fontes), scripts/jira-helper.sh, examples/, knowledge/{notion,youtube,github,zendesk,jira}
 │   │   ├── eng-prompt/        # Engenheiro de Prompt (BOOTSTRAP, IDENTITY, SOUL, TOOLS, USER)
 │   │   ├── eng-smartenvios/   # Engenheiro SmartEnvios (BOOTSTRAP, RELEASE_MCP.md, etc.)
-│   │   └── backend-engineer/  # Engenheiro Backend (contrato: agent-behavior-patterns.md)
 │   ├── scripts/
 │   │   ├── gmail/             # Gmail (workflow.sh, gmail.sh; path absoluto obrigatório nos crons)
 │   │   ├── notion/            # update_card.sh (wrapper notion-helper; Mail-Pro System)
@@ -106,6 +107,18 @@ O OpenClaw é um sistema de agentes autônomos que opera através de:
 
 ## 3. Configuração do Gateway (openclaw.json)
 
+### 3.0. Contrato operacional executável
+
+`workspace/docs/OPENCLAW-OPERATING-CONTRACT.json` é a fonte única executável para:
+- topologia e hierarquia de agentes;
+- papéis canônicos ainda não registrados como agentes formais;
+- matriz de superfícies (`chat?session=main`, WhatsApp, Discord, WebChat, IDEs);
+- perfis de contexto (`interactive-main`, `interactive-support`, `deterministic-cron`, `heartbeat`);
+- protocolo obrigatório para criação/evolução de agentes;
+- contrato alvo de payloads determinísticos de cron.
+
+Os documentos Markdown funcionam como espelho humano ou delta operacional. Se houver divergência, corrigir o Markdown ou atualizar explicitamente `workspace/docs/OPENCLAW-OPERATING-CONTRACT.json`; não criar regra paralela em `AGENTS.md`, `FLUXO_AGENTES.md` ou scripts.
+
 ### 3.1. Agentes Configurados
 
 **Main (Presidente):**
@@ -132,11 +145,19 @@ O OpenClaw é um sistema de agentes autônomos que opera através de:
 **Einstein (SmartEnvios Support):**
 - ID: `einstein`
 - Workspace: `/var/www/openclaw/workspace/agents/einstein`
-- Modelo: `xai/grok-4-1-fast-non-reasoning` (primary), fallbacks: Grok 3 Mini, Grok 3, DeepSeek Chat, GPT-4 Turbo, Claude Sonnet 4.6, Claude Opus 4.6, Grok Beta
+- Modelo: `deepseek/deepseek-chat` (primary), fallback `deepseek/deepseek-reasoner`
 - **Gatilho Discord:** menção `@1439351480514646087` ou palavra "einstein" (`groupChat.mentionPatterns`)
 - **Tools permitidas:** `read`, `write`, `edit`, `web_search`, `web_fetch`, `message`, `exec`, `sessions_history`
 - **Tools bloqueadas:** `gateway`, `sessions_send`, `sessions_spawn`, `sessions_list`, `subagents`, `cron`, `process`, `nodes`, `browser`, `canvas`
 - **Sandbox:** `mode: "off"` (exec permitido para MCP/scripts, ex.: `scripts/smartenvios-mcp.sh`)
+
+**Business-News:**
+- ID: `business-news`
+- Workspace: `/var/www/openclaw/workspace/agents/business-news`
+- Modelo: `deepseek/deepseek-chat` (primary), fallbacks: Gemini 2.5 Flash-Lite, Grok 3 Mini
+- **Papel:** briefing recorrente de notícias de negócios
+- **Canal atual:** cron com entrega em WhatsApp
+- **Governança:** especialista oficial de `business/intelligence`, sob papel canônico `Diretor Negócios`
 
 ### 3.2. Canais Configurados
 
@@ -237,6 +258,10 @@ OPENCLAW_WORKSPACE_DIR=/var/www/openclaw/workspace
 
 ## 5. Arquitetura de Agentes
 
+**Contrato central primeiro:** a topologia oficial, os perfis de contexto, a hierarquia canonica e o protocolo de criacao/evolucao de agentes sao definidos por `workspace/docs/OPENCLAW-OPERATING-CONTRACT.json`; `workspace/docs/OPENCLAW-OPERATING-CONTRACT.md` e apenas o espelho humano.
+
+Este arquivo deve descrever e explicar o ecossistema, mas nao competir com o contrato executavel nem com o runtime em `openclaw.json`.
+
 ### 5.1. Main (Presidente)
 
 **Papel:** Recebe demandas e cria cards no Notion em `Aguardando`.
@@ -267,6 +292,8 @@ OPENCLAW_WORKSPACE_DIR=/var/www/openclaw/workspace
 **Roteamento DM/Canais:**
 - **DM WhatsApp/WebChat:** agente `main`, respondidas apenas para o utilizador
 - **Discord:** todo o canal está ligado ao agente `einstein` (bindings); menções `@1439351480514646087` ou "einstein" acionam resposta em grupos; DMs Discord aceitas apenas de `allowFrom: 932709376790233088`
+
+**Regra de governanca de superficies:** chat local `session=main`, WhatsApp, WebChat, Cursor, VS Code, Codex e Claude Code devem compartilhar a mesma leitura de hierarquia e implementacao do OpenClaw; o que muda por superficie e formato, permissao e ferramentas, nao a logica-base do sistema.
 
 ### 5.2. Diretores (3)
 
@@ -306,11 +333,13 @@ OPENCLAW_WORKSPACE_DIR=/var/www/openclaw/workspace
   4. Registrar no card qual especialista de negócios será o responsável definitivo assim que for criado
 - Quando os especialistas de Negócios forem criados: substituir o `Agente` temporário pelo especialista correto, mantendo o mesmo padrão de lifecycle (`Priorizado` → `Em andamento` → `Concluído`)
 
+**Regra de expansao estrutural:** novos especialistas ou novos agentes so passam a existir oficialmente depois de serem classificados no contrato central e refletidos no runtime aplicavel. Pastas, prompts ou artefatos locais isolados nao oficializam um agente por si so.
+
 **Roteamento recomendado (Diretor → Especialista):**
 
 | Tipo de tarefa | Diretor | Especialista (Agente) |
 |----------------|---------|------------------------|
-| Backend/API/MCP | `Tech` | `Engenheiro Backend` |
+| Backend/API/MCP | `Tech` | `Engenheiro SmartEnvios` |
 | E-mail profissional | `Tech` | `Mail-Pro` |
 | E-mail pessoal | `Diretor Pessoal` | `Mail-Person` |
 | Negócios (antes dos especialistas) | `Diretor Negócios` | `Tech` (temporário) |
@@ -413,7 +442,7 @@ Commits: [hash1], [hash2]
 
 **Papel:** Responder dúvidas sobre SmartEnvios em canais Discord
 
-**Modelo (openclaw.json):** `xai/grok-4-1-fast-non-reasoning` (primary), fallbacks Grok 3 Mini, Grok 3, DeepSeek, GPT-4 Turbo, Claude Sonnet/Opus, Grok Beta
+**Modelo (openclaw.json):** `deepseek/deepseek-chat` (primary), fallback `deepseek/deepseek-reasoner`
 
 **Gatilho Discord:** menção `@1439351480514646087` ou palavra "einstein"
 
@@ -479,19 +508,19 @@ Quando Einstein não conseguir resolver algo (falta de acesso, limitação técn
 - Rafael Pereira pode interagir normalmente
 - Para outros utilizadores, se o Presidente identificar intenção de tirar dúvida sem prefixo, deve orientar: **use `Dúvida: {{texto}}`**
 
-**Esteira Einstein → Diretor Tech → Engenheiro Backend:**
+**Esteira Einstein → Diretor Tech → Engenheiro SmartEnvios:**
 Quando Einstein não conseguir responder uma dúvida SmartEnvios por limitação técnica:
 1. Criar card em `Aguardando` com `Tipo: OpenClaw`, `Solicitante: Rafael Pereira`, `Agente: Tech`
-2. Diretor Tech detalha solução/plano técnico e muda para `Priorizado` com `Agente: Engenheiro Backend`
-3. Engenheiro Backend executa melhoria no repositório MCP/API, documenta evidências e conclui
+2. Diretor Tech detalha solução/plano técnico e muda para `Priorizado` com `Agente: Engenheiro SmartEnvios`
+3. Engenheiro SmartEnvios executa melhoria no repositório MCP/API, documenta evidências e conclui
 
-### 5.5.1. Engenheiro Backend
+### 5.5.1. Engenheiro SmartEnvios
 
-**Agente:** propriedade do card = `Engenheiro Backend` (ou `Backend Engineer`)
+**Agente:** propriedade do card = `Engenheiro SmartEnvios`
 
-**Workspace:** `/var/www/openclaw/workspace/agents/backend-engineer`
+**Workspace:** `/var/www/openclaw/workspace/agents/eng-smartenvios`
 
-**Papel:** Especialista em melhorias técnicas de backend para o ecossistema OpenClaw/SmartEnvios
+**Papel:** Especialista técnico canônico para melhorias de backend, MCP, integrações e código do ecossistema SmartEnvios
 
 **Foco principal:**
 - MCP SmartEnvios
@@ -499,7 +528,7 @@ Quando Einstein não conseguir responder uma dúvida SmartEnvios por limitação
 - Automações API-first do fluxo Notion
 
 **Fluxo de trabalho:**
-1. Recebe card em `Priorizado` com `Agente = Engenheiro Backend`
+1. Recebe card em `Priorizado` com `Agente = Engenheiro SmartEnvios`
 2. Executa melhoria técnica no(s) repositório(s) alvo
 3. Registra evidências no card (o que foi alterado, testes, impacto)
 4. Move para `Concluído`
@@ -511,7 +540,7 @@ Quando Einstein não conseguir responder uma dúvida SmartEnvios por limitação
 - Nunca expor credenciais em logs/comentários
 
 **Entrada esperada:**
-- Cards em `Priorizado` com `Tipo = OpenClaw`, `Agente = Engenheiro Backend`
+- Cards em `Priorizado` com `Tipo = OpenClaw`, `Agente = Engenheiro SmartEnvios`
 - Descrição técnica detalhada pelo Diretor Tech
 
 **Saída obrigatória:**
@@ -902,18 +931,19 @@ Periodicamente (a cada poucos dias), usar um heartbeat para:
 ### 9.1. Documentos Principais
 
 - **FLUXO_AGENTES.md** — Fluxo operacional completo Notion (Presidente, Diretores, Especialistas), regras de deduplicação, templates, esteira Einstein→Tech→Backend
+- **docs/OPENCLAW-OPERATING-CONTRACT.json** — Contrato executável de topologia, perfis, superfícies e expansão de agentes
+- **docs/OPENCLAW-OPERATING-CONTRACT.md** — Espelho humano do contrato executável
 - **AGENTS.md** — Regras e padrões dos agentes, autonomia, resiliência, comportamento group chats, heartbeats, live feedback
 - **PLANO_PROJETO.md** — Plano de projeto (logging obrigatório), resiliência operacional
 - **TOOLS.md** — Ferramentas e skills disponíveis, scripts Gmail, SmartEnvios MCP
 - **NOTION.md** — Workspaces Notion configurados, mapeamento diretor→skill
 - **KNOWLEDGE.md** — Conhecimento histórico e padrões
-- **SETUP_COMPLETO.md** — Este documento (referência única consolidada)
+- **SETUP_COMPLETO.md** — Este documento (referência derivada consolidada)
 - **agents/einstein/AGENTS.md** — Regras específicas do Einstein (ferramentas operacionais MCP, escalonamento para Notion, comportamento group chats)
 
 ### 9.2. Documentação Técnica
 
 - **docs/development/LOGGING_AND_RULES.md** — Regras técnicas de logging
-- **docs/MODEL_FALLBACK_STRATEGY.md** — Estratégia de fallback de modelos
 - **scripts/gmail/README.md** — API reference Gmail
 - **scripts/gmail/AGENT_WORKFLOW.md** — Workflow para especialistas Mail-Pro/Person
 - **scripts/gmail/UNSUBSCRIBE_GUIDE.md** — Guia de unsubscribe de emails promocionais
@@ -921,8 +951,6 @@ Periodicamente (a cada poucos dias), usar um heartbeat para:
 - **agents/einstein/AGENTS.md** — Regras específicas Einstein (MCP, escalonamento, group chats)
 - **agents/einstein/ENRICHMENT_GUIDE.md** — Como enriquecer Einstein
 - **agents/einstein/SOURCES.md** — Fontes de informação SmartEnvios
-- **agents/backend-engineer/README.md** — Configuração Engenheiro Backend
-- **agents/backend-engineer/AGENTS.md** — Regras específicas Engenheiro Backend
 
 ### 9.3. Templates
 
@@ -964,7 +992,7 @@ Periodicamente (a cada poucos dias), usar um heartbeat para:
 - [ ] Mail-Pro configurado e testado
 - [ ] Mail-Person configurado e testado
 - [ ] Einstein configurado e testado (gatilho Discord, ferramentas MCP, escalonamento Notion)
-- [ ] Engenheiro Backend configurado (esteira Einstein→Tech→Backend)
+- [ ] Engenheiro SmartEnvios configurado para a esteira Einstein→Tech→execução técnica
 - [ ] Agente de Governança configurado (cron 10min, escalonamento automático)
 - [ ] Agente de Otimização e Performance implementado (cron diário 7h)
 

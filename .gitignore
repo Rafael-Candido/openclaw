@@ -38,17 +38,27 @@ credentials/
 sandbox/
 sandboxes/
 delivery-queue/
+devices/
+flows/
+identity/
 media/
 memory/
+subagents/
+tasks/
 exec-approvals.json
 openclaw.json.bak*
+openclaw.json*.bak*
 update-check.json
 
 # Agent authentication and sessions (contain secrets)
 agents/*/agent/auth*.json
 agents/*/agent/auth-profiles.json
+agents/*/sessions/
 agents/*/sessions/*.jsonl
 agents/*/sessions/sessions.json
+agents/*/sessions/*.jsonl.*
+agents/*/sessions/*.bak*
+agents/*/sessions/*.lock
 
 # Python
 __pycache__/
@@ -60,13 +70,25 @@ __pycache__/
 # Temporary files
 *.tmp
 *.temp
+*.backup*
 .cache/
+.pycache/
+.ruff_cache/
 agents/*/sessions/*.deleted.*
 
 # Runtime/generated artifacts (keep local only)
 agents/*/sessions/*.jsonl.lock
+cron/runs/
 cron/runs/*.jsonl
+cron/*.bak*
+cron/*.broken
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+workspace/.state/
+workspace/agents/*/.pi/
 workspace/tmp/*
+workspace/reports/
 workspace/reports/mcp-audit-*.md
 workspace/reports/stability-cycle-*.md
 workspace/reports/stability-cycle-*.json

@@ -2,6 +2,13 @@
 
 **Última documentação: 2026-02-23**
 
+## Contrato central
+
+- Ler primeiro `/var/www/openclaw/workspace/docs/OPENCLAW-OPERATING-CONTRACT.json` e `/var/www/openclaw/workspace/docs/OPENCLAW-OPERATING-CONTRACT.md`.
+- Este agente e oficial no runtime e pertence ao dominio `business`.
+- Reporta canonicamente ao **Diretor Negócios**.
+- O `AGENTS.md` local funciona como delta de papel e nao deve redefinir a topologia do sistema.
+
 ## Papel
 
 Agente generalista para execução inicial de demandas do domínio de negócios (Canper).

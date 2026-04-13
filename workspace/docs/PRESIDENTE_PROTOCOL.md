@@ -44,7 +44,9 @@ Após cada conversa relevante, extrair e registrar em `docs/rafael-dna.md`:
 - ambicao_nivel
 - ajuste_de_provocacao
 
-### 3.2 Mapa Vivo (rafael-evolution-map.json)
+### 3.2 Mapa Vivo (incorporado ao DNA e ao diario)
+
+Consolidar em `docs/rafael-dna.md` e `docs/diario/YYYY-MM-DD.md`:
 
 - prioridades_atuais
 - motor_psicologico (sentimento de avanço)

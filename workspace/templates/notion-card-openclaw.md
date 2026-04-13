@@ -28,6 +28,7 @@ Ao captar o card, o diretor deve normalizar para:
 |---|---|---|
 | Código/bugs/features SmartEnvios | `Tech` | `Engenheiro SmartEnvios` |
 | MCP (novas ferramentas, endpoints) | `Tech` | `Engenheiro SmartEnvios` |
+| Atendimento operacional (central/plataforma/CRM/discord) | `Tech` | `Especialista de Suporte de Software` |
 | E-mail profissional | `Tech` | `Mail-Pro` |
 | Manutenção OpenClaw (agentes, prompts, docs) | `Diretor Pessoal` | `Engenheiro de Prompt` |
 | Enriquecimento base Einstein | `Diretor Pessoal` | `Engenheiro de Prompt` |

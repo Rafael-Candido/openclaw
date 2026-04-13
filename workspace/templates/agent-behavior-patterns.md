@@ -11,6 +11,23 @@ Escopo de consumo:
 - Este é o contrato único para comportamentos operacionais semelhantes no fluxo OpenClaw.
 - AGENTS por papel devem manter apenas regras específicas (delta), sem duplicar padrão transversal.
 - Novo especialista (ou novo cron de especialista) deve nascer aderente a este documento, incluindo fatiamento obrigatório para demanda complexa.
+- Topologia, superficies, perfis de contexto e criacao de agentes nao nascem aqui: validar primeiro `workspace/docs/OPENCLAW-OPERATING-CONTRACT.json` e seu espelho `workspace/docs/OPENCLAW-OPERATING-CONTRACT.md`.
+
+## 0) Contrato central antes de expandir
+
+Antes de propor novo agente, novo especialista, novo canal ou nova rotina recorrente, classificar a demanda conforme `workspace/docs/OPENCLAW-OPERATING-CONTRACT.json#agentExpansionProtocol`:
+- ajuste em agente existente;
+- rotina nova para agente existente;
+- nova superficie/canal;
+- novo papel canonico;
+- novo agente oficial;
+- artefato experimental ainda nao registrado.
+
+Regra:
+- se a demanda couber em agente existente, nao criar agente;
+- se mudar apenas frequencia/formato de entrega, criar ou ajustar rotina;
+- se mudar apenas o envelope de entrada, registrar superficie/canal;
+- se for agente oficial, registrar no contrato executavel antes de depender dele em AGENTS, Notion ou cron.
 
 ## 1) Padrão de Assinatura (obrigatório)
 
@@ -19,7 +36,7 @@ Regra geral:
 - a assinatura vira prefixo no comentário: `[ASSINATURA]`.
 
 Assinaturas recomendadas:
-- Agentes: `Presidente`, `Diretor Tech`, `Diretor Pessoal`, `Diretor Negócios`, `Mail-Pro`, `Mail-Person`, `Engenheiro de Prompt`, `Engenheiro SmartEnvios`, `Governança`, `Otimizador`.
+- Agentes: `Presidente`, `Diretor Tech`, `Diretor Pessoal`, `Diretor Negócios`, `Mail-Pro`, `Mail-Person`, `Engenheiro de Prompt`, `Engenheiro SmartEnvios`, `Especialista de Suporte de Software`, `Governança`, `Otimizador`.
 - Humano (quando for anotação manual): `Rafael`.
 
 Exemplos:
@@ -349,14 +366,14 @@ Objetivo:
 - garantir delegação consistente para especialistas por código-fonte e domínio.
 
 Regra:
-- usar `workspace/agents/repo-index.json` como fonte única de mapeamento `repo -> agente`.
-- ao receber demanda técnica com indicação de repositório (ex.: `/var/www/ms.crm` ou `ms.crm`), atribuir para o agente correspondente no índice.
-- em demanda cross-repo, criar subtarefas por repositório com dono explícito e critério de aceite por integração.
+- demandas técnicas ligadas a repositórios SmartEnvios devem ser roteadas para `Engenheiro SmartEnvios` como especialista canônico do domínio;
+- quando a demanda citar explicitamente um repositório (ex.: `/var/www/ms.crm` ou `ms.crm`), essa informação deve entrar na descrição técnica do card;
+- em demanda cross-repo, criar subtarefas por repositório com dono explícito e critério de aceite por integração, mantendo `Engenheiro SmartEnvios` como responsável principal pela coordenação técnica.
 
 Fallback:
-- se o repositório não estiver no índice, atribuir ao `Engenheiro SmartEnvios` como triagem técnica inicial e abrir ação de atualização do índice.
-- Sem ambiguidade temporal: usar timestamp quando útil.
-- Não duplicar conteúdo: corpo para especificação, comentário para execução.
+- se o repositório estiver fora do domínio SmartEnvios, reavaliar no contrato central antes de criar novo especialista;
+- sem ambiguidade temporal: usar timestamp quando útil;
+- não duplicar conteúdo: corpo para especificação, comentário para execução.
 
 ## 7) Quando estes padrões ajudam mais
 

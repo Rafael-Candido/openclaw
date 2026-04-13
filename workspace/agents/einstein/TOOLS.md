@@ -296,3 +296,16 @@ rg -n "rota|endpoint|controller|path" /var/www/ms.* -S
 /var/www/openclaw/workspace/scripts/gmail/gmail.sh pro labels
 /var/www/openclaw/workspace/scripts/gmail/gmail.sh pro list "is:unread"
 ```
+
+## Interface com Especialista de Suporte de Software
+
+Quando o pedido do Discord for de atendimento operacional de software (central/plataforma/CRM), fazer handoff para o especialista:
+
+```bash
+/var/www/openclaw/workspace/agents/einstein/scripts/handoff-suporte-software.sh "<titulo>" "<descricao>" "Alta" "<nome do solicitante>"
+```
+
+Regra:
+- usar esse handoff quando não for só dúvida rápida e exigir investigação operacional;
+- manter Einstein como interface no Discord e usar o card para execução do especialista;
+- após criar o handoff, responder ao usuário com o ID/URL do card gerado.

@@ -7,6 +7,12 @@ Este documento define o fluxo operacional no Notion para cards com:
 - **Tipo:** `OpenClaw`
 - **Propriedade chave:** `Agente`
 
+Contrato central de governanca:
+- `workspace/docs/OPENCLAW-OPERATING-CONTRACT.json`
+- `workspace/docs/OPENCLAW-OPERATING-CONTRACT.md` (espelho humano)
+- O contrato executavel define a topologia oficial, hierarquia, superficies, perfis de contexto e protocolo de criacao/evolucao de agentes.
+- Este arquivo detalha apenas o lifecycle e a cadeia operacional no Notion.
+
 Referência oficial de padronização transversal:
 - `workspace/templates/agent-behavior-patterns.md`
 - Esse documento define design patterns de assinatura, comentários, corpo x comentário, papéis e uso de ferramentas.
@@ -37,6 +43,11 @@ Cada agente opera em **dois status**: capta do status de entrada e checa duplici
 
 ## 1) Papéis e responsabilidades
 
+Regra de fronteira deste documento:
+- a existencia de um papel no fluxo Notion nao cria automaticamente um agente oficial no runtime;
+- a oficializacao de um novo agente depende do contrato executavel em `workspace/docs/OPENCLAW-OPERATING-CONTRACT.json`;
+- este arquivo nao deve ser usado para “inventar” novos agentes sem registro estrutural.
+
 ## Modo Determinístico dos Crons (obrigatório)
 
 Todos os crons operacionais devem rodar em modo determinístico:
@@ -44,6 +55,15 @@ Todos os crons operacionais devem rodar em modo determinístico:
 - JSON retornado pelo script como **fonte de verdade**;
 - sem decisões abertas no texto do payload;
 - sem “simulação de execução”.
+
+Contrato alvo para payloads de cron:
+- `agentId`
+- `promptProfile`
+- `command`
+- `outputContract`
+- `policyVersion`
+
+Durante a transicao, `cron/jobs.json` pode manter `payload.message`, mas esse texto deve ser apenas envelope de compatibilidade: comando curto, fonte de verdade e formato de saida. Hierarquia, roteamento e semantica de agente devem vir de `workspace/docs/OPENCLAW-OPERATING-CONTRACT.json`.
 
 Mapa atual de scripts determinísticos:
 - Presidente: `workspace/scripts/president-mail-demand-cycle.sh`
@@ -373,7 +393,7 @@ Assim, o diretor só precisa complementar contexto/escopo e promover para `Prior
 - Zendesk também deve ser consumido via MCP (API).
 - Exceção permitida: painel da base de conhecimento Zendesk para consulta visual quando necessário.
 
-## 2.4) Esteira Einstein -> Diretor Tech -> Engenheiro Backend
+## 2.4) Esteira Einstein -> Diretor Tech -> Engenheiro SmartEnvios
 
 Quando Einstein não conseguir responder uma dúvida SmartEnvios por limitação técnica:
 
@@ -383,8 +403,8 @@ Quando Einstein não conseguir responder uma dúvida SmartEnvios por limitação
    - **Agente:** `Tech`
 2. Diretor Tech detalha solução/plano técnico e muda para:
    - **Status:** `Priorizado`
-   - **Agente:** `Engenheiro Backend`
-3. Engenheiro Backend executa melhoria no repositório MCP/API, documenta evidências e conclui.
+   - **Agente:** `Engenheiro SmartEnvios`
+3. Engenheiro SmartEnvios executa melhoria no repositório MCP/API, documenta evidências e conclui.
 
 ## Template de descrição (diretor)
 

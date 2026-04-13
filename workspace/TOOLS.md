@@ -162,7 +162,7 @@ API keys via `.env`: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, `D
 ### Einstein (SmartEnvios Support)
 - **Agent ID:** `einstein`
 - **Workspace:** `/var/www/openclaw/workspace/agents/einstein`
-- **Model:** `xai/grok-4-1-fast-non-reasoning` (primary)
+- **Model:** `deepseek/deepseek-chat` (primary), fallback `deepseek/deepseek-reasoner`
 - **Purpose:** Responder dúvidas sobre SmartEnvios em Discord
 - **Channels:** 100% Discord (bindings: canal discord → einstein)
 - **Tools permitidas:** read, write, edit, web_search, web_fetch, message, exec, sessions_history
@@ -174,6 +174,15 @@ API keys via `.env`: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, `D
 2. Adicionar exemplos em `agents/einstein/examples/`
 3. Documentar APIs em `agents/einstein/API_REFERENCE.md`
 4. Exec permitido para MCP (ex.: `scripts/smartenvios-mcp.sh`)
+
+### Business-News
+- **Agent ID:** `business-news`
+- **Workspace:** `/var/www/openclaw/workspace/agents/business-news`
+- **Model:** `deepseek/deepseek-chat` (primary), fallbacks `google/gemini-2.5-flash-lite`, `xai/grok-3-mini`
+- **Purpose:** Curadoria recorrente de notícias de negócios com entrega em WhatsApp
+- **Channel:** rotina por cron com envio ao WhatsApp do Rafael
+- **Tools permitidas:** read, web_search, web_fetch, message, exec
+- **Tools bloqueadas:** gateway, sessions_send/spawn/list, subagents, cron, process, nodes, browser, canvas
 
 ## Important Notes
 

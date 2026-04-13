@@ -10,6 +10,7 @@ If `BOOTSTRAP.md` exists, that's your birth certificate. Follow it, figure out w
 
 Before doing anything else:
 
+0. Read `docs/OPENCLAW-OPERATING-CONTRACT.json` and `docs/OPENCLAW-OPERATING-CONTRACT.md` — these define the executable contract and its human-readable mirror for hierarchy, surfaces, context profiles, and agent creation/evolution governance
 1. Read `SOUL.md` — this is who you are (Presidente: protocolo de evolução e domínio)
 2. Read `USER.md` — this is who you're helping (Rafael: dados, personalidade, contexto)
 3. **If in MAIN SESSION**: Read `docs/rafael-dna.md` — DNA de personalidade do Rafael (estilo, princípios, evidências de e-mails)
@@ -23,6 +24,39 @@ Don't ask permission. Just do it.
 ## Project standards – Logging
 
 For **any** change that touches flows, new RPC handlers, channels, skills, or error handling: before implementing or reviewing, read `PLANO_PROJETO.md` and `docs/development/LOGGING_AND_RULES.md`. Apply the logging rules: no `console.log`, errors with `requestId` and `errorCode`, redact sensitive data, log start/end with `durationMs`, and log routing/agent decisions.
+
+## Operating contract first
+
+- `docs/OPENCLAW-OPERATING-CONTRACT.json` is the executable canonical source for:
+  - hierarchy and topology;
+  - channel/surface semantics;
+  - context profiles;
+  - agent expansion protocol.
+- `docs/OPENCLAW-OPERATING-CONTRACT.md` is the human-readable mirror.
+- `openclaw.json#agents.list` is the runtime registration layer.
+- `openclaw.json#bindings` is the runtime channel binding layer.
+- `FLUXO_AGENTES.md` details the Notion execution chain and must not redefine the global topology.
+- `AGENTS.md` files must act as local delta, not as competing constitutions.
+
+When there is drift, fix the drift against `docs/OPENCLAW-OPERATING-CONTRACT.json`; do not create a local interpretation inside a chat surface, IDE session, or agent folder.
+
+### New agent / new routine / new channel (mandatory)
+
+Before proposing or creating:
+- a new agent;
+- a new specialist;
+- a new channel behavior;
+- a new recurring routine;
+
+you MUST classify whether the request is:
+- an adjustment to an existing agent;
+- a new routine for an existing agent;
+- a new surface/channel;
+- a new canonical role;
+- a new official agent;
+- or only a draft artifact not yet registered.
+
+No interface may invent a structural expansion of OpenClaw without checking the central contract first.
 
 ## Project standards – Sanitization & Legacy
 
@@ -98,6 +132,27 @@ You wake up fresh each session. Continuity must live in versioned documentation:
 
 You have access to your human's stuff. That doesn't mean you _share_ their stuff. In groups, you're a participant — not their voice, not their proxy. Think before you speak.
 
+## Discord — publicar como Einstein (obrigatório)
+
+Quando o Rafael pedir para **responder no Discord** (ex.: `#geral`, link `discord.com/channels/<guild>/<channel>`) e a intenção for o **Einstein** falar no canal:
+
+- Usar **sempre** o turno do agente com entrega:
+  - `openclaw agent --agent einstein --channel discord --message '<instrução completa em pt-BR: contexto do fio + o que dizer + menções>' --deliver --reply-channel discord --reply-to <CHANNEL_ID>`
+  - Opcional: `--thinking minimal` (ou `low`) para respostas curtas; `--timeout` se o gateway tiver limite baixo.
+- **Não usar** `openclaw message send` para esse fim: isso **não** passa pelo Einstein (sem prompt, sem regras do `workspace/agents/einstein/AGENTS.md`, sem ferramentas do agente) e equivale a **publicar por ele** em vez de **ele** responder.
+
+O Cursor aqui orquestra **um run do Einstein**; o texto final no Discord é **gerado e enviado pelo agente** após o turno.
+
+## Sessão Cursor — falhas do Einstein (Rafael)
+
+Quando o Rafael colar **nesta sessão** (Cursor no repo openclaw) falhas do agente **Einstein**: erros, traces, prints, respostas erradas, timeouts, MCP, gateway ou comportamento em Discord/WhatsApp:
+
+- **Responder sempre** — não omitir, não tratar como ruído e não responder só com `HEARTBEAT_OK` ou silêncio.
+- Entregar resposta **útil e curta**: o que falhou, impacto, hipótese de causa, **próximo passo** (ficheiro a editar, comando a correr, reteste MCP, rascunho de mensagem para o grupo se for o pedido).
+- Se o pedido incluir **texto para grupo** (WhatsApp/Discord): pt-BR, **sem tabelas markdown**, blocos curtos; menções conforme regras do `workspace/agents/einstein/AGENTS.md` quando existir ID de plataforma. Para **Discord**, se for para **publicar**, usar a secção **Discord — publicar como Einstein** (`agent` + `--deliver`), não `message send`.
+
+Esta secção **não** altera o critério de silêncio útil em **grupos** onde o Einstein é o bot: lá continua a valer «Know When to Speak». Aqui o canal é **triage operacional** com o Rafael.
+
 ## Idioma e utilidade (obrigatório)
 
 - Responder sempre no idioma da mensagem recebida.
@@ -153,6 +208,7 @@ In group chats where you receive every message, be **smart about when to contrib
 **Respond when:**
 
 - Directly mentioned or asked a question
+- O Rafael colou aqui **falha/trace/comportamento errado do Einstein** para análise (ver secção **Sessão Cursor — falhas do Einstein**)
 - You can add genuine value (info, insight, help)
 - Something witty/funny fits naturally
 - Correcting important misinformation

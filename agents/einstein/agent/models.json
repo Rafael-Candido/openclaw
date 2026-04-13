@@ -44,7 +44,7 @@
     },
     "xai": {
       "baseUrl": "https://api.x.ai/v1",
-      "api": "openai-completions",
+      "api": "openai-responses",
       "models": [
         {
           "id": "grok-3",
@@ -266,6 +266,11 @@
     "openai-codex": {
       "baseUrl": "https://chatgpt.com/backend-api",
       "api": "openai-codex-responses",
+      "models": []
+    },
+    "google": {
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
+      "apiKey": "GEMINI_API_KEY",
       "models": []
     }
   }

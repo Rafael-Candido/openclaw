@@ -1,7 +1,7 @@
 {
   "meta": {
     "lastTouchedVersion": "2026.4.5",
-    "lastTouchedAt": "2026-04-07T08:58:17.831Z"
+    "lastTouchedAt": "2026-04-07T16:28:40.380Z"
   },
   "wizard": {
     "lastRunAt": "2026-04-07T08:58:17.765Z",
@@ -86,7 +86,7 @@
         ]
       },
       "google": {
-        "apiKey": "AIzaSyDMDl7-FIoQrdE5oRsM1EvqhNBL3VrcFdw",
+        "apiKey": "${GEMINI_API_KEY}",
         "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
         "models": []
       }
@@ -95,10 +95,10 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "google/gemini-2.5-flash",
+        "primary": "anthropic/claude-sonnet-4-6",
         "fallbacks": [
-          "google/gemini-2.5-flash-lite",
-          "xai/grok-3-mini"
+          "anthropic/claude-opus-4-6",
+          "openai/gpt-4-turbo"
         ]
       },
       "models": {
@@ -204,10 +204,10 @@
         "name": "Main",
         "workspace": "/var/www/openclaw/workspace",
         "model": {
-          "primary": "google/gemini-2.5-flash",
+          "primary": "anthropic/claude-sonnet-4-6",
           "fallbacks": [
-            "google/gemini-2.5-flash-lite",
-            "xai/grok-3-mini"
+            "anthropic/claude-opus-4-6",
+            "openai/gpt-4-turbo"
           ]
         }
       },
@@ -264,14 +264,9 @@
         "name": "Einstein (SmartEnvios)",
         "workspace": "/var/www/openclaw/workspace/agents/einstein",
         "model": {
-          "primary": "xai/grok-4-1-fast-non-reasoning",
+          "primary": "deepseek/deepseek-chat",
           "fallbacks": [
-            "google/gemini-2.5-pro",
-            "google/gemini-2.5-flash",
-            "google/gemini-2.5-flash-lite",
-            "xai/grok-3-mini",
-            "xai/grok-3",
-            "openai/gpt-4-turbo"
+            "deepseek/deepseek-reasoner"
           ]
         },
         "skills": [
@@ -285,9 +280,7 @@
         "groupChat": {
           "mentionPatterns": [
             "<@1439351480514646087>",
-            "1439351480514646087",
-            "@einstein",
-            "einstein"
+            "<@!1439351480514646087>"
           ]
         },
         "sandbox": {
@@ -323,13 +316,9 @@
         "name": "Einstein Backup (Contingência)",
         "workspace": "/var/www/openclaw/workspace/agents/einstein",
         "model": {
-          "primary": "google/gemini-2.5-pro",
+          "primary": "deepseek/deepseek-reasoner",
           "fallbacks": [
-            "google/gemini-2.5-flash",
-            "google/gemini-2.5-flash-lite",
-            "xai/grok-3-mini",
-            "xai/grok-3",
-            "openai/gpt-4-turbo"
+            "deepseek/deepseek-chat"
           ]
         },
         "skills": [
@@ -415,6 +404,95 @@
         "sandbox": {
           "mode": "off"
         }
+      },
+      {
+        "id": "business-news",
+        "name": "Business News",
+        "workspace": "/var/www/openclaw/workspace/agents/business-news",
+        "model": {
+          "primary": "deepseek/deepseek-chat",
+          "fallbacks": [
+            "google/gemini-2.5-flash-lite",
+            "xai/grok-3-mini"
+          ]
+        },
+        "identity": {
+          "name": "Business-News",
+          "theme": "Business briefing and market intelligence specialist",
+          "emoji": "🗞️"
+        },
+        "sandbox": {
+          "mode": "off"
+        },
+        "tools": {
+          "allow": [
+            "read",
+            "web_search",
+            "web_fetch",
+            "message",
+            "exec"
+          ],
+          "deny": [
+            "gateway",
+            "sessions_send",
+            "sessions_spawn",
+            "sessions_list",
+            "subagents",
+            "cron",
+            "process",
+            "nodes",
+            "browser",
+            "canvas"
+          ]
+        }
+      },
+      {
+        "id": "esp-suporte-software",
+        "name": "Especialista de Suporte de Software",
+        "workspace": "/var/www/openclaw/workspace/agents/esp-suporte-software",
+        "model": {
+          "primary": "google/gemini-2.5-flash",
+          "fallbacks": [
+            "google/gemini-2.5-flash-lite",
+            "google/gemini-2.5-pro",
+            "xai/grok-3-mini"
+          ]
+        },
+        "skills": [
+          "notion"
+        ],
+        "identity": {
+          "name": "Especialista de Suporte de Software",
+          "theme": "SmartEnvios Software Support Operations",
+          "emoji": "🛠️"
+        },
+        "sandbox": {
+          "mode": "off"
+        },
+        "tools": {
+          "allow": [
+            "read",
+            "write",
+            "edit",
+            "web_search",
+            "web_fetch",
+            "message",
+            "exec",
+            "sessions_history"
+          ],
+          "deny": [
+            "gateway",
+            "sessions_send",
+            "sessions_spawn",
+            "sessions_list",
+            "subagents",
+            "cron",
+            "process",
+            "nodes",
+            "browser",
+            "canvas"
+          ]
+        }
       }
     ]
   },
@@ -426,6 +504,15 @@
       "fetch": {
         "enabled": true
       }
+    },
+    "exec": {
+      "strictInlineEval": true,
+      "applyPatch": {
+        "workspaceOnly": true
+      }
+    },
+    "fs": {
+      "workspaceOnly": true
     }
   },
   "bindings": [
@@ -512,23 +599,28 @@
       },
       "dmPolicy": "allowlist",
       "allowFrom": [
-        "932709376790233088"
+        "*"
       ],
       "guilds": {
         "690598219146723358": {
+          "requireMention": true,
+          "ignoreOtherMentions": true
+        },
+        "*": {
           "requireMention": true,
           "ignoreOtherMentions": true
         }
       },
       "execApprovals": {
         "enabled": false
-      }
+      },
+      "contextVisibility": "allowlist_quote"
     }
   },
   "talk": {
     "providers": {
       "elevenlabs": {
-        "apiKey": "sk_92f90a773458ad45b8b7bb5c8b84ec40f34bccd4e931a676"
+        "apiKey": "${ELEVENLABS_API_KEY}"
       }
     }
   },
@@ -546,14 +638,23 @@
     },
     "nodes": {
       "denyCommands": [
-        "camera.snap",
-        "camera.clip",
-        "screen.record",
-        "calendar.add",
-        "contacts.add",
-        "reminders.add"
+        "canvas.present",
+        "canvas.hide",
+        "canvas.navigate",
+        "canvas.eval",
+        "canvas.snapshot",
+        "canvas.a2ui.push",
+        "canvas.a2ui.pushJSONL",
+        "canvas.a2ui.reset"
       ]
-    }
+    },
+    "remote": {
+      "token": "${OPENCLAW_GATEWAY_TOKEN}"
+    },
+    "trustedProxies": [
+      "127.0.0.1",
+      "::1"
+    ]
   },
   "skills": {
     "install": {
@@ -593,6 +694,13 @@
       },
       "browser": {
         "enabled": true
+      },
+      "memory-core": {
+        "config": {
+          "dreaming": {
+            "enabled": true
+          }
+        }
       }
     }
   }

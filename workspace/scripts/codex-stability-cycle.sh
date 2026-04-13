@@ -5,11 +5,11 @@ ROOT="${OPENCLAW_CONFIG_DIR:-/private/var/www/openclaw}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPORT_DIR="$ROOT/workspace/reports"
 TMP_DIR="$ROOT/workspace/tmp"
-PRUNE_SCRIPT="${SCRIPT_DIR}/prune-generated-logs.sh"
+HYGIENE_SCRIPT="${SCRIPT_DIR}/openclaw-hygiene.sh"
 mkdir -p "$REPORT_DIR" "$TMP_DIR"
 
-if [[ -x "${PRUNE_SCRIPT}" ]]; then
-  "${PRUNE_SCRIPT}" "${OPENCLAW_LOG_RETENTION_DAYS:-2}" >/dev/null 2>&1 || true
+if [[ -x "${HYGIENE_SCRIPT}" ]]; then
+  "${HYGIENE_SCRIPT}" --apply --json --once-daily >/dev/null 2>&1 || true
 fi
 
 RUNTIME_GUARD="$SCRIPT_DIR/runtime-guard.sh"

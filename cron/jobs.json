@@ -6,7 +6,7 @@
       "name": "Mail-Person especialista - execução 15min",
       "enabled": true,
       "createdAtMs": 1771800244262,
-      "updatedAtMs": 1775553167491,
+      "updatedAtMs": 1776058363746,
       "schedule": {
         "kind": "every",
         "everyMs": 900000,
@@ -16,7 +16,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/gmail/process-notion-cards.sh personal 15. Responda somente em pt-BR, em no máximo 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO. Sem inglês, sem raciocínio, sem blocos duplicados. Regra adicional: se tarefa não for backlog padrão e for complexa, fatiar em micro-cards (<=30s por fatia). Se houver rascunho manual ou decisão textual, alinhar ao workspace/docs/rafael-dna.md e proibir resposta vaga/corporativa.",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/gmail/process-notion-cards.sh personal 15 via exec e use somente o resultado real do script. Responda em pt-BR com 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO.",
         "model": "google/gemini-2.5-flash-lite",
         "timeoutSeconds": 180,
         "toolsAllow": [
@@ -28,14 +28,16 @@
         "channel": "last"
       },
       "state": {
-        "lastRunAtMs": 1775553151261,
-        "lastStatus": "ok",
-        "lastDurationMs": 16230,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-delivered",
-        "nextRunAtMs": 1775554051261,
-        "lastDelivered": false
+        "lastRunAtMs": 1776058351799,
+        "lastStatus": "error",
+        "lastDurationMs": 11947,
+        "consecutiveErrors": 97,
+        "lastRunStatus": "error",
+        "lastDeliveryStatus": "not-requested",
+        "nextRunAtMs": 1776061963746,
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058363764,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
@@ -49,7 +51,7 @@
       "name": "Presidente - criar demandas 30min",
       "enabled": true,
       "createdAtMs": 1771802119702,
-      "updatedAtMs": 1775552660119,
+      "updatedAtMs": 1776058409452,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -59,9 +61,12 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando em foreground e sem process/background: ./scripts/president-mail-demand-cycle.sh. Responda somente em pt-BR, em até 4 linhas, no formato: STATUS, BACKLOG, ACAO, PROXIMO PASSO. Nunca responder HEARTBEAT_OK. Nunca responder em inglês. Nunca expor raciocínio interno.",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/president-mail-demand-cycle.sh via exec e use somente o resultado real do script. Responda em pt-BR com 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO.",
         "model": "google/gemini-2.5-flash",
-        "timeoutSeconds": 180
+        "timeoutSeconds": 180,
+        "toolsAllow": [
+          "exec"
+        ]
       },
       "delivery": {
         "mode": "announce",
@@ -69,14 +74,21 @@
         "bestEffort": true
       },
       "state": {
-        "lastRunAtMs": 1775552645440,
-        "lastStatus": "ok",
-        "lastDurationMs": 14679,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-delivered",
-        "nextRunAtMs": 1775554445440,
-        "lastDelivered": false
+        "lastRunAtMs": 1776058400826,
+        "lastStatus": "error",
+        "lastDurationMs": 8626,
+        "consecutiveErrors": 96,
+        "lastRunStatus": "error",
+        "lastDeliveryStatus": "unknown",
+        "nextRunAtMs": 1776062009452,
+        "lastErrorReason": "rate_limit",
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
       }
     },
     {
@@ -84,7 +96,7 @@
       "name": "Diretor Tech - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771802125258,
-      "updatedAtMs": 1775552890902,
+      "updatedAtMs": 1776058419656,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -94,41 +106,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/director-tech-deterministic-cycle.sh. Regras: 1 card mais antigo por rodada; diretor só tria/roteia; não concluir no lugar de especialista; se erro, comentar no card e manter rastreabilidade. Em escopo complexo, anotar marker de microplanejamento no card ao rotear.",
-        "model": "google/gemini-2.5-flash-lite",
-        "timeoutSeconds": 120
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "last"
-      },
-      "state": {
-        "nextRunAtMs": 1775554675364,
-        "lastRunAtMs": 1775552875364,
-        "lastStatus": "ok",
-        "lastDurationMs": 15538,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-delivered",
-        "lastDelivered": false
-      }
-    },
-    {
-      "id": "a71c2958-e52f-4f37-9876-bedf6dcb9434",
-      "name": "Diretor Pessoal - varredura 30min",
-      "enabled": true,
-      "createdAtMs": 1771802131232,
-      "updatedAtMs": 1775553144618,
-      "schedule": {
-        "kind": "every",
-        "everyMs": 1800000,
-        "anchorMs": 1771812720000
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/director-personal-deterministic-cycle.sh. Regras: 1 card mais antigo por rodada; diretor só tria/roteia; não concluir no lugar de especialista. Em escopo complexo, anotar marker de microplanejamento no card ao rotear.",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/director-tech-deterministic-cycle.sh via exec e use somente o JSON retornado como fonte de verdade.",
         "model": "google/gemini-2.5-flash-lite",
         "timeoutSeconds": 120,
         "toolsAllow": [
@@ -140,15 +118,61 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1775553172320,
-        "lastRunAtMs": 1775551372320,
-        "lastStatus": "ok",
-        "lastDurationMs": 35468,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-delivered",
-        "lastDelivered": false,
-        "runningAtMs": 1775553194515
+        "nextRunAtMs": 1776062019656,
+        "lastRunAtMs": 1776058411471,
+        "lastStatus": "error",
+        "lastDurationMs": 8185,
+        "consecutiveErrors": 96,
+        "lastRunStatus": "error",
+        "lastDeliveryStatus": "not-requested",
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058419668,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
+      }
+    },
+    {
+      "id": "a71c2958-e52f-4f37-9876-bedf6dcb9434",
+      "name": "Diretor Pessoal - varredura 30min",
+      "enabled": true,
+      "createdAtMs": 1771802131232,
+      "updatedAtMs": 1776058430291,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1771812720000
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/director-personal-deterministic-cycle.sh via exec e use somente o JSON retornado como fonte de verdade.",
+        "model": "google/gemini-2.5-flash-lite",
+        "timeoutSeconds": 120,
+        "toolsAllow": [
+          "exec"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1776062030291,
+        "lastRunAtMs": 1776058421679,
+        "lastStatus": "error",
+        "lastDurationMs": 8612,
+        "consecutiveErrors": 89,
+        "lastRunStatus": "error",
+        "lastDeliveryStatus": "not-requested",
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058430303,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
@@ -162,7 +186,7 @@
       "name": "Diretor Negócios - varredura 30min",
       "enabled": true,
       "createdAtMs": 1771802136467,
-      "updatedAtMs": 1775551698123,
+      "updatedAtMs": 1776058439300,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -172,23 +196,34 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/director-business-deterministic-cycle.sh. Regras: processar 1 card mais antigo por rodada; diretor apenas tria/roteia; sem conclusão manual. Em escopo complexo, anotar marker de microplanejamento no card ao rotear.",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/director-business-deterministic-cycle.sh via exec e use somente o JSON retornado como fonte de verdade.",
         "model": "google/gemini-2.5-flash-lite",
-        "timeoutSeconds": 120
+        "timeoutSeconds": 120,
+        "toolsAllow": [
+          "exec"
+        ]
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1775553466915,
-        "lastRunAtMs": 1775551666915,
-        "lastStatus": "ok",
-        "lastDurationMs": 31208,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-delivered",
-        "lastDelivered": false
+        "nextRunAtMs": 1776062039300,
+        "lastRunAtMs": 1776058432315,
+        "lastStatus": "error",
+        "lastDurationMs": 6985,
+        "consecutiveErrors": 96,
+        "lastRunStatus": "error",
+        "lastDeliveryStatus": "not-requested",
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058439311,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
       }
     },
     {
@@ -196,7 +231,7 @@
       "name": "Mail-Pro especialista - execução 15min",
       "enabled": true,
       "createdAtMs": 1771802143478,
-      "updatedAtMs": 1775553179602,
+      "updatedAtMs": 1776058450123,
       "schedule": {
         "kind": "every",
         "everyMs": 900000,
@@ -206,7 +241,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/gmail/process-notion-cards.sh pro 15. Responda somente em pt-BR, em no máximo 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO. Sem inglês, sem raciocínio, sem blocos duplicados. Regra adicional: se tarefa não for backlog padrão e for complexa, fatiar em micro-cards (<=30s por fatia). Se houver rascunho manual ou decisão textual, alinhar ao workspace/docs/rafael-dna.md e proibir resposta vaga/corporativa.",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/gmail/process-notion-cards.sh pro 15 via exec e use somente o resultado real do script. Responda em pt-BR com 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO.",
         "model": "google/gemini-2.5-flash-lite",
         "timeoutSeconds": 180,
         "toolsAllow": [
@@ -218,14 +253,16 @@
         "channel": "last"
       },
       "state": {
-        "lastRunAtMs": 1775552397849,
-        "lastStatus": "ok",
-        "lastDurationMs": 14737,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-delivered",
-        "nextRunAtMs": 1775553297849,
-        "lastDelivered": false
+        "lastRunAtMs": 1776058441322,
+        "lastStatus": "error",
+        "lastDurationMs": 8801,
+        "consecutiveErrors": 96,
+        "lastRunStatus": "error",
+        "lastDeliveryStatus": "not-requested",
+        "nextRunAtMs": 1776062050123,
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058450137,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
@@ -239,7 +276,7 @@
       "name": "Otimizador - performance e custo 6h",
       "enabled": true,
       "createdAtMs": 1771812501384,
-      "updatedAtMs": 1775544558298,
+      "updatedAtMs": 1776051265689,
       "schedule": {
         "kind": "every",
         "everyMs": 21600000,
@@ -249,23 +286,34 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e siga o JSON de retorno como fonte de verdade: ./scripts/optimizer-deterministic-cycle.sh. Regras: gerar diagnóstico objetivo (24h) e evitar ações não determinísticas.",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/optimizer-deterministic-cycle.sh via exec e use somente o JSON retornado como fonte de verdade.",
         "model": "xai/grok-3-mini",
-        "timeoutSeconds": 360
+        "timeoutSeconds": 360,
+        "toolsAllow": [
+          "exec"
+        ]
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1775566109599,
-        "lastRunAtMs": 1775544509599,
-        "lastStatus": "ok",
-        "lastDurationMs": 48699,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-delivered",
-        "lastDelivered": false
+        "nextRunAtMs": 1776072825926,
+        "lastRunAtMs": 1776051225926,
+        "lastStatus": "error",
+        "lastDurationMs": 39763,
+        "consecutiveErrors": 19,
+        "lastRunStatus": "error",
+        "lastDeliveryStatus": "not-requested",
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776051379753,
+        "lastError": "FallbackSummaryError: All models failed (3): xai/grok-3-mini: ⚠️ API rate limit reached. Please try again later. (rate_limit) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
       }
     },
     {
@@ -273,7 +321,7 @@
       "name": "Engenheiro de Prompt - execução 10min (drenagem)",
       "enabled": true,
       "createdAtMs": 1771815285058,
-      "updatedAtMs": 1775552959323,
+      "updatedAtMs": 1776058489056,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -283,41 +331,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "EXECUCAO OBRIGATORIA: rode exatamente './scripts/eng-prompt-deterministic-cycle.sh' via exec síncrono, aguarde terminar e responda SOMENTE com o JSON bruto retornado pelo script. Proibido process/background, proibido dizer que está rodando, proibido responder sem executar.",
-        "model": "google/gemini-2.5-flash-lite",
-        "timeoutSeconds": 180
-      },
-      "delivery": {
-        "mode": "none",
-        "channel": "last"
-      },
-      "state": {
-        "nextRunAtMs": 1775553538305,
-        "lastRunAtMs": 1775552938305,
-        "lastStatus": "ok",
-        "lastDurationMs": 21018,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-delivered",
-        "lastDelivered": false
-      }
-    },
-    {
-      "id": "a7b8c9d0-e1f2-3456-7890-abcdef123401",
-      "name": "Engenheiro SmartEnvios - execução 10min",
-      "enabled": true,
-      "createdAtMs": 1771815285058,
-      "updatedAtMs": 1775553159970,
-      "schedule": {
-        "kind": "every",
-        "everyMs": 600000,
-        "anchorMs": 1771972006486
-      },
-      "sessionTarget": "isolated",
-      "wakeMode": "now",
-      "payload": {
-        "kind": "agentTurn",
-        "message": "EXECUCAO OBRIGATORIA: rode exatamente './scripts/eng-smartenvios-deterministic-cycle.sh' via exec síncrono, aguarde terminar e responda SOMENTE com o JSON bruto retornado pelo script. Ignore cards antigos sem contexto objetivo; não repetir diagnóstico legado. Proibido process/background e proibido responder sem executar.",
+        "message": "EXECUCAO OBRIGATORIA: rode exatamente ./scripts/eng-prompt-deterministic-cycle.sh via exec sincrono e responda SOMENTE com o JSON bruto retornado pelo script.",
         "model": "google/gemini-2.5-flash-lite",
         "timeoutSeconds": 180,
         "toolsAllow": [
@@ -329,14 +343,61 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1775553260119,
-        "lastRunAtMs": 1775552660119,
-        "lastStatus": "ok",
-        "lastDurationMs": 12373,
-        "consecutiveErrors": 0,
-        "lastRunStatus": "ok",
-        "lastDeliveryStatus": "not-delivered",
-        "lastDelivered": false
+        "nextRunAtMs": 1776062089056,
+        "lastRunAtMs": 1776058481574,
+        "lastStatus": "error",
+        "lastDurationMs": 7482,
+        "consecutiveErrors": 95,
+        "lastRunStatus": "error",
+        "lastDeliveryStatus": "not-requested",
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058489069,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
+      }
+    },
+    {
+      "id": "a7b8c9d0-e1f2-3456-7890-abcdef123401",
+      "name": "Engenheiro SmartEnvios - execução 10min",
+      "enabled": true,
+      "createdAtMs": 1771815285058,
+      "updatedAtMs": 1776058503754,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 600000,
+        "anchorMs": 1771972006486
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "EXECUCAO OBRIGATORIA: rode exatamente ./scripts/eng-smartenvios-deterministic-cycle.sh via exec sincrono e responda SOMENTE com o JSON bruto retornado pelo script.",
+        "model": "google/gemini-2.5-flash-lite",
+        "timeoutSeconds": 180,
+        "toolsAllow": [
+          "exec"
+        ]
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "state": {
+        "nextRunAtMs": 1776062103754,
+        "lastRunAtMs": 1776058493999,
+        "lastStatus": "error",
+        "lastDurationMs": 9755,
+        "consecutiveErrors": 96,
+        "lastRunStatus": "error",
+        "lastDeliveryStatus": "not-requested",
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058503768,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
@@ -351,7 +412,7 @@
       "name": "Engenheiro de Automação - execução 10min",
       "enabled": true,
       "createdAtMs": 1772020256472,
-      "updatedAtMs": 1775553166305,
+      "updatedAtMs": 1776058574326,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -361,7 +422,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente 'cd /var/www/openclaw/workspace && ./scripts/eng-automacao-deterministic-cycle.sh' via exec. Fluxo de automação deve usar API nativa do n8n por contexto (N8N_SALES_API_KEY, N8N_PRODUCT_API_KEY, N8N_FINANCE_API_KEY e N8N_ADMIN_API_KEY), sem dependência de MCP. Só finalize após obter a saída JSON do script. Nunca use process/background. Responda somente em pt-BR e no máximo 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO. Sem inglês, sem raciocínio, sem blocos de código. Regras de especialista: retomar Em andamento antes de Priorizado; fatiar demanda complexa em micro-cards <=30s; registrar evidência objetiva; evitar Impedimento automático por falta de contexto.",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/eng-automacao-deterministic-cycle.sh via exec e use somente o JSON retornado como fonte de verdade. Responda em pt-BR com 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO.",
         "model": "google/gemini-2.5-flash-lite",
         "timeoutSeconds": 180,
         "thinking": "off",
@@ -374,14 +435,16 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1775553272492,
-        "lastRunAtMs": 1775552672492,
-        "lastRunStatus": "ok",
-        "lastStatus": "ok",
-        "lastDurationMs": 19878,
-        "lastDeliveryStatus": "not-delivered",
-        "consecutiveErrors": 0,
-        "lastDelivered": false
+        "nextRunAtMs": 1776062174326,
+        "lastRunAtMs": 1776058544098,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 30228,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 96,
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058574327,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | xai/grok-3-mini: ⚠️ API rate limit reached. Please try again later. (rate_limit) | google/gemini-2.5-pro: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth)"
       },
       "failureAlert": {
         "after": 2,
@@ -395,7 +458,7 @@
       "name": "Main - relatório WhatsApp 60min",
       "enabled": true,
       "createdAtMs": 1772065031709,
-      "updatedAtMs": 1775553185964,
+      "updatedAtMs": 1776058584371,
       "schedule": {
         "kind": "every",
         "everyMs": 3600000,
@@ -405,7 +468,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente /private/var/www/openclaw/workspace/scripts/main-hourly-whatsapp-report.sh via exec. Responda somente em pt-BR, no formato: STATUS, ENVIO, DESTINO, PROXIMO. Sem inglês e sem raciocínio.",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/main-hourly-whatsapp-report.sh via exec e use somente o resultado real do script. Responda em pt-BR no formato: STATUS, ENVIO, DESTINO, PROXIMO.",
         "model": "google/gemini-2.5-flash-lite",
         "timeoutSeconds": 120,
         "toolsAllow": [
@@ -417,14 +480,16 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1775553445932,
-        "lastRunAtMs": 1775549845932,
-        "lastRunStatus": "ok",
-        "lastStatus": "ok",
-        "lastDurationMs": 17139,
-        "lastDeliveryStatus": "not-delivered",
-        "consecutiveErrors": 0,
-        "lastDelivered": false
+        "nextRunAtMs": 1776062184371,
+        "lastRunAtMs": 1776058576333,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 8038,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 92,
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058600558,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
@@ -438,7 +503,7 @@
       "name": "Governança - health/recovery 5min",
       "enabled": true,
       "createdAtMs": 1772141908757,
-      "updatedAtMs": 1775553153215,
+      "updatedAtMs": 1776058591669,
       "schedule": {
         "kind": "every",
         "everyMs": 300000,
@@ -448,7 +513,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente 'bash /private/var/www/openclaw/workspace/scripts/governance-check.sh' via exec, aguarde finalizar e use SOMENTE a saida real do comando. Formato pt-BR max 4 linhas: STATUS, ACAO, RESULTADO, PROXIMO. Proibido responder sem executar.",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/governance-check.sh via exec e use SOMENTE a saida real do comando. Formato pt-BR max 4 linhas: STATUS, ACAO, RESULTADO, PROXIMO.",
         "model": "google/gemini-2.5-flash-lite",
         "timeoutSeconds": 300,
         "toolsAllow": [
@@ -460,15 +525,16 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1775553190902,
-        "lastRunAtMs": 1775552890902,
-        "lastRunStatus": "ok",
-        "lastStatus": "ok",
-        "lastDurationMs": 9376,
-        "lastDeliveryStatus": "not-delivered",
-        "consecutiveErrors": 0,
-        "lastDelivered": false,
-        "runningAtMs": 1775553194515
+        "nextRunAtMs": 1776062191669,
+        "lastRunAtMs": 1776058584371,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 7298,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 96,
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058600562,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
@@ -484,7 +550,7 @@
       "description": "Monitora gateway e crons críticos; aciona governança em instabilidade até estabilizar.",
       "enabled": true,
       "createdAtMs": 1772158376688,
-      "updatedAtMs": 1775553175322,
+      "updatedAtMs": 1776058600545,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -494,7 +560,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "EXECUCAO OBRIGATORIA: rode exatamente 'bash /private/var/www/openclaw/workspace/scripts/codex-stability-cycle.sh' via exec síncrono e responda SOMENTE com as 4 linhas finais do script: STATUS, ACAO, RESULTADO, PROXIMO. Proibido explicar timeout, proibido raciocínio.",
+        "message": "EXECUCAO OBRIGATORIA: rode exatamente ./scripts/codex-stability-cycle.sh via exec sincrono e responda SOMENTE com as 4 linhas finais do script: STATUS, ACAO, RESULTADO, PROXIMO.",
         "model": "google/gemini-2.5-flash-lite",
         "timeoutSeconds": 180,
         "toolsAllow": [
@@ -506,21 +572,188 @@
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1775553292370,
-        "lastRunAtMs": 1775552692370,
+        "nextRunAtMs": 1776062200545,
+        "lastRunAtMs": 1776058591669,
         "lastRunStatus": "error",
         "lastStatus": "error",
-        "lastDurationMs": 180016,
+        "lastDurationMs": 8876,
         "lastDeliveryStatus": "not-requested",
-        "consecutiveErrors": 2,
-        "lastError": "cron: job execution timed out",
-        "lastErrorReason": "timeout"
+        "consecutiveErrors": 96,
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058600567,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
+      }
+    },
+    {
+      "id": "06045675-03fb-4494-89ca-0f64bba7c067",
+      "name": "OpenClaw - tasks audit diario",
+      "enabled": true,
+      "createdAtMs": 1775553617913,
+      "updatedAtMs": 1776051346577,
+      "schedule": {
+        "kind": "cron",
+        "expr": "10 7 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e use o JSON como fonte de verdade: openclaw tasks audit --json. Retorne no maximo 6 linhas com: TOTAL, ERROS, AVISOS, BY_CODE(lost/stale_running/stale_queued/delivery_failed), ACAO_RECOMENDADA, PROXIMO_PASSO.",
+        "toolsAllow": [
+          "exec"
+        ]
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "last"
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
+      },
+      "state": {
+        "nextRunAtMs": 1776075000000,
+        "lastRunAtMs": 1776051338169,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 8408,
+        "lastErrorReason": "rate_limit",
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 6,
+        "lastFailureAlertAtMs": 1776051379901,
+        "lastError": "FallbackSummaryError: All models failed (3): anthropic/claude-sonnet-4-6: Provider anthropic has billing issue (skipping all models) (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+      }
+    },
+    {
+      "id": "0b25eefa-e39c-4352-b1aa-856b7c20d98f",
+      "name": "OpenClaw - tasks maintenance semanal",
+      "enabled": true,
+      "createdAtMs": 1775553632050,
+      "updatedAtMs": 1776051354499,
+      "schedule": {
+        "kind": "cron",
+        "expr": "25 7 * * 0",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e use o JSON como fonte de verdade: openclaw tasks maintenance --apply --json. Retorne no maximo 6 linhas com: ACOES_APLICADAS, LOST_ANTES, LOST_DEPOIS, ACTIVE, FAILURES, PROXIMO_PASSO.",
+        "toolsAllow": [
+          "exec"
+        ]
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "last"
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
+      },
+      "state": {
+        "nextRunAtMs": 1776594300000,
+        "lastRunAtMs": 1776051346577,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 7922,
+        "lastError": "FallbackSummaryError: All models failed (3): anthropic/claude-sonnet-4-6: Provider anthropic has billing issue (skipping all models) (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)",
+        "lastErrorReason": "rate_limit",
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 1
+      }
+    },
+    {
+      "id": "826653ae-7b20-43e2-adf0-90c96a60a6ec",
+      "agentId": "esp-suporte-software",
+      "name": "Especialista Suporte Software - execução 10min",
+      "enabled": true,
+      "createdAtMs": 1775556627480,
+      "updatedAtMs": 1776058633101,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 600000,
+        "anchorMs": 1775556627480
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "EXECUCAO OBRIGATORIA: rode exatamente ./scripts/esp-suporte-software-deterministic-cycle.sh via exec sincrono e responda SOMENTE com o JSON bruto retornado pelo script.",
+        "model": "google/gemini-2.5-flash-lite",
+        "timeoutSeconds": 180,
+        "toolsAllow": [
+          "exec"
+        ],
+        "thinking": "off"
+      },
+      "delivery": {
+        "mode": "none",
+        "channel": "last"
+      },
+      "failureAlert": {
+        "after": 2,
+        "channel": "last",
+        "cooldownMs": 1800000,
+        "mode": "announce"
+      },
+      "state": {
+        "nextRunAtMs": 1776062233101,
+        "lastRunAtMs": 1776058606275,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 26826,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 90,
+        "lastErrorReason": "rate_limit",
+        "lastFailureAlertAtMs": 1776058633102,
+        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | google/gemini-2.5-pro: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | xai/grok-3-mini: ⚠️ API rate limit reached. Please try again later. (rate_limit)"
+      }
+    },
+    {
+      "id": "4a784051-745d-4d5e-ae22-161044ec8a34",
+      "agentId": "business-news",
+      "sessionKey": "agent:business-news:business-news",
+      "name": "Business-News - briefing matinal 7h30",
+      "enabled": true,
+      "createdAtMs": 1776052144374,
+      "updatedAtMs": 1776052350483,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 7 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/business-news-simple.sh via exec e use o JSON retornado como fonte de verdade. Se whatsapp_ready=true, envie a mensagem formatada para WhatsApp usando a ferramenta message. Formato de resposta em pt-BR: STATUS, NOTICIAS, FORMATO, ENVIO.",
+        "model": "google/gemini-2.5-flash-lite",
+        "timeoutSeconds": 300,
+        "toolsAllow": [
+          "exec",
+          "message"
+        ]
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "last",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1776076200000
       }
     }
   ]

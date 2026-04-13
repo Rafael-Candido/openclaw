@@ -7,7 +7,7 @@ Agente isolado para responder dúvidas sobre a plataforma SmartEnvios em canais 
 - **Agente ID:** `einstein`
 - **Discord Mention:** `@1439351480514646087`
 - **Workspace:** `/var/www/openclaw/workspace/agents/einstein`
-- **Modelo (openclaw.json):** `xai/grok-4-1-fast-non-reasoning` (primary), fallbacks Grok 3 Mini, Grok 3, DeepSeek, GPT-4 Turbo, Claude Sonnet/Opus, Grok Beta
+- **Modelo (openclaw.json):** `deepseek/deepseek-chat` (primary), fallback `deepseek/deepseek-reasoner`
 
 ## Restrições
 

@@ -66157,3 +66157,25 @@ Formato sugerido:
   - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
 - **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
   - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-07 09:42 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
