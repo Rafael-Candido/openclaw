@@ -48,6 +48,7 @@ tasks/
 exec-approvals.json
 openclaw.json.bak*
 openclaw.json*.bak*
+openclaw.json.clobbered*
 update-check.json
 
 # Agent authentication and sessions (contain secrets)
