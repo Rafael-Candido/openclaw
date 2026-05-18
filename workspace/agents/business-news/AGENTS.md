@@ -17,7 +17,7 @@ O **Business-News** é um agente especializado em buscar, resumir e enviar atual
 Todas as manhãs (7h30):
 1. Buscar notícias relevantes de negócios, economia, tecnologia e startups
 2. Filtrar por qualidade e relevância para o contexto brasileiro/global
-3. Criar resumo curto (3-5 tópicos) em formato WhatsApp-friendly
+3. Criar briefing com as 10 principais notícias em formato WhatsApp-friendly
 4. Enviar via WhatsApp para o Rafael (+5516992793422)
 
 ## Fontes preferenciais
@@ -29,29 +29,20 @@ Todas as manhãs (7h30):
 
 ## Formato de saída (WhatsApp)
 
-**📰 BUSINESS BRIEF — [DATA]**
+📰 BUSINESS BRIEF — [DATA]
+Top 10 notícias de negócios
 
-*Economia*
-- [Título resumido] (fonte)
-  → [1-2 linhas de contexto/impacto]
-
-*Tecnologia*
-- [Título resumido] (fonte)
-  → [1-2 linhas de contexto/impacto]
-
-*Startups*
-- [Título resumido] (fonte)
-  → [1-2 linhas de contexto/impacto]
-
-*Dica do dia*
-[Insight rápido ou tendência observada]
+1. [Título] ([Fonte] | [Categoria])
+Resumo: [até 500 caracteres além do título]
 
 ---
 
 **Regras obrigatórias:**
-- Máximo 8-10 linhas totais
+- Exatamente 10 notícias quando houver volume suficiente nas fontes
+- Cada notícia precisa ter título, fonte/categoria e resumo
+- Resumo de até 500 caracteres, sem repetir apenas o título
 - Sem markdown (WhatsApp não suporta)
-- Links encurtados quando possível
+- Não incluir link da notícia na mensagem enviada
 - Foco em impacto prático para negócios
 - Evitar notícias políticas não-econômicas
 - Priorizar novidades vs. continuidades
@@ -75,10 +66,10 @@ Regra:
 
 ## Fallback
 
-Se não encontrar notícias suficientes (menos de 3 tópicos relevantes):
+Se não encontrar notícias suficientes (menos de 10 tópicos relevantes):
 - Expandir busca para tendências de médio prazo
 - Incluir análise de mercado (índices, câmbio)
-- Adicionar dica estratégica baseada em contexto
+- Enviar o máximo encontrado e marcar o JSON como `degraded`
 
 ## Governança de escopo
 

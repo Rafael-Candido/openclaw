@@ -27,11 +27,32 @@ read_env_var() {
   printf '%s' "${value}"
 }
 
-MCP_URL="${SMARTENVIOS_MCP_URL:-$(read_env_var SMARTENVIOS_MCP_URL "${ENV_FILE}")}"
+read_config_var() {
+  local key="$1"
+  local file="$2"
+  local file_value env_value
+
+  file_value="$(read_env_var "${key}" "${file}")"
+  env_value="${!key:-}"
+
+  # OpenClaw daemons can keep old environment variables after .env changes.
+  # Prefer the project .env by default so credential rotation takes effect
+  # without restarting the Discord/gateway process. Set
+  # SMARTENVIOS_MCP_PREFER_ENV=true only for explicit one-off overrides.
+  if [[ "${SMARTENVIOS_MCP_PREFER_ENV:-false}" == "true" && -n "${env_value}" ]]; then
+    printf '%s' "${env_value}"
+  elif [[ -n "${file_value}" ]]; then
+    printf '%s' "${file_value}"
+  else
+    printf '%s' "${env_value}"
+  fi
+}
+
+MCP_URL="$(read_config_var SMARTENVIOS_MCP_URL "${ENV_FILE}")"
 MCP_URL="${MCP_URL:-${DEFAULT_MCP_URL}}"
-MCP_FALLBACK_URL="${SMARTENVIOS_MCP_FALLBACK_URL:-$(read_env_var SMARTENVIOS_MCP_FALLBACK_URL "${ENV_FILE}")}"
-MCP_EMAIL="${SMARTENVIOS_MCP_EMAIL:-$(read_env_var SMARTENVIOS_MCP_EMAIL "${ENV_FILE}")}"
-MCP_PASSWORD="${SMARTENVIOS_MCP_PASSWORD:-$(read_env_var SMARTENVIOS_MCP_PASSWORD "${ENV_FILE}")}"
+MCP_FALLBACK_URL="$(read_config_var SMARTENVIOS_MCP_FALLBACK_URL "${ENV_FILE}")"
+MCP_EMAIL="$(read_config_var SMARTENVIOS_MCP_EMAIL "${ENV_FILE}")"
+MCP_PASSWORD="$(read_config_var SMARTENVIOS_MCP_PASSWORD "${ENV_FILE}")"
 
 if [[ -z "${MCP_FALLBACK_URL}" ]]; then
   case "${MCP_URL}" in

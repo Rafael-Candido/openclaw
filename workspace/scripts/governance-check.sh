@@ -49,6 +49,7 @@ OPENCLAW_CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-/var/www/openclaw}"
 NOTION_HELPER_SCRIPT="${PROJECT_ROOT}/workspace/scripts/notion-helper.sh"
 GMAIL_SCRIPT="${PROJECT_ROOT}/workspace/scripts/gmail/gmail.sh"
 DISCORD_GATEWAY_HEALTH_SCRIPT="${PROJECT_ROOT}/workspace/scripts/discord-gateway-health.sh"
+EINSTEIN_JIRA_FASTPATH_SCRIPT="${PROJECT_ROOT}/workspace/scripts/einstein-discord-jira-fastpath.sh"
 NOTION_PERSONAL_DB_ID="bfcbe7a7a3a745489e605e0762af12a9"
 BOTTLENECK_COOLDOWN_SEC="${GOV_BOTTLENECK_COOLDOWN_SEC:-21600}"
 RUNTIME_TMP_DIR="${OPENCLAW_CONFIG_DIR}/workspace/tmp"
@@ -143,6 +144,7 @@ GATEWAY_RESTART_REQUESTED="false"
 WOKEN_CRONS="|"
 WAKES_USED=0
 WAKES_DROPPED=0
+COST_GUARD_TRIPPED="false"
 GOV_WAKE_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-wake-state.json"
 GOV_MAIL_CHAIN_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-mail-chain-state.json"
 GOV_GATEWAY_RECOVERY_STATE_FILE="${OPENCLAW_CONFIG_DIR}/.cache/governance-gateway-recovery-state.json"
@@ -2195,6 +2197,11 @@ for page in data.get('results', []):
 force_cron_wake() {
   local cron_id="$1"
   [[ -z "${cron_id:-}" ]] && return 0
+  if [[ "${COST_GUARD_TRIPPED:-false}" == "true" ]]; then
+    WAKES_DROPPED=$((WAKES_DROPPED + 1))
+    report "🛑 Wake bloqueado por guarda de custo: cron=${cron_id}"
+    return 0
+  fi
   # Evita tempestade de wakes no mesmo ciclo.
   if [[ "${WOKEN_CRONS}" == *"|${cron_id}|"* ]]; then
     return 0
@@ -3288,9 +3295,12 @@ PY
   if [[ "${over_alert}" == "1" ]]; then
     severity="medium"
     [[ "${over_critical}" == "1" ]] && severity="high"
+    COST_GUARD_TRIPPED="true"
     report "🚨 Custo IA acima do limite: R\$${total_brl} (alerta=${GOV_DAILY_COST_ALERT_BRL}, crítico=${GOV_DAILY_COST_CRITICAL_BRL})"
     register_bottleneck "ai-daily-cost-high" "${severity}" "Custo diário de IA acima do limite" "Estimativa diária de custo: R\$${total_brl} (~US\$${total_usd}), tokens=${total_tokens}. Top modelo: ${top_model_line}. Top cron: ${top_job_line}." "Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt."
-    if can_trigger_optimizer_now "${GOV_COST_OPTIMIZER_TRIGGER_GAP_MS}"; then
+    if [[ "${over_critical}" == "1" ]]; then
+      report "🛑 Trigger Otimizador bloqueado: custo diário crítico exige contenção, não novo wake"
+    elif can_trigger_optimizer_now "${GOV_COST_OPTIMIZER_TRIGGER_GAP_MS}"; then
       force_cron_wake "${OPTIMIZER_CRON}" || true
       report "🛠️ Trigger Otimizador: custo diário alto detectado, execução do cron Otimizador acionada"
     else
@@ -3689,7 +3699,7 @@ recover_einstein_unanswered_mentions() {
   local cooldown_sec="${GOV_EINSTEIN_RECOVERY_COOLDOWN_SEC:-900}"
   local backup_agent_id="${GOV_EINSTEIN_BACKUP_AGENT_ID:-einstein-backup}"
   local retry_delay_sec="${GOV_EINSTEIN_RECOVERY_RETRY_DELAY_SEC:-3}"
-  local thinking_level="${GOV_EINSTEIN_RECOVERY_THINKING:-minimal}"
+  local thinking_level="${GOV_EINSTEIN_RECOVERY_THINKING:-low}"
   local failure_notify="${GOV_EINSTEIN_FAILURE_NOTIFY:-true}"
   local max_per_round="${GOV_EINSTEIN_RECOVERY_MAX_PER_ROUND:-12}"
   local max_pending_per_channel="${GOV_EINSTEIN_RECOVERY_MAX_PENDING_PER_CHANNEL:-1}"
@@ -4182,6 +4192,31 @@ PY
   fi
 }
 
+recover_einstein_jira_fastpath() {
+  if [[ ! -x "${EINSTEIN_JIRA_FASTPATH_SCRIPT}" ]]; then
+    report "⚠️ Einstein Jira fastpath: script ausente"
+    register_bottleneck "einstein-jira-fastpath-missing" "high" "Fastpath Jira do Einstein ausente" "Governança não encontrou ${EINSTEIN_JIRA_FASTPATH_SCRIPT}." "Restaurar o script determinístico para pedidos Jira no Discord."
+    return 0
+  fi
+
+  local fastpath_json processed created transitioned skipped errors
+  fastpath_json="$("${EINSTEIN_JIRA_FASTPATH_SCRIPT}" 2>/dev/null || echo '{"ok":false,"processed":0,"created":0,"transitioned":0,"skipped":0,"errors":1}')"
+  processed="$(echo "${fastpath_json}" | jq -r '.processed // 0' 2>/dev/null || echo 0)"
+  created="$(echo "${fastpath_json}" | jq -r '.created // 0' 2>/dev/null || echo 0)"
+  transitioned="$(echo "${fastpath_json}" | jq -r '.transitioned // 0' 2>/dev/null || echo 0)"
+  skipped="$(echo "${fastpath_json}" | jq -r '.skipped // 0' 2>/dev/null || echo 0)"
+  errors="$(echo "${fastpath_json}" | jq -r '.errors // 0' 2>/dev/null || echo 0)"
+
+  if [[ "${errors}" != "0" ]]; then
+    report "⚠️ Einstein Jira fastpath: falhas=${errors}, criadas=${created}, movidas=${transitioned}"
+    register_bottleneck "einstein-jira-fastpath-error" "high" "Fastpath Jira do Einstein falhou" "Script retornou falhas=${errors}, processed=${processed}, skipped=${skipped}." "Revisar MCP Jira, parser de mensagens e permissões de envio no Discord."
+  elif [[ "${processed}" != "0" || "${created}" != "0" || "${transitioned}" != "0" ]]; then
+    report "✅ Einstein Jira fastpath: processadas=${processed}, criadas=${created}, movidas=${transitioned}, ignoradas=${skipped}"
+  else
+    report "✅ Einstein Jira fastpath: sem comandos transacionais pendentes"
+  fi
+}
+
 # 1) Health check do gateway
 log "Checando saúde do gateway..."
 if ocw_gateway_health >/dev/null 2>&1; then
@@ -4223,7 +4258,11 @@ recover_on_discord_gateway_outage
 log "Checando token mismatch e reconexões Discord..."
 recover_on_gateway_token_mismatch
 
-# 3c) Detecta menções sem resposta do Einstein e reprocessa automaticamente
+# 3c) Processa comandos Jira do Einstein sem depender de LLM
+log "Checando fastpath Jira do Einstein..."
+recover_einstein_jira_fastpath
+
+# 3d) Detecta menções sem resposta do Einstein e reprocessa automaticamente
 log "Checando autonomia do Einstein (menções pendentes no Discord)..."
 recover_einstein_unanswered_mentions
 
@@ -4305,8 +4344,13 @@ if [[ -n "$ERRORED_CRONS" ]]; then
     report "⚠️ Cron ${cron_name}: ${err_count} erros consecutivos"
     register_bottleneck "cron-errors-${cron_id}" "high" "Cron com erros consecutivos: ${cron_name}" "Cron ${cron_name} acumulou ${err_count} erros consecutivos." "Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência."
     ocw_sessions_reset "agent:main:cron:${cron_id}" >/dev/null 2>&1 || true
-    ocw_cron_enable "${cron_id}" >/dev/null 2>&1 || true
-    report "🔄 ${cron_name}: sessão resetada + re-habilitado"
+    if [[ "${COST_GUARD_TRIPPED:-false}" == "true" ]]; then
+      ocw_cron_disable "${cron_id}" >/dev/null 2>&1 || true
+      report "⛔ ${cron_name}: mantido desabilitado por guarda de custo"
+    else
+      ocw_cron_enable "${cron_id}" >/dev/null 2>&1 || true
+      report "🔄 ${cron_name}: sessão resetada + re-habilitado"
+    fi
 
     # Se for erro de configuração (não-transiente), desabilitar para reduzir custo/ruído até correção.
     if [[ "${GOV_DISABLE_CRON_ON_CONFIG_ERROR}" == "true" ]]; then

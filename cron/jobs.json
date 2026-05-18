@@ -4,9 +4,9 @@
     {
       "id": "e4cd9635-efdd-4588-8ecc-523a4a50ea20",
       "name": "Mail-Person especialista - execução 15min",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1771800244262,
-      "updatedAtMs": 1776058363746,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 900000,
@@ -17,41 +17,43 @@
       "payload": {
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/gmail/process-notion-cards.sh personal 15 via exec e use somente o resultado real do script. Responda em pt-BR com 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 180,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "lastRunAtMs": 1776058351799,
+        "lastRunAtMs": 1777728648704,
         "lastStatus": "error",
-        "lastDurationMs": 11947,
-        "consecutiveErrors": 97,
+        "lastDurationMs": 10072,
+        "consecutiveErrors": 9,
         "lastRunStatus": "error",
         "lastDeliveryStatus": "not-requested",
-        "nextRunAtMs": 1776061963746,
         "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058363764,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "lastFailureAlertAtMs": 1777728666700,
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "985165be-59eb-46e7-8715-17571c8e8227",
       "name": "Presidente - criar demandas 30min",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1771802119702,
-      "updatedAtMs": 1776058409452,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -62,11 +64,13 @@
       "payload": {
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/president-mail-demand-cycle.sh via exec e use somente o resultado real do script. Responda em pt-BR com 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO.",
-        "model": "google/gemini-2.5-flash",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 180,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "announce",
@@ -74,29 +78,29 @@
         "bestEffort": true
       },
       "state": {
-        "lastRunAtMs": 1776058400826,
+        "lastRunAtMs": 1777728555186,
         "lastStatus": "error",
-        "lastDurationMs": 8626,
-        "consecutiveErrors": 96,
+        "lastDurationMs": 9566,
+        "consecutiveErrors": 8,
         "lastRunStatus": "error",
         "lastDeliveryStatus": "unknown",
-        "nextRunAtMs": 1776062009452,
         "lastErrorReason": "rate_limit",
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "7fba5b1f-2ee9-4b1e-aae0-bd211c32b925",
       "name": "Diretor Tech - varredura 30min",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1771802125258,
-      "updatedAtMs": 1776058419656,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -107,41 +111,43 @@
       "payload": {
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/director-tech-deterministic-cycle.sh via exec e use somente o JSON retornado como fonte de verdade.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 120,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1776062019656,
-        "lastRunAtMs": 1776058411471,
+        "lastRunAtMs": 1777728658776,
         "lastStatus": "error",
-        "lastDurationMs": 8185,
-        "consecutiveErrors": 96,
+        "lastDurationMs": 7861,
+        "consecutiveErrors": 8,
         "lastRunStatus": "error",
         "lastDeliveryStatus": "not-requested",
         "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058419668,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "lastFailureAlertAtMs": 1777728666725,
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "a71c2958-e52f-4f37-9876-bedf6dcb9434",
       "name": "Diretor Pessoal - varredura 30min",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1771802131232,
-      "updatedAtMs": 1776058430291,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -152,41 +158,43 @@
       "payload": {
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/director-personal-deterministic-cycle.sh via exec e use somente o JSON retornado como fonte de verdade.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 120,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1776062030291,
-        "lastRunAtMs": 1776058421679,
+        "lastRunAtMs": 1777729320016,
         "lastStatus": "error",
-        "lastDurationMs": 8612,
-        "consecutiveErrors": 89,
+        "lastDurationMs": 8722,
+        "consecutiveErrors": 8,
         "lastRunStatus": "error",
         "lastDeliveryStatus": "not-requested",
         "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058430303,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "lastFailureAlertAtMs": 1777729328798,
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "cf343b94-0816-42e5-b3dc-d40ecf12786e",
       "name": "Diretor Negócios - varredura 30min",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1771802136467,
-      "updatedAtMs": 1776058439300,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -197,41 +205,43 @@
       "payload": {
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/director-business-deterministic-cycle.sh via exec e use somente o JSON retornado como fonte de verdade.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 120,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1776062039300,
-        "lastRunAtMs": 1776058432315,
+        "lastRunAtMs": 1777728782804,
         "lastStatus": "error",
-        "lastDurationMs": 6985,
-        "consecutiveErrors": 96,
+        "lastDurationMs": 8970,
+        "consecutiveErrors": 8,
         "lastRunStatus": "error",
         "lastDeliveryStatus": "not-requested",
         "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058439311,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "lastFailureAlertAtMs": 1777728791855,
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "99de71d1-97b0-48d0-933e-7fcacfda2184",
       "name": "Mail-Pro especialista - execução 15min",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1771802143478,
-      "updatedAtMs": 1776058450123,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 900000,
@@ -242,41 +252,43 @@
       "payload": {
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/gmail/process-notion-cards.sh pro 15 via exec e use somente o resultado real do script. Responda em pt-BR com 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 180,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "lastRunAtMs": 1776058441322,
+        "lastRunAtMs": 1777728564752,
         "lastStatus": "error",
-        "lastDurationMs": 8801,
-        "consecutiveErrors": 96,
+        "lastDurationMs": 7471,
+        "consecutiveErrors": 9,
         "lastRunStatus": "error",
         "lastDeliveryStatus": "not-requested",
-        "nextRunAtMs": 1776062050123,
         "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058450137,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "lastFailureAlertAtMs": 1777728646574,
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "59c24991-af6c-4df2-95fe-bbf012cd73c0",
       "name": "Otimizador - performance e custo 6h",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1771812501384,
-      "updatedAtMs": 1776051265689,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 21600000,
@@ -287,41 +299,42 @@
       "payload": {
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/optimizer-deterministic-cycle.sh via exec e use somente o JSON retornado como fonte de verdade.",
-        "model": "xai/grok-3-mini",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 360,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1776072825926,
-        "lastRunAtMs": 1776051225926,
+        "lastRunAtMs": 1777712988674,
         "lastStatus": "error",
-        "lastDurationMs": 39763,
-        "consecutiveErrors": 19,
+        "lastDurationMs": 755923,
+        "consecutiveErrors": 1,
         "lastRunStatus": "error",
         "lastDeliveryStatus": "not-requested",
-        "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776051379753,
-        "lastError": "FallbackSummaryError: All models failed (3): xai/grok-3-mini: ⚠️ API rate limit reached. Please try again later. (rate_limit) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "lastError": "cron: job execution timed out",
+        "lastErrorReason": "timeout"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "6bdd82c7-081d-486b-9700-0572b9fce72e",
       "name": "Engenheiro de Prompt - execução 10min (drenagem)",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1771815285058,
-      "updatedAtMs": 1776058489056,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -332,41 +345,43 @@
       "payload": {
         "kind": "agentTurn",
         "message": "EXECUCAO OBRIGATORIA: rode exatamente ./scripts/eng-prompt-deterministic-cycle.sh via exec sincrono e responda SOMENTE com o JSON bruto retornado pelo script.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 180,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1776062089056,
-        "lastRunAtMs": 1776058481574,
+        "lastRunAtMs": 1777728472853,
         "lastStatus": "error",
-        "lastDurationMs": 7482,
-        "consecutiveErrors": 95,
+        "lastDurationMs": 34771,
+        "consecutiveErrors": 9,
         "lastRunStatus": "error",
         "lastDeliveryStatus": "not-requested",
         "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058489069,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "lastFailureAlertAtMs": 1777728519533,
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | anthropic/claude-opus-4-6: LLM request rejected: Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits. (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "a7b8c9d0-e1f2-3456-7890-abcdef123401",
       "name": "Engenheiro SmartEnvios - execução 10min",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1771815285058,
-      "updatedAtMs": 1776058503754,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -377,42 +392,44 @@
       "payload": {
         "kind": "agentTurn",
         "message": "EXECUCAO OBRIGATORIA: rode exatamente ./scripts/eng-smartenvios-deterministic-cycle.sh via exec sincrono e responda SOMENTE com o JSON bruto retornado pelo script.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 180,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1776062103754,
-        "lastRunAtMs": 1776058493999,
+        "lastRunAtMs": 1777728235898,
         "lastStatus": "error",
-        "lastDurationMs": 9755,
-        "consecutiveErrors": 96,
+        "lastDurationMs": 236955,
+        "consecutiveErrors": 9,
         "lastRunStatus": "error",
         "lastDeliveryStatus": "not-requested",
-        "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058503768,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "lastErrorReason": "timeout",
+        "lastFailureAlertAtMs": 1777728519506,
+        "lastError": "cron: job execution timed out"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "79672496-e2c8-4851-9f19-98b5efafa2ff",
       "agentId": "eng-automacao",
       "name": "Engenheiro de Automação - execução 10min",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1772020256472,
-      "updatedAtMs": 1776058574326,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -423,42 +440,43 @@
       "payload": {
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/eng-automacao-deterministic-cycle.sh via exec e use somente o JSON retornado como fonte de verdade. Responda em pt-BR com 4 linhas: STATUS, BACKLOG, ACAO, PROXIMO PASSO.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 180,
         "thinking": "off",
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1776062174326,
-        "lastRunAtMs": 1776058544098,
+        "lastRunAtMs": 1777728572223,
         "lastRunStatus": "error",
         "lastStatus": "error",
-        "lastDurationMs": 30228,
+        "lastDurationMs": 30115,
         "lastDeliveryStatus": "not-requested",
-        "consecutiveErrors": 96,
+        "consecutiveErrors": 156,
         "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058574327,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | xai/grok-3-mini: ⚠️ API rate limit reached. Please try again later. (rate_limit) | google/gemini-2.5-pro: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth)"
+        "lastFailureAlertAtMs": 1777728646599,
+        "lastError": "FallbackSummaryError: All models failed (4): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | xai/grok-3-mini: ⚠️ API rate limit reached. Please try again later. (rate_limit) | google/gemini-2.5-pro: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth)"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "0633c77a-4e3f-47fa-82be-35767e806836",
       "name": "Main - relatório WhatsApp 60min",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1772065031709,
-      "updatedAtMs": 1776058584371,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 3600000,
@@ -469,41 +487,43 @@
       "payload": {
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/main-hourly-whatsapp-report.sh via exec e use somente o resultado real do script. Responda em pt-BR no formato: STATUS, ENVIO, DESTINO, PROXIMO.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 120,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1776062184371,
-        "lastRunAtMs": 1776058576333,
+        "lastRunAtMs": 1777728602338,
         "lastRunStatus": "error",
         "lastStatus": "error",
-        "lastDurationMs": 8038,
+        "lastDurationMs": 8614,
         "lastDeliveryStatus": "not-requested",
-        "consecutiveErrors": 92,
+        "consecutiveErrors": 6,
         "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058600558,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "lastFailureAlertAtMs": 1777728646601,
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "c408ba92-a26a-420d-844f-64448f983d93",
       "name": "Governança - health/recovery 5min",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1772141908757,
-      "updatedAtMs": 1776058591669,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 300000,
@@ -514,43 +534,45 @@
       "payload": {
         "kind": "agentTurn",
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/governance-check.sh via exec e use SOMENTE a saida real do comando. Formato pt-BR max 4 linhas: STATUS, ACAO, RESULTADO, PROXIMO.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 300,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1776062191669,
-        "lastRunAtMs": 1776058584371,
+        "lastRunAtMs": 1777727071466,
         "lastRunStatus": "error",
         "lastStatus": "error",
-        "lastDurationMs": 7298,
+        "lastDurationMs": 1164432,
         "lastDeliveryStatus": "not-requested",
-        "consecutiveErrors": 96,
-        "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058600562,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "consecutiveErrors": 9,
+        "lastErrorReason": "timeout",
+        "lastFailureAlertAtMs": 1777728519484,
+        "lastError": "cron: job execution timed out"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "0a145dca-9bb4-46a6-be5b-d15ee4ae30ef",
       "agentId": "main",
       "name": "Codex - stability monitor 10min",
       "description": "Monitora gateway e crons críticos; aciona governança em instabilidade até estabilizar.",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1772158376688,
-      "updatedAtMs": 1776058600545,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -561,41 +583,43 @@
       "payload": {
         "kind": "agentTurn",
         "message": "EXECUCAO OBRIGATORIA: rode exatamente ./scripts/codex-stability-cycle.sh via exec sincrono e responda SOMENTE com as 4 linhas finais do script: STATUS, ACAO, RESULTADO, PROXIMO.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 180,
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
         "channel": "last"
       },
       "state": {
-        "nextRunAtMs": 1776062200545,
-        "lastRunAtMs": 1776058591669,
+        "lastRunAtMs": 1777728507624,
         "lastRunStatus": "error",
         "lastStatus": "error",
-        "lastDurationMs": 8876,
+        "lastDurationMs": 11858,
         "lastDeliveryStatus": "not-requested",
-        "consecutiveErrors": 96,
+        "consecutiveErrors": 9,
         "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058600567,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+        "lastFailureAlertAtMs": 1777728519557,
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
       },
       "failureAlert": {
         "after": 2,
         "channel": "last",
         "cooldownMs": 1800000,
         "mode": "announce"
-      }
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "06045675-03fb-4494-89ca-0f64bba7c067",
       "name": "OpenClaw - tasks audit diario",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1775553617913,
-      "updatedAtMs": 1776051346577,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "cron",
         "expr": "10 7 * * *",
@@ -608,7 +632,10 @@
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e use o JSON como fonte de verdade: openclaw tasks audit --json. Retorne no maximo 6 linhas com: TOTAL, ERROS, AVISOS, BY_CODE(lost/stale_running/stale_queued/delivery_failed), ACAO_RECOMENDADA, PROXIMO_PASSO.",
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "model": "deepseek/deepseek-chat",
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "announce",
@@ -621,24 +648,24 @@
         "mode": "announce"
       },
       "state": {
-        "nextRunAtMs": 1776075000000,
-        "lastRunAtMs": 1776051338169,
+        "lastRunAtMs": 1777728610952,
         "lastRunStatus": "error",
         "lastStatus": "error",
-        "lastDurationMs": 8408,
-        "lastErrorReason": "rate_limit",
+        "lastDurationMs": 8184,
         "lastDeliveryStatus": "unknown",
-        "consecutiveErrors": 6,
-        "lastFailureAlertAtMs": 1776051379901,
-        "lastError": "FallbackSummaryError: All models failed (3): anthropic/claude-sonnet-4-6: Provider anthropic has billing issue (skipping all models) (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
-      }
+        "consecutiveErrors": 26,
+        "lastFailureAlertAtMs": 1777728646623,
+        "lastErrorReason": "rate_limit",
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "0b25eefa-e39c-4352-b1aa-856b7c20d98f",
       "name": "OpenClaw - tasks maintenance semanal",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1775553632050,
-      "updatedAtMs": 1776051354499,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "cron",
         "expr": "25 7 * * 0",
@@ -651,7 +678,10 @@
         "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente este comando e use o JSON como fonte de verdade: openclaw tasks maintenance --apply --json. Retorne no maximo 6 linhas com: ACOES_APLICADAS, LOST_ANTES, LOST_DEPOIS, ACTIVE, FAILURES, PROXIMO_PASSO.",
         "toolsAllow": [
           "exec"
-        ]
+        ],
+        "model": "deepseek/deepseek-chat",
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "announce",
@@ -664,24 +694,25 @@
         "mode": "announce"
       },
       "state": {
-        "nextRunAtMs": 1776594300000,
-        "lastRunAtMs": 1776051346577,
+        "lastRunAtMs": 1777201045355,
         "lastRunStatus": "error",
         "lastStatus": "error",
-        "lastDurationMs": 7922,
-        "lastError": "FallbackSummaryError: All models failed (3): anthropic/claude-sonnet-4-6: Provider anthropic has billing issue (skipping all models) (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)",
+        "lastDurationMs": 8867,
         "lastErrorReason": "rate_limit",
         "lastDeliveryStatus": "unknown",
-        "consecutiveErrors": 1
-      }
+        "consecutiveErrors": 3,
+        "lastFailureAlertAtMs": 1777201800089,
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | anthropic/claude-opus-4-6: Provider anthropic has billing issue (skipping all models) (billing) | openai/gpt-4-turbo: ⚠️ You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors. (rate_limit)"
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "826653ae-7b20-43e2-adf0-90c96a60a6ec",
       "agentId": "esp-suporte-software",
       "name": "Especialista Suporte Software - execução 10min",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1775556627480,
-      "updatedAtMs": 1776058633101,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "every",
         "everyMs": 600000,
@@ -692,12 +723,13 @@
       "payload": {
         "kind": "agentTurn",
         "message": "EXECUCAO OBRIGATORIA: rode exatamente ./scripts/esp-suporte-software-deterministic-cycle.sh via exec sincrono e responda SOMENTE com o JSON bruto retornado pelo script.",
-        "model": "google/gemini-2.5-flash-lite",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 180,
         "toolsAllow": [
           "exec"
         ],
-        "thinking": "off"
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
         "mode": "none",
@@ -710,26 +742,26 @@
         "mode": "announce"
       },
       "state": {
-        "nextRunAtMs": 1776062233101,
-        "lastRunAtMs": 1776058606275,
+        "lastRunAtMs": 1777728524588,
         "lastRunStatus": "error",
         "lastStatus": "error",
-        "lastDurationMs": 26826,
+        "lastDurationMs": 28360,
         "lastDeliveryStatus": "not-requested",
-        "consecutiveErrors": 90,
+        "consecutiveErrors": 155,
         "lastErrorReason": "rate_limit",
-        "lastFailureAlertAtMs": 1776058633102,
-        "lastError": "FallbackSummaryError: All models failed (3): google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | google/gemini-2.5-pro: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | xai/grok-3-mini: ⚠️ API rate limit reached. Please try again later. (rate_limit)"
-      }
+        "lastFailureAlertAtMs": 1777728552950,
+        "lastError": "FallbackSummaryError: All models failed (4): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | google/gemini-2.5-pro: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | xai/grok-3-mini: ⚠️ API rate limit reached. Please try again later. (rate_limit)"
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     },
     {
       "id": "4a784051-745d-4d5e-ae22-161044ec8a34",
       "agentId": "business-news",
       "sessionKey": "agent:business-news:business-news",
       "name": "Business-News - briefing matinal 7h30",
-      "enabled": true,
+      "enabled": false,
       "createdAtMs": 1776052144374,
-      "updatedAtMs": 1776052350483,
+      "updatedAtMs": 1777731500325,
       "schedule": {
         "kind": "cron",
         "expr": "30 7 * * *",
@@ -739,22 +771,31 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente ./scripts/business-news-simple.sh via exec e use o JSON retornado como fonte de verdade. Se whatsapp_ready=true, envie a mensagem formatada para WhatsApp usando a ferramenta message. Formato de resposta em pt-BR: STATUS, NOTICIAS, FORMATO, ENVIO.",
-        "model": "google/gemini-2.5-flash-lite",
+        "message": "MODO DETERMINISTICO OBRIGATORIO: execute exatamente /var/www/openclaw/workspace/scripts/business-news-send.sh via exec e use somente o JSON retornado como fonte de verdade. O script ja envia cada noticia em uma mensagem separada no WhatsApp; nao use a ferramenta message. Responda em pt-BR com 4 linhas: STATUS, NOTICIAS, MENSAGENS, ENVIO.",
+        "model": "deepseek/deepseek-chat",
         "timeoutSeconds": 300,
         "toolsAllow": [
-          "exec",
-          "message"
-        ]
+          "exec"
+        ],
+        "thinking": "off",
+        "lightContext": true
       },
       "delivery": {
-        "mode": "announce",
+        "mode": "none",
         "channel": "last",
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1776076200000
-      }
+        "lastRunAtMs": 1777728619136,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 27433,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 9,
+        "lastErrorReason": "rate_limit",
+        "lastError": "FallbackSummaryError: All models failed (3): deepseek/deepseek-chat: ⚠️ deepseek (deepseek-chat) returned a billing error — your API key has run out of credits or has an insufficient balance. Check your deepseek billing dashboard and top up or switch to a different API key. (billing) | google/gemini-2.5-flash-lite: LLM error: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n (auth) | xai/grok-3-mini: ⚠️ API rate limit reached. Please try again later. (rate_limit)"
+      },
+      "disabledReason": "cost-incident-2026-05-02-openai-spend-containment"
     }
   ]
 }

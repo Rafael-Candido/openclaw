@@ -66179,3 +66179,973 @@ Formato sugerido:
   - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
 - **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
   - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 14:20 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-985165be-59eb-46e7-8715-17571c8e8227** [high]: Cron com erros consecutivos: Presidente - criar demandas 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Cron com erros consecutivos: Mail-Pro especialista - execução 15min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-6bdd82c7-081d-486b-9700-0572b9fce72e** [high]: Cron com erros consecutivos: Engenheiro de Prompt - execução 10min (d
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Cron com erros consecutivos: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0633c77a-4e3f-47fa-82be-35767e806836** [high]: Cron com erros consecutivos: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 5min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Cron com erros consecutivos: Mail-Person especialista - execução 15mi
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Cron com erros consecutivos: Codex - stability monitor 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Cron com erros consecutivos: Diretor Tech - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Cron com erros consecutivos: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-cf343b94-0816-42e5-b3dc-d40ecf12786e** [high]: Cron com erros consecutivos: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 14:31 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [high]: Cron com erros consecutivos: Mail-Person especialista - execução 15mi
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-99de71d1-97b0-48d0-933e-7fcacfda2184** [high]: Cron com erros consecutivos: Mail-Pro especialista - execução 15min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Cron com erros consecutivos: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0633c77a-4e3f-47fa-82be-35767e806836** [high]: Cron com erros consecutivos: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-985165be-59eb-46e7-8715-17571c8e8227** [high]: Cron com erros consecutivos: Presidente - criar demandas 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Cron com erros consecutivos: Diretor Tech - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Cron com erros consecutivos: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-cf343b94-0816-42e5-b3dc-d40ecf12786e** [high]: Cron com erros consecutivos: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Cron com erros consecutivos: Codex - stability monitor 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 14:41 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [high]: Cron com erros consecutivos: Diretor Tech - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-a71c2958-e52f-4f37-9876-bedf6dcb9434** [high]: Cron com erros consecutivos: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Cron com erros consecutivos: Codex - stability monitor 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-cf343b94-0816-42e5-b3dc-d40ecf12786e** [high]: Cron com erros consecutivos: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-985165be-59eb-46e7-8715-17571c8e8227** [high]: Cron com erros consecutivos: Presidente - criar demandas 30min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-06045675-03fb-4494-89ca-0f64bba7c067** [medium]: Cron próximo do timeout: OpenClaw - tasks audit diario
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 15:24 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 5min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-06045675-03fb-4494-89ca-0f64bba7c067** [medium]: Cron próximo do timeout: OpenClaw - tasks audit diario
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Tech** [medium]: Cards Priorizado sem comentário do diretor (Tech)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 16:00 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-06045675-03fb-4494-89ca-0f64bba7c067** [medium]: Cron próximo do timeout: OpenClaw - tasks audit diario
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 16:03 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-06045675-03fb-4494-89ca-0f64bba7c067** [medium]: Cron próximo do timeout: OpenClaw - tasks audit diario
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 16:22 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-06045675-03fb-4494-89ca-0f64bba7c067** [medium]: Cron próximo do timeout: OpenClaw - tasks audit diario
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 17:27 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-59c24991-af6c-4df2-95fe-bbf012cd73c0** [high]: Cron com erros consecutivos: Otimizador - performance e custo 6h
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-06045675-03fb-4494-89ca-0f64bba7c067** [medium]: Cron próximo do timeout: OpenClaw - tasks audit diario
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 19:14 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 5min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-06045675-03fb-4494-89ca-0f64bba7c067** [medium]: Cron próximo do timeout: OpenClaw - tasks audit diario
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 19:41 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-06045675-03fb-4494-89ca-0f64bba7c067** [medium]: Cron próximo do timeout: OpenClaw - tasks audit diario
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 19:49 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Cron próximo do timeout: Governança - health/recovery 5min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-timeout-06045675-03fb-4494-89ca-0f64bba7c067** [medium]: Cron próximo do timeout: OpenClaw - tasks audit diario
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-04-23 20:06 UTC
+- **model-pressure** [medium]: Pressão recorrente de modelos/provedores
+  - Recomendação: Revisar distribuição de modelos, espaçamento de crons e fallback para reduzir cooldown/rate limit.
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **mail-backlog-personal** [high]: Backlog alto no Mail-Person
+  - Recomendação: Ajustar lote/frequência e eliminar contenção por lock para reduzir backlog de forma sustentada.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-06045675-03fb-4494-89ca-0f64bba7c067** [medium]: Cron próximo do timeout: OpenClaw - tasks audit diario
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 19:27 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Cron com erros consecutivos: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0633c77a-4e3f-47fa-82be-35767e806836** [high]: Cron com erros consecutivos: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 5min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Cron com erros consecutivos: Codex - stability monitor 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 19:31 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **cron-errors-a7b8c9d0-e1f2-3456-7890-abcdef123401** [high]: Cron com erros consecutivos: Engenheiro SmartEnvios - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-c408ba92-a26a-420d-844f-64448f983d93** [high]: Cron com erros consecutivos: Governança - health/recovery 5min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Cron com erros consecutivos: Codex - stability monitor 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0633c77a-4e3f-47fa-82be-35767e806836** [high]: Cron com erros consecutivos: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 19:39 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Cron com erros consecutivos: Codex - stability monitor 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 19:45 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [medium]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [high]: Cron com erros consecutivos: Codex - stability monitor 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-timeout-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Cron próximo do timeout: Codex - stability monitor 10min
+  - Recomendação: Enxugar prompt/script, revisar timeout e distribuir melhor carga entre crons.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 20:01 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [high]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 20:11 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [high]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 20:16 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [high]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **triage-signature-missing-Pessoal** [medium]: Cards Priorizado sem comentário do diretor (Pessoal)
+  - Recomendação: Reforçar contrato de triagem do diretor com comentário obrigatório e validação automática.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 20:21 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [high]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 20:32 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [high]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 20:37 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [high]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 20:48 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [high]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 20:53 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [high]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 21:00 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [high]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-985165be-59eb-46e7-8715-17571c8e8227** [medium]: Colisão de grade entre crons: Presidente - criar demandas 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 21:05 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [high]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-7fba5b1f-2ee9-4b1e-aae0-bd211c32b925** [medium]: Colisão de grade entre crons: Diretor Tech - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-826653ae-7b20-43e2-adf0-90c96a60a6ec** [medium]: Colisão de grade entre crons: Especialista Suporte Software - exe
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-e4cd9635-efdd-4588-8ecc-523a4a50ea20** [medium]: Colisão de grade entre crons: Mail-Person especialista - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-6bdd82c7-081d-486b-9700-0572b9fce72e** [medium]: Colisão de grade entre crons: Engenheiro de Prompt - execução 10m
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0a145dca-9bb4-46a6-be5b-d15ee4ae30ef** [medium]: Colisão de grade entre crons: Codex - stability monitor 10min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-cf343b94-0816-42e5-b3dc-d40ecf12786e** [medium]: Colisão de grade entre crons: Diretor Negócios - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.
+
+## 2026-05-01 21:10 UTC
+- **cron-contract-drift** [high]: Drift no contrato crítico de crons
+  - Recomendação: Consolidar contrato único dos crons críticos e cobrir com auditoria automática de drift.
+- **personal-open-backlog** [high]: Backlog aberto no Notion Pessoal
+  - Recomendação: Forçar cadeia Diretor Pessoal -> especialista e bloquear criação redundante até drenar backlog.
+- **mcp-audit-degraded** [high]: Falhas operacionais no MCP (Jira/Grafana)
+  - Recomendação: Corrigir integração no repositório /var/www/mcp (auth/permissão/handler) e validar nova rodada automática.
+- **ai-daily-cost-high** [high]: Custo diário de IA acima do limite
+  - Recomendação: Reduzir contexto/sessão, preferir modelos flash/lite em rotinas, evitar mídia quando texto atende e abrir melhoria estrutural para Engenheiro de Prompt.
+- **cron-errors-826653ae-7b20-43e2-adf0-90c96a60a6ec** [high]: Cron com erros consecutivos: Especialista Suporte Software - execução
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-79672496-e2c8-4851-9f19-98b5efafa2ff** [high]: Cron com erros consecutivos: Engenheiro de Automação - execução 10min
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-06045675-03fb-4494-89ca-0f64bba7c067** [high]: Cron com erros consecutivos: OpenClaw - tasks audit diario
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-4a784051-745d-4d5e-ae22-161044ec8a34** [high]: Cron com erros consecutivos: Business-News - briefing matinal 7h30
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-errors-0b25eefa-e39c-4352-b1aa-856b7c20d98f** [high]: Cron com erros consecutivos: OpenClaw - tasks maintenance semanal
+  - Recomendação: Revisar causa raiz (prompt/script/env), reduzir erro recorrente e adicionar testes de resiliência.
+- **cron-collision-79672496-e2c8-4851-9f19-98b5efafa2ff** [medium]: Colisão de grade entre crons: Engenheiro de Automação - execução
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-99de71d1-97b0-48d0-933e-7fcacfda2184** [medium]: Colisão de grade entre crons: Mail-Pro especialista - execução 15
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a71c2958-e52f-4f37-9876-bedf6dcb9434** [medium]: Colisão de grade entre crons: Diretor Pessoal - varredura 30min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-c408ba92-a26a-420d-844f-64448f983d93** [medium]: Colisão de grade entre crons: Governança - health/recovery 5min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-a7b8c9d0-e1f2-3456-7890-abcdef123401** [medium]: Colisão de grade entre crons: Engenheiro SmartEnvios - execução 1
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **cron-collision-0633c77a-4e3f-47fa-82be-35767e806836** [medium]: Colisão de grade entre crons: Main - relatório WhatsApp 60min
+  - Recomendação: Revisar anchor/frequências na grade fixa para eliminar sobreposição recorrente.
+- **notion-priorizado-abandonado-Tech-32d21016-bd48-8118-b33e-e9c0ee62ae08** [high]: Card Priorizado sem execução (Tech)
+  - Recomendação: Ajustar roteamento/cron do agente alvo e reforçar wake automático quando houver atraso.

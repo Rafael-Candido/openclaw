@@ -1,7 +1,7 @@
 {
   "meta": {
     "lastTouchedVersion": "2026.4.5",
-    "lastTouchedAt": "2026-04-07T16:28:40.380Z"
+    "lastTouchedAt": "2026-04-24T18:54:44.063Z"
   },
   "wizard": {
     "lastRunAt": "2026-04-07T08:58:17.765Z",
@@ -95,10 +95,11 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "anthropic/claude-sonnet-4-6",
+        "primary": "deepseek/deepseek-chat",
         "fallbacks": [
-          "anthropic/claude-opus-4-6",
-          "openai/gpt-4-turbo"
+          "google/gemini-2.5-flash-lite",
+          "xai/grok-3-mini",
+          "anthropic/claude-haiku-4-5-20251001"
         ]
       },
       "models": {
@@ -172,7 +173,11 @@
           "alias": "Grok 2 Vision 1212"
         },
         "xai/grok-2": {},
-        "xai/grok-beta": {}
+        "xai/grok-beta": {},
+        "openai-codex/gpt-5.4-mini": {},
+        "anthropic/claude-haiku-4-5-20251001": {
+          "alias": "Claude Haiku 4.5"
+        }
       },
       "workspace": "/var/www/openclaw/workspace",
       "contextPruning": {
@@ -204,10 +209,11 @@
         "name": "Main",
         "workspace": "/var/www/openclaw/workspace",
         "model": {
-          "primary": "anthropic/claude-sonnet-4-6",
+          "primary": "deepseek/deepseek-chat",
           "fallbacks": [
-            "anthropic/claude-opus-4-6",
-            "openai/gpt-4-turbo"
+            "google/gemini-2.5-flash-lite",
+            "xai/grok-3-mini",
+            "anthropic/claude-haiku-4-5-20251001"
           ]
         }
       },
@@ -216,11 +222,11 @@
         "name": "Engenheiro SmartEnvios",
         "workspace": "/var/www/openclaw/workspace/agents/eng-smartenvios",
         "model": {
-          "primary": "google/gemini-2.5-flash",
+          "primary": "deepseek/deepseek-chat",
           "fallbacks": [
             "google/gemini-2.5-flash-lite",
-            "google/gemini-2.5-pro",
-            "xai/grok-3-mini"
+            "xai/grok-3-mini",
+            "anthropic/claude-haiku-4-5-20251001"
           ]
         },
         "skills": [
@@ -240,11 +246,11 @@
         "name": "Engenheiro de Prompt",
         "workspace": "/var/www/openclaw/workspace/agents/eng-prompt",
         "model": {
-          "primary": "google/gemini-2.5-flash",
+          "primary": "deepseek/deepseek-chat",
           "fallbacks": [
             "google/gemini-2.5-flash-lite",
-            "google/gemini-2.5-pro",
-            "xai/grok-3-mini"
+            "xai/grok-3-mini",
+            "anthropic/claude-haiku-4-5-20251001"
           ]
         },
         "skills": [
@@ -266,7 +272,9 @@
         "model": {
           "primary": "deepseek/deepseek-chat",
           "fallbacks": [
-            "deepseek/deepseek-reasoner"
+            "google/gemini-2.5-flash-lite",
+            "xai/grok-3-mini",
+            "anthropic/claude-haiku-4-5-20251001"
           ]
         },
         "skills": [
@@ -280,7 +288,8 @@
         "groupChat": {
           "mentionPatterns": [
             "<@1439351480514646087>",
-            "<@!1439351480514646087>"
+            "<@!1439351480514646087>",
+            "@Lucas\\s+Martins\\b"
           ]
         },
         "sandbox": {
@@ -316,9 +325,11 @@
         "name": "Einstein Backup (Contingência)",
         "workspace": "/var/www/openclaw/workspace/agents/einstein",
         "model": {
-          "primary": "deepseek/deepseek-reasoner",
+          "primary": "deepseek/deepseek-chat",
           "fallbacks": [
-            "deepseek/deepseek-chat"
+            "google/gemini-2.5-flash-lite",
+            "xai/grok-3-mini",
+            "anthropic/claude-haiku-4-5-20251001"
           ]
         },
         "skills": [
@@ -362,11 +373,11 @@
         "name": "Engenheiro de Automação",
         "workspace": "/var/www/openclaw/workspace/agents/eng-automacao",
         "model": {
-          "primary": "google/gemini-2.5-flash",
+          "primary": "deepseek/deepseek-chat",
           "fallbacks": [
             "google/gemini-2.5-flash-lite",
             "xai/grok-3-mini",
-            "google/gemini-2.5-pro"
+            "anthropic/claude-haiku-4-5-20251001"
           ]
         },
         "skills": [
@@ -386,11 +397,11 @@
         "name": "Especialista de Negócios",
         "workspace": "/var/www/openclaw/workspace/agents/esp-negocios",
         "model": {
-          "primary": "google/gemini-2.5-flash",
+          "primary": "deepseek/deepseek-chat",
           "fallbacks": [
             "google/gemini-2.5-flash-lite",
             "xai/grok-3-mini",
-            "google/gemini-2.5-pro"
+            "anthropic/claude-haiku-4-5-20251001"
           ]
         },
         "skills": [
@@ -413,7 +424,8 @@
           "primary": "deepseek/deepseek-chat",
           "fallbacks": [
             "google/gemini-2.5-flash-lite",
-            "xai/grok-3-mini"
+            "xai/grok-3-mini",
+            "anthropic/claude-haiku-4-5-20251001"
           ]
         },
         "identity": {
@@ -451,11 +463,11 @@
         "name": "Especialista de Suporte de Software",
         "workspace": "/var/www/openclaw/workspace/agents/esp-suporte-software",
         "model": {
-          "primary": "google/gemini-2.5-flash",
+          "primary": "deepseek/deepseek-chat",
           "fallbacks": [
             "google/gemini-2.5-flash-lite",
-            "google/gemini-2.5-pro",
-            "xai/grok-3-mini"
+            "xai/grok-3-mini",
+            "anthropic/claude-haiku-4-5-20251001"
           ]
         },
         "skills": [
@@ -540,7 +552,13 @@
   },
   "hooks": {
     "internal": {
-      "enabled": false,
+      "enabled": true,
+      "handlers": [
+        {
+          "event": "gateway:startup",
+          "module": "hooks/notion-memory-sync.js"
+        }
+      ],
       "entries": {
         "boot-md": {
           "enabled": false
@@ -684,7 +702,7 @@
         "enabled": true
       },
       "openai": {
-        "enabled": true
+        "enabled": false
       },
       "anthropic": {
         "enabled": true
@@ -698,7 +716,7 @@
       "memory-core": {
         "config": {
           "dreaming": {
-            "enabled": true
+            "enabled": false
           }
         }
       }

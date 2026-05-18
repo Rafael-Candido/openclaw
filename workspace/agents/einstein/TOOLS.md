@@ -50,7 +50,8 @@ NÃO usar `mcporter`, `mcp`, ou qualquer outro comando. O ÚNICO caminho é o sc
 2. **Se existir:** executar via `/var/www/openclaw/workspace/scripts/smartenvios-mcp.sh call <ferramenta> '<args>'`
 3. **Se NÃO existir:** escalar no Notion para o Diretor Tech (ver seção abaixo)
 4. **Para criação de demanda (card/atividade/chamado/tarefa):** usar Jira via MCP **somente com pedido explícito de criação**.
-5. Se `jira_*` falhar no MCP, escalar correção no Notion profissional para Diretor Tech (MCP-only; sem fallback local).
+5. Se `jira_*` falhar no MCP, rodar `smartenvios-mcp.sh login` uma vez e repetir a operação-alvo antes de qualquer resposta de indisponibilidade.
+6. Só escalar correção no Notion profissional para Diretor Tech se o retry pós-login também falhar e o card de escalonamento for realmente criado/validado.
 
 ### Gatilho obrigatório para criar Jira
 
@@ -181,6 +182,32 @@ curl -sS -X POST "https://api.notion.com/v1/pages" \
 - **Tipo:** `OpenClaw`
 - **Solicitante:** `Rafael Pereira`
 - **Agente:** `Tech`
+
+## Base de conhecimento Notion (consulta operacional)
+
+Para dúvidas de processo, configuração, integração, política e “passo a passo”, consultar primeiro a base viva do Notion.
+
+**Script:** `/var/www/openclaw/workspace/agents/einstein/scripts/notion-kb.sh`
+
+Fonte de verdade:
+- a resposta deve vir da API do Notion consultada no turno atual;
+- `MEMORY.md` é apenas cache bootstrapado para contexto auxiliar.
+
+Uso:
+
+```bash
+/var/www/openclaw/workspace/agents/einstein/scripts/notion-kb.sh search "shopify mesmo cnpj duas lojas passo a passo"
+```
+
+Saída:
+- melhores matches da base;
+- pergunta e resposta consolidadas;
+- score de relevância.
+
+Regras:
+- usar essa consulta antes de improvisar resposta específica de produto;
+- em follow-up curto, combinar o tema atual com o novo pedido na busca;
+- se houver resposta direta na base, priorizar a base do Notion.
 
 ## Discord API
 
